@@ -1,0 +1,32 @@
+@layer utilities {
+  .tm-bounce {
+    animation-name: tm-bounce;
+    animation-duration: var(--tm-duration, 900ms);
+    animation-delay: var(--tm-delay, 0ms);
+    animation-timing-function: var(--tm-easing, cubic-bezier(0.68, -0.55, 0.27, 1.55));
+    animation-iteration-count: var(--tm-iteration-count, infinite);
+    animation-fill-mode: both;
+    transform-origin: center bottom;
+    will-change: transform;
+  }
+}
+
+@keyframes tm-bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  30% {
+    transform: translateY(-18%);
+  }
+
+  50% {
+    transform: translateY(0);
+  }
+
+  70% {
+    transform: translateY(-8%);
+  }
+}
+

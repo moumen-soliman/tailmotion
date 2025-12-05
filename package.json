@@ -1,0 +1,49 @@
+{
+  "name": "tailmotion",
+  "version": "0.1.0",
+  "description": "Tiny motion utility pack for Tailwind CSS using pure CSS keyframes.",
+  "main": "tailmotion.config.js",
+  "style": "tailmotion.css",
+  "type": "commonjs",
+  "files": [
+    "tailmotion.css",
+    "tailmotion.config.js",
+    "src",
+    "README.md",
+    "demo"
+  ],
+  "scripts": {
+    "build": "node ./scripts/build.mjs",
+    "demo": "npx serve ./demo"
+  },
+  "exports": {
+    ".": {
+      "require": "./tailmotion.config.js",
+      "default": "./tailmotion.config.js",
+      "style": "./tailmotion.css"
+    },
+    "./tailmotion.css": "./tailmotion.css",
+    "./package.json": "./package.json"
+  },
+  "keywords": [
+    "tailwindcss",
+    "tailwind",
+    "animation",
+    "css",
+    "utilities",
+    "motion"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/moumensoliman/tailmotion.git"
+  },
+  "license": "MIT",
+  "author": "",
+  "sideEffects": [
+    "*.css"
+  ],
+  "peerDependencies": {
+    "tailwindcss": ">=3.3.0"
+  }
+}
+

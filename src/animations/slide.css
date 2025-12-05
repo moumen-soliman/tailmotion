@@ -1,0 +1,24 @@
+@layer utilities {
+  .tm-slide-up {
+    animation-name: tm-slide-up;
+    animation-duration: var(--tm-duration, 500ms);
+    animation-delay: var(--tm-delay, 0ms);
+    animation-timing-function: var(--tm-easing, cubic-bezier(0.19, 1, 0.22, 1));
+    animation-iteration-count: var(--tm-iteration-count, 1);
+    animation-fill-mode: both;
+    will-change: transform, opacity;
+  }
+}
+
+@keyframes tm-slide-up {
+  0% {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+

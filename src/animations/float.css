@@ -1,0 +1,26 @@
+@layer utilities {
+  .tm-float {
+    animation-name: tm-float;
+    animation-duration: var(--tm-duration, 3000ms);
+    animation-delay: var(--tm-delay, 0ms);
+    animation-timing-function: var(--tm-easing, ease-in-out);
+    animation-iteration-count: var(--tm-iteration-count, infinite);
+    animation-fill-mode: both;
+    will-change: transform;
+  }
+}
+
+@keyframes tm-float {
+  0% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-6px);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+

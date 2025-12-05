@@ -1,0 +1,54 @@
+@layer utilities {
+  .tm-rotate-hover {
+    display: inline-flex;
+    will-change: transform;
+  }
+
+  .tm-rotate-hover:hover {
+    animation-name: tm-rotate-hover;
+    animation-duration: var(--tm-duration, 400ms);
+    animation-delay: var(--tm-delay, 0ms);
+    animation-timing-function: var(--tm-easing, ease-in-out);
+    animation-iteration-count: var(--tm-iteration-count, 1);
+    animation-fill-mode: both;
+  }
+
+  .tm-rotate-press {
+    display: inline-flex;
+    will-change: transform;
+  }
+
+  .tm-rotate-press:active {
+    animation-name: tm-rotate-press;
+    animation-duration: var(--tm-duration, 240ms);
+    animation-delay: var(--tm-delay, 0ms);
+    animation-timing-function: var(--tm-easing, ease-out);
+    animation-iteration-count: var(--tm-iteration-count, 1);
+    animation-fill-mode: forwards;
+  }
+}
+
+@keyframes tm-rotate-hover {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(6deg);
+  }
+}
+
+@keyframes tm-rotate-press {
+  0% {
+    transform: scale(1) rotate(0deg);
+  }
+
+  50% {
+    transform: scale(0.96) rotate(-4deg);
+  }
+
+  100% {
+    transform: scale(0.98) rotate(0deg);
+  }
+}
+

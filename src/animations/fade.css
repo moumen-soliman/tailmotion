@@ -1,0 +1,23 @@
+@layer utilities {
+  .tm-fade-in {
+    animation-name: tm-fade-in;
+    animation-duration: var(--tm-duration, 450ms);
+    animation-delay: var(--tm-delay, 0ms);
+    animation-timing-function: var(--tm-easing, ease-out);
+    animation-iteration-count: var(--tm-iteration-count, 1);
+    animation-fill-mode: both;
+  }
+}
+
+@keyframes tm-fade-in {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+

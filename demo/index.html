@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>TailMotion · Motion utility demo</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              display: ['"Space Grotesk"', 'Inter', 'system-ui', 'sans-serif'],
+            },
+          },
+        },
+      };
+    </script>
+    <link rel="stylesheet" href="../tailmotion.css" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body class="bg-slate-950 text-slate-100">
+    <main class="max-w-6xl mx-auto px-6 py-16 space-y-16">
+      <header class="space-y-6 text-center">
+        <span class="inline-flex items-center gap-2 rounded-full bg-slate-900/80 px-4 py-2 text-xs uppercase tracking-[0.3em] text-slate-400">
+          TailMotion
+          <span class="tm-glow tm-duration-1600 inline-block h-2 w-2 rounded-full bg-sky-400"></span>
+        </span>
+        <div class="space-y-4">
+          <h1 class="font-display text-4xl font-semibold leading-tight sm:text-5xl text-white">
+            Drop-in motion utilities for Tailwind
+          </h1>
+          <p class="mx-auto max-w-2xl text-base text-slate-300 sm:text-lg">
+            Pick from ready-made keyframes, tune the duration/delay helpers, and keep your UI playful without touching custom CSS.
+          </p>
+        </div>
+      </header>
+
+      <section class="space-y-6">
+        <div class="flex items-center gap-3">
+          <h2 class="font-semibold text-lg text-white">Buttons</h2>
+          <p class="text-sm text-slate-400">Hover each control to preview micro-interactions.</p>
+        </div>
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <button class="tm-flip-hover tm-duration-500 tm-ease-snappy rounded-xl border border-white/10 bg-white/5 px-5 py-3 text-left text-white shadow-lg shadow-sky-500/10 transition">
+            <span class="block text-xs uppercase tracking-[0.2em] text-slate-400">Hover</span>
+            <span class="text-lg font-semibold">Card flip</span>
+          </button>
+
+          <button class="tm-rotate-hover tm-duration-400 tm-ease-out rounded-xl border border-white/10 bg-gradient-to-br from-sky-500/60 to-blue-600/60 px-5 py-3 text-left text-white shadow-lg shadow-sky-500/20">
+            <span class="block text-xs uppercase tracking-[0.2em] text-white/80">Hover</span>
+            <span class="text-lg font-semibold">Tilt rotate</span>
+          </button>
+
+          <button class="tm-bounce tm-duration-900 tm-repeat-3 tm-motion-reset rounded-xl border border-white/10 bg-white/10 px-5 py-3 text-left text-white shadow-lg shadow-blue-500/20">
+            <span class="block text-xs uppercase tracking-[0.2em] text-slate-300">On load</span>
+            <span class="text-lg font-semibold">Bounce intro</span>
+          </button>
+        </div>
+      </section>
+
+      <section class="space-y-6">
+        <div class="flex items-center gap-3">
+          <h2 class="font-semibold text-lg text-white">Cards</h2>
+          <p class="text-sm text-slate-400">Stack slide + pulse delays for storytelling.</p>
+        </div>
+        <div class="grid gap-6 md:grid-cols-2">
+          <article class="tm-slide-up tm-delay-150 rounded-2xl border border-white/10 bg-slate-900/70 p-6 shadow-2xl shadow-slate-900/40 backdrop-blur">
+            <p class="text-xs uppercase tracking-[0.3em] text-slate-400">Status</p>
+            <h3 class="mt-3 text-2xl font-semibold text-white">Metric cards</h3>
+            <p class="mt-1 text-sm text-slate-400">Use slide + delay utilities for cascaded dashboards.</p>
+            <div class="mt-6 flex items-baseline gap-3">
+              <span class="text-5xl font-bold text-white">74%</span>
+              <span class="tm-pop tm-delay-300 text-sm text-emerald-300">+12% this week</span>
+            </div>
+          </article>
+
+          <article class="tm-slide-up tm-delay-300 rounded-2xl border border-white/10 bg-gradient-to-br from-indigo-500/20 via-purple-500/10 to-transparent p-6 shadow-[0px_25px_60px_-35px_rgb(79,70,229)] backdrop-blur">
+            <p class="text-xs uppercase tracking-[0.3em] text-slate-200">Workflow</p>
+            <h3 class="mt-3 text-2xl font-semibold text-white">Cards with glow</h3>
+            <p class="mt-1 text-sm text-slate-200">
+              Combine <code class="rounded bg-white/10 px-2 py-1 text-xs">tm-glow</code> with inline custom properties for accent colors.
+            </p>
+            <div class="mt-6 flex gap-4">
+              <span class="tm-glow tm-duration-1600 inline-flex h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-white/5 text-xl">⚡️</span>
+              <div>
+                <p class="text-sm text-slate-200">Automation Rate</p>
+                <p class="text-2xl font-semibold text-white">92%</p>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="space-y-6">
+        <div class="flex items-center gap-3">
+          <h2 class="font-semibold text-lg text-white">Icons</h2>
+          <p class="text-sm text-slate-400">Slow float, pulse and spin add subtle life to avatars.</p>
+        </div>
+        <div class="flex flex-wrap items-center gap-6">
+          <div class="tm-spin tm-duration-1000 flex h-20 w-20 items-center justify-center rounded-full border border-sky-500/40 bg-sky-500/10 text-2xl">
+            🛰️
+          </div>
+          <div class="tm-float tm-duration-3000 flex h-20 w-20 items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-2xl">
+            💎
+          </div>
+          <div class="tm-pulse tm-duration-1400 flex h-20 w-20 items-center justify-center rounded-full border border-emerald-400/40 bg-emerald-500/15 text-2xl">
+            🔔
+          </div>
+          <div class="tm-wiggle tm-repeat-infinite tm-duration-700 tm-delay-200 flex h-20 w-20 items-center justify-center rounded-full border border-pink-400/40 bg-pink-500/10 text-2xl">
+            🎯
+          </div>
+        </div>
+      </section>
+
+      <section class="space-y-4 rounded-2xl border border-white/10 bg-white/5 p-6 text-center text-sm text-slate-200">
+        <p>
+          Need a custom timing? Any value works via arbitrary utilities:
+          <code class="rounded bg-black/40 px-2 py-1 text-xs">tm-duration-[1250ms]</code>
+          +
+          <code class="rounded bg-black/40 px-2 py-1 text-xs">tm-ease-[cubic-bezier(.2,1,.5,1)]</code>
+        </p>
+        <p class="text-xs text-slate-400">View the README to learn how to extend tokens straight from your Tailwind theme.</p>
+      </section>
+    </main>
+  </body>
+</html>
+
+

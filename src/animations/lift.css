@@ -1,0 +1,33 @@
+@layer utilities {
+  .tm-lift-hover {
+    position: relative;
+    display: inline-flex;
+    transform: translateY(0) scale(1);
+    box-shadow: var(--tm-lift-shadow-from, 0 12px 30px rgba(15, 23, 42, 0));
+    transition: box-shadow 120ms ease-out;
+    will-change: transform, box-shadow;
+  }
+
+  .tm-lift-hover:hover {
+    animation-name: tm-lift-hover;
+    animation-duration: var(--tm-duration, 320ms);
+    animation-delay: var(--tm-delay, 0ms);
+    animation-timing-function: var(--tm-easing, cubic-bezier(0.16, 1, 0.3, 1));
+    animation-iteration-count: var(--tm-iteration-count, 1);
+    animation-fill-mode: forwards;
+  }
+}
+
+@keyframes tm-lift-hover {
+  0% {
+    transform: translateY(0) scale(1);
+    box-shadow: var(--tm-lift-shadow-from, 0 12px 30px rgba(15, 23, 42, 0));
+  }
+
+  100% {
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: var(--tm-lift-shadow-to, 0 20px 40px rgba(15, 23, 42, 0.35));
+  }
+}
+
+

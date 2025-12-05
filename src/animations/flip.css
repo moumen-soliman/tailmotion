@@ -1,0 +1,32 @@
+@layer utilities {
+  .tm-flip-hover {
+    perspective: 1200px;
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+    will-change: transform;
+  }
+
+  .tm-flip-hover:hover {
+    animation-name: tm-flip;
+    animation-duration: var(--tm-duration, 320ms);
+    animation-delay: var(--tm-delay, 0ms);
+    animation-timing-function: var(--tm-easing, ease-in-out);
+    animation-iteration-count: var(--tm-iteration-count, 1);
+    animation-fill-mode: both;
+  }
+}
+
+@keyframes tm-flip {
+  0% {
+    transform: rotateY(0deg);
+  }
+
+  50% {
+    transform: rotateY(90deg);
+  }
+
+  100% {
+    transform: rotateY(180deg);
+  }
+}
+

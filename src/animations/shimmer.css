@@ -1,0 +1,51 @@
+@layer utilities {
+  .tm-shimmer-hover {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .tm-shimmer-hover::after {
+    content: '';
+    position: absolute;
+    inset: -120%;
+    background: linear-gradient(
+      120deg,
+      transparent 20%,
+      rgba(255, 255, 255, 0.35) 45%,
+      transparent 70%
+    );
+    transform: translateX(-60%) rotate(15deg);
+    opacity: 0;
+    pointer-events: none;
+    will-change: transform, opacity;
+    z-index: 1;
+  }
+
+  .tm-shimmer-hover:hover::after {
+    animation-name: tm-shimmer-hover;
+    animation-duration: var(--tm-duration, 900ms);
+    animation-delay: var(--tm-delay, 0ms);
+    animation-timing-function: var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1));
+    animation-iteration-count: var(--tm-iteration-count, 1);
+    animation-fill-mode: forwards;
+  }
+}
+
+@keyframes tm-shimmer-hover {
+  0% {
+    opacity: 0;
+    transform: translateX(-80%) rotate(15deg);
+  }
+
+  25% {
+    opacity: 0.8;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateX(80%) rotate(15deg);
+  }
+}
+
+

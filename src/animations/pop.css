@@ -1,0 +1,29 @@
+@layer utilities {
+  .tm-pop {
+    animation-name: tm-pop;
+    animation-duration: var(--tm-duration, 380ms);
+    animation-delay: var(--tm-delay, 0ms);
+    animation-timing-function: var(--tm-easing, cubic-bezier(0.18, 0.89, 0.32, 1.28));
+    animation-iteration-count: var(--tm-iteration-count, 1);
+    animation-fill-mode: both;
+    will-change: transform;
+  }
+}
+
+@keyframes tm-pop {
+  0% {
+    transform: scale(0.85);
+    opacity: 0;
+  }
+
+  70% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+

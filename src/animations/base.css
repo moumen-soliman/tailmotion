@@ -1,0 +1,178 @@
+@layer base {
+  :root,
+  :host {
+    --tm-duration: 400ms;
+    --tm-delay: 0ms;
+    --tm-easing: cubic-bezier(0.4, 0, 0.2, 1);
+    --tm-iteration-count: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [class*="tm-"] {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer utilities {
+  .tm-perspective {
+    perspective: 1200px;
+  }
+
+  .tm-3d {
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+  }
+
+  .tm-motion-paused {
+    animation-play-state: paused !important;
+  }
+
+  .tm-motion-running {
+    animation-play-state: running !important;
+  }
+
+  .tm-motion-reset {
+    --tm-delay: 0ms;
+    --tm-iteration-count: 1;
+  }
+
+  /* Duration tokens */
+  .tm-duration-150 {
+    --tm-duration: 150ms;
+  }
+
+  .tm-duration-200 {
+    --tm-duration: 200ms;
+  }
+
+  .tm-duration-300 {
+    --tm-duration: 300ms;
+  }
+
+  .tm-duration-400 {
+    --tm-duration: 400ms;
+  }
+
+  .tm-duration-500 {
+    --tm-duration: 500ms;
+  }
+
+  .tm-duration-700 {
+    --tm-duration: 700ms;
+  }
+
+  .tm-duration-900 {
+    --tm-duration: 900ms;
+  }
+
+  .tm-duration-1000 {
+    --tm-duration: 1000ms;
+  }
+
+  .tm-duration-1200 {
+    --tm-duration: 1200ms;
+  }
+
+  .tm-duration-1400 {
+    --tm-duration: 1400ms;
+  }
+
+  .tm-duration-1600 {
+    --tm-duration: 1600ms;
+  }
+
+  .tm-duration-2000 {
+    --tm-duration: 2000ms;
+  }
+
+  .tm-duration-3000 {
+    --tm-duration: 3000ms;
+  }
+
+  /* Delay tokens */
+  .tm-delay-0 {
+    --tm-delay: 0ms;
+  }
+
+  .tm-delay-75 {
+    --tm-delay: 75ms;
+  }
+
+  .tm-delay-150 {
+    --tm-delay: 150ms;
+  }
+
+  .tm-delay-200 {
+    --tm-delay: 200ms;
+  }
+
+  .tm-delay-300 {
+    --tm-delay: 300ms;
+  }
+
+  .tm-delay-400 {
+    --tm-delay: 400ms;
+  }
+
+  .tm-delay-500 {
+    --tm-delay: 500ms;
+  }
+
+  .tm-delay-700 {
+    --tm-delay: 700ms;
+  }
+
+  .tm-delay-1000 {
+    --tm-delay: 1000ms;
+  }
+
+  /* Easing tokens */
+  .tm-ease-linear {
+    --tm-easing: linear;
+  }
+
+  .tm-ease-in {
+    --tm-easing: cubic-bezier(0.55, 0.085, 0.68, 0.53);
+  }
+
+  .tm-ease-out {
+    --tm-easing: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .tm-ease-in-out {
+    --tm-easing: cubic-bezier(0.645, 0.045, 0.355, 1);
+  }
+
+  .tm-ease-soft {
+    --tm-easing: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .tm-ease-snappy {
+    --tm-easing: cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .tm-ease-bouncy {
+    --tm-easing: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  }
+
+  /* Repeat helpers */
+  .tm-repeat-1 {
+    --tm-iteration-count: 1;
+  }
+
+  .tm-repeat-2 {
+    --tm-iteration-count: 2;
+  }
+
+  .tm-repeat-3 {
+    --tm-iteration-count: 3;
+  }
+
+  .tm-repeat-infinite {
+    --tm-iteration-count: infinite;
+  }
+}
+

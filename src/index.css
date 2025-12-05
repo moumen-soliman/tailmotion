@@ -1,0 +1,20 @@
+/* Entry point for TailMotion animations. */
+@import "./animations/base.css";
+@import "./animations/flip.css";
+@import "./animations/bounce.css";
+@import "./animations/pulse.css";
+@import "./animations/wiggle.css";
+@import "./animations/rotate.css";
+@import "./animations/shake.css";
+@import "./animations/slide.css";
+@import "./animations/fade.css";
+@import "./animations/pop.css";
+@import "./animations/glow.css";
+@import "./animations/spin.css";
+@import "./animations/float.css";
+@import "./animations/zoom.css";
+@import "./animations/drop.css";
+@import "./animations/drift.css";
+@import "./animations/lift.css";
+@import "./animations/shimmer.css";
+

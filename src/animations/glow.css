@@ -1,0 +1,23 @@
+@layer utilities {
+  .tm-glow {
+    animation-name: tm-glow;
+    animation-duration: var(--tm-duration, 1600ms);
+    animation-delay: var(--tm-delay, 0ms);
+    animation-timing-function: var(--tm-easing, ease-in-out);
+    animation-iteration-count: var(--tm-iteration-count, infinite);
+    animation-fill-mode: both;
+    will-change: box-shadow;
+  }
+}
+
+@keyframes tm-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 0px rgba(59, 130, 246, 0.3);
+  }
+
+  50% {
+    box-shadow: 0 0 18px rgba(59, 130, 246, 0.55);
+  }
+}
+
