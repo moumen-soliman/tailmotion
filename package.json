@@ -58,12 +58,12 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/moumensoliman/tailmotion.git"
+    "url": "git+https://github.com/moumen-soliman/tailmotion.git"
   },
   "bugs": {
-    "url": "https://github.com/moumensoliman/tailmotion/issues"
+    "url": "https://github.com/moumen-soliman/tailmotion/issues"
   },
-  "homepage": "https://github.com/moumensoliman/tailmotion#readme",
+  "homepage": "https://github.com/moumen-soliman/tailmotion#readme",
   "license": "MIT",
   "author": "Moumen Soliman",
   "sideEffects": [

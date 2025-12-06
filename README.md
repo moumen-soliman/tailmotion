@@ -4,7 +4,7 @@ Motion utilities for Tailwind CSS. Zero runtime, tree-shakable, framework-agnost
 
 [![npm version](https://img.shields.io/npm/v/tailmotion.svg)](https://www.npmjs.com/package/tailmotion)
 [![bundle size](https://img.shields.io/bundlephobia/minzip/tailmotion)](https://bundlephobia.com/package/tailmotion)
-[![license](https://img.shields.io/npm/l/tailmotion.svg)](https://github.com/moumensoliman/tailmotion/blob/main/LICENSE)
+[![license](https://img.shields.io/npm/l/tailmotion.svg)](https://github.com/moumen-soliman/tailmotion/blob/main/LICENSE)
 
 ## Features
 

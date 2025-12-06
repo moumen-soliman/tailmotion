@@ -2,7 +2,7 @@
  * TailMotion v0.1.0
  * Tiny motion utility pack for Tailwind CSS
  * Framework-agnostic - works with React, Vue, Svelte, Angular, vanilla JS
- * https://github.com/moumensoliman/tailmotion
+ * https://github.com/moumen-soliman/tailmotion
  */
 (function(global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
