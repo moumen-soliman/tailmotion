@@ -47,8 +47,33 @@ const inlineCSS = async (filePath, stack = new Set()) => {
   return bundled.trimEnd();
 };
 
+// Generate repetitive CSS rules
+const generators = {
+  'stagger-indices': (count) => {
+    return Array.from({ length: count }, (_, i) => 
+      `.tm-stagger > *:nth-child(${i + 1}) { --tm-stagger-index: ${i}; }`
+    ).join('\n  ');
+  }
+};
+
+// Process @generate: comments
+const processGenerators = (css) => {
+  return css.replace(
+    /\/\*\s*@generate:(\w+[-\w]*):(\d+)\s*\*\//g,
+    (_, name, count) => {
+      const generator = generators[name];
+      if (!generator) {
+        console.warn(`Unknown generator: ${name}`);
+        return `/* Unknown generator: ${name} */`;
+      }
+      return generator(parseInt(count, 10));
+    }
+  );
+};
+
 const build = async () => {
-  const [version, css] = await Promise.all([readPackageVersion(), inlineCSS(entryFile)]);
+  const [version, rawCss] = await Promise.all([readPackageVersion(), inlineCSS(entryFile)]);
+  const css = processGenerators(rawCss);
   const banner = `/* TailMotion v${version} | Generated ${new Date().toISOString()} */`;
   const output = `${banner}\n${css}\n`;
 

@@ -4,7 +4,8 @@
     will-change: transform;
   }
 
-  .tm-rotate-hover:hover {
+  .tm-rotate-hover:hover,
+  .tm-rotate-hover:focus-visible {
     animation-name: tm-rotate-hover;
     animation-duration: var(--tm-duration, 400ms);
     animation-delay: var(--tm-delay, 0ms);
@@ -51,4 +52,3 @@
     transform: scale(0.98) rotate(0deg);
   }
 }
-

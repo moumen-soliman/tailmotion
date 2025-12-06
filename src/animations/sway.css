@@ -1,0 +1,32 @@
+@layer utilities {
+  .tm-sway {
+    animation-name: tm-sway;
+    animation-duration: var(--tm-duration, 3500ms);
+    animation-delay: var(--tm-delay, 0ms);
+    animation-timing-function: var(--tm-easing, cubic-bezier(0.37, 0, 0.63, 1));
+    animation-iteration-count: var(--tm-iteration-count, infinite);
+    animation-fill-mode: both;
+    transform-origin: top center;
+    will-change: transform;
+  }
+}
+
+@keyframes tm-sway {
+  0%,
+  100% {
+    transform: rotate(0deg) translateX(0);
+  }
+
+  25% {
+    transform: rotate(2deg) translateX(3px);
+  }
+
+  50% {
+    transform: rotate(0deg) translateX(0);
+  }
+
+  75% {
+    transform: rotate(-2deg) translateX(-3px);
+  }
+}
+

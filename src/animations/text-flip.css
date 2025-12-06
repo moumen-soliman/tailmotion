@@ -1,0 +1,181 @@
+@layer utilities {
+  /* Text Flip Container */
+  .tm-text-flip {
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
+    vertical-align: bottom;
+  }
+
+  .tm-text-flip-word {
+    display: inline-block;
+    animation-name: tm-text-flip-in;
+    animation-duration: var(--tm-duration, 600ms);
+    animation-timing-function: var(--tm-easing, cubic-bezier(0.16, 1, 0.3, 1));
+    animation-fill-mode: both;
+    will-change: transform, opacity, filter;
+  }
+
+  .tm-text-flip-word.tm-flip-out {
+    position: absolute;
+    top: 0;
+    left: 0;
+    animation-name: tm-text-flip-out;
+  }
+
+  /* Flip from bottom (default) */
+  @keyframes tm-text-flip-in {
+    0% {
+      transform: translateY(100%) rotateX(-45deg);
+      opacity: 0;
+      filter: blur(8px);
+    }
+    60% {
+      filter: blur(2px);
+    }
+    100% {
+      transform: translateY(0) rotateX(0);
+      opacity: 1;
+      filter: blur(0);
+    }
+  }
+
+  @keyframes tm-text-flip-out {
+    0% {
+      transform: translateY(0) rotateX(0);
+      opacity: 1;
+      filter: blur(0);
+    }
+    40% {
+      filter: blur(2px);
+    }
+    100% {
+      transform: translateY(-100%) rotateX(45deg);
+      opacity: 0;
+      filter: blur(8px);
+    }
+  }
+
+  /* Text Rotate - simpler horizontal blur transition */
+  .tm-text-rotate {
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
+    vertical-align: bottom;
+  }
+
+  .tm-text-rotate-word {
+    display: inline-block;
+    animation-name: tm-text-rotate-in;
+    animation-duration: var(--tm-duration, 500ms);
+    animation-timing-function: var(--tm-easing, cubic-bezier(0.22, 1, 0.36, 1));
+    animation-fill-mode: both;
+    will-change: transform, opacity, filter;
+  }
+
+  .tm-text-rotate-word.tm-rotate-out {
+    position: absolute;
+    top: 0;
+    left: 0;
+    animation-name: tm-text-rotate-out;
+  }
+
+  @keyframes tm-text-rotate-in {
+    0% {
+      transform: translateY(50%);
+      opacity: 0;
+      filter: blur(10px);
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+      filter: blur(0);
+    }
+  }
+
+  @keyframes tm-text-rotate-out {
+    0% {
+      transform: translateY(0);
+      opacity: 1;
+      filter: blur(0);
+    }
+    100% {
+      transform: translateY(-50%);
+      opacity: 0;
+      filter: blur(10px);
+    }
+  }
+
+  /* Text Morph - horizontal blur swap */
+  .tm-text-morph {
+    display: inline-block;
+    position: relative;
+  }
+
+  .tm-text-morph-word {
+    display: inline-block;
+    animation-name: tm-text-morph-in;
+    animation-duration: var(--tm-duration, 400ms);
+    animation-timing-function: var(--tm-easing, ease-out);
+    animation-fill-mode: both;
+    will-change: opacity, filter;
+  }
+
+  .tm-text-morph-word.tm-morph-out {
+    position: absolute;
+    top: 0;
+    left: 0;
+    animation-name: tm-text-morph-out;
+  }
+
+  @keyframes tm-text-morph-in {
+    0% {
+      opacity: 0;
+      filter: blur(12px);
+    }
+    100% {
+      opacity: 1;
+      filter: blur(0);
+    }
+  }
+
+  @keyframes tm-text-morph-out {
+    0% {
+      opacity: 1;
+      filter: blur(0);
+    }
+    100% {
+      opacity: 0;
+      filter: blur(12px);
+    }
+  }
+
+  /* Character-by-character flip */
+  .tm-text-flip-chars {
+    display: inline-flex;
+  }
+
+  .tm-text-flip-chars > span {
+    display: inline-block;
+    animation-name: tm-char-flip-in;
+    animation-duration: var(--tm-duration, 400ms);
+    animation-delay: calc(var(--tm-char-index, 0) * 40ms);
+    animation-timing-function: var(--tm-easing, cubic-bezier(0.16, 1, 0.3, 1));
+    animation-fill-mode: both;
+    will-change: transform, opacity, filter;
+  }
+
+  @keyframes tm-char-flip-in {
+    0% {
+      transform: translateY(100%);
+      opacity: 0;
+      filter: blur(4px);
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+      filter: blur(0);
+    }
+  }
+}
+

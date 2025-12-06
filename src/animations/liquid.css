@@ -1,0 +1,192 @@
+@layer utilities {
+  /* Liquid Button - fill from bottom on hover */
+  .tm-liquid-btn {
+    --tm-liquid-color: currentColor;
+    --tm-liquid-bg: transparent;
+    --tm-liquid-duration: 0.4s;
+    position: relative;
+    overflow: hidden;
+    background-color: var(--tm-liquid-bg);
+    transition: 
+      color var(--tm-liquid-duration) ease,
+      transform 0.15s ease;
+    isolation: isolate;
+  }
+
+  .tm-liquid-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--tm-liquid-color);
+    transform: scaleY(0);
+    transform-origin: bottom center;
+    transition: transform var(--tm-liquid-duration) cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: -1;
+  }
+
+  .tm-liquid-btn:hover::before,
+  .tm-liquid-btn:focus-visible::before {
+    transform: scaleY(1);
+  }
+
+  .tm-liquid-btn:active {
+    transform: scale(0.97);
+  }
+
+  /* Liquid from left */
+  .tm-liquid-btn-left::before {
+    transform: scaleX(0);
+    transform-origin: left center;
+  }
+
+  .tm-liquid-btn-left:hover::before,
+  .tm-liquid-btn-left:focus-visible::before {
+    transform: scaleX(1);
+  }
+
+  /* Liquid from right */
+  .tm-liquid-btn-right::before {
+    transform: scaleX(0);
+    transform-origin: right center;
+  }
+
+  .tm-liquid-btn-right:hover::before,
+  .tm-liquid-btn-right:focus-visible::before {
+    transform: scaleX(1);
+  }
+
+  /* Liquid from top */
+  .tm-liquid-btn-top::before {
+    transform: scaleY(0);
+    transform-origin: top center;
+  }
+
+  .tm-liquid-btn-top:hover::before,
+  .tm-liquid-btn-top:focus-visible::before {
+    transform: scaleY(1);
+  }
+
+  /* Liquid from center (radial) */
+  .tm-liquid-btn-center::before {
+    transform: scale(0);
+    transform-origin: center center;
+    border-radius: 50%;
+  }
+
+  .tm-liquid-btn-center:hover::before,
+  .tm-liquid-btn-center:focus-visible::before {
+    transform: scale(1.5);
+    border-radius: 0;
+  }
+
+  /* Liquid wave effect - more organic */
+  .tm-liquid-wave {
+    --tm-liquid-color: currentColor;
+    --tm-liquid-bg: transparent;
+    --tm-liquid-duration: 0.5s;
+    position: relative;
+    overflow: hidden;
+    background-color: var(--tm-liquid-bg);
+    transition: 
+      color var(--tm-liquid-duration) ease,
+      transform 0.15s ease;
+    isolation: isolate;
+  }
+
+  .tm-liquid-wave::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 0;
+    background: var(--tm-liquid-color);
+    transition: height var(--tm-liquid-duration) cubic-bezier(0.22, 1, 0.36, 1);
+    z-index: -1;
+  }
+
+  .tm-liquid-wave:hover::before,
+  .tm-liquid-wave:focus-visible::before {
+    height: 100%;
+  }
+
+  .tm-liquid-wave:active {
+    transform: scale(0.97);
+  }
+
+  /* Liquid underline - starts as line, fills up */
+  .tm-liquid-underline {
+    --tm-liquid-color: currentColor;
+    --tm-liquid-bg: transparent;
+    --tm-liquid-duration: 0.35s;
+    --tm-liquid-line-height: 2px;
+    position: relative;
+    overflow: hidden;
+    background-color: var(--tm-liquid-bg);
+    transition: 
+      color var(--tm-liquid-duration) ease calc(var(--tm-liquid-duration) * 0.5),
+      transform 0.15s ease;
+    isolation: isolate;
+  }
+
+  .tm-liquid-underline::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: var(--tm-liquid-line-height);
+    background: var(--tm-liquid-color);
+    transition: 
+      width var(--tm-liquid-duration) cubic-bezier(0.4, 0, 0.2, 1),
+      left var(--tm-liquid-duration) cubic-bezier(0.4, 0, 0.2, 1),
+      height var(--tm-liquid-duration) cubic-bezier(0.4, 0, 0.2, 1) var(--tm-liquid-duration);
+    z-index: -1;
+  }
+
+  .tm-liquid-underline:hover::before,
+  .tm-liquid-underline:focus-visible::before {
+    width: 100%;
+    left: 0;
+    height: 100%;
+  }
+
+  .tm-liquid-underline:active {
+    transform: scale(0.97);
+  }
+
+  /* Color variants using CSS variables */
+  .tm-liquid-blue {
+    --tm-liquid-color: rgb(59, 130, 246);
+  }
+
+  .tm-liquid-purple {
+    --tm-liquid-color: rgb(147, 51, 234);
+  }
+
+  .tm-liquid-emerald {
+    --tm-liquid-color: rgb(16, 185, 129);
+  }
+
+  .tm-liquid-rose {
+    --tm-liquid-color: rgb(244, 63, 94);
+  }
+
+  .tm-liquid-amber {
+    --tm-liquid-color: rgb(245, 158, 11);
+  }
+
+  .tm-liquid-cyan {
+    --tm-liquid-color: rgb(6, 182, 212);
+  }
+
+  /* Speed variants */
+  .tm-liquid-fast {
+    --tm-liquid-duration: 0.25s;
+  }
+
+  .tm-liquid-slow {
+    --tm-liquid-duration: 0.6s;
+  }
+}
+

@@ -1,4 +1,5 @@
 @layer utilities {
+  .tm-drop,
   .tm-drop-in {
     animation-name: tm-drop-in;
     animation-duration: var(--tm-duration, 600ms);
@@ -31,5 +32,3 @@
     transform: translateY(0) scaleY(1);
   }
 }
-
-

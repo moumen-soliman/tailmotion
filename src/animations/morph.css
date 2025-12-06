@@ -1,0 +1,32 @@
+@layer utilities {
+  .tm-morph {
+    animation-name: tm-morph;
+    animation-duration: var(--tm-duration, 4000ms);
+    animation-delay: var(--tm-delay, 0ms);
+    animation-timing-function: var(--tm-easing, cubic-bezier(0.45, 0.05, 0.55, 0.95));
+    animation-iteration-count: var(--tm-iteration-count, infinite);
+    animation-fill-mode: both;
+    will-change: transform, border-radius;
+  }
+}
+
+@keyframes tm-morph {
+  0%,
+  100% {
+    transform: scale(1) rotate(0deg);
+    border-radius: inherit;
+  }
+
+  25% {
+    transform: scale(1.02, 0.98) rotate(0.5deg);
+  }
+
+  50% {
+    transform: scale(0.98, 1.02) rotate(-0.5deg);
+  }
+
+  75% {
+    transform: scale(1.01, 0.99) rotate(0.3deg);
+  }
+}
+

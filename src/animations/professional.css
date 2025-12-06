@@ -1,0 +1,169 @@
+@layer utilities {
+  /* Reveal - smooth mask reveal from bottom */
+  .tm-reveal {
+    animation-name: tm-reveal;
+    animation-duration: var(--tm-duration, 800ms);
+    animation-delay: var(--tm-delay, 0ms);
+    animation-timing-function: var(--tm-easing, cubic-bezier(0.65, 0, 0.35, 1));
+    animation-iteration-count: var(--tm-iteration-count, 1);
+    animation-fill-mode: both;
+    will-change: clip-path, transform;
+  }
+
+  /* Unfold - elegant unfold from top */
+  .tm-unfold {
+    animation-name: tm-unfold;
+    animation-duration: var(--tm-duration, 700ms);
+    animation-delay: var(--tm-delay, 0ms);
+    animation-timing-function: var(--tm-easing, cubic-bezier(0.33, 1, 0.68, 1));
+    animation-iteration-count: var(--tm-iteration-count, 1);
+    animation-fill-mode: both;
+    transform-origin: top center;
+    will-change: transform, opacity;
+  }
+
+  /* Glide - smooth horizontal entrance */
+  .tm-glide {
+    animation-name: tm-glide;
+    animation-duration: var(--tm-duration, 900ms);
+    animation-delay: var(--tm-delay, 0ms);
+    animation-timing-function: var(--tm-easing, cubic-bezier(0.22, 1, 0.36, 1));
+    animation-iteration-count: var(--tm-iteration-count, 1);
+    animation-fill-mode: both;
+    will-change: transform, opacity;
+  }
+
+  .tm-glide-right {
+    animation-name: tm-glide-right;
+    animation-duration: var(--tm-duration, 900ms);
+    animation-delay: var(--tm-delay, 0ms);
+    animation-timing-function: var(--tm-easing, cubic-bezier(0.22, 1, 0.36, 1));
+    animation-iteration-count: var(--tm-iteration-count, 1);
+    animation-fill-mode: both;
+    will-change: transform, opacity;
+  }
+
+  /* Scale Fade - subtle scale with fade for cards */
+  .tm-scale-fade {
+    animation-name: tm-scale-fade;
+    animation-duration: var(--tm-duration, 600ms);
+    animation-delay: var(--tm-delay, 0ms);
+    animation-timing-function: var(--tm-easing, cubic-bezier(0.25, 0.46, 0.45, 0.94));
+    animation-iteration-count: var(--tm-iteration-count, 1);
+    animation-fill-mode: both;
+    will-change: transform, opacity;
+  }
+
+  /* Rise - elegant rise with subtle rotation */
+  .tm-rise {
+    animation-name: tm-rise;
+    animation-duration: var(--tm-duration, 1000ms);
+    animation-delay: var(--tm-delay, 0ms);
+    animation-timing-function: var(--tm-easing, cubic-bezier(0.16, 1, 0.3, 1));
+    animation-iteration-count: var(--tm-iteration-count, 1);
+    animation-fill-mode: both;
+    will-change: transform, opacity;
+  }
+
+  /* Stagger container for children */
+  .tm-stagger > * {
+    animation-name: tm-stagger-item;
+    animation-duration: var(--tm-duration, 500ms);
+    animation-delay: calc(var(--tm-delay, 0ms) + var(--tm-stagger-index, 0) * 80ms);
+    animation-timing-function: var(--tm-easing, cubic-bezier(0.25, 0.46, 0.45, 0.94));
+    animation-iteration-count: var(--tm-iteration-count, 1);
+    animation-fill-mode: both;
+    will-change: transform, opacity;
+  }
+
+  /* @generate:stagger-indices:20 */
+}
+
+@keyframes tm-reveal {
+  0% {
+    clip-path: inset(100% 0 0 0);
+    transform: translateY(20px);
+  }
+
+  100% {
+    clip-path: inset(0 0 0 0);
+    transform: translateY(0);
+  }
+}
+
+@keyframes tm-unfold {
+  0% {
+    transform: scaleY(0) translateY(-10px);
+    opacity: 0;
+  }
+
+  60% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: scaleY(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes tm-glide {
+  0% {
+    transform: translateX(-60px);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes tm-glide-right {
+  0% {
+    transform: translateX(60px);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes tm-scale-fade {
+  0% {
+    transform: scale(0.92);
+    opacity: 0;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes tm-rise {
+  0% {
+    transform: translateY(40px) rotate(1deg);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+@keyframes tm-stagger-item {
+  0% {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+

@@ -22,7 +22,8 @@
     z-index: 1;
   }
 
-  .tm-shimmer-hover:hover::after {
+  .tm-shimmer-hover:hover::after,
+  .tm-shimmer-hover:focus-visible::after {
     animation-name: tm-shimmer-hover;
     animation-duration: var(--tm-duration, 900ms);
     animation-delay: var(--tm-delay, 0ms);
@@ -47,5 +48,3 @@
     transform: translateX(80%) rotate(15deg);
   }
 }
-
-

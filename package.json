@@ -1,49 +1,83 @@
 {
   "name": "tailmotion",
   "version": "0.1.0",
-  "description": "Tiny motion utility pack for Tailwind CSS using pure CSS keyframes.",
+  "description": "Tiny motion utility pack for Tailwind CSS using pure CSS keyframes. Zero runtime, tree-shakable, framework-agnostic.",
   "main": "tailmotion.config.js",
+  "module": "src/index.js",
   "style": "tailmotion.css",
-  "type": "commonjs",
+  "types": "types/index.d.ts",
+  "type": "module",
   "files": [
     "tailmotion.css",
     "tailmotion.config.js",
     "src",
-    "README.md",
-    "demo"
+    "dist",
+    "types",
+    "README.md"
   ],
   "scripts": {
     "build": "node ./scripts/build.mjs",
-    "demo": "npx serve ./demo"
+    "build:all": "npm run build && npm run build:types",
+    "build:types": "node ./scripts/build-types.mjs",
+    "demo": "npm run build && cp tailmotion.css demo/tailmotion.css && cp dist/tailmotion.js demo/tailmotion.js",
+    "prepublishOnly": "npm run build"
   },
   "exports": {
     ".": {
+      "import": "./src/index.js",
       "require": "./tailmotion.config.js",
       "default": "./tailmotion.config.js",
       "style": "./tailmotion.css"
     },
+    "./utils": {
+      "import": "./src/utils.js",
+      "default": "./src/utils.js"
+    },
+    "./css": "./tailmotion.css",
     "./tailmotion.css": "./tailmotion.css",
+    "./animations/*": "./src/animations/*",
     "./package.json": "./package.json"
   },
   "keywords": [
     "tailwindcss",
     "tailwind",
     "animation",
+    "animations",
     "css",
     "utilities",
-    "motion"
+    "motion",
+    "transitions",
+    "keyframes",
+    "hover",
+    "micro-interactions",
+    "ui",
+    "react",
+    "vue",
+    "svelte",
+    "nextjs"
   ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/moumensoliman/tailmotion.git"
   },
+  "bugs": {
+    "url": "https://github.com/moumensoliman/tailmotion/issues"
+  },
+  "homepage": "https://github.com/moumensoliman/tailmotion#readme",
   "license": "MIT",
-  "author": "",
+  "author": "Moumen Soliman",
   "sideEffects": [
     "*.css"
   ],
   "peerDependencies": {
     "tailwindcss": ">=3.3.0"
+  },
+  "peerDependenciesMeta": {
+    "tailwindcss": {
+      "optional": true
+    }
+  },
+  "engines": {
+    "node": ">=16.0.0"
   }
 }
-

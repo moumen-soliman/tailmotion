@@ -1,4 +1,173 @@
+/* ==========================================================================
+   FLIP ANIMATIONS
+   Flip card/button effects with configurable directions.
+   Works with TailMotion utilities: tm-duration-*, tm-delay-*, tm-ease-*
+   ========================================================================== */
+
+@layer base {
+  :root,
+  :host {
+    /* Flip button specific defaults - can be overridden */
+    --tm-flip-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+}
+
 @layer utilities {
+  /* --------------------------------------------------------------------------
+     FLIP BUTTON CONTAINER
+     Apply to the button/container element
+     -------------------------------------------------------------------------- */
+  .tm-flip-btn,
+  .tm-flip-btn-top,
+  .tm-flip-btn-bottom,
+  .tm-flip-btn-left,
+  .tm-flip-btn-right {
+    display: inline-grid;
+    place-items: center;
+    perspective: 1000px;
+    cursor: pointer;
+  }
+
+  .tm-flip-btn:active,
+  .tm-flip-btn-top:active,
+  .tm-flip-btn-bottom:active,
+  .tm-flip-btn-left:active,
+  .tm-flip-btn-right:active {
+    transform: scale(0.95);
+  }
+
+  /* --------------------------------------------------------------------------
+     FLIP FACES
+     Both faces stack in the same grid cell
+     -------------------------------------------------------------------------- */
+  .tm-flip-front,
+  .tm-flip-back {
+    grid-area: 1 / 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    backface-visibility: hidden;
+    will-change: transform, opacity;
+    transition-property: transform, opacity;
+    transition-duration: var(--tm-duration, 400ms);
+    transition-timing-function: var(--tm-easing, var(--tm-flip-spring));
+    transition-delay: var(--tm-delay, 0ms);
+  }
+
+  /* --------------------------------------------------------------------------
+     FLIP FROM TOP (default)
+     rotateX axis, Y translation
+     -------------------------------------------------------------------------- */
+  .tm-flip-btn .tm-flip-front,
+  .tm-flip-btn-top .tm-flip-front {
+    opacity: 1;
+    transform: rotateX(0deg) translateY(0);
+  }
+
+  .tm-flip-btn .tm-flip-back,
+  .tm-flip-btn-top .tm-flip-back {
+    opacity: 0;
+    transform: rotateX(-90deg) translateY(-50%);
+  }
+
+  .tm-flip-btn:hover .tm-flip-front,
+  .tm-flip-btn-top:hover .tm-flip-front,
+  .tm-flip-btn:focus-visible .tm-flip-front,
+  .tm-flip-btn-top:focus-visible .tm-flip-front {
+    opacity: 0;
+    transform: rotateX(90deg) translateY(50%);
+  }
+
+  .tm-flip-btn:hover .tm-flip-back,
+  .tm-flip-btn-top:hover .tm-flip-back,
+  .tm-flip-btn:focus-visible .tm-flip-back,
+  .tm-flip-btn-top:focus-visible .tm-flip-back {
+    opacity: 1;
+    transform: rotateX(0deg) translateY(0);
+  }
+
+  /* --------------------------------------------------------------------------
+     FLIP FROM BOTTOM
+     rotateX axis, Y translation (inverted)
+     -------------------------------------------------------------------------- */
+  .tm-flip-btn-bottom .tm-flip-front {
+    opacity: 1;
+    transform: rotateX(0deg) translateY(0);
+  }
+
+  .tm-flip-btn-bottom .tm-flip-back {
+    opacity: 0;
+    transform: rotateX(90deg) translateY(50%);
+  }
+
+  .tm-flip-btn-bottom:hover .tm-flip-front,
+  .tm-flip-btn-bottom:focus-visible .tm-flip-front {
+    opacity: 0;
+    transform: rotateX(-90deg) translateY(-50%);
+  }
+
+  .tm-flip-btn-bottom:hover .tm-flip-back,
+  .tm-flip-btn-bottom:focus-visible .tm-flip-back {
+    opacity: 1;
+    transform: rotateX(0deg) translateY(0);
+  }
+
+  /* --------------------------------------------------------------------------
+     FLIP FROM LEFT
+     rotateY axis, X translation
+     -------------------------------------------------------------------------- */
+  .tm-flip-btn-left .tm-flip-front {
+    opacity: 1;
+    transform: rotateY(0deg) translateX(0);
+  }
+
+  .tm-flip-btn-left .tm-flip-back {
+    opacity: 0;
+    transform: rotateY(-90deg) translateX(-50%);
+  }
+
+  .tm-flip-btn-left:hover .tm-flip-front,
+  .tm-flip-btn-left:focus-visible .tm-flip-front {
+    opacity: 0;
+    transform: rotateY(90deg) translateX(50%);
+  }
+
+  .tm-flip-btn-left:hover .tm-flip-back,
+  .tm-flip-btn-left:focus-visible .tm-flip-back {
+    opacity: 1;
+    transform: rotateY(0deg) translateX(0);
+  }
+
+  /* --------------------------------------------------------------------------
+     FLIP FROM RIGHT
+     rotateY axis, X translation (inverted)
+     -------------------------------------------------------------------------- */
+  .tm-flip-btn-right .tm-flip-front {
+    opacity: 1;
+    transform: rotateY(0deg) translateX(0);
+  }
+
+  .tm-flip-btn-right .tm-flip-back {
+    opacity: 0;
+    transform: rotateY(90deg) translateX(50%);
+  }
+
+  .tm-flip-btn-right:hover .tm-flip-front,
+  .tm-flip-btn-right:focus-visible .tm-flip-front {
+    opacity: 0;
+    transform: rotateY(-90deg) translateX(-50%);
+  }
+
+  .tm-flip-btn-right:hover .tm-flip-back,
+  .tm-flip-btn-right:focus-visible .tm-flip-back {
+    opacity: 1;
+    transform: rotateY(0deg) translateX(0);
+  }
+
+  /* --------------------------------------------------------------------------
+     FLIP HOVER (simple 180° flip)
+     Classic flip effect on hover
+     -------------------------------------------------------------------------- */
   .tm-flip-hover {
     perspective: 1200px;
     transform-style: preserve-3d;
@@ -6,7 +175,8 @@
     will-change: transform;
   }
 
-  .tm-flip-hover:hover {
+  .tm-flip-hover:hover,
+  .tm-flip-hover:focus-visible {
     animation-name: tm-flip;
     animation-duration: var(--tm-duration, 320ms);
     animation-delay: var(--tm-delay, 0ms);
@@ -30,3 +200,83 @@
   }
 }
 
+/* ==========================================================================
+   STANDALONE FLIP ANIMATIONS
+   Simple flip-in entrance animations
+   ========================================================================== */
+
+@layer utilities {
+  /* Flip X - horizontal flip (around X axis) */
+  .tm-flip-x {
+    animation-name: tm-flip-x;
+    animation-duration: var(--tm-duration, 600ms);
+    animation-delay: var(--tm-delay, 0ms);
+    animation-timing-function: var(--tm-easing, ease-out);
+    animation-iteration-count: var(--tm-iteration-count, 1);
+    animation-fill-mode: both;
+    will-change: transform, opacity;
+    backface-visibility: visible;
+  }
+
+  /* Flip Y - vertical flip (around Y axis) */
+  .tm-flip-y {
+    animation-name: tm-flip-y;
+    animation-duration: var(--tm-duration, 600ms);
+    animation-delay: var(--tm-delay, 0ms);
+    animation-timing-function: var(--tm-easing, ease-out);
+    animation-iteration-count: var(--tm-iteration-count, 1);
+    animation-fill-mode: both;
+    will-change: transform, opacity;
+    backface-visibility: visible;
+  }
+}
+
+@keyframes tm-flip-x {
+  0% {
+    transform: perspective(400px) rotateX(90deg);
+    opacity: 0;
+  }
+
+  40% {
+    transform: perspective(400px) rotateX(-20deg);
+    opacity: 1;
+  }
+
+  60% {
+    transform: perspective(400px) rotateX(10deg);
+  }
+
+  80% {
+    transform: perspective(400px) rotateX(-5deg);
+  }
+
+  100% {
+    transform: perspective(400px) rotateX(0deg);
+    opacity: 1;
+  }
+}
+
+@keyframes tm-flip-y {
+  0% {
+    transform: perspective(400px) rotateY(90deg);
+    opacity: 0;
+  }
+
+  40% {
+    transform: perspective(400px) rotateY(-20deg);
+    opacity: 1;
+  }
+
+  60% {
+    transform: perspective(400px) rotateY(10deg);
+  }
+
+  80% {
+    transform: perspective(400px) rotateY(-5deg);
+  }
+
+  100% {
+    transform: perspective(400px) rotateY(0deg);
+    opacity: 1;
+  }
+}

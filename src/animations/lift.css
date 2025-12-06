@@ -8,7 +8,8 @@
     will-change: transform, box-shadow;
   }
 
-  .tm-lift-hover:hover {
+  .tm-lift-hover:hover,
+  .tm-lift-hover:focus-visible {
     animation-name: tm-lift-hover;
     animation-duration: var(--tm-duration, 320ms);
     animation-delay: var(--tm-delay, 0ms);
@@ -29,5 +30,3 @@
     box-shadow: var(--tm-lift-shadow-to, 0 20px 40px rgba(15, 23, 42, 0.35));
   }
 }
-
-

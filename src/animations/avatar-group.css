@@ -1,0 +1,244 @@
+/* ==========================================================================
+   AVATAR GROUP SYSTEM
+   Overlapping avatar stack with hover lift and optional tooltips.
+   Works with TailMotion utilities: tm-duration-*, tm-delay-*, tm-ease-*
+   ========================================================================== */
+
+@layer base {
+  :root,
+  :host {
+    /* Avatar group specific defaults */
+    --tm-avatar-overlap: -0.75rem;
+    --tm-avatar-lift: -30%;
+    --tm-avatar-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+}
+
+@layer utilities {
+  /* --------------------------------------------------------------------------
+     Container: .tm-avatar-group
+     Flex container for stacked avatars
+     -------------------------------------------------------------------------- */
+  .tm-avatar-group,
+  .tm-avatar-group-invert {
+    display: flex;
+    align-items: center;
+  }
+
+  /* --------------------------------------------------------------------------
+     Avatar Item: .tm-avatar
+     Individual avatar with overlap and hover lift
+     -------------------------------------------------------------------------- */
+  .tm-avatar {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    transition-property: transform;
+    transition-duration: var(--tm-duration, 200ms);
+    transition-timing-function: var(--tm-easing, var(--tm-avatar-spring));
+    transition-delay: var(--tm-delay, 0ms);
+    will-change: transform;
+    cursor: pointer;
+  }
+
+  /* Overlap: all but first avatar gets negative margin */
+  .tm-avatar-group .tm-avatar:not(:first-child),
+  .tm-avatar-group-invert .tm-avatar:not(:first-child) {
+    margin-left: var(--tm-avatar-overlap);
+  }
+
+  /* Z-index stacking: later avatars on top (default) */
+  .tm-avatar-group .tm-avatar:nth-child(1) { z-index: 1; }
+  .tm-avatar-group .tm-avatar:nth-child(2) { z-index: 2; }
+  .tm-avatar-group .tm-avatar:nth-child(3) { z-index: 3; }
+  .tm-avatar-group .tm-avatar:nth-child(4) { z-index: 4; }
+  .tm-avatar-group .tm-avatar:nth-child(5) { z-index: 5; }
+  .tm-avatar-group .tm-avatar:nth-child(6) { z-index: 6; }
+  .tm-avatar-group .tm-avatar:nth-child(7) { z-index: 7; }
+  .tm-avatar-group .tm-avatar:nth-child(8) { z-index: 8; }
+  .tm-avatar-group .tm-avatar:nth-child(9) { z-index: 9; }
+  .tm-avatar-group .tm-avatar:nth-child(10) { z-index: 10; }
+
+  /* Inverted stacking: first avatars on top */
+  .tm-avatar-group-invert .tm-avatar:nth-child(1) { z-index: 10; }
+  .tm-avatar-group-invert .tm-avatar:nth-child(2) { z-index: 9; }
+  .tm-avatar-group-invert .tm-avatar:nth-child(3) { z-index: 8; }
+  .tm-avatar-group-invert .tm-avatar:nth-child(4) { z-index: 7; }
+  .tm-avatar-group-invert .tm-avatar:nth-child(5) { z-index: 6; }
+  .tm-avatar-group-invert .tm-avatar:nth-child(6) { z-index: 5; }
+  .tm-avatar-group-invert .tm-avatar:nth-child(7) { z-index: 4; }
+  .tm-avatar-group-invert .tm-avatar:nth-child(8) { z-index: 3; }
+  .tm-avatar-group-invert .tm-avatar:nth-child(9) { z-index: 2; }
+  .tm-avatar-group-invert .tm-avatar:nth-child(10) { z-index: 1; }
+
+  /* Hover: lift avatar up */
+  .tm-avatar:hover,
+  .tm-avatar:focus-visible {
+    transform: translateY(var(--tm-avatar-lift));
+    z-index: 50 !important;
+  }
+
+  /* --------------------------------------------------------------------------
+     Tooltip: .tm-avatar-tooltip
+     Optional tooltip that appears above avatar on hover
+     -------------------------------------------------------------------------- */
+  .tm-avatar-tooltip {
+    position: absolute;
+    bottom: calc(100% + 12px);
+    left: 50%;
+    transform: translateX(-50%) translateY(8px) scale(0.95);
+    opacity: 0;
+    visibility: hidden;
+    white-space: nowrap;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    line-height: 1;
+    color: #fff;
+    background: #18181b;
+    border-radius: 0.5rem;
+    box-shadow:
+      0 4px 6px -1px rgba(0, 0, 0, 0.1),
+      0 2px 4px -2px rgba(0, 0, 0, 0.1);
+    pointer-events: none;
+    transition-property: opacity, transform, visibility;
+    transition-duration: var(--tm-duration, 250ms);
+    transition-timing-function: var(--tm-easing, cubic-bezier(0.16, 1, 0.3, 1));
+    transition-delay: var(--tm-delay, 0ms);
+    z-index: 100;
+  }
+
+  /* Tooltip arrow */
+  .tm-avatar-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-top-color: #18181b;
+  }
+
+  /* Show tooltip on hover */
+  .tm-avatar:hover .tm-avatar-tooltip,
+  .tm-avatar:focus-visible .tm-avatar-tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
+
+  /* --------------------------------------------------------------------------
+     Tooltip Positions
+     -------------------------------------------------------------------------- */
+
+  /* Bottom tooltip */
+  .tm-avatar-tooltip-bottom {
+    bottom: auto;
+    top: calc(100% + 12px);
+    transform: translateX(-50%) translateY(-8px) scale(0.95);
+  }
+
+  .tm-avatar-tooltip-bottom::after {
+    top: auto;
+    bottom: 100%;
+    border-top-color: transparent;
+    border-bottom-color: #18181b;
+  }
+
+  .tm-avatar:hover .tm-avatar-tooltip-bottom,
+  .tm-avatar:focus-visible .tm-avatar-tooltip-bottom {
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
+
+  /* Left tooltip */
+  .tm-avatar-tooltip-left {
+    bottom: auto;
+    top: 50%;
+    left: auto;
+    right: calc(100% + 12px);
+    transform: translateY(-50%) translateX(8px) scale(0.95);
+  }
+
+  .tm-avatar-tooltip-left::after {
+    top: 50%;
+    left: 100%;
+    transform: translateY(-50%);
+    border-top-color: transparent;
+    border-left-color: #18181b;
+  }
+
+  .tm-avatar:hover .tm-avatar-tooltip-left,
+  .tm-avatar:focus-visible .tm-avatar-tooltip-left {
+    transform: translateY(-50%) translateX(0) scale(1);
+  }
+
+  /* Right tooltip */
+  .tm-avatar-tooltip-right {
+    bottom: auto;
+    top: 50%;
+    left: calc(100% + 12px);
+    transform: translateY(-50%) translateX(-8px) scale(0.95);
+  }
+
+  .tm-avatar-tooltip-right::after {
+    top: 50%;
+    left: auto;
+    right: 100%;
+    transform: translateY(-50%);
+    border-top-color: transparent;
+    border-right-color: #18181b;
+  }
+
+  .tm-avatar:hover .tm-avatar-tooltip-right,
+  .tm-avatar:focus-visible .tm-avatar-tooltip-right {
+    transform: translateY(-50%) translateX(0) scale(1);
+  }
+
+  /* --------------------------------------------------------------------------
+     Size Variants (overlap amount)
+     -------------------------------------------------------------------------- */
+  .tm-avatar-sm {
+    --tm-avatar-overlap: -0.5rem;
+  }
+
+  .tm-avatar-lg {
+    --tm-avatar-overlap: -1rem;
+  }
+
+  .tm-avatar-xl {
+    --tm-avatar-overlap: -1.25rem;
+  }
+
+  /* --------------------------------------------------------------------------
+     Lift Amount Variants
+     -------------------------------------------------------------------------- */
+  .tm-avatar-lift-sm {
+    --tm-avatar-lift: -15%;
+  }
+
+  .tm-avatar-lift-lg {
+    --tm-avatar-lift: -45%;
+  }
+
+  .tm-avatar-lift-none {
+    --tm-avatar-lift: 0;
+  }
+
+  /* --------------------------------------------------------------------------
+     Ring/Border on hover
+     -------------------------------------------------------------------------- */
+  .tm-avatar-ring {
+    box-shadow: 0 0 0 0 transparent;
+    transition-property: transform, box-shadow;
+    transition-duration: var(--tm-duration, 200ms);
+    transition-timing-function: var(--tm-easing, var(--tm-avatar-spring));
+    transition-delay: var(--tm-delay, 0ms);
+  }
+
+  .tm-avatar-ring:hover,
+  .tm-avatar-ring:focus-visible {
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+  }
+}
