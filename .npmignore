@@ -1,0 +1,45 @@
+# Development files
+demo/
+scripts/
+*.bak
+*.log
+
+# Build artifacts (will be included via files field)
+# tailmotion.css is included
+# dist/ is included
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Testing
+test/
+tests/
+__tests__/
+*.test.js
+*.test.ts
+*.spec.js
+*.spec.ts
+
+# CI/CD
+.github/
+.gitlab-ci.yml
+.travis.yml
+
+# Documentation (README.md is included)
+docs/
+*.md
+!README.md
+

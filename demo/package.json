@@ -1,0 +1,9 @@
+{
+  "name": "tailmotion-demo",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "cd .. && npm ci && npm run build && cp tailmotion.css demo/tailmotion.css && cp dist/tailmotion.js demo/tailmotion.js && echo 'Demo files ready'"
+  }
+}
+
