@@ -1,93 +1,166 @@
 // TailMotion TypeScript Definitions
 
+export interface CountSpanData {
+  char: string;
+  index: number;
+  style: { '--tm-stagger': number };
+  delay: number;
+}
+
 export interface AnimateValueOptions {
   from?: number;
   to: number;
   duration?: number;
-  easing?: (t: number) => number;
-  onUpdate: (value: number) => void;
+  easing?: 'linear' | 'easeOutExpo' | 'easeOutQuart' | 'easeOutCubic' | 'easeInOutQuad';
+  onUpdate: (value: number, progress: number) => void;
   onComplete?: () => void;
+}
+
+export interface TextRotatorFlipData {
+  word: string;
+  index: number;
+  prevWord: string | null;
+  prevIndex: number | null;
 }
 
 export interface TextRotatorOptions {
   words: string[];
   interval?: number;
-  onFlip: (data: { word: string; index: number; prevWord: string | null }) => void;
+  loop?: boolean;
+  onFlip: (data: TextRotatorFlipData) => void;
 }
 
 export interface TextRotator {
   start: () => void;
   stop: () => void;
   next: () => void;
+  prev: () => void;
+  goTo: (index: number) => void;
   destroy: () => void;
-  getCurrentWord: () => string;
-  getCurrentIndex: () => number;
+  readonly currentWord: string;
+  readonly currentIndex: number;
+  readonly isRunning: boolean;
 }
 
-export interface CountSpan {
-  char: string;
-  index: number;
-  style: { animationDelay: string };
-}
-
-export interface CSSVarsOptions {
+export interface TmModifiers {
   duration?: string | number;
   delay?: string | number;
-  easing?: string;
-  iterationCount?: string | number;
+  repeat?: string | number;
+  ease?: string;
 }
 
-export interface StaggerStyleResult {
-  animationDelay: string;
+export interface InitTextFlipOptions {
+  words: string[];
+  variant?: 'flip' | 'morph' | 'rotate' | 'chars';
+  duration?: number;
+  interval?: number;
+  loop?: boolean;
+}
+
+export interface InitCountRevealOptions {
+  stagger?: number;
 }
 
 /**
- * Animate a numeric value with easing
+ * Wraps text content into animated spans for count reveal
  */
-export function animateValue(options: AnimateValueOptions): void;
+export function createCountSpans(text: string, options?: { stagger?: number }): CountSpanData[];
 
 /**
- * Create a text rotator for cycling through words
+ * Formats a number with separators
  */
-export function createTextRotator(options: TextRotatorOptions): TextRotator;
+export function formatNumber(num: number, separator?: string): string;
 
 /**
- * Create span data array for count reveal animations
+ * Creates an easing function for count animations
  */
-export function createCountSpans(text: string, staggerMs?: number): CountSpan[];
+export function getEasing(easing?: string): (t: number) => number;
 
 /**
- * Format a number with locale-aware separators
+ * Animates a count from one value to another (framework-agnostic)
+ * @returns Cancel function
  */
-export function formatNumber(num: number, locale?: string): string;
+export function animateValue(options: AnimateValueOptions): () => void;
 
 /**
- * Generate CSS custom properties for animation configuration
+ * Text flip word rotator (framework-agnostic)
  */
-export function cssVars(options: CSSVarsOptions): Record<string, string>;
+export function createTextRotator(options: TextRotatorOptions): TextRotator | null;
 
 /**
- * Generate stagger delay style for an index
+ * Replay animation by toggling class
  */
-export function staggerStyle(index: number, baseDelayMs?: number): StaggerStyleResult;
+export function replayAnimation(element: HTMLElement, className: string): void;
 
 /**
- * Build class string for TailMotion animation
+ * CSS variable helper - generates style object for CSS custom properties
  */
-export function tm(animation: string, options?: CSSVarsOptions): string;
+export function cssVars(vars: Record<string, string | number>): Record<string, string | number>;
 
-// DOM Helpers (vanilla JS only)
-export function initTextFlipElement(
-  element: HTMLElement,
-  options: {
-    words: string[];
-    variant?: 'flip' | 'morph' | 'chars';
-    interval?: number;
+/**
+ * Generates stagger delay styles for children
+ */
+export function staggerStyle(index: number, stagger?: number): {
+  '--tm-stagger': number;
+  '--tm-delay': string;
+};
+
+/**
+ * Animation class builder - helps construct TailMotion class strings
+ */
+export function tm(animation: string, modifiers?: TmModifiers): string;
+
+/**
+ * Vanilla JS: Initialize count reveal on a DOM element
+ * Only use this for vanilla JS projects, not with React/Vue/etc.
+ */
+export function initCountRevealElement(element: HTMLElement, options?: InitCountRevealOptions): void;
+
+/**
+ * Vanilla JS: Initialize text flip on a DOM element
+ * Only use this for vanilla JS projects, not with React/Vue/etc.
+ */
+export function initTextFlipElement(element: HTMLElement, options: InitTextFlipOptions): TextRotator | null;
+
+/**
+ * Default export containing all utilities
+ */
+declare const TailMotion: {
+  createCountSpans: typeof createCountSpans;
+  formatNumber: typeof formatNumber;
+  getEasing: typeof getEasing;
+  animateValue: typeof animateValue;
+  createTextRotator: typeof createTextRotator;
+  replayAnimation: typeof replayAnimation;
+  cssVars: typeof cssVars;
+  staggerStyle: typeof staggerStyle;
+  tm: typeof tm;
+  initCountRevealElement: typeof initCountRevealElement;
+  initTextFlipElement: typeof initTextFlipElement;
+};
+
+export default TailMotion;
+
+// Plugin types
+declare module 'tailmotion/plugin' {
+  import { PluginCreator } from 'tailwindcss/types/config';
+  
+  interface TailMotionPluginOptions {
+    durations?: Record<string | number, string>;
+    delays?: Record<string | number, string>;
+    easing?: Record<string, string>;
+    repeat?: Record<string | number, string>;
   }
-): TextRotator;
+  
+  const plugin: PluginCreator & {
+    (options?: TailMotionPluginOptions): ReturnType<PluginCreator>;
+  };
+  
+  export default plugin;
+}
 
-export function initCountRevealElement(
-  element: HTMLElement,
-  options?: { stagger?: number }
-): void;
-
+// Utils module types
+declare module 'tailmotion/utils' {
+  export * from 'tailmotion';
+  export { default } from 'tailmotion';
+}

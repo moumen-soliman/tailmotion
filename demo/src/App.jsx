@@ -13,6 +13,9 @@ import {
 } from 'lucide-react';
 import { animations } from './animations';
 
+// Import utilities from tailmotion package
+import { initTextFlipElement } from 'tailmotion/utils';
+
 const badgeColors = {
   hover: 'bg-blue-900/50 text-blue-300',
   js: 'bg-amber-900/50 text-amber-300',
@@ -88,8 +91,7 @@ function Preview({ anim, baseClass, trigger, selected }) {
   // Initialize JS-driven text animations when needed
   useEffect(() => {
     const el = textRef.current;
-    const TM = typeof window !== 'undefined' ? window.TailMotion : undefined;
-    if (!el || !TM) return;
+    if (!el) return;
 
     // Clean up previous rotator to avoid duplicates
     if (rotatorRef.current && rotatorRef.current.destroy) {
@@ -101,7 +103,7 @@ function Preview({ anim, baseClass, trigger, selected }) {
       const words = selected === 'text-flip' ? ['beautiful', 'amazing', 'powerful'] : ['developers', 'designers', 'creators'];
       // Clear any existing children before initializing
       el.innerHTML = '';
-      const rotator = TM.initTextFlipElement(el, {
+      const rotator = initTextFlipElement(el, {
         words,
         variant: selected === 'text-flip' ? 'flip' : 'morph',
         interval: 2000,

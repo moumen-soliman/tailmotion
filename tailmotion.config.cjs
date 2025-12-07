@@ -126,4 +126,3 @@ module.exports = plugin.withOptions(
 
 module.exports.default = module.exports;
 
-

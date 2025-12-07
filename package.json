@@ -1,15 +1,15 @@
 {
   "name": "tailmotion",
   "version": "0.1.0",
-  "description": "Tiny motion utility pack for Tailwind CSS using pure CSS keyframes. framework-agnostic.",
-  "main": "tailmotion.config.js",
+  "description": "Tiny motion utility pack for Tailwind CSS using pure CSS keyframes. Framework-agnostic.",
+  "main": "src/index.js",
   "module": "src/index.js",
   "style": "tailmotion.css",
   "types": "types/index.d.ts",
   "type": "module",
   "files": [
     "tailmotion.css",
-    "tailmotion.config.js",
+    "tailmotion.config.cjs",
     "src",
     "dist",
     "types",
@@ -17,24 +17,28 @@
   ],
   "scripts": {
     "build": "node ./scripts/build.mjs",
-    "build:all": "npm run build && npm run build:types",
-    "build:types": "node ./scripts/build-types.mjs",
-    "demo": "npm run build && cp tailmotion.css demo/tailmotion.css && cp dist/tailmotion.js demo/tailmotion.js",
+    "dev": "npm run build && cd demo && npm install && npm run dev",
+    "demo": "cd demo && npm run dev",
     "prepublishOnly": "npm run build"
   },
   "exports": {
     ".": {
+      "types": "./types/index.d.ts",
       "import": "./src/index.js",
-      "require": "./tailmotion.config.js",
-      "default": "./tailmotion.config.js",
-      "style": "./tailmotion.css"
+      "default": "./src/index.js"
+    },
+    "./plugin": {
+      "require": "./tailmotion.config.cjs",
+      "default": "./tailmotion.config.cjs"
     },
     "./utils": {
+      "types": "./types/index.d.ts",
       "import": "./src/utils.js",
       "default": "./src/utils.js"
     },
     "./css": "./tailmotion.css",
     "./tailmotion.css": "./tailmotion.css",
+    "./dist/tailmotion.js": "./dist/tailmotion.js",
     "./animations/*": "./src/animations/*",
     "./package.json": "./package.json"
   },
@@ -70,7 +74,7 @@
     "*.css"
   ],
   "peerDependencies": {
-    "tailwindcss": ">=3.3.0"
+    "tailwindcss": ">=3.0.0"
   },
   "peerDependenciesMeta": {
     "tailwindcss": {

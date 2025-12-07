@@ -19,30 +19,64 @@ Motion utilities for Tailwind CSS. Zero runtime, tree-shakable, framework-agnost
 
 ```bash
 npm install tailmotion
+# or
+yarn add tailmotion
+# or
+pnpm add tailmotion
 ```
 
 ## Quick Start
 
-### 1. Import the CSS
+### Option 1: CSS Import (Recommended)
 
+Import the CSS file in your project:
+
+**In CSS file:**
 ```css
-/* In your global CSS */
 @import 'tailmotion/css';
 ```
 
-Or in your framework:
-
-```jsx
-// React/Next.js
+**In JavaScript/TypeScript:**
+```js
+// React, Next.js, Vue, Svelte, etc.
 import 'tailmotion/css';
-
-// Vue
-<style>
-@import 'tailmotion/css';
-</style>
 ```
 
-### 2. Use the Classes
+**In HTML:**
+```html
+<link rel="stylesheet" href="node_modules/tailmotion/tailmotion.css">
+```
+
+### Option 2: Tailwind CSS Plugin
+
+Add the plugin to your `tailwind.config.js` for extended customization:
+
+```js
+// tailwind.config.js (CommonJS)
+module.exports = {
+  content: ['./src/**/*.{js,jsx,ts,tsx,html}'],
+  plugins: [
+    require('tailmotion/plugin')
+  ]
+};
+
+// tailwind.config.ts (ESM)
+import type { Config } from 'tailwindcss';
+import tailmotion from 'tailmotion/plugin';
+
+export default {
+  content: ['./src/**/*.{js,jsx,ts,tsx,html}'],
+  plugins: [tailmotion]
+} satisfies Config;
+```
+
+Then import the CSS:
+```css
+@import 'tailwindcss';
+@import 'tailmotion/css';
+```
+
+### Use the Classes
 
 ```html
 <!-- Basic animation -->
@@ -56,6 +90,59 @@ import 'tailmotion/css';
 
 <!-- Responsive -->
 <div class="md:tm-pop lg:hover:tm-wiggle">Responsive</div>
+```
+
+## Framework Examples
+
+### React / Next.js
+
+```jsx
+// app/layout.jsx or _app.jsx
+import 'tailmotion/css';
+
+export default function Button() {
+  return (
+    <button className="hover:tm-bounce tm-duration-300">
+      Click me
+    </button>
+  );
+}
+```
+
+### Vue
+
+```vue
+<script setup>
+import 'tailmotion/css';
+</script>
+
+<template>
+  <button class="hover:tm-shake">Click me</button>
+</template>
+```
+
+### Svelte
+
+```svelte
+<script>
+  import 'tailmotion/css';
+</script>
+
+<button class="hover:tm-wiggle">Click me</button>
+```
+
+### Vanilla HTML
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="node_modules/tailmotion/tailmotion.css">
+</head>
+<body>
+  <div class="tm-fade-in">Hello World</div>
+</body>
+</html>
 ```
 
 ## All Animations
@@ -121,6 +208,14 @@ import 'tailmotion/css';
 | `tm-lift-hover` | Lift with shadow on hover |
 | `tm-shimmer-hover` | Sheen sweep on hover |
 | `tm-liquid-btn` | Liquid fill button |
+| `tm-liquid-btn-top` | Liquid fill from top |
+| `tm-liquid-btn-left` | Liquid fill from left |
+| `tm-liquid-btn-right` | Liquid fill from right |
+| `tm-liquid-btn-center` | Liquid fill from center |
+| `tm-liquid-wave` | Wave fill effect |
+| `tm-liquid-underline` | Underline fill effect |
+| `tm-rotate-hover` | Rotate on hover |
+| `tm-flip-hover` | 3D flip on hover |
 
 ### Number/Count Animations
 | Class | Description |
@@ -132,13 +227,17 @@ import 'tailmotion/css';
 ### Text Animations
 | Class | Description |
 |-------|-------------|
-| `tm-text-flip` | Container for text flip |
-| `tm-text-flip-word` | Word with 3D flip + blur |
+| `tm-text-flip` | Container for text flip (requires JS) |
+| `tm-text-morph` | Container for text morph (requires JS) |
 | `tm-text-rotate` | Container for text rotate |
-| `tm-text-rotate-word` | Word with vertical blur |
-| `tm-text-morph` | Container for text morph |
-| `tm-text-morph-word` | Word with blur morph |
-| `tm-text-flip-chars` | Character-by-character flip |
+
+### Component Animations
+| Class | Description |
+|-------|-------------|
+| `tm-avatar-group` | Animated avatar stack |
+| `tm-avatar` | Individual avatar in group |
+| `tm-avatar-ring` | Avatar with ring effect |
+| `tm-avatar-tooltip` | Tooltip for avatar |
 
 ## Variants
 
@@ -231,28 +330,40 @@ For slot-machine style number reveal:
 </div>
 ```
 
-## Text Flip
+## Text Flip (Requires JavaScript)
 
 For rotating text with blur effect:
 
 ```html
-<span class="tm-text-flip">
-  <span class="tm-text-flip-word">Hello</span>
-</span>
+<span id="text-container" class="tm-text-flip"></span>
 ```
-
-Use JavaScript utilities for dynamic word rotation:
 
 ```js
-import { createTextRotator } from 'tailmotion/utils';
+import { initTextFlipElement } from 'tailmotion/utils';
 
-const rotator = createTextRotator({
-  words: ['Hello', 'World'],
-  interval: 2000,
-  onFlip: ({ word }) => setWord(word)
+initTextFlipElement(document.getElementById('text-container'), {
+  words: ['beautiful', 'amazing', 'powerful'],
+  variant: 'flip', // 'flip', 'morph', 'rotate', 'chars'
+  interval: 2500
 });
-rotator.start();
 ```
+
+## Liquid Button
+
+Interactive button with liquid fill effect:
+
+```html
+<button 
+  class="tm-liquid-btn px-6 py-3 border rounded-lg text-gray-300 hover:text-black"
+  style="--tm-liquid-color: white;"
+>
+  Hover me
+</button>
+```
+
+CSS Variables:
+- `--tm-liquid-color`: Fill color (default: currentColor)
+- `--tm-liquid-speed`: Animation speed (default: 0.4s)
 
 ## Custom Timing
 
@@ -280,7 +391,11 @@ import {
   animateValue, 
   createTextRotator, 
   formatNumber,
-  createCountSpans 
+  createCountSpans,
+  replayAnimation,
+  cssVars,
+  staggerStyle,
+  tm
 } from 'tailmotion/utils';
 
 // Animate a count
@@ -293,24 +408,60 @@ animateValue({
   }
 });
 
-// Create span data for count reveal
+// Create span data for count reveal (React/Vue friendly)
 const spans = createCountSpans('12,345');
-// Returns: [{ char: '1', style: {...} }, ...]
+// Returns: [{ char: '1', style: { '--tm-stagger': 0 }, delay: 0 }, ...]
+
+// Replay an animation
+replayAnimation(element, 'tm-bounce');
+
+// Generate CSS variables
+const style = cssVars({ duration: '500ms', delay: '100ms' });
+// Returns: { '--tm-duration': '500ms', '--tm-delay': '100ms' }
+
+// Build animation class
+const className = tm('bounce', { duration: 500, delay: 200 });
+// Returns: 'tm-bounce tm-duration-500 tm-delay-200'
 ```
 
-## Tailwind Plugin
+## Tailwind Plugin Configuration
 
-For extended customization, use the Tailwind plugin:
+Extend or customize tokens via the plugin:
 
 ```js
 // tailwind.config.js
 module.exports = {
   plugins: [
-    require('tailmotion')({
-      durations: { 750: '750ms' },
-      easing: { springy: 'cubic-bezier(0.22, 1, 0.36, 1)' }
+    require('tailmotion/plugin')({
+      durations: { 
+        750: '750ms',
+        1500: '1500ms' 
+      },
+      easing: { 
+        springy: 'cubic-bezier(0.22, 1, 0.36, 1)' 
+      },
+      delays: {
+        600: '600ms'
+      }
     })
   ]
+};
+```
+
+Or via theme:
+
+```js
+// tailwind.config.js
+module.exports = {
+  theme: {
+    extend: {
+      tailmotion: {
+        durations: { 750: '750ms' },
+        easing: { springy: 'cubic-bezier(0.22, 1, 0.36, 1)' }
+      }
+    }
+  },
+  plugins: [require('tailmotion/plugin')]
 };
 ```
 
