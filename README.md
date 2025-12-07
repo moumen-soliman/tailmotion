@@ -14,6 +14,7 @@ Motion utilities for Tailwind CSS. Zero runtime, tree-shakable, framework-agnost
 - **Tree-shakable** - Import only what you use
 - **Framework-agnostic** - Works with React, Vue, Svelte, vanilla HTML
 - **Accessible** - Respects `prefers-reduced-motion`
+- **Tailwind optional** - Full CSS works standalone without Tailwind
 
 ## Installation
 
@@ -35,6 +36,8 @@ Import the CSS file in your project:
 ```css
 @import 'tailmotion/css';
 ```
+
+- This path requires **no Tailwind setup**. The shipped CSS already includes the variant-style selectors (e.g., `hover:tm-bounce`, `sm:tm-pop`) so you can use them directly in any framework or plain HTML.
 
 **In JavaScript/TypeScript:**
 ```js

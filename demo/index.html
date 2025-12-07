@@ -3,7 +3,24 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TailMotion Demo</title>
+    <title>TailMotion - Motions built with CSS</title>
+    <meta
+      name="description"
+      content="TailMotion gives you ready-made motion utilities. Drop a class, get smooth animation fully compatible with Tailwind variants."
+    />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="apple-touch-icon" href="/favicon.ico" />
+    <meta property="og:image" content="/og.png" />
+    <meta
+      property="og:description"
+      content="TailMotion gives you ready-made motion utilities. Drop a class, get smooth animation fully compatible with Tailwind variants."
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="/og.png" />
+    <meta
+      name="twitter:description"
+      content="TailMotion gives you ready-made motion utilities. Drop a class, get smooth animation fully compatible with Tailwind variants."
+    />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -24,6 +41,38 @@
         },
       };
     </script>
+    <style>
+      .logo-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 6px;
+        border-radius: 0.375rem;
+        background: linear-gradient(120deg, #94b9ff, #cdffd8, #94b9ff);
+        background-size: 220% 220%;
+        animation: logoGradientMove 8s ease infinite;
+        box-shadow: 0 12px 30px rgba(148, 185, 255, 0.25);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+      }
+
+      .logo-badge img {
+        width: 100px;
+        height: 30px;
+        display: block;
+      }
+
+      @keyframes logoGradientMove {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+    </style>
   </head>
   <body class="bg-zinc-950 text-zinc-400 font-sans antialiased min-h-screen">
     <div id="root"></div>

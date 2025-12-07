@@ -507,7 +507,18 @@ function Installation() {
             <div className="h-6 w-6 rounded bg-zinc-800 flex items-center justify-center">
               <Code className="w-3 h-3 text-zinc-400" />
             </div>
-            <span className="text-sm text-white font-medium">3. Use Classes</span>
+            <span className="text-sm text-white font-medium">3. Tailwind config</span>
+          </div>
+          <pre className="text-sm font-mono bg-zinc-900/50 rounded-lg p-4 text-zinc-300 overflow-x-auto">
+            <code>{`// tailwind.config.js\nmodule.exports = {\n  content: ['./src/**/*.{js,jsx,ts,tsx,html}'],\n};\n\n/* src/index.css (after Tailwind imports) */\n@import 'tailmotion/css';`}</code>
+          </pre>
+        </div>
+        <div className="card rounded-xl p-6 md:col-span-2 bg-zinc-900/50 border border-zinc-800/50">
+          <div className="flex items-center gap-2 mb-4">
+            <div className="h-6 w-6 rounded bg-zinc-800 flex items-center justify-center">
+              <Code className="w-3 h-3 text-zinc-400" />
+            </div>
+            <span className="text-sm text-white font-medium">4. Use classes</span>
           </div>
           <pre className="text-sm font-mono bg-zinc-900/50 rounded-lg p-4 text-zinc-400 overflow-x-auto">
             <code>
@@ -541,7 +552,6 @@ function FrameworkUsage() {
       <div className="grid md:grid-cols-3 gap-4">
         <div className="card rounded-xl p-6 bg-zinc-900/50 border border-zinc-800/50">
           <div className="flex items-center gap-2 mb-4">
-            <Github className="w-5 h-5 text-zinc-400" />
             <span className="text-sm text-white font-medium">React</span>
           </div>
           <pre className="text-[11px] font-mono bg-zinc-900/50 rounded-lg p-3 text-zinc-400 overflow-x-auto">
@@ -606,8 +616,9 @@ export default function App() {
       <header className="border-b border-zinc-800/50 sticky top-0 z-50 backdrop-blur-xl bg-zinc-950/80">
         <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="flex h-7 w-7 items-center justify-center rounded-md bg-white text-zinc-950 text-xs font-semibold">TM</div>
-            <span className="font-medium text-white text-sm">TailMotion</span>
+            <div className="logo-badge">
+              <img src="/logo.svg" alt="TailMotion logo" />
+            </div>
           </div>
           <div className="flex items-center gap-2">
             <a
@@ -633,14 +644,12 @@ export default function App() {
         {/* Hero */}
         <section className="text-center mb-16">
           <h1 className="text-4xl md:text-5xl font-semibold text-white tracking-tight mb-4">
-            Motion utilities for
-            <br />
-            Tailwind CSS
+          Motions built with CSS
           </h1>
           <p className="text-zinc-500 text-lg max-w-xl mx-auto mb-8">
-            Zero runtime. Tree-shakable. Framework-agnostic.
+            It&apos;s motions built with CSS. Drop a class. 
             <br />
-            Pure CSS keyframes that just work.
+            Working also with Tailwind CSS.
           </p>
           <div className="flex items-center justify-center gap-3">
             <a
@@ -660,24 +669,6 @@ export default function App() {
           </div>
         </section>
 
-        {/* Stats */}
-        <section className="grid md:grid-cols-3 gap-3 mb-12">
-          <div className="card rounded-xl p-4 bg-zinc-900/50 border border-zinc-800/50">
-            <div className="text-xs text-zinc-500">Animations</div>
-            <div className="text-2xl font-semibold text-white">30+</div>
-            <div className="text-[11px] text-zinc-600">Loop, entrance, hover, text, celebrate</div>
-          </div>
-          <div className="card rounded-xl p-4 bg-zinc-900/50 border border-zinc-800/50">
-            <div className="text-xs text-zinc-500">Tailwind Variants</div>
-            <div className="text-2xl font-semibold text-white">All</div>
-            <div className="text-[11px] text-zinc-600">hover, focus, active, responsive, motion-safe</div>
-          </div>
-          <div className="card rounded-xl p-4 bg-zinc-900/50 border border-zinc-800/50">
-            <div className="text-xs text-zinc-500">Tree-shakable</div>
-            <div className="text-2xl font-semibold text-white">Yes</div>
-            <div className="text-[11px] text-zinc-600">Import only what you use</div>
-          </div>
-        </section>
 
         {/* Playground */}
         <section className="mb-20">
@@ -772,7 +763,7 @@ export default function App() {
 
               {/* Code tabs */}
               <div className="flex items-center gap-1 mb-2">
-                {['usage', 'css', 'tailwind'].map((tab) => (
+                {['usage'].map((tab) => (
                   <button
                     key={tab}
                     onClick={() => setCodeTab(tab)}

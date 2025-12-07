@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "description": "TailMotion gives you ready-made motion utilities. Drop a class, get smooth animation fully compatible with Tailwind variants.",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
