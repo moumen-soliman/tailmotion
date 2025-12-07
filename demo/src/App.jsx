@@ -65,28 +65,9 @@ function tailwindCode() {
   return `// tailwind.config.js\nmodule.exports = {\n  content: ['./src/**/*.{js,jsx,ts,tsx,html}'],\n  plugins: [],\n}\n\n// In your CSS\n@import 'tailwindcss';\n@import 'tailmotion/css';`;
 }
 
-function Preview({ anim, baseClass, trigger, selected }) {
+function Preview({ anim, baseClass, displayClassName, trigger, selected }) {
   const textRef = useRef(null);
   const rotatorRef = useRef(null);
-  const boxRef = useRef(null);
-  const prevClassRef = useRef(null);
-
-  // Handle animation class application based on trigger
-  useEffect(() => {
-    const el = boxRef.current;
-    if (!el) return;
-
-    // Remove any previously applied animation class
-    if (prevClassRef.current) {
-      el.classList.remove(prevClassRef.current);
-    }
-    prevClassRef.current = baseClass;
-
-    // For 'load' trigger, add the class immediately
-    if (trigger === 'load') {
-      el.classList.add(baseClass);
-    }
-  }, [selected, trigger, baseClass]);
 
   // Initialize JS-driven text animations when needed
   useEffect(() => {
@@ -121,7 +102,7 @@ function Preview({ anim, baseClass, trigger, selected }) {
 
   // Hover-only demos - use actual class names with CSS variables (not hover: prefix)
   if (anim?.badge === 'hover') {
-    const liquidStyle = { '--tm-liquid-color': 'white' };
+    const liquidStyle = { '--tm-liquid-color': 'white', '--tm-liquid-bg': '#0b0b0f' };
 
     // Specific hover previews matching static demo
     if (selected === 'liquid-btn') {
@@ -278,38 +259,17 @@ function Preview({ anim, baseClass, trigger, selected }) {
   }
 
   // Standard animations - use refs and direct DOM manipulation like vanilla demo
-  const classNames = ['h-16 w-16 rounded-xl bg-white flex items-center justify-center transition-all'];
-  
-  if (trigger === 'click') {
+  const classNames = ['h-16 w-16 rounded-xl bg-white flex items-center justify-center transition-all', displayClassName];
+
+  if (trigger === 'hover') {
     classNames.push('cursor-pointer');
-  }
-  // For 'load' trigger, always apply the class
-  if (trigger === 'load') {
-    classNames.push(baseClass);
+  } else if (trigger === 'click') {
+    classNames.push('cursor-pointer', 'select-none');
   }
 
   return (
     <div
-      ref={boxRef}
       className={classNames.join(' ')}
-      onMouseEnter={() => {
-        if (trigger === 'hover' && boxRef.current) {
-          boxRef.current.classList.add(baseClass);
-        }
-      }}
-      onMouseLeave={() => {
-        if (trigger === 'hover' && boxRef.current) {
-          boxRef.current.classList.remove(baseClass);
-        }
-      }}
-      onClick={() => {
-        if (trigger === 'click' && boxRef.current) {
-          const el = boxRef.current;
-          el.classList.remove(baseClass);
-          void el.offsetWidth; // Force reflow
-          el.classList.add(baseClass);
-        }
-      }}
     >
       <Sparkles className="w-6 h-6 text-zinc-950" />
     </div>
@@ -318,7 +278,7 @@ function Preview({ anim, baseClass, trigger, selected }) {
 
 // Quick example cards (static)
 function QuickExamples() {
-  const liquidStyle = { '--tm-liquid-color': 'white', '--tm-liquid-background-color': '#09090b' };
+  const hoverLiquidStyle = { '--tm-liquid-color': 'white', '--tm-liquid-bg': '#09090b' };
 
   return (
     <section className="mb-20">
@@ -332,15 +292,15 @@ function QuickExamples() {
               <button
                 key={idx}
                 className={`tm-liquid-btn ${cls} rounded-lg border border-zinc-600 px-4 py-2 text-zinc-200 text-xs hover:text-zinc-950`}
-                style={liquidStyle}
+                style={hoverLiquidStyle}
               >
                 {cls.includes('top') ? 'Top' : cls.includes('left') ? 'Left' : cls.includes('right') ? 'Right' : cls.includes('center') ? 'Center' : 'Bottom'}
               </button>
             ))}
-            <button className="tm-liquid-wave rounded-lg border border-zinc-600 px-4 py-2 text-zinc-200 text-xs hover:text-zinc-950" style={liquidStyle}>
+            <button className="tm-liquid-wave rounded-lg border border-zinc-600 px-4 py-2 text-zinc-200 text-xs hover:text-zinc-950" style={hoverLiquidStyle}>
               Wave
             </button>
-            <button className="tm-liquid-underline rounded-lg border border-zinc-600 px-4 py-2 text-zinc-200 text-xs hover:text-zinc-950" style={liquidStyle}>
+            <button className="tm-liquid-underline rounded-lg border border-zinc-600 px-4 py-2 text-zinc-200 text-xs hover:text-zinc-950" style={hoverLiquidStyle}>
               Underline
             </button>
           </div>
@@ -725,7 +685,13 @@ export default function App() {
                 </button>
               </div>
             <div className="flex-1 flex items-center justify-center bg-zinc-900/50 rounded-lg border border-zinc-800/50" id="preview-area">
-                <Preview anim={anim} baseClass={baseClass} trigger={trigger} selected={selected} />
+                <Preview
+                  anim={anim}
+                  baseClass={baseClass}
+                  displayClassName={displayClassName}
+                  trigger={trigger}
+                  selected={selected}
+                />
               </div>
               <div className="mt-4 flex items-center gap-2">
                 <span className="text-xs text-zinc-600">Trigger:</span>
