@@ -1,6 +1,6 @@
 {
   "name": "tailmotion",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Tiny motion utility pack for Tailwind CSS using pure CSS keyframes. Framework-agnostic.",
   "main": "src/index.js",
   "module": "src/index.js",
@@ -19,7 +19,10 @@
     "build": "node ./scripts/build.mjs",
     "dev": "npm run build && cd demo && npm install && npm run dev",
     "demo": "cd demo && npm run dev",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "release:patch": "npm version patch && npm publish --access public",
+    "release:minor": "npm version minor && npm publish --access public",
+    "release:major": "npm version major && npm publish --access public"
   },
   "exports": {
     ".": {
