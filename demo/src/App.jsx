@@ -608,7 +608,6 @@ export default function App() {
           <div className="flex items-center gap-3">
             <div className="flex h-7 w-7 items-center justify-center rounded-md bg-white text-zinc-950 text-xs font-semibold">TM</div>
             <span className="font-medium text-white text-sm">TailMotion</span>
-            <span className="text-[10px] px-1.5 py-0.5 rounded bg-zinc-800 text-zinc-500">React</span>
           </div>
           <div className="flex items-center gap-2">
             <a
