@@ -1,15 +1,15 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import {
+  Code,
   Copy,
-  RotateCcw,
-  Sparkles,
+  FileCode,
+  Folder,
   Github,
   Leaf,
-  Terminal,
-  FileCode,
-  Code,
-  Folder,
+  RotateCcw,
+  Sparkles,
   Star,
+  Terminal,
 } from 'lucide-react';
 import { animations } from './animations';
 
@@ -31,6 +31,13 @@ const badgeLabels = {
 const variants = ['hover', 'focus', 'active', 'group-hover', 'sm', 'md', 'lg', 'xl', '2xl', 'motion-safe', 'dark', 'md:hover'];
 
 const baseClassName = (selected) => `tm-${selected}`;
+
+const groupAnimations = () =>
+  animations.reduce((groups, anim) => {
+    if (!groups[anim.category]) groups[anim.category] = [];
+    groups[anim.category].push(anim);
+    return groups;
+  }, {});
 
 function usageCode(anim, className, selectedAnimation) {
   if (anim?.badge === 'hover') {
@@ -276,6 +283,236 @@ function Preview({ anim, baseClass, displayClassName, trigger, selected }) {
   );
 }
 
+function HeaderBar() {
+  return (
+    <header className="border-b border-zinc-800/50 sticky top-0 z-50 backdrop-blur-xl bg-zinc-950/80">
+      <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="logo-badge">
+            <img src="/logo.svg" alt="TailMotion logo" />
+          </div>
+        </div>
+        <div className="flex items-center gap-2">
+          <a
+            href="https://github.com/moumen-soliman/tailmotion"
+            target="_blank"
+            rel="noreferrer"
+            className="p-2 rounded-lg hover:bg-zinc-800 text-zinc-400 hover:text-white transition-colors"
+          >
+            <Github className="w-4 h-4" />
+          </a>
+          <button
+            onClick={() => navigator.clipboard.writeText('npm install tailmotion')}
+            className="copy-btn flex items-center gap-2 px-3 py-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs font-mono transition-colors"
+          >
+            <span>npm i tailmotion</span>
+            <Copy className="w-3 h-3" />
+          </button>
+        </div>
+      </div>
+    </header>
+  );
+}
+
+function HeroSection() {
+  return (
+    <section className="text-center mb-16">
+      <h1 className="text-4xl md:text-5xl font-semibold text-white tracking-tight mb-4">Motions built with CSS</h1>
+      <p className="text-zinc-500 text-lg max-w-xl mx-auto mb-8">
+        It&apos;s motions built with CSS. Drop a class.
+        <br />
+        Working also with Tailwind CSS.
+      </p>
+      <div className="flex items-center justify-center gap-3">
+        <a
+          href="https://github.com/moumen-soliman/tailmotion"
+          target="_blank"
+          rel="noreferrer"
+          className="px-4 py-2 rounded-lg bg-white text-zinc-950 text-sm font-medium"
+        >
+          View on GitHub
+        </a>
+        <button
+          onClick={() => navigator.clipboard.writeText('@import "tailmotion/css";')}
+          className="px-4 py-2 rounded-lg border border-zinc-700 text-sm text-zinc-300 hover:bg-zinc-800"
+        >
+          Copy Import
+        </button>
+      </div>
+    </section>
+  );
+}
+
+function AnimationSelector({ categories, selected, onSelect }) {
+  const selectedCount = selected ? 1 : 0;
+  const selectionLabel = selected ? `tm-${selected}` : 'None selected';
+
+  return (
+    <div className="card rounded-xl p-4 h-[500px] overflow-hidden flex flex-col bg-zinc-900/50 border border-zinc-800/50">
+      <div className="flex items-center justify-between mb-3">
+        <span className="text-xs font-medium text-zinc-500 uppercase tracking-wider">Animations</span>
+        <span id="selected-count" className="text-[10px] px-1.5 py-0.5 rounded bg-zinc-800 text-zinc-500">
+          {selectedCount ? `${selectedCount} selected` : 'No selection'}
+        </span>
+      </div>
+      <div className="text-[10px] text-zinc-600 mb-2 px-2 truncate">{selectionLabel}</div>
+      <div className="flex-1 overflow-y-auto space-y-1 -mr-2 pr-2" id="animation-list">
+        {Object.entries(categories).map(([cat, items]) => (
+          <div key={cat} className="mb-3">
+            <div className="text-[10px] text-zinc-600 uppercase tracking-wider mb-1 px-2">{cat}</div>
+            {items.map((a) => (
+              <button
+                key={a.name}
+                className={`animation-item flex items-center gap-2 w-full text-left px-2 py-1.5 rounded ${
+                  selected === a.name ? 'bg-zinc-800 border border-zinc-700 text-white' : 'hover:bg-zinc-900'
+                }`}
+                onClick={() => onSelect(a.name)}
+              >
+                <div
+                  className={`w-3 h-3 rounded-full border flex-shrink-0 ${
+                    selected === a.name ? 'bg-white border-white' : 'border-zinc-600'
+                  }`}
+                >
+                  {selected === a.name ? <div className="w-1.5 h-1.5 rounded-full bg-zinc-950 m-[2px]" /> : null}
+                </div>
+                <span className={`text-xs flex-1 truncate ${selected === a.name ? 'text-white' : 'text-zinc-400'}`}>tm-{a.name}</span>
+                {a.badge && <span className={`text-[9px] px-1 py-0.5 rounded ${badgeColors[a.badge]}`}>{badgeLabels[a.badge]}</span>}
+              </button>
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function TriggerButtons({ trigger, setTrigger }) {
+  return (
+    <div className="mt-4 flex items-center gap-2">
+      <span className="text-xs text-zinc-600">Trigger:</span>
+      {['load', 'hover', 'click'].map((t) => (
+        <button
+          key={t}
+          onClick={() => setTrigger(t)}
+          className={`text-xs px-2 py-1 rounded ${trigger === t ? 'bg-zinc-800 text-white' : 'bg-zinc-900 text-zinc-500 hover:text-white'}`}
+          data-trigger={t}
+        >
+          {t === 'load' ? 'On Load' : t === 'hover' ? 'On Hover' : 'On Click'}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+function PreviewPanel({ anim, baseClass, displayClassName, trigger, setTrigger, selected }) {
+  return (
+    <div className="card rounded-xl p-6 h-[500px] flex flex-col bg-zinc-900/50 border border-zinc-800/50">
+      <div className="flex items-center justify-between mb-4">
+        <span className="text-xs font-medium text-zinc-500 uppercase tracking-wider">Preview</span>
+        <button
+          onClick={() => {
+            setTrigger((t) => (t === 'load' ? 'hover' : 'load'));
+            setTimeout(() => setTrigger((t) => (t === 'load' ? 'hover' : 'load')), 10);
+          }}
+          className="p-1.5 rounded-lg hover:bg-zinc-800 text-zinc-500 hover:text-white transition-colors"
+        >
+          <RotateCcw className="w-4 h-4" />
+        </button>
+      </div>
+      <div className="flex-1 flex items-center justify-center bg-zinc-900/50 rounded-lg border border-zinc-800/50" id="preview-area">
+        <Preview anim={anim} baseClass={baseClass} displayClassName={displayClassName} trigger={trigger} selected={selected} />
+      </div>
+      <TriggerButtons trigger={trigger} setTrigger={setTrigger} />
+    </div>
+  );
+}
+
+function CodePanel({ displayClassName, code, codeTab, setCodeTab, bundleSize }) {
+  return (
+    <div className="card rounded-xl p-4 h-[500px] flex flex-col bg-zinc-900/50 border border-zinc-800/50">
+      <div className="mb-3">
+        <div className="text-[10px] text-zinc-600 uppercase tracking-wider mb-1.5">Class</div>
+        <div className="flex items-center gap-2">
+          <code id="class-name" className="flex-1 text-sm font-mono text-white bg-zinc-800 rounded-lg px-3 py-2 truncate">
+            {displayClassName}
+          </code>
+          <button
+            onClick={() => navigator.clipboard.writeText(displayClassName)}
+            className="copy-btn p-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-400 hover:text-white transition-colors"
+            title="Copy class name"
+          >
+            <Copy className="w-4 h-4" />
+          </button>
+        </div>
+      </div>
+
+      <div className="flex items-center gap-1 mb-2">
+        {['usage', 'css', 'tailwind'].map((tab) => (
+          <button
+            key={tab}
+            onClick={() => setCodeTab(tab)}
+            className={`code-tab text-[10px] px-2 py-1 rounded ${
+              codeTab === tab ? 'bg-zinc-800 text-white' : 'bg-zinc-900 text-zinc-500 hover:text-white'
+            }`}
+            data-tab={tab}
+          >
+            {tab === 'usage' ? 'Usage' : tab === 'css' ? 'CSS' : 'Tailwind'}
+          </button>
+        ))}
+        <div className="flex-1"></div>
+        <button
+          onClick={() => navigator.clipboard.writeText(code)}
+          className="copy-btn p-1 rounded hover:bg-zinc-800 text-zinc-500 hover:text-white transition-colors"
+          title="Copy code"
+        >
+          <Copy className="w-3.5 h-3.5" />
+        </button>
+      </div>
+
+      <div className="flex-1 overflow-auto bg-zinc-900/50 rounded-lg border border-zinc-800/50 p-3">
+        <pre id="code-output" className="text-xs font-mono text-zinc-400 whitespace-pre-wrap">
+          {code}
+        </pre>
+      </div>
+
+      <div className="mt-3 p-3 rounded-lg bg-emerald-950/30 border border-emerald-900/30">
+        <div className="flex items-center gap-2 text-emerald-400 text-xs">
+          <Leaf className="w-3 h-3" />
+          <span>Tree-shakable</span>
+        </div>
+        <div id="bundle-size" className="text-[10px] text-emerald-600 mt-1">
+          {bundleSize}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Playground({
+  categories,
+  anim,
+  baseClass,
+  displayClassName,
+  trigger,
+  setTrigger,
+  selected,
+  onSelect,
+  code,
+  codeTab,
+  setCodeTab,
+  bundleSize,
+}) {
+  return (
+    <section className="mb-20">
+      <div className="grid lg:grid-cols-[280px_1fr_320px] gap-4">
+        <AnimationSelector categories={categories} selected={selected} onSelect={onSelect} />
+        <PreviewPanel anim={anim} baseClass={baseClass} displayClassName={displayClassName} trigger={trigger} setTrigger={setTrigger} selected={selected} />
+        <CodePanel displayClassName={displayClassName} code={code} codeTab={codeTab} setCodeTab={setCodeTab} bundleSize={bundleSize} />
+      </div>
+    </section>
+  );
+}
+
 // Quick example cards (static)
 function QuickExamples() {
   const hoverLiquidStyle = { '--tm-liquid-color': 'white', '--tm-liquid-bg': '#09090b' };
@@ -368,7 +605,18 @@ function QuickExamples() {
             </div>
           </div>
           <pre className="text-[10px] font-mono text-zinc-500 bg-zinc-900/50 rounded-lg p-2 overflow-x-auto">
-            <code>{'<div class="tm-avatar-group"><div class="tm-avatar">A</div>...</div>'}</code>
+            <code>{`<div class="tm-avatar-group">
+  <div class="tm-avatar tm-avatar-ring">
+    <span class="tm-avatar-tooltip">Alice</span>A
+  </div>
+  <div class="tm-avatar tm-avatar-ring">
+    <span class="tm-avatar-tooltip">Bob</span>B
+  </div>
+  <div class="tm-avatar tm-avatar-ring">
+    <span class="tm-avatar-tooltip">Carol</span>C
+  </div>
+  <div class="tm-avatar tm-avatar-ring">+5</div>
+</div>`}</code>
           </pre>
         </div>
 
@@ -560,230 +808,36 @@ export default function App() {
     return usageCode(anim, displayClassName, selected);
   }, [codeTab, anim, displayClassName, selected]);
 
-  const categories = useMemo(() => {
-    const grouped = {};
-    animations.forEach((a) => {
-      if (!grouped[a.category]) grouped[a.category] = [];
-      grouped[a.category].push(a);
-    });
-    return grouped;
-  }, []);
+  const categories = useMemo(() => groupAnimations(), []);
 
   const bundleSize = anim ? `~${anim.size.toFixed(1)}KB for selected` : '~0.2KB for selected';
 
   return (
     <div className="min-h-screen bg-zinc-950 text-zinc-400">
-      <header className="border-b border-zinc-800/50 sticky top-0 z-50 backdrop-blur-xl bg-zinc-950/80">
-        <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="logo-badge">
-              <img src="/logo.svg" alt="TailMotion logo" />
-            </div>
-          </div>
-          <div className="flex items-center gap-2">
-            <a
-              href="https://github.com/moumen-soliman/tailmotion"
-              target="_blank"
-              rel="noreferrer"
-              className="p-2 rounded-lg hover:bg-zinc-800 text-zinc-400 hover:text-white transition-colors"
-            >
-              <Github className="w-4 h-4" />
-            </a>
-            <button
-              onClick={() => navigator.clipboard.writeText('npm install tailmotion')}
-              className="copy-btn flex items-center gap-2 px-3 py-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs font-mono transition-colors"
-            >
-              <span>npm i tailmotion</span>
-              <Copy className="w-3 h-3" />
-            </button>
-          </div>
-        </div>
-      </header>
+      <HeaderBar />
 
       <main className="max-w-6xl mx-auto px-4 py-12">
-        {/* Hero */}
-        <section className="text-center mb-16">
-          <h1 className="text-4xl md:text-5xl font-semibold text-white tracking-tight mb-4">
-          Motions built with CSS
-          </h1>
-          <p className="text-zinc-500 text-lg max-w-xl mx-auto mb-8">
-            It&apos;s motions built with CSS. Drop a class. 
-            <br />
-            Working also with Tailwind CSS.
-          </p>
-          <div className="flex items-center justify-center gap-3">
-            <a
-              href="https://github.com/moumen-soliman/tailmotion"
-              target="_blank"
-              rel="noreferrer"
-              className="px-4 py-2 rounded-lg bg-white text-zinc-950 text-sm font-medium"
-            >
-              View on GitHub
-            </a>
-            <button
-              onClick={() => navigator.clipboard.writeText('@import "tailmotion/css";')}
-              className="px-4 py-2 rounded-lg border border-zinc-700 text-sm text-zinc-300 hover:bg-zinc-800"
-            >
-              Copy Import
-            </button>
-          </div>
-        </section>
-
-
-        {/* Playground */}
-        <section className="mb-20">
-          <div className="grid lg:grid-cols-[280px_1fr_320px] gap-4">
-            {/* Animation Selector */}
-            <div className="card rounded-xl p-4 h-[500px] overflow-hidden flex flex-col bg-zinc-900/50 border border-zinc-800/50">
-              <div className="flex items-center justify-between mb-3">
-                <span className="text-xs font-medium text-zinc-500 uppercase tracking-wider">Animations</span>
-                <span id="selected-count" className="text-[10px] px-1.5 py-0.5 rounded bg-zinc-800 text-zinc-500">
-                  1 selected
-                </span>
-              </div>
-              <div className="flex-1 overflow-y-auto space-y-1 -mr-2 pr-2" id="animation-list">
-                {Object.entries(categories).map(([cat, items]) => (
-                  <div key={cat} className="mb-3">
-                    <div className="text-[10px] text-zinc-600 uppercase tracking-wider mb-1 px-2">{cat}</div>
-                    {items.map((a) => (
-                      <div
-                        key={a.name}
-                        className={`animation-item flex items-center gap-2 px-2 py-1.5 rounded cursor-pointer ${
-                          selected === a.name ? 'bg-zinc-800 border border-zinc-700 text-white' : 'hover:bg-zinc-900'
-                        }`}
-                        onClick={() => setSelected(a.name)}
-                      >
-                        <div
-                          className={`w-3 h-3 rounded-full border flex-shrink-0 ${
-                            selected === a.name ? 'bg-white border-white' : 'border-zinc-600'
-                          }`}
-                        >
-                          {selected === a.name ? <div className="w-1.5 h-1.5 rounded-full bg-zinc-950 m-[2px]" /> : null}
-                        </div>
-                        <span className={`text-xs flex-1 truncate ${selected === a.name ? 'text-white' : 'text-zinc-400'}`}>tm-{a.name}</span>
-                        {a.badge && <span className={`text-[9px] px-1 py-0.5 rounded ${badgeColors[a.badge]}`}>{badgeLabels[a.badge]}</span>}
-                      </div>
-                    ))}
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Preview */}
-            <div className="card rounded-xl p-6 h-[500px] flex flex-col bg-zinc-900/50 border border-zinc-800/50">
-              <div className="flex items-center justify-between mb-4">
-                <span className="text-xs font-medium text-zinc-500 uppercase tracking-wider">Preview</span>
-                <button
-                  onClick={() => {
-                    // force re-render by toggling trigger state quickly
-                    setTrigger((t) => (t === 'load' ? 'hover' : 'load'));
-                    setTimeout(() => setTrigger((t) => (t === 'load' ? 'hover' : 'load')), 10);
-                  }}
-                  className="p-1.5 rounded-lg hover:bg-zinc-800 text-zinc-500 hover:text-white transition-colors"
-                >
-                  <RotateCcw className="w-4 h-4" />
-                </button>
-              </div>
-            <div className="flex-1 flex items-center justify-center bg-zinc-900/50 rounded-lg border border-zinc-800/50" id="preview-area">
-                <Preview
-                  anim={anim}
-                  baseClass={baseClass}
-                  displayClassName={displayClassName}
-                  trigger={trigger}
-                  selected={selected}
-                />
-              </div>
-              <div className="mt-4 flex items-center gap-2">
-                <span className="text-xs text-zinc-600">Trigger:</span>
-                {['load', 'hover', 'click'].map((t) => (
-                  <button
-                    key={t}
-                    onClick={() => setTrigger(t)}
-                    className={`text-xs px-2 py-1 rounded ${trigger === t ? 'bg-zinc-800 text-white' : 'bg-zinc-900 text-zinc-500 hover:text-white'}`}
-                    data-trigger={t}
-                  >
-                    {t === 'load' ? 'On Load' : t === 'hover' ? 'On Hover' : 'On Click'}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Code Output */}
-            <div className="card rounded-xl p-4 h-[500px] flex flex-col bg-zinc-900/50 border border-zinc-800/50">
-              {/* Class name copy */}
-              <div className="mb-3">
-                <div className="text-[10px] text-zinc-600 uppercase tracking-wider mb-1.5">Class</div>
-                <div className="flex items-center gap-2">
-                  <code id="class-name" className="flex-1 text-sm font-mono text-white bg-zinc-800 rounded-lg px-3 py-2 truncate">
-                    {displayClassName}
-                  </code>
-                  <button
-                    onClick={() => navigator.clipboard.writeText(displayClassName)}
-                    className="copy-btn p-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-400 hover:text-white transition-colors"
-                    title="Copy class name"
-                  >
-                    <Copy className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
-
-              {/* Code tabs */}
-              <div className="flex items-center gap-1 mb-2">
-                {['usage'].map((tab) => (
-                  <button
-                    key={tab}
-                    onClick={() => setCodeTab(tab)}
-                    className={`code-tab text-[10px] px-2 py-1 rounded ${
-                      codeTab === tab ? 'bg-zinc-800 text-white' : 'bg-zinc-900 text-zinc-500 hover:text-white'
-                    }`}
-                    data-tab={tab}
-                  >
-                    {tab === 'usage' ? 'Usage' : tab === 'css' ? 'CSS' : 'Tailwind'}
-                  </button>
-                ))}
-                <div className="flex-1"></div>
-                <button
-                  onClick={() => navigator.clipboard.writeText(code)}
-                  className="copy-btn p-1 rounded hover:bg-zinc-800 text-zinc-500 hover:text-white transition-colors"
-                  title="Copy code"
-                >
-                  <Copy className="w-3.5 h-3.5" />
-                </button>
-              </div>
-
-              <div className="flex-1 overflow-auto bg-zinc-900/50 rounded-lg border border-zinc-800/50 p-3">
-                <pre id="code-output" className="text-xs font-mono text-zinc-400 whitespace-pre-wrap">
-                  {code}
-                </pre>
-              </div>
-
-              <div className="mt-3 p-3 rounded-lg bg-emerald-950/30 border border-emerald-900/30">
-                <div className="flex items-center gap-2 text-emerald-400 text-xs">
-                  <Leaf className="w-3 h-3" />
-                  <span>Tree-shakable</span>
-                </div>
-                <div id="bundle-size" className="text-[10px] text-emerald-600 mt-1">
-                  {bundleSize}
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Quick Examples */}
+        <HeroSection />
+        <Playground
+          categories={categories}
+          anim={anim}
+          baseClass={baseClass}
+          displayClassName={displayClassName}
+          trigger={trigger}
+          setTrigger={setTrigger}
+          selected={selected}
+          onSelect={setSelected}
+          code={code}
+          codeTab={codeTab}
+          setCodeTab={setCodeTab}
+          bundleSize={bundleSize}
+        />
         <QuickExamples />
-
-        {/* Variants Grid */}
         <VariantsGrid />
-
-        {/* Installation */}
         <Installation />
-
-        {/* Framework Usage */}
         <FrameworkUsage />
       </main>
 
-      {/* Footer */}
       <footer className="border-t border-zinc-800/50 py-8">
         <div className="max-w-6xl mx-auto px-4 flex items-center justify-between text-sm text-zinc-600">
           <span>MIT License</span>
