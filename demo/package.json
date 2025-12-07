@@ -1,9 +1,22 @@
 {
-  "name": "tailmotion-demo",
-  "version": "1.0.0",
+  "name": "tailmotion-demo-react",
+  "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
-    "build": "cd .. && npm ci && npm run build && cp tailmotion.css demo/tailmotion.css && cp dist/tailmotion.js demo/tailmotion.js && echo 'Demo files ready'"
+    "dev": "vite",
+    "build": "npm run prepare:assets && vite build",
+    "prepare:assets": "mkdir -p public && cp ../tailmotion.css public/tailmotion.css && cp ../dist/tailmotion.js public/tailmotion.js",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "lucide-react": "^0.460.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.0",
+    "vite": "^5.2.0"
   }
 }
 
