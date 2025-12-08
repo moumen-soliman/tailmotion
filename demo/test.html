@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>TailMotion · Animation Test</title>
+    <link rel="stylesheet" href="./tailmotion.css" />
+    <style>
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body { 
+        background: #0a0a0a; 
+        color: #fff; 
+        font-family: system-ui, sans-serif;
+        padding: 2rem;
+      }
+      h1 { margin-bottom: 2rem; }
+      h2 { margin: 2rem 0 1rem; color: #888; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.1em; }
+      .grid { 
+        display: grid; 
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); 
+        gap: 1rem; 
+      }
+      .box {
+        background: #1a1a1a;
+        border: 1px solid #333;
+        border-radius: 12px;
+        padding: 2rem 1rem;
+        text-align: center;
+        font-size: 0.875rem;
+      }
+      .emoji { font-size: 2rem; display: block; margin-bottom: 0.5rem; }
+      .btn {
+        background: #333;
+        border: 1px solid #444;
+        border-radius: 8px;
+        padding: 1rem 1.5rem;
+        color: #fff;
+        cursor: pointer;
+        font-size: 0.875rem;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>TailMotion Animation Test</h1>
+    
+    <h2>Continuous Animations (should be moving)</h2>
+    <div class="grid">
+      <div class="box tm-bounce">
+        <span class="emoji">🎾</span>
+        tm-bounce
+      </div>
+      <div class="box tm-pulse">
+        <span class="emoji">💗</span>
+        tm-pulse
+      </div>
+      <div class="box tm-spin">
+        <span class="emoji">🔄</span>
+        tm-spin
+      </div>
+      <div class="box tm-float">
+        <span class="emoji">🌙</span>
+        tm-float
+      </div>
+      <div class="box tm-drift">
+        <span class="emoji">🍂</span>
+        tm-drift
+      </div>
+      <div class="box tm-wiggle tm-repeat-infinite">
+        <span class="emoji">🎯</span>
+        tm-wiggle
+      </div>
+      <div class="box tm-glow">
+        <span class="emoji">✨</span>
+        tm-glow
+      </div>
+    </div>
+
+    <h2>Entrance Animations (play once on load)</h2>
+    <div class="grid">
+      <div class="box tm-fade-in">
+        <span class="emoji">👋</span>
+        tm-fade-in
+      </div>
+      <div class="box tm-slide-up tm-delay-150">
+        <span class="emoji">⬆️</span>
+        tm-slide-up
+      </div>
+      <div class="box tm-pop tm-delay-300">
+        <span class="emoji">🎈</span>
+        tm-pop
+      </div>
+      <div class="box tm-zoom-in tm-delay-400">
+        <span class="emoji">🔍</span>
+        tm-zoom-in
+      </div>
+      <div class="box tm-drop-in tm-delay-500">
+        <span class="emoji">📦</span>
+        tm-drop-in
+      </div>
+      <div class="box tm-shake">
+        <span class="emoji">📳</span>
+        tm-shake
+      </div>
+    </div>
+
+    <h2>Hover Animations (hover to trigger)</h2>
+    <div class="grid">
+      <button class="btn tm-flip-hover">
+        tm-flip-hover
+      </button>
+      <button class="btn tm-rotate-hover">
+        tm-rotate-hover
+      </button>
+      <button class="btn tm-rotate-press">
+        tm-rotate-press (click)
+      </button>
+      <button class="btn tm-lift-hover">
+        tm-lift-hover
+      </button>
+      <button class="btn tm-shimmer-hover" style="background: linear-gradient(135deg, #6366f1, #8b5cf6);">
+        tm-shimmer-hover
+      </button>
+    </div>
+
+    <h2>Flip Buttons (hover to flip)</h2>
+    <div class="grid">
+      <button class="btn tm-flip-btn">
+        <span class="tm-flip-front">Flip Top ↑</span>
+        <span class="tm-flip-back" style="color: #3b82f6;">Back! 👋</span>
+      </button>
+      <button class="btn tm-flip-btn-bottom">
+        <span class="tm-flip-front">Flip Bottom ↓</span>
+        <span class="tm-flip-back" style="color: #ec4899;">Back! 🎉</span>
+      </button>
+      <button class="btn tm-flip-btn-left">
+        <span class="tm-flip-front">← Flip Left</span>
+        <span class="tm-flip-back" style="color: #10b981;">Back! ✨</span>
+      </button>
+      <button class="btn tm-flip-btn-right">
+        <span class="tm-flip-front">Flip Right →</span>
+        <span class="tm-flip-back" style="color: #f59e0b;">Back! 🚀</span>
+      </button>
+    </div>
+
+    <h2>Avatar Group</h2>
+    <div class="tm-avatar-group" style="padding: 2rem 0;">
+      <div class="tm-avatar tm-avatar-ring" style="width: 48px; height: 48px; background: linear-gradient(135deg, #f43f5e, #ec4899); display: flex; align-items: center; justify-content: center; border: 2px solid #0a0a0a;">
+        JD
+        <span class="tm-avatar-tooltip">John Doe</span>
+      </div>
+      <div class="tm-avatar tm-avatar-ring" style="width: 48px; height: 48px; background: linear-gradient(135deg, #3b82f6, #06b6d4); display: flex; align-items: center; justify-content: center; border: 2px solid #0a0a0a;">
+        AS
+        <span class="tm-avatar-tooltip">Alice Smith</span>
+      </div>
+      <div class="tm-avatar tm-avatar-ring" style="width: 48px; height: 48px; background: linear-gradient(135deg, #10b981, #14b8a6); display: flex; align-items: center; justify-content: center; border: 2px solid #0a0a0a;">
+        BW
+        <span class="tm-avatar-tooltip">Bob Wilson</span>
+      </div>
+      <div class="tm-avatar tm-avatar-ring" style="width: 48px; height: 48px; background: linear-gradient(135deg, #8b5cf6, #a855f7); display: flex; align-items: center; justify-content: center; border: 2px solid #0a0a0a;">
+        +3
+        <span class="tm-avatar-tooltip">3 more</span>
+      </div>
+    </div>
+
+    <h2>Duration Modifiers</h2>
+    <div class="grid">
+      <div class="box tm-bounce tm-duration-300">
+        <span class="emoji">⚡</span>
+        tm-duration-300
+      </div>
+      <div class="box tm-bounce tm-duration-700">
+        <span class="emoji">🐢</span>
+        tm-duration-700
+      </div>
+      <div class="box tm-bounce tm-duration-1200">
+        <span class="emoji">🦥</span>
+        tm-duration-1200
+      </div>
+    </div>
+  </body>
+</html>
+
+

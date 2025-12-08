@@ -1,0 +1,170 @@
+@layer utilities {
+  .tm-swing-in {
+    animation-name: tm-swing-in;
+    animation-duration: var(--tm-duration, 600ms);
+    animation-delay: var(--tm-delay, 0ms);
+    animation-timing-function: var(--tm-easing, cubic-bezier(0.68, -0.55, 0.265, 1.55));
+    animation-iteration-count: var(--tm-iteration-count, 1);
+    animation-fill-mode: both;
+    will-change: transform, opacity;
+    transform-origin: top center;
+  }
+
+  .tm-swing-out {
+    animation-name: tm-swing-out;
+    animation-duration: var(--tm-duration, 600ms);
+    animation-delay: var(--tm-delay, 0ms);
+    animation-timing-function: var(--tm-easing, cubic-bezier(0.68, -0.55, 0.265, 1.55));
+    animation-iteration-count: var(--tm-iteration-count, 1);
+    animation-fill-mode: both;
+    will-change: transform, opacity;
+    transform-origin: top center;
+  }
+
+  .tm-swing-in-left {
+    animation-name: tm-swing-in-left;
+    animation-duration: var(--tm-duration, 600ms);
+    animation-delay: var(--tm-delay, 0ms);
+    animation-timing-function: var(--tm-easing, cubic-bezier(0.68, -0.55, 0.265, 1.55));
+    animation-iteration-count: var(--tm-iteration-count, 1);
+    animation-fill-mode: both;
+    will-change: transform, opacity;
+    transform-origin: center left;
+  }
+
+  .tm-swing-out-left {
+    animation-name: tm-swing-out-left;
+    animation-duration: var(--tm-duration, 600ms);
+    animation-delay: var(--tm-delay, 0ms);
+    animation-timing-function: var(--tm-easing, cubic-bezier(0.68, -0.55, 0.265, 1.55));
+    animation-iteration-count: var(--tm-iteration-count, 1);
+    animation-fill-mode: both;
+    will-change: transform, opacity;
+    transform-origin: center left;
+  }
+
+  .tm-swing-in-right {
+    animation-name: tm-swing-in-right;
+    animation-duration: var(--tm-duration, 600ms);
+    animation-delay: var(--tm-delay, 0ms);
+    animation-timing-function: var(--tm-easing, cubic-bezier(0.68, -0.55, 0.265, 1.55));
+    animation-iteration-count: var(--tm-iteration-count, 1);
+    animation-fill-mode: both;
+    will-change: transform, opacity;
+    transform-origin: center right;
+  }
+
+  .tm-swing-out-right {
+    animation-name: tm-swing-out-right;
+    animation-duration: var(--tm-duration, 600ms);
+    animation-delay: var(--tm-delay, 0ms);
+    animation-timing-function: var(--tm-easing, cubic-bezier(0.68, -0.55, 0.265, 1.55));
+    animation-iteration-count: var(--tm-iteration-count, 1);
+    animation-fill-mode: both;
+    will-change: transform, opacity;
+    transform-origin: center right;
+  }
+}
+
+@keyframes tm-swing-in {
+  0% {
+    transform: rotateX(-100deg);
+    opacity: 0;
+  }
+
+  60% {
+    transform: rotateX(15deg);
+    opacity: 1;
+  }
+
+  100% {
+    transform: rotateX(0deg);
+    opacity: 1;
+  }
+}
+
+@keyframes tm-swing-out {
+  0% {
+    transform: rotateX(0deg);
+    opacity: 1;
+  }
+
+  40% {
+    transform: rotateX(15deg);
+    opacity: 1;
+  }
+
+  100% {
+    transform: rotateX(-100deg);
+    opacity: 0;
+  }
+}
+
+@keyframes tm-swing-in-left {
+  0% {
+    transform: rotateY(-100deg);
+    opacity: 0;
+  }
+
+  60% {
+    transform: rotateY(15deg);
+    opacity: 1;
+  }
+
+  100% {
+    transform: rotateY(0deg);
+    opacity: 1;
+  }
+}
+
+@keyframes tm-swing-out-left {
+  0% {
+    transform: rotateY(0deg);
+    opacity: 1;
+  }
+
+  40% {
+    transform: rotateY(15deg);
+    opacity: 1;
+  }
+
+  100% {
+    transform: rotateY(-100deg);
+    opacity: 0;
+  }
+}
+
+@keyframes tm-swing-in-right {
+  0% {
+    transform: rotateY(100deg);
+    opacity: 0;
+  }
+
+  60% {
+    transform: rotateY(-15deg);
+    opacity: 1;
+  }
+
+  100% {
+    transform: rotateY(0deg);
+    opacity: 1;
+  }
+}
+
+@keyframes tm-swing-out-right {
+  0% {
+    transform: rotateY(0deg);
+    opacity: 1;
+  }
+
+  40% {
+    transform: rotateY(-15deg);
+    opacity: 1;
+  }
+
+  100% {
+    transform: rotateY(100deg);
+    opacity: 0;
+  }
+}
+

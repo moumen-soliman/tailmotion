@@ -21,6 +21,9 @@
 @import "./animations/morph.css";
 @import "./animations/sway.css";
 @import "./animations/ripple.css";
+@import "./animations/swing.css";
+@import "./animations/wavy.css";
+@import "./animations/hold-delete.css";
 @import "./animations/blur-in.css";
 @import "./animations/elastic.css";
 @import "./animations/celebrate.css";

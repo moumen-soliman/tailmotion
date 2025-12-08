@@ -8,6 +8,8 @@ export const animations = [
   { name: 'glow', category: 'loop', size: 0.4 },
   { name: 'morph', category: 'loop', size: 0.4 },
   { name: 'sway', category: 'loop', size: 0.3 },
+  { name: 'wavy-bg', category: 'loop', size: 0.4, badge: 'background' },
+  { name: 'wavy-bg-subtle', category: 'loop', size: 0.4, badge: 'background' },
 
   // Attention
   { name: 'shake', category: 'attention', size: 0.3 },
@@ -27,6 +29,12 @@ export const animations = [
   { name: 'blur-in', category: 'entrance', size: 0.4 },
   { name: 'zoom-in', category: 'entrance', size: 0.2 },
   { name: 'zoom-out', category: 'entrance', size: 0.2 },
+  { name: 'swing-in', category: 'entrance', size: 0.3 },
+  { name: 'swing-out', category: 'entrance', size: 0.3 },
+  { name: 'swing-in-left', category: 'entrance', size: 0.3 },
+  { name: 'swing-out-left', category: 'entrance', size: 0.3 },
+  { name: 'swing-in-right', category: 'entrance', size: 0.3 },
+  { name: 'swing-out-right', category: 'entrance', size: 0.3 },
 
   // Professional
   { name: 'reveal', category: 'professional', size: 0.4 },
@@ -54,6 +62,7 @@ export const animations = [
   { name: 'lift-hover', category: 'interactive', size: 0.3, badge: 'hover' },
   { name: 'rotate-hover', category: 'interactive', size: 0.2, badge: 'hover' },
   { name: 'flip-hover', category: 'interactive', size: 0.3, badge: 'hover' },
+  { name: 'hold-delete', category: 'interactive', size: 0.4, badge: 'hold' },
 
   // Container
   { name: 'stagger', category: 'container', size: 0.3, badge: 'html' },

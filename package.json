@@ -1,6 +1,6 @@
 {
   "name": "tailmotion",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Tiny motion utility pack for Tailwind CSS using pure CSS keyframes. Framework-agnostic.",
   "main": "src/index.js",
   "module": "src/index.js",
