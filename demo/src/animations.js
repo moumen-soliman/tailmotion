@@ -8,8 +8,11 @@ export const animations = [
   { name: 'glow', category: 'loop', size: 0.4 },
   { name: 'morph', category: 'loop', size: 0.4 },
   { name: 'sway', category: 'loop', size: 0.3 },
-  { name: 'wavy-bg', category: 'loop', size: 0.4, badge: 'background' },
-  { name: 'wavy-bg-subtle', category: 'loop', size: 0.4, badge: 'background' },
+
+  // Backgrounds
+  { name: 'dark-veil', category: 'backgrounds', size: 0.8 },
+  { name: 'wavy-bg', category: 'backgrounds', size: 0.4 },
+  { name: 'wavy-bg-subtle', category: 'backgrounds', size: 0.4 },
 
   // Attention
   { name: 'shake', category: 'attention', size: 0.3 },

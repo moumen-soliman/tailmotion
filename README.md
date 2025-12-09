@@ -366,7 +366,9 @@ Interactive button with liquid fill effect:
 
 CSS Variables:
 - `--tm-liquid-color`: Fill color (default: currentColor)
-- `--tm-liquid-speed`: Animation speed (default: 0.4s)
+- `--tm-liquid-bg`: Background color (default: transparent)
+- `--tm-liquid-duration`: Animation duration (default: varies by variant)
+- `--tm-liquid-line-height`: Line height for underline variant (default: 2px)
 
 ## Custom Timing
 

@@ -265,6 +265,15 @@ function Preview({ anim, baseClass, displayClassName, trigger, selected }) {
     );
   }
 
+  // Special case for background animations
+  if (selected === 'wavy-bg' || selected === 'wavy-bg-subtle' || selected === 'dark-veil') {
+    return (
+      <div className={`h-32 w-32 rounded-xl bg-zinc-800 flex items-center justify-center overflow-hidden ${displayClassName}`}>
+        <div className="text-white text-xs font-medium">BG</div>
+      </div>
+    );
+  }
+
   // Standard animations - use refs and direct DOM manipulation like vanilla demo
   const classNames = ['h-16 w-16 rounded-xl bg-white flex items-center justify-center transition-all', displayClassName];
 
@@ -390,7 +399,7 @@ function TriggerButtons({ trigger, setTrigger }) {
   return (
     <div className="mt-4 flex items-center gap-2">
       <span className="text-xs text-zinc-600">Trigger:</span>
-      {['load', 'hover', 'click'].map((t) => (
+      {['load'].map((t) => (
         <button
           key={t}
           onClick={() => setTrigger(t)}

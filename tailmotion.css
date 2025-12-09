@@ -1,4 +1,4 @@
-/* TailMotion v0.3.0 | Generated 2025-12-08T10:47:24.835Z */
+/* TailMotion v0.5.0 | Generated 2025-12-09T12:50:44.351Z */
 /* Entry point for TailMotion animations. */
 
 /* --- src/animations/base.css --- */
@@ -1893,6 +1893,278 @@
     opacity: 1;
     transform: scale(1);
   }
+}
+
+
+/* --- src/animations/dark-veil.css --- */
+@layer utilities {
+  .tm-dark-veil {
+    --tm-dark-veil-hue: 0deg;
+    --tm-dark-veil-saturation: 80%;
+    --tm-dark-veil-lightness: 50%;
+    --tm-dark-veil-opacity: 0.8;
+    --tm-dark-veil-noise: 0.1;
+    --tm-dark-veil-scanlines: 0.05;
+    --tm-dark-veil-warp: 0.02;
+    --tm-dark-veil-speed: 8s;
+    --tm-dark-veil-blur: 0px;
+
+    position: relative;
+    overflow: hidden;
+    background: hsl(var(--tm-dark-veil-hue), var(--tm-dark-veil-saturation), calc(var(--tm-dark-veil-lightness) * 0.2));
+    filter: blur(var(--tm-dark-veil-blur));
+  }
+
+  .tm-dark-veil::before {
+    content: '';
+    position: absolute;
+    inset: -50%;
+    background:
+      radial-gradient(
+        circle at 20% 80%,
+        hsl(calc(var(--tm-dark-veil-hue) + 0deg), var(--tm-dark-veil-saturation), calc(var(--tm-dark-veil-lightness) * 0.8)) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at 80% 20%,
+        hsl(calc(var(--tm-dark-veil-hue) + 120deg), var(--tm-dark-veil-saturation), calc(var(--tm-dark-veil-lightness) * 0.6)) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at 40% 40%,
+        hsl(calc(var(--tm-dark-veil-hue) + 240deg), var(--tm-dark-veil-saturation), calc(var(--tm-dark-veil-lightness) * 0.9)) 0%,
+        transparent 50%
+      );
+    opacity: var(--tm-dark-veil-opacity);
+    animation: tm-dark-veil-flow var(--tm-dark-veil-speed) ease-in-out infinite;
+    will-change: transform, opacity;
+  }
+
+  .tm-dark-veil::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(255, 255, 255, var(--tm-dark-veil-scanlines)) 2px,
+        rgba(255, 255, 255, var(--tm-dark-veil-scanlines)) 4px
+      );
+    opacity: 0.3;
+    animation: tm-dark-veil-scan var(--tm-dark-veil-speed) linear infinite;
+    pointer-events: none;
+  }
+
+  /* Multiple layers for complex organic patterns */
+  .tm-dark-veil-layer-1::before {
+    background:
+      conic-gradient(
+        from 0deg at 50% 50%,
+        hsl(calc(var(--tm-dark-veil-hue) + 0deg), var(--tm-dark-veil-saturation), calc(var(--tm-dark-veil-lightness) * 0.3)) 0deg,
+        hsl(calc(var(--tm-dark-veil-hue) + 60deg), var(--tm-dark-veil-saturation), calc(var(--tm-dark-veil-lightness) * 0.7)) 120deg,
+        hsl(calc(var(--tm-dark-veil-hue) + 180deg), var(--tm-dark-veil-saturation), calc(var(--tm-dark-veil-lightness) * 0.4)) 240deg,
+        hsl(calc(var(--tm-dark-veil-hue) + 0deg), var(--tm-dark-veil-saturation), calc(var(--tm-dark-veil-lightness) * 0.3)) 360deg
+      );
+    animation: tm-dark-veil-rotate var(--tm-dark-veil-speed) linear infinite reverse;
+  }
+
+  .tm-dark-veil-layer-2::before {
+    background:
+      radial-gradient(
+        ellipse 150% 100% at 30% 70%,
+        hsl(calc(var(--tm-dark-veil-hue) + 30deg), var(--tm-dark-veil-saturation), calc(var(--tm-dark-veil-lightness) * 0.5)) 0%,
+        transparent 70%
+      ),
+      radial-gradient(
+        ellipse 120% 80% at 70% 30%,
+        hsl(calc(var(--tm-dark-veil-hue) + 150deg), var(--tm-dark-veil-saturation), calc(var(--tm-dark-veil-lightness) * 0.6)) 0%,
+        transparent 60%
+      );
+    animation: tm-dark-veil-morph calc(var(--tm-dark-veil-speed) * 0.7) ease-in-out infinite;
+  }
+
+  .tm-dark-veil-layer-3::before {
+    background:
+      repeating-conic-gradient(
+        from 45deg at 50% 50%,
+        hsl(calc(var(--tm-dark-veil-hue) + 90deg), var(--tm-dark-veil-saturation), calc(var(--tm-dark-veil-lightness) * 0.2)) 0deg 10deg,
+        transparent 10deg 20deg
+      );
+    animation: tm-dark-veil-pulse calc(var(--tm-dark-veil-speed) * 1.3) ease-in-out infinite;
+  }
+
+  /* Noise overlay */
+  .tm-dark-veil-noise::after {
+    background:
+      radial-gradient(circle at 25% 25%, rgba(255,255,255,var(--tm-dark-veil-noise)) 1px, transparent 1px),
+      radial-gradient(circle at 75% 75%, rgba(0,0,0,var(--tm-dark-veil-noise)) 1px, transparent 1px),
+      radial-gradient(circle at 50% 50%, rgba(255,255,255,var(--tm-dark-veil-noise)) 1px, transparent 1px);
+    background-size: 20px 20px, 30px 30px, 40px 40px;
+    animation: tm-dark-veil-noise-move calc(var(--tm-dark-veil-speed) * 0.5) linear infinite;
+  }
+}
+
+@keyframes tm-dark-veil-flow {
+  0%, 100% {
+    transform: translate(0, 0) scale(1) rotate(0deg);
+    filter: hue-rotate(0deg) saturate(1);
+  }
+
+  25% {
+    transform: translate(calc(var(--tm-dark-veil-warp) * 100%), calc(var(--tm-dark-veil-warp) * -50%)) scale(1.05) rotate(1deg);
+    filter: hue-rotate(30deg) saturate(1.2);
+  }
+
+  50% {
+    transform: translate(calc(var(--tm-dark-veil-warp) * -50%), calc(var(--tm-dark-veil-warp) * 100%)) scale(0.95) rotate(-1deg);
+    filter: hue-rotate(60deg) saturate(0.8);
+  }
+
+  75% {
+    transform: translate(calc(var(--tm-dark-veil-warp) * 80%), calc(var(--tm-dark-veil-warp) * 30%)) scale(1.02) rotate(0.5deg);
+    filter: hue-rotate(90deg) saturate(1.1);
+  }
+}
+
+@keyframes tm-dark-veil-rotate {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+
+  50% {
+    transform: rotate(180deg) scale(1.1);
+  }
+
+  100% {
+    transform: rotate(360deg) scale(1);
+  }
+}
+
+@keyframes tm-dark-veil-morph {
+  0%, 100% {
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+    transform: scale(1) rotate(0deg);
+  }
+
+  25% {
+    border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
+    transform: scale(1.05) rotate(90deg);
+  }
+
+  50% {
+    border-radius: 50% 50% 80% 20% / 80% 20% 50% 50%;
+    transform: scale(0.95) rotate(180deg);
+  }
+
+  75% {
+    border-radius: 70% 30% 50% 50% / 40% 60% 70% 30%;
+    transform: scale(1.02) rotate(270deg);
+  }
+}
+
+@keyframes tm-dark-veil-pulse {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(1) rotate(0deg);
+  }
+
+  50% {
+    opacity: 0.8;
+    transform: scale(1.2) rotate(180deg);
+  }
+}
+
+@keyframes tm-dark-veil-scan {
+  0% {
+    transform: translateY(0);
+  }
+
+  100% {
+    transform: translateY(4px);
+  }
+}
+
+@keyframes tm-dark-veil-noise-move {
+  0% {
+    transform: translate(0, 0);
+  }
+
+  25% {
+    transform: translate(5px, -3px);
+  }
+
+  50% {
+    transform: translate(-3px, 5px);
+  }
+
+  75% {
+    transform: translate(2px, 2px);
+  }
+
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+/* Color variants */
+.tm-dark-veil-blue {
+  --tm-dark-veil-hue: 220deg;
+}
+
+.tm-dark-veil-purple {
+  --tm-dark-veil-hue: 270deg;
+}
+
+.tm-dark-veil-green {
+  --tm-dark-veil-hue: 120deg;
+}
+
+.tm-dark-veil-red {
+  --tm-dark-veil-hue: 0deg;
+}
+
+.tm-dark-veil-orange {
+  --tm-dark-veil-hue: 30deg;
+}
+
+.tm-dark-veil-cyan {
+  --tm-dark-veil-hue: 180deg;
+}
+
+/* Intensity variants */
+.tm-dark-veil-subtle {
+  --tm-dark-veil-opacity: 0.4;
+  --tm-dark-veil-saturation: 60%;
+}
+
+.tm-dark-veil-intense {
+  --tm-dark-veil-opacity: 1;
+  --tm-dark-veil-saturation: 100%;
+  --tm-dark-veil-lightness: 60%;
+}
+
+/* Speed variants */
+.tm-dark-veil-fast {
+  --tm-dark-veil-speed: 4s;
+}
+
+.tm-dark-veil-slow {
+  --tm-dark-veil-speed: 12s;
+}
+
+/* Effect variants */
+.tm-dark-veil-noisy {
+  --tm-dark-veil-noise: 0.2;
+}
+
+.tm-dark-veil-warped {
+  --tm-dark-veil-warp: 0.05;
+}
+
+.tm-dark-veil-blurry {
+  --tm-dark-veil-blur: 2px;
 }
 
 
