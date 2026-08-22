@@ -17,7 +17,9 @@
     font-weight: 500;
     cursor: pointer;
     user-select: none;
-    transition: all 0.2s ease;
+    transition-property: color, background-color, border-radius, transform;
+    transition-duration: 150ms;
+    transition-timing-function: ease-out;
     overflow: hidden;
     min-width: 120px;
     isolation: isolate;
@@ -54,8 +56,8 @@
   }
 
   .tm-hold-delete:active {
-    color: white;
-    transform: scale(0.98);
+    color: var(--tm-hold-fg, Canvas);
+    transform: scale(var(--tm-press-scale, 0.96));
     border-radius: 0.25rem;
   }
 

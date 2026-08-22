@@ -6,7 +6,6 @@
     animation-timing-function: var(--tm-easing, cubic-bezier(0.68, -0.6, 0.32, 1.6));
     animation-iteration-count: var(--tm-iteration-count, 1);
     animation-fill-mode: both;
-    will-change: transform, opacity;
   }
 }
 

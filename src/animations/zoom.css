@@ -1,4 +1,22 @@
+/* --------------------------------------------------------------------------
+   Scale entrances.
+
+   tm-scale-in is the short, neutral default: scale up from --tm-scale-from
+   with a fade, no overshoot. tm-zoom-in / tm-zoom-out are the older, more
+   expressive variants; despite its name tm-zoom-out is an *entrance* that
+   settles in from a larger scale. For a real exit use tm-scale-out.
+   -------------------------------------------------------------------------- */
+
 @layer utilities {
+  .tm-scale-in {
+    animation-name: tm-scale-in;
+    animation-duration: var(--tm-duration, 220ms);
+    animation-delay: var(--tm-delay, 0ms);
+    animation-timing-function: var(--tm-easing, cubic-bezier(0.22, 1, 0.36, 1));
+    animation-iteration-count: var(--tm-iteration-count, 1);
+    animation-fill-mode: both;
+  }
+
   .tm-zoom-in {
     animation-name: tm-zoom-in;
     animation-duration: var(--tm-duration, 520ms);
@@ -6,7 +24,6 @@
     animation-timing-function: var(--tm-easing, cubic-bezier(0.19, 1, 0.22, 1));
     animation-iteration-count: var(--tm-iteration-count, 1);
     animation-fill-mode: both;
-    will-change: transform, opacity;
   }
 
   .tm-zoom-in-slow {
@@ -16,7 +33,6 @@
     animation-timing-function: var(--tm-easing, cubic-bezier(0.25, 0.8, 0.25, 1));
     animation-iteration-count: var(--tm-iteration-count, 1);
     animation-fill-mode: both;
-    will-change: transform, opacity;
   }
 
   .tm-zoom-out {
@@ -26,7 +42,18 @@
     animation-timing-function: var(--tm-easing, cubic-bezier(0.19, 1, 0.22, 1));
     animation-iteration-count: var(--tm-iteration-count, 1);
     animation-fill-mode: both;
-    will-change: transform, opacity;
+  }
+}
+
+@keyframes tm-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(var(--tm-scale-from, 0.94));
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
   }
 }
 
@@ -63,5 +90,3 @@
     opacity: 1;
   }
 }
-
-

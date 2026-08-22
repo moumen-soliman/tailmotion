@@ -47,6 +47,33 @@ export interface TmModifiers {
   delay?: string | number;
   repeat?: string | number;
   ease?: string;
+  /** Travel distance for slide entrances and exits, e.g. 12 -> tm-distance-12 */
+  distance?: string | number;
+  /** Delay between staggered children, e.g. 150 -> tm-stagger-step-150 */
+  staggerStep?: string | number;
+}
+
+/**
+ * The CSS custom properties TailMotion reads. Timing tokens are intentionally
+ * unset by default so each motion class can carry its own tuned value.
+ */
+export interface TailMotionVars {
+  '--tm-duration'?: string;
+  '--tm-delay'?: string;
+  '--tm-easing'?: string;
+  '--tm-iteration-count'?: string | number;
+  '--tm-stagger-step'?: string;
+  '--tm-stagger-index'?: number;
+  '--tm-distance'?: string;
+  '--tm-exit-distance'?: string;
+  /** 1 in left-to-right contexts, -1 in right-to-left. Set by TailMotion. */
+  '--tm-inline-flip'?: 1 | -1;
+  '--tm-color'?: string;
+  '--tm-shadow-color'?: string;
+  '--tm-glow-color'?: string;
+  '--tm-outline-color'?: string;
+  '--tm-shimmer-color'?: string;
+  '--tm-shimmer-opacity'?: string | number;
 }
 
 export interface InitTextFlipOptions {
@@ -102,6 +129,7 @@ export function cssVars(vars: Record<string, string | number>): Record<string, s
  */
 export function staggerStyle(index: number, stagger?: number): {
   '--tm-stagger': number;
+  '--tm-stagger-index': number;
   '--tm-delay': string;
 };
 
@@ -150,6 +178,8 @@ declare module 'tailmotion/plugin' {
     delays?: Record<string | number, string>;
     easing?: Record<string, string>;
     repeat?: Record<string | number, string>;
+    stagger?: Record<string | number, string>;
+    distance?: Record<string | number, string>;
   }
   
   const plugin: PluginCreator & {

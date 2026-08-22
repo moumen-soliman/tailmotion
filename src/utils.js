@@ -234,14 +234,17 @@ export function cssVars(vars) {
 }
 
 /**
- * Generates stagger delay styles for children
+ * Generates stagger delay styles for children.
+ * Emits --tm-stagger-index for .tm-stagger containers and --tm-stagger for
+ * .tm-count-reveal, so one call drives either.
  * @param {number} index - Child index
- * @param {number} [stagger=50] - Delay between items in ms
+ * @param {number} [stagger=100] - Delay between items in ms
  * @returns {Object} Style object with delay
  */
-export function staggerStyle(index, stagger = 50) {
+export function staggerStyle(index, stagger = 100) {
   return {
     '--tm-stagger': index,
+    '--tm-stagger-index': index,
     '--tm-delay': `${index * stagger}ms`
   };
 }
@@ -259,6 +262,8 @@ export function tm(animation, modifiers = {}) {
   if (modifiers.delay) classes.push(`tm-delay-${modifiers.delay}`);
   if (modifiers.repeat) classes.push(`tm-repeat-${modifiers.repeat}`);
   if (modifiers.ease) classes.push(`tm-ease-${modifiers.ease}`);
+  if (modifiers.distance) classes.push(`tm-distance-${modifiers.distance}`);
+  if (modifiers.staggerStep) classes.push(`tm-stagger-step-${modifiers.staggerStep}`);
   
   return classes.join(' ');
 }

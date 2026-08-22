@@ -1,5 +1,5 @@
 /**
- * TailMotion v0.1.0
+ * TailMotion v0.6.0
  * Tiny motion utility pack for Tailwind CSS
  * Framework-agnostic - works with React, Vue, Svelte, Angular, vanilla JS
  * https://github.com/moumen-soliman/tailmotion
@@ -213,9 +213,10 @@
    * Generates stagger delay styles
    */
   function staggerStyle(index, stagger) {
-    if (stagger === void 0) stagger = 50;
+    if (stagger === void 0) stagger = 100;
     return {
       '--tm-stagger': index,
+      '--tm-stagger-index': index,
       '--tm-delay': index * stagger + 'ms'
     };
   }
@@ -231,6 +232,8 @@
     if (modifiers.delay) classes.push('tm-delay-' + modifiers.delay);
     if (modifiers.repeat) classes.push('tm-repeat-' + modifiers.repeat);
     if (modifiers.ease) classes.push('tm-ease-' + modifiers.ease);
+    if (modifiers.distance) classes.push('tm-distance-' + modifiers.distance);
+    if (modifiers.staggerStep) classes.push('tm-stagger-step-' + modifiers.staggerStep);
     
     return classes.join(' ');
   }

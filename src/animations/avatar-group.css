@@ -39,7 +39,6 @@
     transition-duration: var(--tm-duration, 200ms);
     transition-timing-function: var(--tm-easing, var(--tm-avatar-spring));
     transition-delay: var(--tm-delay, 0ms);
-    will-change: transform;
     cursor: pointer;
   }
 
@@ -96,12 +95,14 @@
     font-size: 0.75rem;
     font-weight: 500;
     line-height: 1;
-    color: #fff;
-    background: #18181b;
+    color: var(--tm-tooltip-color, CanvasText);
+    background: var(--tm-tooltip-bg, Canvas);
     border-radius: 0.5rem;
-    box-shadow:
-      0 4px 6px -1px rgba(0, 0, 0, 0.1),
-      0 2px 4px -2px rgba(0, 0, 0, 0.1);
+    box-shadow: var(
+      --tm-tooltip-shadow,
+      0 4px 6px -1px var(--tm-shadow-color),
+      0 2px 4px -2px var(--tm-shadow-color)
+    );
     pointer-events: none;
     transition-property: opacity, transform, visibility;
     transition-duration: var(--tm-duration, 250ms);
@@ -118,7 +119,7 @@
     left: 50%;
     transform: translateX(-50%);
     border: 6px solid transparent;
-    border-top-color: #18181b;
+    border-top-color: var(--tm-tooltip-bg, Canvas);
   }
 
   /* Show tooltip on hover */
@@ -144,7 +145,7 @@
     top: auto;
     bottom: 100%;
     border-top-color: transparent;
-    border-bottom-color: #18181b;
+    border-bottom-color: var(--tm-tooltip-bg, Canvas);
   }
 
   .tm-avatar:hover .tm-avatar-tooltip-bottom,
@@ -166,7 +167,7 @@
     left: 100%;
     transform: translateY(-50%);
     border-top-color: transparent;
-    border-left-color: #18181b;
+    border-left-color: var(--tm-tooltip-bg, Canvas);
   }
 
   .tm-avatar:hover .tm-avatar-tooltip-left,
@@ -188,7 +189,7 @@
     right: 100%;
     transform: translateY(-50%);
     border-top-color: transparent;
-    border-right-color: #18181b;
+    border-right-color: var(--tm-tooltip-bg, Canvas);
   }
 
   .tm-avatar:hover .tm-avatar-tooltip-right,
@@ -239,6 +240,6 @@
 
   .tm-avatar-ring:hover,
   .tm-avatar-ring:focus-visible {
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+    box-shadow: 0 0 0 var(--tm-ring-width, 3px) var(--tm-outline-color);
   }
 }

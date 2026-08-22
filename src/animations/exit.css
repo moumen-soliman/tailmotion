@@ -1,0 +1,118 @@
+/* --------------------------------------------------------------------------
+   Exit keyframes.
+
+   Exits are quieter than the entrances they mirror: roughly 20% faster, and
+   they travel --tm-exit-distance (8px) instead of --tm-distance (12px). The
+   user's attention is already moving on, so these do not compete for it.
+
+   Each exit ends on its final frame (fill-mode: both), so the element stays
+   hidden but still occupies layout. Remove the node, or apply `hidden`, once
+   the animation has finished.
+   -------------------------------------------------------------------------- */
+
+@layer utilities {
+  .tm-fade-out {
+    animation-name: tm-fade-out;
+    animation-duration: var(--tm-duration, 200ms);
+    animation-delay: var(--tm-delay, 0ms);
+    animation-timing-function: var(--tm-easing, ease-out);
+    animation-iteration-count: var(--tm-iteration-count, 1);
+    animation-fill-mode: both;
+  }
+
+  .tm-scale-out {
+    animation-name: tm-scale-out;
+    animation-duration: var(--tm-duration, 180ms);
+    animation-delay: var(--tm-delay, 0ms);
+    animation-timing-function: var(--tm-easing, ease-out);
+    animation-iteration-count: var(--tm-iteration-count, 1);
+    animation-fill-mode: both;
+  }
+
+  /* Leaves toward the block-start edge. */
+  .tm-slide-block-out {
+    animation-name: tm-slide-block-out;
+    animation-duration: var(--tm-duration, 210ms);
+    animation-delay: var(--tm-delay, 0ms);
+    animation-timing-function: var(--tm-easing, ease-out);
+    animation-iteration-count: var(--tm-iteration-count, 1);
+    animation-fill-mode: both;
+  }
+
+  /* Leaves toward the inline-end edge, mirrored in RTL. */
+  .tm-slide-inline-out {
+    animation-name: tm-slide-inline-out;
+    animation-duration: var(--tm-duration, 210ms);
+    animation-delay: var(--tm-delay, 0ms);
+    animation-timing-function: var(--tm-easing, ease-out);
+    animation-iteration-count: var(--tm-iteration-count, 1);
+    animation-fill-mode: both;
+  }
+
+  .tm-blur-out {
+    animation-name: tm-blur-out;
+    animation-duration: var(--tm-duration, 220ms);
+    animation-delay: var(--tm-delay, 0ms);
+    animation-timing-function: var(--tm-easing, ease-out);
+    animation-iteration-count: var(--tm-iteration-count, 1);
+    animation-fill-mode: both;
+  }
+}
+
+@keyframes tm-fade-out {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes tm-scale-out {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: scale(var(--tm-exit-scale, 0.96));
+  }
+}
+
+@keyframes tm-slide-block-out {
+  from {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    opacity: 0;
+    transform: translate3d(0, calc(var(--tm-exit-distance, 8px) * -1), 0);
+  }
+}
+
+@keyframes tm-slide-inline-out {
+  from {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    opacity: 0;
+    transform: translate3d(calc(var(--tm-exit-distance, 8px) * var(--tm-inline-flip, 1)), 0, 0);
+  }
+}
+
+@keyframes tm-blur-out {
+  from {
+    opacity: 1;
+    filter: blur(0);
+  }
+
+  to {
+    opacity: 0;
+    filter: blur(var(--tm-exit-blur, 4px));
+  }
+}

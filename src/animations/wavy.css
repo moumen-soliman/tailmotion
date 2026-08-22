@@ -12,7 +12,6 @@
       radial-gradient(circle at 40% 40%, var(--tm-wavy-color3) 0%, transparent 50%);
     background-size: 400% 400%;
     animation: tm-wavy-bg var(--tm-wavy-speed) ease-in-out infinite;
-    will-change: background-position;
   }
 
   .tm-wavy-bg::before {
@@ -53,7 +52,6 @@
       radial-gradient(ellipse at 50% 50%, var(--tm-wavy-color3) 0%, transparent 60%);
     background-size: 300% 300%;
     animation: tm-wavy-bg-subtle var(--tm-wavy-speed) ease-in-out infinite;
-    will-change: background-position;
   }
 
   .tm-wavy-bg-subtle::before {
@@ -164,6 +162,9 @@
     opacity: 0.8;
   }
 }
+
+
+
 
 
 

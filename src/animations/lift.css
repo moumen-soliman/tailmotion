@@ -1,32 +1,20 @@
+/* Compatibility alias. tm-hover-lift is the canonical name and lives in
+   interactions.css; tm-lift-hover is kept for pre-0.6 markup.
+
+   Unlike the pre-0.6 version this is a transition, so releasing hover
+   mid-animation reverses smoothly instead of snapping, and it no longer forces
+   `display: inline-flex` on the element. */
+
 @layer utilities {
   .tm-lift-hover {
-    position: relative;
-    display: inline-flex;
-    transform: translateY(0) scale(1);
-    box-shadow: var(--tm-lift-shadow-from, 0 12px 30px rgba(15, 23, 42, 0));
-    transition: box-shadow 120ms ease-out;
-    will-change: transform, box-shadow;
+    transition-property: translate, box-shadow;
+    transition-duration: var(--tm-duration, 150ms);
+    transition-timing-function: var(--tm-easing, ease-out);
   }
 
   .tm-lift-hover:hover,
   .tm-lift-hover:focus-visible {
-    animation-name: tm-lift-hover;
-    animation-duration: var(--tm-duration, 320ms);
-    animation-delay: var(--tm-delay, 0ms);
-    animation-timing-function: var(--tm-easing, cubic-bezier(0.16, 1, 0.3, 1));
-    animation-iteration-count: var(--tm-iteration-count, 1);
-    animation-fill-mode: forwards;
-  }
-}
-
-@keyframes tm-lift-hover {
-  0% {
-    transform: translateY(0) scale(1);
-    box-shadow: var(--tm-lift-shadow-from, 0 12px 30px rgba(15, 23, 42, 0));
-  }
-
-  100% {
-    transform: translateY(-6px) scale(1.02);
-    box-shadow: var(--tm-lift-shadow-to, 0 20px 40px rgba(15, 23, 42, 0.35));
+    translate: 0 calc(var(--tm-lift-distance, 4px) * -1);
+    box-shadow: var(--tm-lift-shadow, 0 8px 24px -8px var(--tm-shadow-color));
   }
 }

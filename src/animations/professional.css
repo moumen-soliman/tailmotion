@@ -7,7 +7,6 @@
     animation-timing-function: var(--tm-easing, cubic-bezier(0.65, 0, 0.35, 1));
     animation-iteration-count: var(--tm-iteration-count, 1);
     animation-fill-mode: both;
-    will-change: clip-path, transform;
   }
 
   /* Unfold - elegant unfold from top */
@@ -19,7 +18,6 @@
     animation-iteration-count: var(--tm-iteration-count, 1);
     animation-fill-mode: both;
     transform-origin: top center;
-    will-change: transform, opacity;
   }
 
   /* Glide - smooth horizontal entrance */
@@ -30,7 +28,6 @@
     animation-timing-function: var(--tm-easing, cubic-bezier(0.22, 1, 0.36, 1));
     animation-iteration-count: var(--tm-iteration-count, 1);
     animation-fill-mode: both;
-    will-change: transform, opacity;
   }
 
   .tm-glide-right {
@@ -40,7 +37,6 @@
     animation-timing-function: var(--tm-easing, cubic-bezier(0.22, 1, 0.36, 1));
     animation-iteration-count: var(--tm-iteration-count, 1);
     animation-fill-mode: both;
-    will-change: transform, opacity;
   }
 
   /* Scale Fade - subtle scale with fade for cards */
@@ -51,7 +47,6 @@
     animation-timing-function: var(--tm-easing, cubic-bezier(0.25, 0.46, 0.45, 0.94));
     animation-iteration-count: var(--tm-iteration-count, 1);
     animation-fill-mode: both;
-    will-change: transform, opacity;
   }
 
   /* Rise - elegant rise with subtle rotation */
@@ -62,18 +57,20 @@
     animation-timing-function: var(--tm-easing, cubic-bezier(0.16, 1, 0.3, 1));
     animation-iteration-count: var(--tm-iteration-count, 1);
     animation-fill-mode: both;
-    will-change: transform, opacity;
   }
 
-  /* Stagger container for children */
+  /* Stagger container. Children enter in DOM order, --tm-stagger-step apart
+     (100ms by default). Group siblings semantically -- title, description,
+     actions -- so the sequence reads as hierarchy rather than a queue. */
   .tm-stagger > * {
     animation-name: tm-stagger-item;
-    animation-duration: var(--tm-duration, 500ms);
-    animation-delay: calc(var(--tm-delay, 0ms) + var(--tm-stagger-index, 0) * 80ms);
+    animation-duration: var(--tm-duration, 260ms);
+    animation-delay: calc(
+      var(--tm-delay, 0ms) + var(--tm-stagger-index, 0) * var(--tm-stagger-step, 100ms)
+    );
     animation-timing-function: var(--tm-easing, cubic-bezier(0.25, 0.46, 0.45, 0.94));
     animation-iteration-count: var(--tm-iteration-count, 1);
     animation-fill-mode: both;
-    will-change: transform, opacity;
   }
 
   /* @generate:stagger-indices:20 */
@@ -156,14 +153,14 @@
 }
 
 @keyframes tm-stagger-item {
-  0% {
-    transform: translateY(20px);
+  from {
     opacity: 0;
+    transform: translate3d(0, var(--tm-distance, 12px), 0);
   }
 
-  100% {
-    transform: translateY(0);
+  to {
     opacity: 1;
+    transform: translate3d(0, 0, 0);
   }
 }
 

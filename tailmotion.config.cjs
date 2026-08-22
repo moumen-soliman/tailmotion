@@ -42,6 +42,20 @@ const DEFAULT_TOKENS = {
     3: '3',
     infinite: 'infinite',
   },
+  stagger: {
+    50: '50ms',
+    75: '75ms',
+    100: '100ms',
+    150: '150ms',
+    200: '200ms',
+  },
+  distance: {
+    4: '4px',
+    8: '8px',
+    12: '12px',
+    20: '20px',
+    30: '30px',
+  },
 };
 
 const withImportant = (value) =>
@@ -110,6 +124,32 @@ module.exports = plugin.withOptions(
         },
         {
           values: tokens.repeat,
+          supportsNegativeValues: false,
+        }
+      );
+
+      matchUtilities(
+        {
+          'tm-stagger-step': (value) => ({
+            '--tm-stagger-step': withImportant(value),
+          }),
+        },
+        {
+          values: tokens.stagger,
+          supportsNegativeValues: false,
+        }
+      );
+
+      // Travel distance for every slide entrance and exit. --tm-exit-distance
+      // derives from this, so one utility retunes both.
+      matchUtilities(
+        {
+          'tm-distance': (value) => ({
+            '--tm-distance': withImportant(value),
+          }),
+        },
+        {
+          values: tokens.distance,
           supportsNegativeValues: false,
         }
       );

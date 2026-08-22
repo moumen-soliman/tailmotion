@@ -6,7 +6,6 @@
     animation-timing-function: var(--tm-easing, ease-in-out);
     animation-iteration-count: var(--tm-iteration-count, 1);
     animation-fill-mode: both;
-    will-change: transform;
   }
 }
 

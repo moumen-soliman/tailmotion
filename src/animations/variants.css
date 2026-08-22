@@ -16,25 +16,27 @@
   .hover\:tm-sway:hover { animation: tm-sway var(--tm-duration, 2500ms) var(--tm-easing, ease-in-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .hover\:tm-ripple:hover { animation: tm-ripple var(--tm-duration, 1500ms) var(--tm-easing, ease-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .hover\:tm-elastic:hover { animation: tm-elastic var(--tm-duration, 800ms) var(--tm-easing, cubic-bezier(0.68, -0.55, 0.265, 1.55)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
-  .hover\:tm-fade-in:hover { animation: tm-fade-in var(--tm-duration, 400ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
-  .hover\:tm-slide-up:hover { animation: tm-slide-up var(--tm-duration, 400ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
-  .hover\:tm-slide-down:hover { animation: tm-slide-down var(--tm-duration, 400ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
-  .hover\:tm-slide-left:hover { animation: tm-slide-left var(--tm-duration, 400ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
-  .hover\:tm-slide-right:hover { animation: tm-slide-right var(--tm-duration, 400ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .hover\:tm-fade-in:hover { animation: tm-fade-in var(--tm-duration, 250ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .hover\:tm-slide-up:hover { animation: tm-slide-block-start var(--tm-duration, 260ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .hover\:tm-slide-down:hover { animation: tm-slide-block-end var(--tm-duration, 260ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .hover\:tm-slide-left:hover { animation: tm-slide-inline-start var(--tm-duration, 260ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .hover\:tm-slide-right:hover { animation: tm-slide-inline-end var(--tm-duration, 260ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .hover\:tm-pop:hover { animation: tm-pop var(--tm-duration, 400ms) var(--tm-easing, cubic-bezier(0.34, 1.56, 0.64, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
-  .hover\:tm-drop:hover { animation: tm-drop var(--tm-duration, 500ms) var(--tm-easing, cubic-bezier(0.34, 1.56, 0.64, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
-  .hover\:tm-blur-in:hover { animation: tm-blur-in var(--tm-duration, 700ms) var(--tm-easing, cubic-bezier(0.23, 1, 0.32, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .hover\:tm-drop:hover { animation: tm-drop-in var(--tm-duration, 500ms) var(--tm-easing, cubic-bezier(0.34, 1.56, 0.64, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .hover\:tm-blur-in:hover { animation: tm-blur-in var(--tm-duration, 280ms) var(--tm-easing, cubic-bezier(0.23, 1, 0.32, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .hover\:tm-zoom-in:hover { animation: tm-zoom-in var(--tm-duration, 400ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .hover\:tm-zoom-out:hover { animation: tm-zoom-out var(--tm-duration, 400ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .hover\:tm-flip-x:hover { animation: tm-flip-x var(--tm-duration, 600ms) var(--tm-easing, ease-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .hover\:tm-flip-y:hover { animation: tm-flip-y var(--tm-duration, 600ms) var(--tm-easing, ease-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
-  .hover\:tm-rotate-in:hover { animation: tm-rotate-in var(--tm-duration, 500ms) var(--tm-easing, ease-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .hover\:tm-rotate-in:hover { animation: tm-rotate-in var(--tm-duration, 280ms) var(--tm-easing, ease-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .hover\:tm-reveal:hover { animation: tm-reveal var(--tm-duration, 700ms) var(--tm-easing, cubic-bezier(0.23, 1, 0.32, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .hover\:tm-unfold:hover { animation: tm-unfold var(--tm-duration, 800ms) var(--tm-easing, cubic-bezier(0.23, 1, 0.32, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .hover\:tm-glide:hover { animation: tm-glide var(--tm-duration, 600ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .hover\:tm-glide-right:hover { animation: tm-glide-right var(--tm-duration, 600ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .hover\:tm-scale-fade:hover { animation: tm-scale-fade var(--tm-duration, 500ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .hover\:tm-rise:hover { animation: tm-rise var(--tm-duration, 700ms) var(--tm-easing, cubic-bezier(0.23, 1, 0.32, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .hover\:tm-sparkle:hover { animation: tm-sparkle var(--tm-duration, 1400ms) var(--tm-easing, ease-in-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .hover\:tm-burst:hover { animation: tm-burst var(--tm-duration, 600ms) var(--tm-easing, cubic-bezier(0.22, 1, 0.36, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
 
   /* ========================================
      FOCUS VARIANTS
@@ -44,9 +46,9 @@
   .focus\:tm-shake:focus { animation: tm-shake var(--tm-duration, 500ms) var(--tm-easing, ease-in-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .focus\:tm-glow:focus { animation: tm-glow var(--tm-duration, 1500ms) var(--tm-easing, ease-in-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .focus\:tm-pop:focus { animation: tm-pop var(--tm-duration, 400ms) var(--tm-easing, cubic-bezier(0.34, 1.56, 0.64, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
-  .focus\:tm-blur-in:focus { animation: tm-blur-in var(--tm-duration, 700ms) var(--tm-easing, cubic-bezier(0.23, 1, 0.32, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
-  .focus\:tm-fade-in:focus { animation: tm-fade-in var(--tm-duration, 400ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
-  .focus\:tm-slide-up:focus { animation: tm-slide-up var(--tm-duration, 400ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .focus\:tm-blur-in:focus { animation: tm-blur-in var(--tm-duration, 280ms) var(--tm-easing, cubic-bezier(0.23, 1, 0.32, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .focus\:tm-fade-in:focus { animation: tm-fade-in var(--tm-duration, 250ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .focus\:tm-slide-up:focus { animation: tm-slide-block-start var(--tm-duration, 260ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
 
   /* ========================================
      ACTIVE VARIANTS
@@ -55,6 +57,16 @@
   .active\:tm-shake:active { animation: tm-shake var(--tm-duration, 500ms) var(--tm-easing, ease-in-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .active\:tm-pop:active { animation: tm-pop var(--tm-duration, 400ms) var(--tm-easing, cubic-bezier(0.34, 1.56, 0.64, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .active\:tm-elastic:active { animation: tm-elastic var(--tm-duration, 800ms) var(--tm-easing, cubic-bezier(0.68, -0.55, 0.265, 1.55)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .active\:tm-fade-in:active { animation: tm-fade-in var(--tm-duration, 250ms) var(--tm-easing, ease-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .active\:tm-scale-in:active { animation: tm-scale-in var(--tm-duration, 220ms) var(--tm-easing, cubic-bezier(0.22, 1, 0.36, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .active\:tm-blur-in:active { animation: tm-blur-in var(--tm-duration, 280ms) var(--tm-easing, ease-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .active\:tm-slide-block-start:active { animation: tm-slide-block-start var(--tm-duration, 260ms) var(--tm-easing, cubic-bezier(0.22, 1, 0.36, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .active\:tm-slide-block-end:active { animation: tm-slide-block-end var(--tm-duration, 260ms) var(--tm-easing, cubic-bezier(0.22, 1, 0.36, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .active\:tm-slide-inline-start:active { animation: tm-slide-inline-start var(--tm-duration, 260ms) var(--tm-easing, cubic-bezier(0.22, 1, 0.36, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .active\:tm-slide-inline-end:active { animation: tm-slide-inline-end var(--tm-duration, 260ms) var(--tm-easing, cubic-bezier(0.22, 1, 0.36, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .active\:tm-wiggle:active { animation: tm-wiggle var(--tm-duration, 500ms) var(--tm-easing, ease-in-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .active\:tm-sparkle:active { animation: tm-sparkle var(--tm-duration, 1400ms) var(--tm-easing, ease-in-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .active\:tm-burst:active { animation: tm-burst var(--tm-duration, 600ms) var(--tm-easing, cubic-bezier(0.22, 1, 0.36, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
 
   /* ========================================
      GROUP-HOVER VARIANTS
@@ -65,10 +77,10 @@
   .group:hover .group-hover\:tm-shake { animation: tm-shake var(--tm-duration, 500ms) var(--tm-easing, ease-in-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .group:hover .group-hover\:tm-wiggle { animation: tm-wiggle var(--tm-duration, 600ms) var(--tm-easing, ease-in-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .group:hover .group-hover\:tm-glow { animation: tm-glow var(--tm-duration, 1500ms) var(--tm-easing, ease-in-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
-  .group:hover .group-hover\:tm-fade-in { animation: tm-fade-in var(--tm-duration, 400ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
-  .group:hover .group-hover\:tm-slide-up { animation: tm-slide-up var(--tm-duration, 400ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .group:hover .group-hover\:tm-fade-in { animation: tm-fade-in var(--tm-duration, 250ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .group:hover .group-hover\:tm-slide-up { animation: tm-slide-block-start var(--tm-duration, 260ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .group:hover .group-hover\:tm-pop { animation: tm-pop var(--tm-duration, 400ms) var(--tm-easing, cubic-bezier(0.34, 1.56, 0.64, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
-  .group:hover .group-hover\:tm-blur-in { animation: tm-blur-in var(--tm-duration, 700ms) var(--tm-easing, cubic-bezier(0.23, 1, 0.32, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .group:hover .group-hover\:tm-blur-in { animation: tm-blur-in var(--tm-duration, 280ms) var(--tm-easing, cubic-bezier(0.23, 1, 0.32, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .group:hover .group-hover\:tm-reveal { animation: tm-reveal var(--tm-duration, 700ms) var(--tm-easing, cubic-bezier(0.23, 1, 0.32, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .group:hover .group-hover\:tm-zoom-in { animation: tm-zoom-in var(--tm-duration, 400ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
 
@@ -85,9 +97,81 @@
     .motion-safe\:tm-bounce { animation: tm-bounce var(--tm-duration, 600ms) var(--tm-easing, cubic-bezier(0.34, 1.56, 0.64, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
     .motion-safe\:tm-pulse { animation: tm-pulse var(--tm-duration, 1200ms) var(--tm-easing, ease-in-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
     .motion-safe\:tm-shake { animation: tm-shake var(--tm-duration, 500ms) var(--tm-easing, ease-in-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
-    .motion-safe\:tm-fade-in { animation: tm-fade-in var(--tm-duration, 400ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
-    .motion-safe\:tm-slide-up { animation: tm-slide-up var(--tm-duration, 400ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
-    .motion-safe\:tm-blur-in { animation: tm-blur-in var(--tm-duration, 700ms) var(--tm-easing, cubic-bezier(0.23, 1, 0.32, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+    .motion-safe\:tm-fade-in { animation: tm-fade-in var(--tm-duration, 250ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+    .motion-safe\:tm-slide-up { animation: tm-slide-block-start var(--tm-duration, 260ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+    .motion-safe\:tm-blur-in { animation: tm-blur-in var(--tm-duration, 280ms) var(--tm-easing, cubic-bezier(0.23, 1, 0.32, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  }
+
+  /* ========================================
+     FOCUS-VISIBLE VARIANTS
+     Keyboard focus only. Always pair these with a visible focus ring: motion
+     is supplementary feedback, never the sole indicator of a state.
+     ======================================== */
+  .focus-visible\:tm-glow:focus-visible { animation: tm-glow var(--tm-duration, 1600ms) var(--tm-easing, ease-in-out) var(--tm-delay, 0ms) var(--tm-iteration-count, infinite) both; }
+  .focus-visible\:tm-pulse:focus-visible { animation: tm-pulse var(--tm-duration, 1400ms) var(--tm-easing, ease-in-out) var(--tm-delay, 0ms) var(--tm-iteration-count, infinite) both; }
+  .focus-visible\:tm-ripple:focus-visible { animation: tm-ripple var(--tm-duration, 1800ms) var(--tm-easing, ease-out) var(--tm-delay, 0ms) var(--tm-iteration-count, infinite) both; }
+  .focus-visible\:tm-pop:focus-visible { animation: tm-pop var(--tm-duration, 380ms) var(--tm-easing, cubic-bezier(0.18, 0.89, 0.32, 1.28)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .focus-visible\:tm-shake:focus-visible { animation: tm-shake var(--tm-duration, 500ms) var(--tm-easing, ease-in-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .focus-visible\:tm-scale-in:focus-visible { animation: tm-scale-in var(--tm-duration, 220ms) var(--tm-easing, cubic-bezier(0.22, 1, 0.36, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+
+  /* ========================================
+     LOGICAL ENTRANCE + EXIT VARIANTS
+     ======================================== */
+  .hover\:tm-scale-in:hover { animation: tm-scale-in var(--tm-duration, 220ms) var(--tm-easing, cubic-bezier(0.22, 1, 0.36, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .hover\:tm-slide-block-start:hover { animation: tm-slide-block-start var(--tm-duration, 260ms) var(--tm-easing, cubic-bezier(0.22, 1, 0.36, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .hover\:tm-slide-block-end:hover { animation: tm-slide-block-end var(--tm-duration, 260ms) var(--tm-easing, cubic-bezier(0.22, 1, 0.36, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .hover\:tm-slide-inline-start:hover { animation: tm-slide-inline-start var(--tm-duration, 260ms) var(--tm-easing, cubic-bezier(0.22, 1, 0.36, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .hover\:tm-slide-inline-end:hover { animation: tm-slide-inline-end var(--tm-duration, 260ms) var(--tm-easing, cubic-bezier(0.22, 1, 0.36, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .hover\:tm-fade-out:hover { animation: tm-fade-out var(--tm-duration, 200ms) var(--tm-easing, ease-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .hover\:tm-scale-out:hover { animation: tm-scale-out var(--tm-duration, 180ms) var(--tm-easing, ease-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .hover\:tm-slide-block-out:hover { animation: tm-slide-block-out var(--tm-duration, 210ms) var(--tm-easing, ease-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .hover\:tm-slide-inline-out:hover { animation: tm-slide-inline-out var(--tm-duration, 210ms) var(--tm-easing, ease-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .hover\:tm-blur-out:hover { animation: tm-blur-out var(--tm-duration, 220ms) var(--tm-easing, ease-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+
+  .focus-visible\:tm-scale-in:focus-visible { animation: tm-scale-in var(--tm-duration, 220ms) var(--tm-easing, cubic-bezier(0.22, 1, 0.36, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .focus-visible\:tm-slide-block-start:focus-visible { animation: tm-slide-block-start var(--tm-duration, 260ms) var(--tm-easing, cubic-bezier(0.22, 1, 0.36, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .focus-visible\:tm-slide-block-end:focus-visible { animation: tm-slide-block-end var(--tm-duration, 260ms) var(--tm-easing, cubic-bezier(0.22, 1, 0.36, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .focus-visible\:tm-slide-inline-start:focus-visible { animation: tm-slide-inline-start var(--tm-duration, 260ms) var(--tm-easing, cubic-bezier(0.22, 1, 0.36, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .focus-visible\:tm-slide-inline-end:focus-visible { animation: tm-slide-inline-end var(--tm-duration, 260ms) var(--tm-easing, cubic-bezier(0.22, 1, 0.36, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .focus-visible\:tm-fade-out:focus-visible { animation: tm-fade-out var(--tm-duration, 200ms) var(--tm-easing, ease-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .focus-visible\:tm-scale-out:focus-visible { animation: tm-scale-out var(--tm-duration, 180ms) var(--tm-easing, ease-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .focus-visible\:tm-slide-block-out:focus-visible { animation: tm-slide-block-out var(--tm-duration, 210ms) var(--tm-easing, ease-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .focus-visible\:tm-slide-inline-out:focus-visible { animation: tm-slide-inline-out var(--tm-duration, 210ms) var(--tm-easing, ease-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .focus-visible\:tm-blur-out:focus-visible { animation: tm-blur-out var(--tm-duration, 220ms) var(--tm-easing, ease-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+
+  .group:hover .group-hover\:tm-scale-in { animation: tm-scale-in var(--tm-duration, 220ms) var(--tm-easing, cubic-bezier(0.22, 1, 0.36, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .group:hover .group-hover\:tm-slide-block-start { animation: tm-slide-block-start var(--tm-duration, 260ms) var(--tm-easing, cubic-bezier(0.22, 1, 0.36, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .group:hover .group-hover\:tm-slide-block-end { animation: tm-slide-block-end var(--tm-duration, 260ms) var(--tm-easing, cubic-bezier(0.22, 1, 0.36, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .group:hover .group-hover\:tm-slide-inline-start { animation: tm-slide-inline-start var(--tm-duration, 260ms) var(--tm-easing, cubic-bezier(0.22, 1, 0.36, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .group:hover .group-hover\:tm-slide-inline-end { animation: tm-slide-inline-end var(--tm-duration, 260ms) var(--tm-easing, cubic-bezier(0.22, 1, 0.36, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .group:hover .group-hover\:tm-fade-out { animation: tm-fade-out var(--tm-duration, 200ms) var(--tm-easing, ease-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .group:hover .group-hover\:tm-scale-out { animation: tm-scale-out var(--tm-duration, 180ms) var(--tm-easing, ease-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .group:hover .group-hover\:tm-slide-block-out { animation: tm-slide-block-out var(--tm-duration, 210ms) var(--tm-easing, ease-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .group:hover .group-hover\:tm-slide-inline-out { animation: tm-slide-inline-out var(--tm-duration, 210ms) var(--tm-easing, ease-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .group:hover .group-hover\:tm-blur-out { animation: tm-blur-out var(--tm-duration, 220ms) var(--tm-easing, ease-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+
+  .focus-within\:tm-scale-in:focus-within { animation: tm-scale-in var(--tm-duration, 220ms) var(--tm-easing, cubic-bezier(0.22, 1, 0.36, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .focus-within\:tm-slide-block-start:focus-within { animation: tm-slide-block-start var(--tm-duration, 260ms) var(--tm-easing, cubic-bezier(0.22, 1, 0.36, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .focus-within\:tm-slide-block-end:focus-within { animation: tm-slide-block-end var(--tm-duration, 260ms) var(--tm-easing, cubic-bezier(0.22, 1, 0.36, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .focus-within\:tm-slide-inline-start:focus-within { animation: tm-slide-inline-start var(--tm-duration, 260ms) var(--tm-easing, cubic-bezier(0.22, 1, 0.36, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .focus-within\:tm-slide-inline-end:focus-within { animation: tm-slide-inline-end var(--tm-duration, 260ms) var(--tm-easing, cubic-bezier(0.22, 1, 0.36, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .focus-within\:tm-fade-out:focus-within { animation: tm-fade-out var(--tm-duration, 200ms) var(--tm-easing, ease-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .focus-within\:tm-scale-out:focus-within { animation: tm-scale-out var(--tm-duration, 180ms) var(--tm-easing, ease-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .focus-within\:tm-slide-block-out:focus-within { animation: tm-slide-block-out var(--tm-duration, 210ms) var(--tm-easing, ease-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .focus-within\:tm-slide-inline-out:focus-within { animation: tm-slide-inline-out var(--tm-duration, 210ms) var(--tm-easing, ease-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .focus-within\:tm-blur-out:focus-within { animation: tm-blur-out var(--tm-duration, 220ms) var(--tm-easing, ease-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .motion-safe\:tm-scale-in { animation: tm-scale-in var(--tm-duration, 220ms) var(--tm-easing, cubic-bezier(0.22, 1, 0.36, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+    .motion-safe\:tm-slide-block-start { animation: tm-slide-block-start var(--tm-duration, 260ms) var(--tm-easing, cubic-bezier(0.22, 1, 0.36, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+    .motion-safe\:tm-slide-block-end { animation: tm-slide-block-end var(--tm-duration, 260ms) var(--tm-easing, cubic-bezier(0.22, 1, 0.36, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+    .motion-safe\:tm-slide-inline-start { animation: tm-slide-inline-start var(--tm-duration, 260ms) var(--tm-easing, cubic-bezier(0.22, 1, 0.36, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+    .motion-safe\:tm-slide-inline-end { animation: tm-slide-inline-end var(--tm-duration, 260ms) var(--tm-easing, cubic-bezier(0.22, 1, 0.36, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+    .motion-safe\:tm-fade-out { animation: tm-fade-out var(--tm-duration, 200ms) var(--tm-easing, ease-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+    .motion-safe\:tm-scale-out { animation: tm-scale-out var(--tm-duration, 180ms) var(--tm-easing, ease-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+    .motion-safe\:tm-slide-block-out { animation: tm-slide-block-out var(--tm-duration, 210ms) var(--tm-easing, ease-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+    .motion-safe\:tm-slide-inline-out { animation: tm-slide-inline-out var(--tm-duration, 210ms) var(--tm-easing, ease-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+    .motion-safe\:tm-blur-out { animation: tm-blur-out var(--tm-duration, 220ms) var(--tm-easing, ease-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   }
 }
 
@@ -102,13 +186,13 @@
   .sm\:tm-shake { animation: tm-shake var(--tm-duration, 500ms) var(--tm-easing, ease-in-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .sm\:tm-wiggle { animation: tm-wiggle var(--tm-duration, 600ms) var(--tm-easing, ease-in-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .sm\:tm-glow { animation: tm-glow var(--tm-duration, 1500ms) var(--tm-easing, ease-in-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
-  .sm\:tm-fade-in { animation: tm-fade-in var(--tm-duration, 400ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
-  .sm\:tm-slide-up { animation: tm-slide-up var(--tm-duration, 400ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
-  .sm\:tm-slide-down { animation: tm-slide-down var(--tm-duration, 400ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
-  .sm\:tm-slide-left { animation: tm-slide-left var(--tm-duration, 400ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
-  .sm\:tm-slide-right { animation: tm-slide-right var(--tm-duration, 400ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .sm\:tm-fade-in { animation: tm-fade-in var(--tm-duration, 250ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .sm\:tm-slide-up { animation: tm-slide-block-start var(--tm-duration, 260ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .sm\:tm-slide-down { animation: tm-slide-block-end var(--tm-duration, 260ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .sm\:tm-slide-left { animation: tm-slide-inline-start var(--tm-duration, 260ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .sm\:tm-slide-right { animation: tm-slide-inline-end var(--tm-duration, 260ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .sm\:tm-pop { animation: tm-pop var(--tm-duration, 400ms) var(--tm-easing, cubic-bezier(0.34, 1.56, 0.64, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
-  .sm\:tm-blur-in { animation: tm-blur-in var(--tm-duration, 700ms) var(--tm-easing, cubic-bezier(0.23, 1, 0.32, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .sm\:tm-blur-in { animation: tm-blur-in var(--tm-duration, 280ms) var(--tm-easing, cubic-bezier(0.23, 1, 0.32, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .sm\:tm-zoom-in { animation: tm-zoom-in var(--tm-duration, 400ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .sm\:tm-reveal { animation: tm-reveal var(--tm-duration, 700ms) var(--tm-easing, cubic-bezier(0.23, 1, 0.32, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .sm\:tm-glide { animation: tm-glide var(--tm-duration, 600ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
@@ -119,10 +203,10 @@
   .sm\:hover\:tm-pulse:hover { animation: tm-pulse var(--tm-duration, 1200ms) var(--tm-easing, ease-in-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .sm\:hover\:tm-shake:hover { animation: tm-shake var(--tm-duration, 500ms) var(--tm-easing, ease-in-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .sm\:hover\:tm-wiggle:hover { animation: tm-wiggle var(--tm-duration, 600ms) var(--tm-easing, ease-in-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
-  .sm\:hover\:tm-fade-in:hover { animation: tm-fade-in var(--tm-duration, 400ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
-  .sm\:hover\:tm-slide-up:hover { animation: tm-slide-up var(--tm-duration, 400ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .sm\:hover\:tm-fade-in:hover { animation: tm-fade-in var(--tm-duration, 250ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .sm\:hover\:tm-slide-up:hover { animation: tm-slide-block-start var(--tm-duration, 260ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .sm\:hover\:tm-pop:hover { animation: tm-pop var(--tm-duration, 400ms) var(--tm-easing, cubic-bezier(0.34, 1.56, 0.64, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
-  .sm\:hover\:tm-blur-in:hover { animation: tm-blur-in var(--tm-duration, 700ms) var(--tm-easing, cubic-bezier(0.23, 1, 0.32, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .sm\:hover\:tm-blur-in:hover { animation: tm-blur-in var(--tm-duration, 280ms) var(--tm-easing, cubic-bezier(0.23, 1, 0.32, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .sm\:hover\:tm-zoom-in:hover { animation: tm-zoom-in var(--tm-duration, 400ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
 }
 
@@ -137,13 +221,13 @@
   .md\:tm-shake { animation: tm-shake var(--tm-duration, 500ms) var(--tm-easing, ease-in-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .md\:tm-wiggle { animation: tm-wiggle var(--tm-duration, 600ms) var(--tm-easing, ease-in-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .md\:tm-glow { animation: tm-glow var(--tm-duration, 1500ms) var(--tm-easing, ease-in-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
-  .md\:tm-fade-in { animation: tm-fade-in var(--tm-duration, 400ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
-  .md\:tm-slide-up { animation: tm-slide-up var(--tm-duration, 400ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
-  .md\:tm-slide-down { animation: tm-slide-down var(--tm-duration, 400ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
-  .md\:tm-slide-left { animation: tm-slide-left var(--tm-duration, 400ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
-  .md\:tm-slide-right { animation: tm-slide-right var(--tm-duration, 400ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .md\:tm-fade-in { animation: tm-fade-in var(--tm-duration, 250ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .md\:tm-slide-up { animation: tm-slide-block-start var(--tm-duration, 260ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .md\:tm-slide-down { animation: tm-slide-block-end var(--tm-duration, 260ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .md\:tm-slide-left { animation: tm-slide-inline-start var(--tm-duration, 260ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .md\:tm-slide-right { animation: tm-slide-inline-end var(--tm-duration, 260ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .md\:tm-pop { animation: tm-pop var(--tm-duration, 400ms) var(--tm-easing, cubic-bezier(0.34, 1.56, 0.64, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
-  .md\:tm-blur-in { animation: tm-blur-in var(--tm-duration, 700ms) var(--tm-easing, cubic-bezier(0.23, 1, 0.32, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .md\:tm-blur-in { animation: tm-blur-in var(--tm-duration, 280ms) var(--tm-easing, cubic-bezier(0.23, 1, 0.32, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .md\:tm-zoom-in { animation: tm-zoom-in var(--tm-duration, 400ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .md\:tm-reveal { animation: tm-reveal var(--tm-duration, 700ms) var(--tm-easing, cubic-bezier(0.23, 1, 0.32, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .md\:tm-glide { animation: tm-glide var(--tm-duration, 600ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
@@ -154,10 +238,10 @@
   .md\:hover\:tm-pulse:hover { animation: tm-pulse var(--tm-duration, 1200ms) var(--tm-easing, ease-in-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .md\:hover\:tm-shake:hover { animation: tm-shake var(--tm-duration, 500ms) var(--tm-easing, ease-in-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .md\:hover\:tm-wiggle:hover { animation: tm-wiggle var(--tm-duration, 600ms) var(--tm-easing, ease-in-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
-  .md\:hover\:tm-fade-in:hover { animation: tm-fade-in var(--tm-duration, 400ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
-  .md\:hover\:tm-slide-up:hover { animation: tm-slide-up var(--tm-duration, 400ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .md\:hover\:tm-fade-in:hover { animation: tm-fade-in var(--tm-duration, 250ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .md\:hover\:tm-slide-up:hover { animation: tm-slide-block-start var(--tm-duration, 260ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .md\:hover\:tm-pop:hover { animation: tm-pop var(--tm-duration, 400ms) var(--tm-easing, cubic-bezier(0.34, 1.56, 0.64, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
-  .md\:hover\:tm-blur-in:hover { animation: tm-blur-in var(--tm-duration, 700ms) var(--tm-easing, cubic-bezier(0.23, 1, 0.32, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .md\:hover\:tm-blur-in:hover { animation: tm-blur-in var(--tm-duration, 280ms) var(--tm-easing, cubic-bezier(0.23, 1, 0.32, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .md\:hover\:tm-zoom-in:hover { animation: tm-zoom-in var(--tm-duration, 400ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
 }
 
@@ -172,13 +256,13 @@
   .lg\:tm-shake { animation: tm-shake var(--tm-duration, 500ms) var(--tm-easing, ease-in-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .lg\:tm-wiggle { animation: tm-wiggle var(--tm-duration, 600ms) var(--tm-easing, ease-in-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .lg\:tm-glow { animation: tm-glow var(--tm-duration, 1500ms) var(--tm-easing, ease-in-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
-  .lg\:tm-fade-in { animation: tm-fade-in var(--tm-duration, 400ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
-  .lg\:tm-slide-up { animation: tm-slide-up var(--tm-duration, 400ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
-  .lg\:tm-slide-down { animation: tm-slide-down var(--tm-duration, 400ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
-  .lg\:tm-slide-left { animation: tm-slide-left var(--tm-duration, 400ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
-  .lg\:tm-slide-right { animation: tm-slide-right var(--tm-duration, 400ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .lg\:tm-fade-in { animation: tm-fade-in var(--tm-duration, 250ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .lg\:tm-slide-up { animation: tm-slide-block-start var(--tm-duration, 260ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .lg\:tm-slide-down { animation: tm-slide-block-end var(--tm-duration, 260ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .lg\:tm-slide-left { animation: tm-slide-inline-start var(--tm-duration, 260ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .lg\:tm-slide-right { animation: tm-slide-inline-end var(--tm-duration, 260ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .lg\:tm-pop { animation: tm-pop var(--tm-duration, 400ms) var(--tm-easing, cubic-bezier(0.34, 1.56, 0.64, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
-  .lg\:tm-blur-in { animation: tm-blur-in var(--tm-duration, 700ms) var(--tm-easing, cubic-bezier(0.23, 1, 0.32, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .lg\:tm-blur-in { animation: tm-blur-in var(--tm-duration, 280ms) var(--tm-easing, cubic-bezier(0.23, 1, 0.32, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .lg\:tm-zoom-in { animation: tm-zoom-in var(--tm-duration, 400ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .lg\:tm-reveal { animation: tm-reveal var(--tm-duration, 700ms) var(--tm-easing, cubic-bezier(0.23, 1, 0.32, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .lg\:tm-glide { animation: tm-glide var(--tm-duration, 600ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
@@ -189,10 +273,10 @@
   .lg\:hover\:tm-pulse:hover { animation: tm-pulse var(--tm-duration, 1200ms) var(--tm-easing, ease-in-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .lg\:hover\:tm-shake:hover { animation: tm-shake var(--tm-duration, 500ms) var(--tm-easing, ease-in-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .lg\:hover\:tm-wiggle:hover { animation: tm-wiggle var(--tm-duration, 600ms) var(--tm-easing, ease-in-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
-  .lg\:hover\:tm-fade-in:hover { animation: tm-fade-in var(--tm-duration, 400ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
-  .lg\:hover\:tm-slide-up:hover { animation: tm-slide-up var(--tm-duration, 400ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .lg\:hover\:tm-fade-in:hover { animation: tm-fade-in var(--tm-duration, 250ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .lg\:hover\:tm-slide-up:hover { animation: tm-slide-block-start var(--tm-duration, 260ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .lg\:hover\:tm-pop:hover { animation: tm-pop var(--tm-duration, 400ms) var(--tm-easing, cubic-bezier(0.34, 1.56, 0.64, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
-  .lg\:hover\:tm-blur-in:hover { animation: tm-blur-in var(--tm-duration, 700ms) var(--tm-easing, cubic-bezier(0.23, 1, 0.32, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .lg\:hover\:tm-blur-in:hover { animation: tm-blur-in var(--tm-duration, 280ms) var(--tm-easing, cubic-bezier(0.23, 1, 0.32, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .lg\:hover\:tm-zoom-in:hover { animation: tm-zoom-in var(--tm-duration, 400ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
 }
 
@@ -207,10 +291,10 @@
   .xl\:tm-shake { animation: tm-shake var(--tm-duration, 500ms) var(--tm-easing, ease-in-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .xl\:tm-wiggle { animation: tm-wiggle var(--tm-duration, 600ms) var(--tm-easing, ease-in-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .xl\:tm-glow { animation: tm-glow var(--tm-duration, 1500ms) var(--tm-easing, ease-in-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
-  .xl\:tm-fade-in { animation: tm-fade-in var(--tm-duration, 400ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
-  .xl\:tm-slide-up { animation: tm-slide-up var(--tm-duration, 400ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .xl\:tm-fade-in { animation: tm-fade-in var(--tm-duration, 250ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .xl\:tm-slide-up { animation: tm-slide-block-start var(--tm-duration, 260ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .xl\:tm-pop { animation: tm-pop var(--tm-duration, 400ms) var(--tm-easing, cubic-bezier(0.34, 1.56, 0.64, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
-  .xl\:tm-blur-in { animation: tm-blur-in var(--tm-duration, 700ms) var(--tm-easing, cubic-bezier(0.23, 1, 0.32, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .xl\:tm-blur-in { animation: tm-blur-in var(--tm-duration, 280ms) var(--tm-easing, cubic-bezier(0.23, 1, 0.32, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .xl\:tm-zoom-in { animation: tm-zoom-in var(--tm-duration, 400ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .xl\:tm-reveal { animation: tm-reveal var(--tm-duration, 700ms) var(--tm-easing, cubic-bezier(0.23, 1, 0.32, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .xl\:tm-glide { animation: tm-glide var(--tm-duration, 600ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
@@ -221,7 +305,7 @@
   .xl\:hover\:tm-pulse:hover { animation: tm-pulse var(--tm-duration, 1200ms) var(--tm-easing, ease-in-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .xl\:hover\:tm-shake:hover { animation: tm-shake var(--tm-duration, 500ms) var(--tm-easing, ease-in-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .xl\:hover\:tm-pop:hover { animation: tm-pop var(--tm-duration, 400ms) var(--tm-easing, cubic-bezier(0.34, 1.56, 0.64, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
-  .xl\:hover\:tm-blur-in:hover { animation: tm-blur-in var(--tm-duration, 700ms) var(--tm-easing, cubic-bezier(0.23, 1, 0.32, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .xl\:hover\:tm-blur-in:hover { animation: tm-blur-in var(--tm-duration, 280ms) var(--tm-easing, cubic-bezier(0.23, 1, 0.32, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .xl\:hover\:tm-zoom-in:hover { animation: tm-zoom-in var(--tm-duration, 400ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
 }
 
@@ -234,10 +318,10 @@
   .\32xl\:tm-spin { animation: tm-spin var(--tm-duration, 1000ms) var(--tm-easing, linear) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .\32xl\:tm-float { animation: tm-float var(--tm-duration, 3000ms) var(--tm-easing, ease-in-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .\32xl\:tm-shake { animation: tm-shake var(--tm-duration, 500ms) var(--tm-easing, ease-in-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
-  .\32xl\:tm-fade-in { animation: tm-fade-in var(--tm-duration, 400ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
-  .\32xl\:tm-slide-up { animation: tm-slide-up var(--tm-duration, 400ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .\32xl\:tm-fade-in { animation: tm-fade-in var(--tm-duration, 250ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .\32xl\:tm-slide-up { animation: tm-slide-block-start var(--tm-duration, 260ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .\32xl\:tm-pop { animation: tm-pop var(--tm-duration, 400ms) var(--tm-easing, cubic-bezier(0.34, 1.56, 0.64, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
-  .\32xl\:tm-blur-in { animation: tm-blur-in var(--tm-duration, 700ms) var(--tm-easing, cubic-bezier(0.23, 1, 0.32, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .\32xl\:tm-blur-in { animation: tm-blur-in var(--tm-duration, 280ms) var(--tm-easing, cubic-bezier(0.23, 1, 0.32, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .\32xl\:tm-zoom-in { animation: tm-zoom-in var(--tm-duration, 400ms) var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .\32xl\:tm-reveal { animation: tm-reveal var(--tm-duration, 700ms) var(--tm-easing, cubic-bezier(0.23, 1, 0.32, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   
@@ -245,5 +329,5 @@
   .\32xl\:hover\:tm-bounce:hover { animation: tm-bounce var(--tm-duration, 600ms) var(--tm-easing, cubic-bezier(0.34, 1.56, 0.64, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .\32xl\:hover\:tm-pulse:hover { animation: tm-pulse var(--tm-duration, 1200ms) var(--tm-easing, ease-in-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .\32xl\:hover\:tm-pop:hover { animation: tm-pop var(--tm-duration, 400ms) var(--tm-easing, cubic-bezier(0.34, 1.56, 0.64, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
-  .\32xl\:hover\:tm-blur-in:hover { animation: tm-blur-in var(--tm-duration, 700ms) var(--tm-easing, cubic-bezier(0.23, 1, 0.32, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .\32xl\:hover\:tm-blur-in:hover { animation: tm-blur-in var(--tm-duration, 280ms) var(--tm-easing, cubic-bezier(0.23, 1, 0.32, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
 }

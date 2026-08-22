@@ -6,7 +6,7 @@
     animation-timing-function: var(--tm-easing, cubic-bezier(0.45, 0.05, 0.55, 0.95));
     animation-iteration-count: var(--tm-iteration-count, infinite);
     animation-fill-mode: both;
-    will-change: transform, border-radius;
+    will-change: transform;
   }
 }
 

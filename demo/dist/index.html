@@ -1,25 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TailMotion - Motions built with CSS</title>
+    <title>TailMotion — Motion that speaks Tailwind</title>
     <meta
       name="description"
-      content="TailMotion gives you ready-made motion utilities. Drop a class, get smooth animation fully compatible with Tailwind variants."
+      content="Polished CSS animations for Tailwind. One class, zero runtime, framework agnostic, reduced-motion ready."
     />
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="apple-touch-icon" href="/favicon.ico" />
+    <meta property="og:title" content="TailMotion — Motion that speaks Tailwind" />
     <meta property="og:image" content="/og.png" />
     <meta
       property="og:description"
-      content="TailMotion gives you ready-made motion utilities. Drop a class, get smooth animation fully compatible with Tailwind variants."
+      content="Polished CSS animations for Tailwind. One class, zero runtime, framework agnostic, reduced-motion ready."
     />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content="/og.png" />
     <meta
       name="twitter:description"
-      content="TailMotion gives you ready-made motion utilities. Drop a class, get smooth animation fully compatible with Tailwind variants."
+      content="Polished CSS animations for Tailwind. One class, zero runtime, framework agnostic, reduced-motion ready."
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -28,55 +29,13 @@
       rel="stylesheet"
     />
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        darkMode: 'class',
-        theme: {
-          extend: {
-            fontFamily: {
-              sans: ['Geist', 'system-ui', 'sans-serif'],
-              mono: ['Geist Mono', 'monospace'],
-            },
-          },
-        },
-      };
-    </script>
-    <style>
-      .logo-badge {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        padding: 6px;
-        border-radius: 0.375rem;
-        background: linear-gradient(120deg, #94b9ff, #cdffd8, #94b9ff);
-        background-size: 220% 220%;
-        animation: logoGradientMove 8s ease infinite;
-        box-shadow: 0 12px 30px rgba(148, 185, 255, 0.25);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-      }
-
-      .logo-badge img {
-        width: 100px;
-        height: 30px;
-        display: block;
-      }
-
-      @keyframes logoGradientMove {
-        0% {
-          background-position: 0% 50%;
-        }
-        50% {
-          background-position: 100% 50%;
-        }
-        100% {
-          background-position: 0% 50%;
-        }
-      }
-    </style>
-    <script type="module" crossorigin src="/assets/index-DE2fAMdP.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-D3YGaHtT.css">
+    <script src="/tailwind-config.js"></script>
+    <link rel="stylesheet" href="/site.css" />
+    <script type="module" crossorigin src="/assets/main-3swlXx-a.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/tailmotion-BqMmkyUk.js">
+    <link rel="stylesheet" crossorigin href="/assets/tailmotion-lQqEM2yH.css">
   </head>
-  <body class="bg-zinc-950 text-zinc-400 font-sans antialiased min-h-screen">
+  <body class="bg-page font-sans text-body text-ink-muted antialiased">
     <div id="root"></div>
   </body>
 </html>
