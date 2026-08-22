@@ -1,0 +1,104 @@
+/* --------------------------------------------------------------------------
+   Interruptible interaction utilities.
+
+   Everything here is built from transitions, not keyframes: press, hover and
+   toggle states retarget mid-flight when the user changes their mind, where a
+   replayed keyframe would snap or restart. Frequently triggered states stay at
+   or below 150ms.
+
+   None of these classes promote an element to its own compositing layer. Add
+   tm-gpu where you have measured first-frame stutter.
+   -------------------------------------------------------------------------- */
+
+@layer utilities {
+  /* Tactile press feedback. */
+  .tm-press {
+    transition-property: scale;
+    transition-duration: var(--tm-duration, 150ms);
+    transition-timing-function: var(--tm-easing, ease-out);
+  }
+
+  .tm-press:active:not(:disabled):not([aria-disabled="true"]) {
+    scale: var(--tm-press-scale, 0.96);
+  }
+
+  /* Rise with a shadow on hover or keyboard focus. */
+  .tm-hover-lift {
+    transition-property: translate, box-shadow;
+    transition-duration: var(--tm-duration, 150ms);
+    transition-timing-function: var(--tm-easing, ease-out);
+  }
+
+  .tm-hover-lift:hover,
+  .tm-hover-lift:focus-visible {
+    translate: 0 calc(var(--tm-lift-distance, 4px) * -1);
+    box-shadow: var(--tm-lift-shadow, 0 8px 24px -8px var(--tm-shadow-color));
+  }
+
+  /* Grow slightly on hover or keyboard focus. */
+  .tm-hover-scale {
+    transition-property: scale;
+    transition-duration: var(--tm-duration, 150ms);
+    transition-timing-function: var(--tm-easing, ease-out);
+  }
+
+  .tm-hover-scale:hover,
+  .tm-hover-scale:focus-visible {
+    scale: var(--tm-hover-scale, 1.04);
+  }
+
+  /* Cross-fade between two glyphs. Both children stay in the DOM, so the
+     outgoing icon animates out as cleanly as the incoming one animates in.
+
+     <button class="tm-icon-swap" aria-pressed="false">
+       <svg><!-- shown when aria-pressed is false --></svg>
+       <svg><!-- shown when aria-pressed is true --></svg>
+     </button>
+
+     The swapped state is read from real component state, never a parallel
+     flag: .tm-swapped, [data-tm-swap="on"], aria-pressed, aria-expanded or
+     aria-checked. Grid stacking is structural, not styling: the two children
+     share one cell so neither affects layout. */
+  .tm-icon-swap {
+    display: inline-grid;
+    grid-template-areas: "tm-icon-swap";
+    place-items: center;
+  }
+
+  .tm-icon-swap > * {
+    grid-area: tm-icon-swap;
+    transition-property: opacity, scale, filter;
+    transition-duration: var(--tm-duration, 300ms);
+    transition-timing-function: var(--tm-easing, cubic-bezier(0.2, 0, 0, 1));
+  }
+
+  .tm-icon-swap > * + * {
+    opacity: 0;
+    scale: 0.25;
+    filter: blur(4px);
+  }
+
+  .tm-icon-swap:is(
+    .tm-swapped,
+    [data-tm-swap="on"],
+    [aria-pressed="true"],
+    [aria-expanded="true"],
+    [aria-checked="true"]
+  ) > :first-child {
+    opacity: 0;
+    scale: 0.25;
+    filter: blur(4px);
+  }
+
+  .tm-icon-swap:is(
+    .tm-swapped,
+    [data-tm-swap="on"],
+    [aria-pressed="true"],
+    [aria-expanded="true"],
+    [aria-checked="true"]
+  ) > :first-child + * {
+    opacity: 1;
+    scale: 1;
+    filter: blur(0);
+  }
+}

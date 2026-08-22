@@ -1,17 +1,90 @@
+/* --------------------------------------------------------------------------
+   TailMotion base layer
+
+   Tailwind owns the interface design. TailMotion owns only the movement.
+
+   Timing tokens (--tm-duration, --tm-delay, --tm-easing,
+   --tm-iteration-count) are deliberately NOT given root values: every motion
+   class carries its own tuned default via `var(--tm-duration, 250ms)`, and a
+   root value would shadow all of them. Set them per element with the
+   tm-duration, tm-delay, tm-ease and tm-repeat utilities, the Tailwind
+   plugin, or an inline style.
+   -------------------------------------------------------------------------- */
+
 @layer base {
   :root,
   :host {
-    --tm-duration: 400ms;
-    --tm-delay: 0ms;
-    --tm-easing: cubic-bezier(0.4, 0, 0.2, 1);
-    --tm-iteration-count: 1;
+    /* Choreography */
+    --tm-stagger-step: 100ms;
+
+    /* Travel distance. Exits travel 70% of an entrance. */
+    --tm-distance: 12px;
+    --tm-exit-distance: calc(var(--tm-distance) * 0.7);
+
+    /* Sign of inline-axis motion: 1 in LTR, -1 in RTL. */
+    --tm-inline-flip: 1;
+
+    /* Effect colors. TailMotion ships no palette: every effect inherits the
+       consumer's color and every token can be replaced with an exact value,
+       alpha included. */
+    --tm-color: currentColor;
+    --tm-shadow-color: color-mix(in oklab, var(--tm-color) 25%, transparent);
+    --tm-glow-color: color-mix(in oklab, var(--tm-color) 45%, transparent);
+    --tm-outline-color: color-mix(in oklab, var(--tm-color) 40%, transparent);
+
+    /* The shimmer highlight keeps its color and its strength apart: browsers
+       drop gradient interpolation hints from any gradient holding a
+       color-mix() stop, so strength lives in --tm-shimmer-opacity instead. */
+    --tm-shimmer-color: var(--tm-color);
+    --tm-shimmer-opacity: 0.35;
   }
 
+  /* Safe fallback where color-mix() is unavailable. */
+  @supports not (color: color-mix(in oklab, currentColor, transparent)) {
+    :root,
+    :host {
+      --tm-shadow-color: var(--tm-color);
+      --tm-glow-color: var(--tm-color);
+      --tm-outline-color: var(--tm-color);
+    }
+  }
+
+  /* Mirror inline-axis motion in right-to-left contexts. */
+  [dir="ltr"] {
+    --tm-inline-flip: 1;
+  }
+
+  [dir="rtl"] {
+    --tm-inline-flip: -1;
+  }
+
+  @supports selector(:dir(rtl)) {
+    [dir="auto"]:dir(ltr) {
+      --tm-inline-flip: 1;
+    }
+
+    [dir="auto"]:dir(rtl) {
+      --tm-inline-flip: -1;
+    }
+  }
+
+  /* Motion is supplementary feedback. When it is not wanted, every animation
+     lands on its final state immediately instead of being skipped, so the
+     state a class communicates stays visible. Container classes that animate
+     unclassed children are listed explicitly. */
   @media (prefers-reduced-motion: reduce) {
-    [class*="tm-"] {
-      animation-duration: 0.01ms !important;
+    [class*="tm-"],
+    [class*="tm-"]::before,
+    [class*="tm-"]::after,
+    .tm-stagger > *,
+    .tm-count-reveal > *,
+    .tm-icon-swap > *,
+    .tm-text-flip-chars > span {
+      animation-duration: 1ms !important;
+      animation-delay: 0ms !important;
       animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
+      transition-duration: 1ms !important;
+      transition-delay: 0ms !important;
     }
   }
 }
@@ -24,6 +97,12 @@
   .tm-3d {
     transform-style: preserve-3d;
     backface-visibility: hidden;
+  }
+
+  /* Opt-in GPU promotion. TailMotion does not promote elements permanently on
+     its own: add this only where you have measured first-frame stutter. */
+  .tm-gpu {
+    will-change: transform, opacity, filter;
   }
 
   .tm-motion-paused {
@@ -174,5 +253,46 @@
   .tm-repeat-infinite {
     --tm-iteration-count: infinite;
   }
-}
 
+  /* Stagger step tokens, for .tm-stagger containers */
+  .tm-stagger-step-50 {
+    --tm-stagger-step: 50ms;
+  }
+
+  .tm-stagger-step-75 {
+    --tm-stagger-step: 75ms;
+  }
+
+  .tm-stagger-step-100 {
+    --tm-stagger-step: 100ms;
+  }
+
+  .tm-stagger-step-150 {
+    --tm-stagger-step: 150ms;
+  }
+
+  .tm-stagger-step-200 {
+    --tm-stagger-step: 200ms;
+  }
+
+  /* Travel distance tokens. Every slide and exit derives from --tm-distance. */
+  .tm-distance-4 {
+    --tm-distance: 4px;
+  }
+
+  .tm-distance-8 {
+    --tm-distance: 8px;
+  }
+
+  .tm-distance-12 {
+    --tm-distance: 12px;
+  }
+
+  .tm-distance-20 {
+    --tm-distance: 20px;
+  }
+
+  .tm-distance-30 {
+    --tm-distance: 30px;
+  }
+}

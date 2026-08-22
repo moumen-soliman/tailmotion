@@ -1,0 +1,282 @@
+import { useEffect, useRef, useState } from 'react';
+import { Bookmark, Trash2 } from 'lucide-react';
+import { initTextFlipElement } from 'tailmotion/utils';
+import { cx, CONTROL_TRANSITION } from './ui';
+
+/* --------------------------------------------------------------------------
+   Preview renderers.
+
+   Each one shows the class doing its actual job. The surrounding chrome stays
+   quiet so the motion is the only thing moving: no gradients, no glow, one
+   accent shape per box.
+   -------------------------------------------------------------------------- */
+
+const OBJECT = 'grid h-20 w-20 place-items-center rounded-lg bg-ink-strong text-page';
+const SURFACE = 'rounded-md border border-line bg-card-hover';
+
+/** The default object: one accent square carrying the class under test. */
+function DefaultPreview({ className }) {
+  return (
+    <div className={cx(OBJECT, className)}>
+      <span className="font-mono text-micro font-medium">tm</span>
+    </div>
+  );
+}
+
+function SurfacePreview({ className }) {
+  return <div className={cx('h-28 w-full max-w-xs rounded-md border border-line', className)} />;
+}
+
+function GlowPreview({ className }) {
+  // currentColor drives the halo, so the box carries the effect colour while
+  // the label stays readable against it.
+  return (
+    <div className={cx(OBJECT, className)} style={{ color: 'oklch(0.6973 0.1597 258)' }}>
+      <span className="font-mono text-micro font-medium text-page">tm</span>
+    </div>
+  );
+}
+
+function ShimmerPreview({ className }) {
+  return (
+    <div className="w-full max-w-xs space-y-2.5 text-ink-faint">
+      <div className={cx(SURFACE, 'h-3 w-2/3', className)} />
+      <div className={cx(SURFACE, 'h-3 w-full', className)} />
+      <div className={cx(SURFACE, 'h-3 w-4/5', className)} />
+    </div>
+  );
+}
+
+function ShimmerHoverPreview() {
+  return (
+    <button
+      type="button"
+      className="tm-shimmer-hover rounded-md bg-ink-strong px-6 py-2.5 text-label font-medium text-page"
+    >
+      Hover for sheen
+    </button>
+  );
+}
+
+function PressPreview({ name }) {
+  return (
+    <div className="flex flex-col items-center gap-3">
+      <button type="button" className={cx(`tm-${name}`, 'rounded-md bg-ink-strong px-6 py-2.5 text-label font-medium text-page')}>
+        Press and hold
+      </button>
+      <button
+        type="button"
+        disabled
+        className={cx(`tm-${name}`, 'rounded-md border border-line px-6 py-2.5 text-label text-ink-faint')}
+      >
+        Disabled, no scale
+      </button>
+    </div>
+  );
+}
+
+function CardPreview({ name }) {
+  return (
+    <button
+      type="button"
+      className={cx(
+        `tm-${name}`,
+        'w-44 rounded-md border border-line bg-card-hover p-4 text-start',
+        'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent'
+      )}
+      style={{ '--tm-lift-shadow': '0 16px 32px -16px oklch(1 0 0 / 0.24)' }}
+    >
+      <span className="block text-label font-medium text-ink">Hover or tab to me</span>
+      <span className="mt-0.5 block text-micro text-ink-muted">tm-{name}</span>
+    </button>
+  );
+}
+
+function IconSwapPreview() {
+  const [saved, setSaved] = useState(false);
+  return (
+    <div className="flex flex-col items-center gap-3">
+      <button
+        type="button"
+        aria-pressed={saved}
+        onClick={() => setSaved((v) => !v)}
+        className={cx(
+          'tm-icon-swap tm-press h-12 w-12 rounded-full border border-line bg-card-hover',
+          'hover:border-line-strong focus-visible:outline focus-visible:outline-2',
+          'focus-visible:outline-offset-2 focus-visible:outline-accent',
+          CONTROL_TRANSITION
+        )}
+      >
+        <Bookmark className="h-5 w-5 text-ink-muted" aria-hidden />
+        <Bookmark className="h-5 w-5 fill-ink-strong text-ink-strong" aria-hidden />
+      </button>
+      {/* The label is the state; the cross-fade only decorates it. */}
+      <span className="font-mono text-micro text-ink-muted">{saved ? 'Saved' : 'Not saved'}</span>
+    </div>
+  );
+}
+
+function LiquidPreview({ name }) {
+  return (
+    <button
+      type="button"
+      className={cx(`tm-${name}`, 'rounded-md border border-line-strong px-6 py-2.5 text-label text-ink hover:text-page')}
+      style={{ '--tm-liquid-color': 'oklch(0.9461 0 0)', '--tm-liquid-bg': 'transparent' }}
+    >
+      Hover me
+    </button>
+  );
+}
+
+function HoldDeletePreview() {
+  return (
+    <button
+      type="button"
+      className="tm-hold-delete text-label"
+      style={{
+        '--tm-hold-color': 'oklch(0.75 0.13 25)',
+        '--tm-hold-bg': 'oklch(0.28 0.09 25 / 0.5)',
+        '--tm-hold-success-bg': 'oklch(0.9461 0 0 / 0.9)',
+        '--tm-hold-fg': 'oklch(0 0 0)',
+      }}
+    >
+      <Trash2 className="h-4 w-4" aria-hidden />
+      Hold to delete
+    </button>
+  );
+}
+
+function StaggerPreview({ replayKey, step = '100ms' }) {
+  return (
+    <ul key={replayKey} className="tm-stagger w-full max-w-xs space-y-2" style={{ '--tm-stagger-step': step }}>
+      {['Title', 'Description', 'Actions'].map((label) => (
+        <li key={label} className={cx(SURFACE, 'px-3 py-2 text-micro text-ink-muted')}>
+          {label}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function CountRevealPreview({ replayKey }) {
+  return (
+    <div key={replayKey} className={cx(SURFACE, 'px-5 py-3')}>
+      <div className="tm-count-reveal font-mono text-title font-semibold text-ink-strong">
+        {['1', '2', ',', '3', '4', '5'].map((char, i) => (
+          // eslint-disable-next-line react/no-array-index-key
+          <span key={i} style={{ '--tm-stagger': i }}>
+            {char}
+          </span>
+        ))}
+      </div>
+      <p className="mt-1 text-micro text-ink-muted">Digits are markup, not a JS counter</p>
+    </div>
+  );
+}
+
+function TextFlipPreview({ name }) {
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const node = ref.current;
+    if (!node) return undefined;
+    const variant = name === 'text-flip' ? 'flip' : name === 'text-morph' ? 'morph' : 'rotate';
+    const rotator = initTextFlipElement(node, {
+      words: ['beautiful', 'amazing', 'polished'],
+      variant,
+      interval: 2200,
+    });
+    rotator?.start();
+    return () => rotator?.destroy();
+  }, [name]);
+
+  return (
+    <p className="text-center text-xl text-ink">
+      Motion that feels{' '}
+      <span ref={ref} className={cx(`tm-${name}`, 'text-accent')} />
+    </p>
+  );
+}
+
+function FlipPreview({ name }) {
+  const isButton = name === 'flip-btn';
+  return (
+    <div className="tm-perspective">
+      {isButton ? (
+        <button type="button" className="tm-flip-btn rounded-md bg-ink-strong px-6 py-2.5 text-label font-medium text-page">
+          <span className="tm-flip-front">Download</span>
+          <span className="tm-flip-back">Let&apos;s go</span>
+        </button>
+      ) : (
+        <div className="tm-flip-hover tm-3d h-20 w-20">
+          <div className={cx('tm-flip-front grid place-items-center rounded-lg bg-ink-strong text-page')}>
+            <span className="font-mono text-micro">front</span>
+          </div>
+          <div className={cx('tm-flip-back grid place-items-center rounded-lg border border-line-strong bg-card-hover')}>
+            <span className="font-mono text-micro text-ink-muted">back</span>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function AvatarGroupPreview() {
+  const people = ['AB', 'CD', 'EF', '+3'];
+  return (
+    <div className="tm-avatar-group" style={{ '--tm-tooltip-bg': 'oklch(0.1913 0 0)', '--tm-tooltip-color': 'oklch(0.9461 0 0)' }}>
+      {people.map((initials, i) => (
+        <div
+          key={initials}
+          className={cx(
+            'tm-avatar tm-avatar-ring grid h-10 w-10 place-items-center rounded-full',
+            'border border-line-strong font-mono text-micro',
+            i === people.length - 1 ? 'bg-card-hover text-ink-muted' : 'bg-ink-strong text-page'
+          )}
+          tabIndex={0}
+        >
+          {initials}
+          <span className="tm-avatar-tooltip">Teammate {initials}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+const RENDERERS = {
+  surface: SurfacePreview,
+  glow: GlowPreview,
+  shimmer: ShimmerPreview,
+  'shimmer-hover': ShimmerHoverPreview,
+  press: PressPreview,
+  card: CardPreview,
+  'icon-swap': IconSwapPreview,
+  liquid: LiquidPreview,
+  'hold-delete': HoldDeletePreview,
+  stagger: StaggerPreview,
+  'count-reveal': CountRevealPreview,
+  'text-flip': TextFlipPreview,
+  flip: FlipPreview,
+  'avatar-group': AvatarGroupPreview,
+};
+
+/**
+ * Renders the preview for one catalogue entry.
+ * `appliedClass` already includes any variant prefix the trigger needs.
+ */
+export function AnimationPreview({ entry, appliedClass, replayKey, staggerStep }) {
+  const Renderer = entry.preview ? RENDERERS[entry.preview] : null;
+
+  if (Renderer) {
+    return (
+      <Renderer
+        name={entry.name}
+        className={appliedClass}
+        replayKey={replayKey}
+        step={staggerStep}
+      />
+    );
+  }
+
+  return <DefaultPreview key={replayKey} className={appliedClass} />;
+}

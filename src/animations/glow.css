@@ -1,4 +1,8 @@
 @layer utilities {
+  /* Soft pulsing halo. The color comes from --tm-glow-color, which derives from
+     the element's own currentColor by default; set it to any value (alpha
+     included) to theme the effect. Never rely on the glow alone to signal a
+     state -- pair it with a label, icon or focus ring. */
   .tm-glow {
     animation-name: tm-glow;
     animation-duration: var(--tm-duration, 1600ms);
@@ -6,18 +10,16 @@
     animation-timing-function: var(--tm-easing, ease-in-out);
     animation-iteration-count: var(--tm-iteration-count, infinite);
     animation-fill-mode: both;
-    will-change: box-shadow;
   }
 }
 
 @keyframes tm-glow {
   0%,
   100% {
-    box-shadow: 0 0 0px rgba(59, 130, 246, 0.3);
+    box-shadow: 0 0 0 0 var(--tm-glow-color);
   }
 
   50% {
-    box-shadow: 0 0 18px rgba(59, 130, 246, 0.55);
+    box-shadow: 0 0 var(--tm-glow-size, 18px) var(--tm-glow-spread, 0) var(--tm-glow-color);
   }
 }
-

@@ -1,7 +1,10 @@
 @layer utilities {
+  /* Fade in. Opacity only, so it composes predictably: pair it with a Tailwind
+     transform utility, or reach for tm-slide-* / tm-scale-in when the entrance
+     should travel. */
   .tm-fade-in {
     animation-name: tm-fade-in;
-    animation-duration: var(--tm-duration, 450ms);
+    animation-duration: var(--tm-duration, 250ms);
     animation-delay: var(--tm-delay, 0ms);
     animation-timing-function: var(--tm-easing, ease-out);
     animation-iteration-count: var(--tm-iteration-count, 1);
@@ -10,14 +13,11 @@
 }
 
 @keyframes tm-fade-in {
-  0% {
+  from {
     opacity: 0;
-    transform: translateY(10px);
   }
 
-  100% {
+  to {
     opacity: 1;
-    transform: translateY(0);
   }
 }
-

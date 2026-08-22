@@ -1,25 +1,66 @@
+/* --------------------------------------------------------------------------
+   Sweeping highlight.
+
+   tm-shimmer runs continuously, for loading and skeleton states.
+   tm-shimmer-hover sweeps once per hover.
+
+   The highlight is --tm-shimmer-color (the element's own currentColor by
+   default, never a hardcoded white) at --tm-shimmer-opacity strength. Color
+   and strength are separate knobs because a gradient holding a color-mix()
+   stop loses its interpolation hint; keeping them apart lets the gradient
+   interpolate in oklab, so the fade to transparent stays even instead of
+   dipping toward gray.
+   -------------------------------------------------------------------------- */
+
 @layer utilities {
+  .tm-shimmer,
   .tm-shimmer-hover {
     position: relative;
     overflow: hidden;
     isolation: isolate;
   }
 
+  .tm-shimmer::after,
   .tm-shimmer-hover::after {
     content: '';
     position: absolute;
-    inset: -120%;
-    background: linear-gradient(
-      120deg,
-      transparent 20%,
-      rgba(255, 255, 255, 0.35) 45%,
-      transparent 70%
+    inset: 0;
+    background-image: linear-gradient(
+      var(--tm-shimmer-angle, 100deg),
+      transparent 35%,
+      var(--tm-shimmer-color) 50%,
+      transparent 65%
     );
-    transform: translateX(-60%) rotate(15deg);
-    opacity: 0;
     pointer-events: none;
-    will-change: transform, opacity;
     z-index: 1;
+  }
+
+  @supports (background-image: linear-gradient(in oklab, red, red)) {
+    .tm-shimmer::after,
+    .tm-shimmer-hover::after {
+      background-image: linear-gradient(
+        in oklab var(--tm-shimmer-angle, 100deg),
+        transparent 35%,
+        var(--tm-shimmer-color) 50%,
+        transparent 65%
+      );
+    }
+  }
+
+  .tm-shimmer::after {
+    opacity: var(--tm-shimmer-opacity, 0.35);
+    animation-name: tm-shimmer;
+    animation-duration: var(--tm-duration, 1600ms);
+    animation-delay: var(--tm-delay, 0ms);
+    animation-timing-function: var(--tm-easing, linear);
+    animation-iteration-count: var(--tm-iteration-count, infinite);
+    animation-fill-mode: both;
+    will-change: transform;
+  }
+
+  .tm-shimmer-hover::after {
+    opacity: 0;
+    transform: translate3d(-100%, 0, 0);
   }
 
   .tm-shimmer-hover:hover::after,
@@ -33,18 +74,28 @@
   }
 }
 
+@keyframes tm-shimmer {
+  from {
+    transform: translate3d(-100%, 0, 0);
+  }
+
+  to {
+    transform: translate3d(100%, 0, 0);
+  }
+}
+
 @keyframes tm-shimmer-hover {
   0% {
     opacity: 0;
-    transform: translateX(-80%) rotate(15deg);
+    transform: translate3d(-100%, 0, 0);
   }
 
   25% {
-    opacity: 0.8;
+    opacity: var(--tm-shimmer-opacity, 0.35);
   }
 
   100% {
     opacity: 0;
-    transform: translateX(80%) rotate(15deg);
+    transform: translate3d(100%, 0, 0);
   }
 }

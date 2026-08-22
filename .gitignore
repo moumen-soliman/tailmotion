@@ -6,3 +6,5 @@ yarn-error.log*
 
 
 
+# Reference skills installed via `npx skills add` (guidance only, not a dependency)
+.agents

@@ -1,0 +1,57 @@
+:root {
+  color-scheme: dark;
+}
+
+html {
+  /* Sticky nav is 3.5rem; keep anchor targets clear of it. */
+  scroll-padding-top: 4.5rem;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Simulated reduced motion, for the accessibility demo. Mirrors the rule
+   TailMotion ships under prefers-reduced-motion: reduce. */
+html[data-force-reduced-motion='on'] *,
+html[data-force-reduced-motion='on'] *::before,
+html[data-force-reduced-motion='on'] *::after {
+  animation-duration: 1ms !important;
+  animation-delay: 0ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 1ms !important;
+  transition-delay: 0ms !important;
+}
+
+::selection {
+  background: oklch(0.6973 0.1597 258 / 0.3);
+  color: oklch(1 0 0);
+}
+
+.logo img {
+  width: 92px;
+  height: 27px;
+  display: block;
+  /* The wordmark ships as black paths; invert it for the dark page. */
+  filter: invert(1);
+}
+
+@media (max-width: 380px) {
+  .logo img {
+    width: 74px;
+    height: 22px;
+  }
+}
+
+/* Horizontal rails scroll without a visible scrollbar, and the next chip
+   peeks past the edge so there is a cue that more exists. */
+.rail {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.rail::-webkit-scrollbar {
+  display: none;
+}

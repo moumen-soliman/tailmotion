@@ -6,7 +6,6 @@
     animation-timing-function: var(--tm-easing, cubic-bezier(0.68, -0.55, 0.265, 1.55));
     animation-iteration-count: var(--tm-iteration-count, 1);
     animation-fill-mode: both;
-    will-change: transform, opacity;
     transform-origin: top center;
   }
 
@@ -17,7 +16,6 @@
     animation-timing-function: var(--tm-easing, cubic-bezier(0.68, -0.55, 0.265, 1.55));
     animation-iteration-count: var(--tm-iteration-count, 1);
     animation-fill-mode: both;
-    will-change: transform, opacity;
     transform-origin: top center;
   }
 
@@ -28,7 +26,6 @@
     animation-timing-function: var(--tm-easing, cubic-bezier(0.68, -0.55, 0.265, 1.55));
     animation-iteration-count: var(--tm-iteration-count, 1);
     animation-fill-mode: both;
-    will-change: transform, opacity;
     transform-origin: center left;
   }
 
@@ -39,7 +36,6 @@
     animation-timing-function: var(--tm-easing, cubic-bezier(0.68, -0.55, 0.265, 1.55));
     animation-iteration-count: var(--tm-iteration-count, 1);
     animation-fill-mode: both;
-    will-change: transform, opacity;
     transform-origin: center left;
   }
 
@@ -50,7 +46,6 @@
     animation-timing-function: var(--tm-easing, cubic-bezier(0.68, -0.55, 0.265, 1.55));
     animation-iteration-count: var(--tm-iteration-count, 1);
     animation-fill-mode: both;
-    will-change: transform, opacity;
     transform-origin: center right;
   }
 
@@ -61,7 +56,6 @@
     animation-timing-function: var(--tm-easing, cubic-bezier(0.68, -0.55, 0.265, 1.55));
     animation-iteration-count: var(--tm-iteration-count, 1);
     animation-fill-mode: both;
-    will-change: transform, opacity;
     transform-origin: center right;
   }
 }
@@ -167,6 +161,9 @@
     opacity: 0;
   }
 }
+
+
+
 
 
 

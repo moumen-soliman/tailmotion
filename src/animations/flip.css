@@ -47,7 +47,6 @@
     align-items: center;
     justify-content: center;
     backface-visibility: hidden;
-    will-change: transform, opacity;
     transition-property: transform, opacity;
     transition-duration: var(--tm-duration, 400ms);
     transition-timing-function: var(--tm-easing, var(--tm-flip-spring));
@@ -172,7 +171,6 @@
     perspective: 1200px;
     transform-style: preserve-3d;
     backface-visibility: hidden;
-    will-change: transform;
   }
 
   .tm-flip-hover:hover,
@@ -214,7 +212,6 @@
     animation-timing-function: var(--tm-easing, ease-out);
     animation-iteration-count: var(--tm-iteration-count, 1);
     animation-fill-mode: both;
-    will-change: transform, opacity;
     backface-visibility: visible;
   }
 
@@ -226,7 +223,6 @@
     animation-timing-function: var(--tm-easing, ease-out);
     animation-iteration-count: var(--tm-iteration-count, 1);
     animation-fill-mode: both;
-    will-change: transform, opacity;
     backface-visibility: visible;
   }
 }

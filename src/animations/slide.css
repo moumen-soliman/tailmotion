@@ -1,85 +1,101 @@
+/* --------------------------------------------------------------------------
+   Slide entrances, named on the logical axes so they mirror themselves in
+   right-to-left contexts. Names describe the direction of travel:
+   tm-slide-block-start moves toward the block-start edge, entering from below.
+
+   Physical names (tm-slide-up/down/left/right) are kept as compatibility
+   aliases of the logical classes.
+
+   Travel distance comes from --tm-distance (12px), so tm-distance-* retunes
+   every slide at once.
+   -------------------------------------------------------------------------- */
+
 @layer utilities {
+  .tm-slide-block-start,
   .tm-slide-up {
-    animation-name: tm-slide-up;
-    animation-duration: var(--tm-duration, 500ms);
+    animation-name: tm-slide-block-start;
+    animation-duration: var(--tm-duration, 260ms);
     animation-delay: var(--tm-delay, 0ms);
-    animation-timing-function: var(--tm-easing, cubic-bezier(0.19, 1, 0.22, 1));
+    animation-timing-function: var(--tm-easing, cubic-bezier(0.22, 1, 0.36, 1));
     animation-iteration-count: var(--tm-iteration-count, 1);
     animation-fill-mode: both;
-    will-change: transform, opacity;
   }
 
+  .tm-slide-block-end,
   .tm-slide-down {
-    animation-name: tm-slide-down;
-    animation-duration: var(--tm-duration, 500ms);
+    animation-name: tm-slide-block-end;
+    animation-duration: var(--tm-duration, 260ms);
     animation-delay: var(--tm-delay, 0ms);
-    animation-timing-function: var(--tm-easing, cubic-bezier(0.19, 1, 0.22, 1));
+    animation-timing-function: var(--tm-easing, cubic-bezier(0.22, 1, 0.36, 1));
     animation-iteration-count: var(--tm-iteration-count, 1);
     animation-fill-mode: both;
-    will-change: transform, opacity;
   }
 
+  .tm-slide-inline-start,
   .tm-slide-left {
-    animation-name: tm-slide-left;
-    animation-duration: var(--tm-duration, 500ms);
+    animation-name: tm-slide-inline-start;
+    animation-duration: var(--tm-duration, 260ms);
     animation-delay: var(--tm-delay, 0ms);
-    animation-timing-function: var(--tm-easing, cubic-bezier(0.19, 1, 0.22, 1));
+    animation-timing-function: var(--tm-easing, cubic-bezier(0.22, 1, 0.36, 1));
     animation-iteration-count: var(--tm-iteration-count, 1);
     animation-fill-mode: both;
-    will-change: transform, opacity;
   }
 
+  .tm-slide-inline-end,
   .tm-slide-right {
-    animation-name: tm-slide-right;
-    animation-duration: var(--tm-duration, 500ms);
+    animation-name: tm-slide-inline-end;
+    animation-duration: var(--tm-duration, 260ms);
     animation-delay: var(--tm-delay, 0ms);
-    animation-timing-function: var(--tm-easing, cubic-bezier(0.19, 1, 0.22, 1));
+    animation-timing-function: var(--tm-easing, cubic-bezier(0.22, 1, 0.36, 1));
     animation-iteration-count: var(--tm-iteration-count, 1);
     animation-fill-mode: both;
-    will-change: transform, opacity;
   }
 }
 
-@keyframes tm-slide-up {
-  0% {
-    transform: translateY(30px);
+@keyframes tm-slide-block-start {
+  from {
     opacity: 0;
+    transform: translate3d(0, var(--tm-distance, 12px), 0);
   }
-  100% {
-    transform: translateY(0);
+
+  to {
     opacity: 1;
+    transform: translate3d(0, 0, 0);
   }
 }
 
-@keyframes tm-slide-down {
-  0% {
-    transform: translateY(-30px);
+@keyframes tm-slide-block-end {
+  from {
     opacity: 0;
+    transform: translate3d(0, calc(var(--tm-distance, 12px) * -1), 0);
   }
-  100% {
-    transform: translateY(0);
+
+  to {
     opacity: 1;
+    transform: translate3d(0, 0, 0);
   }
 }
 
-@keyframes tm-slide-left {
-  0% {
-    transform: translateX(30px);
+@keyframes tm-slide-inline-start {
+  from {
     opacity: 0;
+    transform: translate3d(calc(var(--tm-distance, 12px) * var(--tm-inline-flip, 1)), 0, 0);
   }
-  100% {
-    transform: translateX(0);
+
+  to {
     opacity: 1;
+    transform: translate3d(0, 0, 0);
   }
 }
 
-@keyframes tm-slide-right {
-  0% {
-    transform: translateX(-30px);
+@keyframes tm-slide-inline-end {
+  from {
     opacity: 0;
+    transform: translate3d(calc(var(--tm-distance, 12px) * var(--tm-inline-flip, 1) * -1), 0, 0);
   }
-  100% {
-    transform: translateX(0);
+
+  to {
     opacity: 1;
+    transform: translate3d(0, 0, 0);
   }
 }

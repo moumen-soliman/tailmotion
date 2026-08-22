@@ -1,54 +1,47 @@
 @layer utilities {
-  .tm-rotate-hover {
-    display: inline-flex;
-    will-change: transform;
-  }
-
-  .tm-rotate-hover:hover,
-  .tm-rotate-hover:focus-visible {
-    animation-name: tm-rotate-hover;
-    animation-duration: var(--tm-duration, 400ms);
+  /* Rotate entrance. */
+  .tm-rotate-in {
+    animation-name: tm-rotate-in;
+    animation-duration: var(--tm-duration, 280ms);
     animation-delay: var(--tm-delay, 0ms);
-    animation-timing-function: var(--tm-easing, ease-in-out);
+    animation-timing-function: var(--tm-easing, cubic-bezier(0.22, 1, 0.36, 1));
     animation-iteration-count: var(--tm-iteration-count, 1);
     animation-fill-mode: both;
   }
 
+  /* Hover and press rotation, as transitions so an early release retargets
+     instead of replaying. */
+  .tm-rotate-hover {
+    transition-property: rotate;
+    transition-duration: var(--tm-duration, 150ms);
+    transition-timing-function: var(--tm-easing, ease-out);
+  }
+
+  .tm-rotate-hover:hover,
+  .tm-rotate-hover:focus-visible {
+    rotate: var(--tm-rotate, 6deg);
+  }
+
   .tm-rotate-press {
-    display: inline-flex;
-    will-change: transform;
+    transition-property: scale, rotate;
+    transition-duration: var(--tm-duration, 150ms);
+    transition-timing-function: var(--tm-easing, ease-out);
   }
 
-  .tm-rotate-press:active {
-    animation-name: tm-rotate-press;
-    animation-duration: var(--tm-duration, 240ms);
-    animation-delay: var(--tm-delay, 0ms);
-    animation-timing-function: var(--tm-easing, ease-out);
-    animation-iteration-count: var(--tm-iteration-count, 1);
-    animation-fill-mode: forwards;
+  .tm-rotate-press:active:not(:disabled):not([aria-disabled="true"]) {
+    scale: var(--tm-press-scale, 0.96);
+    rotate: var(--tm-rotate, -4deg);
   }
 }
 
-@keyframes tm-rotate-hover {
-  0% {
-    transform: rotate(0deg);
+@keyframes tm-rotate-in {
+  from {
+    opacity: 0;
+    transform: rotate(var(--tm-rotate-from, -6deg)) scale(var(--tm-scale-from, 0.96));
   }
 
-  100% {
-    transform: rotate(6deg);
-  }
-}
-
-@keyframes tm-rotate-press {
-  0% {
-    transform: scale(1) rotate(0deg);
-  }
-
-  50% {
-    transform: scale(0.96) rotate(-4deg);
-  }
-
-  100% {
-    transform: scale(0.98) rotate(0deg);
+  to {
+    opacity: 1;
+    transform: rotate(0deg) scale(1);
   }
 }
