@@ -212,6 +212,18 @@ export const catalog = [
     preview: 'stagger',
     markup: '<ul class="tm-stagger">\n  <li>One</li>\n  <li>Two</li>\n  <li>Three</li>\n</ul>',
   }),
+  entry('view-morph', 'recipes', 'component', {
+    popular: true,
+    requires: 'markup',
+    description: 'Cross-fades mounted views while the container transitions to new dimensions.',
+    preview: 'view-morph',
+    markup:
+      '<div class="tm-view-morph rounded-full bg-black"\n' +
+      '  style="--tm-view-width: 228px; --tm-view-height: 56px">\n' +
+      '  <div data-tm-panel aria-hidden="true">Idle</div>\n' +
+      '  <div data-tm-panel data-tm-active>Call</div>\n' +
+      '</div>',
+  }),
   entry('count-reveal', 'recipes', 'text', {
     requires: 'markup',
     description: 'Slot-machine digits. Each character needs its own span.',

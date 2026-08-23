@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.6.0 · Unreleased
+## 0.7.0 · 2026-08-24
 
 TailMotion becomes a deliberate motion vocabulary: five categories, each with
 one job, no colors, no layout, and logical direction names that mirror
@@ -37,6 +37,8 @@ themselves in right-to-left contexts.
   `tm-slide-inline-out`, `tm-blur-out`.
 - Interruptible interaction utilities: `tm-press`, `tm-hover-lift`,
   `tm-hover-scale`, `tm-icon-swap`.
+- `tm-view-morph`, a structured recipe that cross-fades mounted views while
+  transitioning the container between consumer-provided dimensions.
 - `tm-shimmer`, a continuous sweep for skeleton and loading states.
 - `tm-distance-*` and `tm-stagger-step-*` utilities, plus `distance` and
   `stagger` token groups in the Tailwind plugin.

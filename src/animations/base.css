@@ -79,6 +79,7 @@
     .tm-stagger > *,
     .tm-count-reveal > *,
     .tm-icon-swap > *,
+    .tm-view-morph > [data-tm-panel],
     .tm-text-flip-chars > span {
       animation-duration: 1ms !important;
       animation-delay: 0ms !important;

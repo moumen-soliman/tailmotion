@@ -2,6 +2,7 @@
 @import "./animations/base.css";
 @import "./animations/exit.css";
 @import "./animations/interactions.css";
+@import "./animations/view-morph.css";
 @import "./animations/flip.css";
 @import "./animations/bounce.css";
 @import "./animations/pulse.css";

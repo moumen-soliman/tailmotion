@@ -19,7 +19,7 @@
 <p align="center">
   <a href="#quickstart">Quickstart</a> ·
   <a href="#motion-reference">Motion reference</a> ·
-  <a href="https://tailmotion.moumen.dev/">Playground</a> ·
+  <a href="https://tailmotion.moumen.dev/#explorer">Animation explorer</a> ·
   <a href="https://github.com/moumen-soliman/tailmotion/issues/new">Feedback</a> ·
   <a href="CONTRIBUTING.md">Contributing</a>
 </p>
@@ -417,10 +417,34 @@ See **Interaction** above for `tm-press`, `tm-hover-lift`, `tm-hover-scale`,
 | `tm-avatar` | Individual avatar in group |
 | `tm-avatar-ring` | Avatar with ring effect |
 | `tm-avatar-tooltip` | Tooltip for avatar |
+| `tm-view-morph` | Cross-fade views while the container reshapes |
 
 These classes require the documented child structure. Treat them as optional
 recipes: TailMotion provides the movement, while your Tailwind classes should
 provide dimensions, colors and typography.
+
+#### View morph
+
+Keep every view mounted, add `data-tm-panel` to each one, and move
+`data-tm-active` when your component state changes. Update `--tm-view-width`
+and `--tm-view-height` to the active view's dimensions:
+
+```html
+<div
+  class="tm-view-morph rounded-full bg-black"
+  style="--tm-view-width: 100px; --tm-view-height: 28px"
+>
+  <div data-tm-panel data-tm-active>Idle</div>
+  <div data-tm-panel aria-hidden="true">Call</div>
+  <div data-tm-panel aria-hidden="true">Timer</div>
+</div>
+```
+
+The class animates numeric dimensions; your component is responsible for
+setting the next values and keeping `data-tm-active` and `aria-hidden` in sync.
+This keeps the CSS core runtime-free while allowing React, Vue, Svelte or plain
+JavaScript to own state. Tune the outgoing view with `--tm-view-exit-scale`,
+`--tm-view-exit-scale-x` and `--tm-view-exit-y`.
 
 ## Variants
 

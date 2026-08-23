@@ -9,7 +9,7 @@ const packageRoot = path.resolve(demoDir, '..');
 export default defineConfig({
   plugins: [react()],
   build: {
-    // Landing page, /changelog/, and /example/.
+    // Static pages are separate entries so every route can be deployed directly.
     rollupOptions: {
       input: {
         main: path.join(demoDir, 'index.html'),

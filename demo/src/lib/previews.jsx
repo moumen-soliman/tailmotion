@@ -174,6 +174,66 @@ function CountRevealPreview({ replayKey }) {
   );
 }
 
+function ViewMorphPreview({ className }) {
+  const [view, setView] = useState('idle');
+  const dimensions = view === 'idle' ? [104, 34] : view === 'call' ? [208, 54] : [252, 60];
+
+  return (
+    <div className="flex flex-col items-center gap-5">
+      <div
+        className={cx(className, 'rounded-full bg-black text-white')}
+        style={{
+          '--tm-view-width': `${dimensions[0]}px`,
+          '--tm-view-height': `${dimensions[1]}px`,
+        }}
+      >
+        <div data-tm-panel data-tm-active={view === 'idle' ? '' : undefined} aria-hidden={view !== 'idle'}>
+          <div className="flex h-[34px] w-[104px] items-center justify-center gap-1.5">
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+            <span className="font-mono text-[10px] text-white/70">Ready</span>
+          </div>
+        </div>
+        <div data-tm-panel data-tm-active={view === 'call' ? '' : undefined} aria-hidden={view !== 'call'}>
+          <div className="flex h-[54px] w-52 items-center gap-2.5 px-3">
+            <span className="grid h-8 w-8 place-items-center rounded-full bg-emerald-500/20 text-xs text-emerald-400">
+              C
+            </span>
+            <span className="text-xs font-medium">Incoming call</span>
+            <span className="ms-auto font-mono text-[10px] text-emerald-400">00:24</span>
+          </div>
+        </div>
+        <div data-tm-panel data-tm-active={view === 'timer' ? '' : undefined} aria-hidden={view !== 'timer'}>
+          <div className="flex h-[60px] w-[252px] items-center gap-2.5 px-3">
+            <span className="grid h-9 w-9 place-items-center rounded-full bg-amber-400/20 text-xs text-amber-400">
+              T
+            </span>
+            <span className="text-xs font-medium">Focus timer</span>
+            <span className="ms-auto font-mono text-base text-amber-400">08:42</span>
+          </div>
+        </div>
+      </div>
+      <div className="flex gap-1.5">
+        {['idle', 'call', 'timer'].map((name) => (
+          <button
+            key={name}
+            type="button"
+            aria-pressed={view === name}
+            onClick={() => setView(name)}
+            className={cx(
+              'tm-press rounded-full border px-2.5 py-1 font-mono text-[10px] capitalize',
+              view === name
+                ? 'border-ink-faint bg-card-hover text-ink'
+                : 'border-line text-ink-muted'
+            )}
+          >
+            {name}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function TextFlipPreview({ name }) {
   const ref = useRef(null);
 
@@ -254,6 +314,7 @@ const RENDERERS = {
   liquid: LiquidPreview,
   'hold-delete': HoldDeletePreview,
   stagger: StaggerPreview,
+  'view-morph': ViewMorphPreview,
   'count-reveal': CountRevealPreview,
   'text-flip': TextFlipPreview,
   flip: FlipPreview,
