@@ -30,6 +30,12 @@
   <a href="LICENSE.md"><img src="https://img.shields.io/github/license/moumen-soliman/tailmotion?label=license" alt="MIT license"></a>
 </p>
 
+<p align="center">
+  <a href="https://tailmotion.moumen.dev/">
+    <img width="1200" alt="TailMotion — Motion that speaks Tailwind" src="./demo/public/og.png">
+  </a>
+</p>
+
 ## Add motion without adding a runtime
 
 ```css
