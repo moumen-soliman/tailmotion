@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://tailmotion-doc.vercel.app/">
+  <a href="https://tailmotion.moumen.dev/">
     <picture>
       <source media="(prefers-color-scheme: dark)" srcset="./docs/logo/dark.svg">
       <source media="(prefers-color-scheme: light)" srcset="./docs/logo/light.svg">
@@ -19,7 +19,7 @@
 <p align="center">
   <a href="#quickstart">Quickstart</a> ·
   <a href="#motion-reference">Motion reference</a> ·
-  <a href="https://tailmotion-doc.vercel.app/">Playground</a> ·
+  <a href="https://tailmotion.moumen.dev/">Playground</a> ·
   <a href="https://github.com/moumen-soliman/tailmotion/issues/new">Feedback</a> ·
   <a href="CONTRIBUTING.md">Contributing</a>
 </p>

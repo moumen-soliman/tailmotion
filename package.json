@@ -75,7 +75,7 @@
   "bugs": {
     "url": "https://github.com/moumen-soliman/tailmotion/issues"
   },
-  "homepage": "https://tailmotion-doc.vercel.app/",
+  "homepage": "https://tailmotion.moumen.dev/",
   "license": "MIT",
   "author": "Moumen Soliman",
   "sideEffects": [
