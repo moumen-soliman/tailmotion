@@ -80,7 +80,7 @@ export function ExamplePage() {
       </Section>
 
       <Section>
-        <SectionHeading eyebrow="Product UI" title="The same classes you copy from the playground">
+        <SectionHeading eyebrow="Product UI" title="The same classes you copy from the explorer">
           Entrances, press feedback, hover lift, a counter, and an icon swap. Each one is a class on
           ordinary HTML.
         </SectionHeading>

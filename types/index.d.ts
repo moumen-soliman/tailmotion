@@ -74,6 +74,15 @@ export interface TailMotionVars {
   '--tm-outline-color'?: string;
   '--tm-shimmer-color'?: string;
   '--tm-shimmer-opacity'?: string | number;
+  '--tm-view-width'?: string;
+  '--tm-view-height'?: string;
+  '--tm-view-exit-y'?: string;
+  '--tm-view-exit-scale'?: string | number;
+  '--tm-view-exit-scale-x'?: string | number;
+  '--tm-view-blur'?: string;
+  '--tm-view-content-duration'?: string;
+  '--tm-view-content-easing'?: string;
+  '--tm-view-enter-delay'?: string;
 }
 
 export interface InitTextFlipOptions {

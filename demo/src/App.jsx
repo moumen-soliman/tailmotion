@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Nav } from './sections/Nav';
 import { Hero } from './sections/Hero';
 import { Composability } from './sections/Composability';
+import { ViewMorph } from './sections/ViewMorph';
 import { UseCases } from './sections/UseCases';
 import { Explorer } from './sections/Explorer';
 import { Installation } from './sections/Installation';
@@ -35,6 +36,7 @@ export default function App() {
       <main>
         <Hero variants={variants} />
         <Composability />
+        <ViewMorph />
         <UseCases />
         <Explorer variants={variants} />
         <Installation variants={variants} />

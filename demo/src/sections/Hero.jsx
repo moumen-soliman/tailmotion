@@ -32,8 +32,8 @@ export function Hero({ variants }) {
             </Code>
 
             <div className="flex flex-wrap items-center gap-2.5">
-              <Button as="a" href="#lab" variant="primary">
-                Try playground
+              <Button as="a" href="/#explorer" variant="primary">
+                Explore animations
                 <ArrowRight className="h-4 w-4" aria-hidden />
               </Button>
               <CopyButton
