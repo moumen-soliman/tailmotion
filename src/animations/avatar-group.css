@@ -9,6 +9,7 @@
   :host {
     /* Avatar group specific defaults */
     --tm-avatar-overlap: -0.75rem;
+    --tm-avatar-gap: 0.25rem;
     --tm-avatar-lift: -30%;
     --tm-avatar-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
   }
@@ -35,7 +36,7 @@
     align-items: center;
     justify-content: center;
     border-radius: 9999px;
-    transition-property: transform;
+    transition-property: transform, margin-inline-start;
     transition-duration: var(--tm-duration, 200ms);
     transition-timing-function: var(--tm-easing, var(--tm-avatar-spring));
     transition-delay: var(--tm-delay, 0ms);
@@ -45,7 +46,13 @@
   /* Overlap: all but first avatar gets negative margin */
   .tm-avatar-group .tm-avatar:not(:first-child),
   .tm-avatar-group-invert .tm-avatar:not(:first-child) {
-    margin-left: var(--tm-avatar-overlap);
+    margin-inline-start: var(--tm-avatar-overlap);
+  }
+
+  /* Group hover/focus: spread the stack so every avatar is reachable */
+  .tm-avatar-group:is(:hover, :focus-within) .tm-avatar:not(:first-child),
+  .tm-avatar-group-invert:is(:hover, :focus-within) .tm-avatar:not(:first-child) {
+    margin-inline-start: var(--tm-avatar-gap);
   }
 
   /* Z-index stacking: later avatars on top (default) */
