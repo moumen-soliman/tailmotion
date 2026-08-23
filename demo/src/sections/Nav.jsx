@@ -1,5 +1,6 @@
-import { Github } from 'lucide-react';
-import { CommandPill, CONTROL_TRANSITION, FOCUS_RING, cx } from '../lib/ui';
+import { Check, Github, Sparkles } from 'lucide-react';
+import { Button, CommandPill, CONTROL_TRANSITION, FOCUS_RING, cx, useCopy } from '../lib/ui';
+import { AI_INSTALL_PROMPT } from '../lib/prompts';
 
 /* Absolute hrefs so the same nav works from the landing page and /changelog/.
    `Animations` stays reachable at every width; the rest appears once there is
@@ -14,6 +15,8 @@ const LINKS = [
 const GITHUB = 'https://github.com/moumen-soliman/tailmotion';
 
 export function Nav({ current }) {
+  const { copied, copy } = useCopy();
+
   return (
     <header className="sticky top-0 z-50 border-b border-line bg-page/80 backdrop-blur-md">
       <nav
@@ -51,6 +54,25 @@ export function Nav({ current }) {
 
         <div className="ms-auto flex items-center gap-2">
           <CommandPill command="npm i tailmotion" className="hidden sm:inline-flex" />
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => copy(AI_INSTALL_PROMPT)}
+            aria-label="Copy the TailMotion AI installation prompt"
+            title="Copy AI install prompt"
+          >
+            {copied ? (
+              <Check className="h-3.5 w-3.5 shrink-0 text-accent" aria-hidden />
+            ) : (
+              <Sparkles className="h-3.5 w-3.5 shrink-0" aria-hidden />
+            )}
+            <span className="hidden whitespace-nowrap xl:inline">
+              {copied ? 'Prompt copied' : 'AI install prompt'}
+            </span>
+            <span className="sr-only" role="status">
+              {copied ? 'Prompt copied' : ''}
+            </span>
+          </Button>
           <a
             href={GITHUB}
             target="_blank"

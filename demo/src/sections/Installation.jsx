@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Card, Chip, Code, Section, SectionHeading } from '../lib/ui';
+import { Card, Chip, Code, CopyButton, Section, SectionHeading } from '../lib/ui';
+import { AI_INSTALL_PROMPT } from '../lib/prompts';
 
 /* --------------------------------------------------------------------------
    Installation.
@@ -80,7 +81,28 @@ export function Installation({ variants }) {
         theme configuration and arbitrary values. The animations themselves come from the stylesheet.
       </SectionHeading>
 
-      <div className="mt-8 lg:mt-10">
+      <Card className="mt-8 flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between">
+        <div className="min-w-0">
+          <p className="font-mono text-overline uppercase text-accent">Install with AI</p>
+          <h3 className="mt-2 text-heading font-medium text-ink-strong">
+            Let your coding agent configure TailMotion
+          </h3>
+          <p className="mt-1.5 max-w-measure text-label text-ink-muted">
+            Copy a prompt that detects Tailwind v3 or v4, your package manager, and React, Vue,
+            Svelte, Astro, or web-capable native setups before changing files.
+          </p>
+        </div>
+        <CopyButton
+          value={AI_INSTALL_PROMPT}
+          label="Copy AI install prompt"
+          copiedLabel="Prompt copied"
+          size="md"
+          variant="primary"
+          ariaLabel="Copy the TailMotion AI installation prompt"
+        />
+      </Card>
+
+      <div className="mt-6 lg:mt-8">
         <div className="rail -mx-1 flex gap-2 overflow-x-auto px-1 pb-1" role="tablist" aria-label="Setup">
           {SETUPS.map((item) => (
             <Chip

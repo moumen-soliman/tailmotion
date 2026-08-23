@@ -145,10 +145,22 @@ export function ChipGroup({ label, children, scroll = false }) {
   );
 }
 
-export function CopyButton({ value, label = 'Copy', copiedLabel = 'Copied', size = 'sm', variant = 'ghost' }) {
+export function CopyButton({
+  value,
+  label = 'Copy',
+  copiedLabel = 'Copied',
+  size = 'sm',
+  variant = 'ghost',
+  ariaLabel,
+}) {
   const { copied, copy } = useCopy();
   return (
-    <Button variant={variant} size={size} onClick={() => copy(value)} aria-label={`${label}: ${value}`}>
+    <Button
+      variant={variant}
+      size={size}
+      onClick={() => copy(value)}
+      aria-label={ariaLabel ?? `${label}: ${value}`}
+    >
       {copied ? (
         <Check className="h-3.5 w-3.5 shrink-0 text-accent" aria-hidden />
       ) : (
