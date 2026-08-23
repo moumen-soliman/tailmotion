@@ -9,11 +9,12 @@ const packageRoot = path.resolve(demoDir, '..');
 export default defineConfig({
   plugins: [react()],
   build: {
-    // Two entry points: the landing page and /changelog/.
+    // Landing page, /changelog/, and /example/.
     rollupOptions: {
       input: {
         main: path.join(demoDir, 'index.html'),
         changelog: path.join(demoDir, 'changelog', 'index.html'),
+        example: path.join(demoDir, 'example', 'index.html'),
       },
     },
   },

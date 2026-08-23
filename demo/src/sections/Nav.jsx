@@ -6,6 +6,7 @@ import { CommandPill, CONTROL_TRANSITION, FOCUS_RING, cx } from '../lib/ui';
    room for it rather than being pushed out of the row. */
 const LINKS = [
   { id: 'animations', href: '/#explorer', label: 'Animations', always: true },
+  { id: 'example', href: '/example/', label: 'Example' },
   { id: 'install', href: '/#install', label: 'Installation' },
   { id: 'changelog', href: '/changelog/', label: 'Changelog' },
 ];

@@ -12,6 +12,9 @@ export function SiteFooter() {
         <span>MIT License</span>
         <span className="font-mono text-micro text-ink-faint">tailmotion</span>
         <div className="ms-auto flex items-center gap-5">
+          <a href="/example/" className={LINK}>
+            Example
+          </a>
           <a href="/changelog/" className={LINK}>
             Changelog
           </a>
