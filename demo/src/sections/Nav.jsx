@@ -1,16 +1,38 @@
-import { Check, Github, Sparkles } from 'lucide-react';
+import { Check, ChevronDown, Github, Sparkles } from 'lucide-react';
 import { Button, CommandPill, CONTROL_TRANSITION, FOCUS_RING, cx, useCopy } from '../lib/ui';
 import { AI_INSTALL_PROMPT } from '../lib/prompts';
 
-/* Absolute hrefs so the same nav works from the landing page and /changelog/.
-   `Animations` stays reachable at every width; the rest appears once there is
-   room for it rather than being pushed out of the row. */
+/* Absolute hrefs keep this nav portable across every demo entry point.
+   Product demos live in one native popover; documentation destinations remain
+   direct links so they never bounce through the landing page first. */
+const EXPLORE_LINKS = [
+  {
+    id: 'animations',
+    href: '/#explorer',
+    label: 'Animations',
+    detail: 'Browse every motion utility',
+  },
+  {
+    id: 'capabilities',
+    href: '/capabilities/',
+    label: 'Capabilities',
+    detail: 'Explore product-ready motion',
+  },
+  {
+    id: 'example',
+    href: '/example/',
+    label: 'Example',
+    detail: 'See TailMotion in an interface',
+  },
+];
+
 const LINKS = [
-  { id: 'animations', href: '/#explorer', label: 'Animations', always: true },
-  { id: 'capabilities', href: '/capabilities/', label: 'Capabilities' },
-  { id: 'example', href: '/example/', label: 'Example' },
   { id: 'docs', href: 'https://docs.tailmotion.moumen.dev/docs', label: 'Docs' },
-  { id: 'install', href: '/#install', label: 'Installation' },
+  {
+    id: 'install',
+    href: 'https://docs.tailmotion.moumen.dev/docs/install',
+    label: 'Installation',
+  },
   { id: 'changelog', href: '/changelog/', label: 'Changelog' },
 ];
 
@@ -32,11 +54,68 @@ export function Nav({ current }) {
           <span className="sr-only">TailMotion</span>
         </a>
 
-        <ul className="ms-1 flex items-center gap-1 sm:ms-2">
+        <div className="relative ms-1 sm:ms-2">
+          <Button
+            variant="ghost"
+            size="sm"
+            popovertarget="nav-explore-menu"
+            aria-haspopup="true"
+            aria-controls="nav-explore-menu"
+            className={cx(
+              'gap-1.5 px-2 sm:px-2.5',
+              EXPLORE_LINKS.some((link) => link.id === current)
+                ? 'text-ink-strong'
+                : 'text-ink-muted'
+            )}
+            style={{ anchorName: '--nav-explore-anchor' }}
+          >
+            Explore
+            <ChevronDown className="h-3.5 w-3.5" strokeWidth={1.75} aria-hidden />
+          </Button>
+
+          <div
+            id="nav-explore-menu"
+            popover=""
+            aria-label="Explore TailMotion"
+            className="tm-native-popover w-64 rounded-lg border border-line bg-card p-1.5 shadow-2xl"
+            style={{
+              '--tm-origin': 'top center',
+              positionAnchor: '--nav-explore-anchor',
+              positionArea: 'bottom center',
+              margin: 0,
+              marginTop: '8px',
+            }}
+          >
+            <ul>
+              {EXPLORE_LINKS.map((link) => {
+                const active = current === link.id;
+                return (
+                  <li key={link.href}>
+                    <a
+                      href={link.href}
+                      aria-current={active ? 'page' : undefined}
+                      className={cx(
+                        'block rounded-md px-3 py-2.5',
+                        FOCUS_RING,
+                        CONTROL_TRANSITION,
+                        active ? 'bg-card-hover text-ink-strong' : 'hover:bg-card-hover'
+                      )}
+                    >
+                      <span className="block text-label font-medium text-ink-strong">{link.label}</span>
+                      <span className="mt-0.5 block text-micro text-ink-muted">{link.detail}</span>
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        </div>
+
+        <ul className="flex items-center gap-1">
           {LINKS.map((link) => {
             const active = current === link.id;
             return (
-              <li key={link.href} className={link.always ? undefined : 'hidden sm:block'}>
+              <li key={link.href} className="hidden sm:block">
                 <a
                   href={link.href}
                   aria-current={active ? 'page' : undefined}
@@ -55,7 +134,7 @@ export function Nav({ current }) {
         </ul>
 
         <div className="ms-auto flex items-center gap-2">
-          <CommandPill command="npm i tailmotion" className="hidden sm:inline-flex" />
+          <CommandPill command="npm i tailmotion" className="hidden lg:inline-flex" />
           <Button
             variant="ghost"
             size="sm"
