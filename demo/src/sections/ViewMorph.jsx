@@ -20,6 +20,8 @@ const EXIT_VARIANTS = {
 const SNIPPET = `<div
   class="tm-view-morph rounded-full bg-black"
   style="
+    --tm-view-stage-width: 284px;
+    --tm-view-stage-height: 64px;
     --tm-view-width: 284px;
     --tm-view-height: 64px;
   "
@@ -91,8 +93,10 @@ export function ViewMorph() {
         <Card className="grid min-h-[24rem] place-items-center bg-page p-5 sm:p-8">
           <div className="flex w-full flex-col items-center gap-8">
             <div
-              className="tm-view-morph tm-duration-500 rounded-full bg-black shadow-[0_18px_50px_-20px_oklch(0_0_0/0.8)]"
+              className="tm-view-morph tm-duration-400 rounded-full bg-black"
               style={{
+                '--tm-view-stage-width': `${VIEWS.timer.width}px`,
+                '--tm-view-stage-height': `${VIEWS.timer.height}px`,
                 '--tm-view-width': `${active.width}px`,
                 '--tm-view-height': `${active.height}px`,
                 '--tm-view-exit-scale': exit.scale,

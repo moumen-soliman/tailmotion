@@ -76,6 +76,9 @@ export interface TailMotionVars {
   '--tm-shimmer-opacity'?: string | number;
   '--tm-view-width'?: string;
   '--tm-view-height'?: string;
+  '--tm-view-stage-width'?: string;
+  '--tm-view-stage-height'?: string;
+  '--tm-view-radius'?: string;
   '--tm-view-exit-y'?: string;
   '--tm-view-exit-scale'?: string | number;
   '--tm-view-exit-scale-x'?: string | number;

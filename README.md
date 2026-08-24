@@ -427,12 +427,19 @@ provide dimensions, colors and typography.
 
 Keep every view mounted, add `data-tm-panel` to each one, and move
 `data-tm-active` when your component state changes. Update `--tm-view-width`
-and `--tm-view-height` to the active view's dimensions:
+and `--tm-view-height` to the active view's dimensions. Set a fixed
+`--tm-view-stage-width` and `--tm-view-stage-height` so the reshape uses
+`clip-path` instead of layout:
 
 ```html
 <div
   class="tm-view-morph rounded-full bg-black"
-  style="--tm-view-width: 100px; --tm-view-height: 28px"
+  style="
+    --tm-view-stage-width: 284px;
+    --tm-view-stage-height: 64px;
+    --tm-view-width: 100px;
+    --tm-view-height: 28px
+  "
 >
   <div data-tm-panel data-tm-active>Idle</div>
   <div data-tm-panel aria-hidden="true">Call</div>
@@ -440,10 +447,9 @@ and `--tm-view-height` to the active view's dimensions:
 </div>
 ```
 
-The class animates numeric dimensions; your component is responsible for
-setting the next values and keeping `data-tm-active` and `aria-hidden` in sync.
-This keeps the CSS core runtime-free while allowing React, Vue, Svelte or plain
-JavaScript to own state. Tune the outgoing view with `--tm-view-exit-scale`,
+Without a stage, the class still tweens the box size. Your component is
+responsible for setting the next values and keeping `data-tm-active` and
+`aria-hidden` in sync. Tune the outgoing view with `--tm-view-exit-scale`,
 `--tm-view-exit-scale-x` and `--tm-view-exit-y`.
 
 ## Variants

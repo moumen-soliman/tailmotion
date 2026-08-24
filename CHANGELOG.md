@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.7.1 · 2026-08-24
+
+### Fixed
+
+- **`tm-view-morph` no longer layout-thrash on mobile.** The container can keep
+  a fixed stage and reshape with `clip-path: inset()`, so phones no longer
+  recompute width and height every frame. Touch devices also skip the live
+  blur, which Safari was rasterizing even on hidden panels.
+
 ## 0.7.0 · 2026-08-24
 
 TailMotion becomes a deliberate motion vocabulary: five categories, each with
