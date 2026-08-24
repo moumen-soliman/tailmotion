@@ -299,6 +299,82 @@ export function initCountRevealElement(element, options = {}) {
 }
 
 /**
+ * Vanilla JS: Initialize a number that pops its digits in on every change
+ * Reads the element's own text for the first render unless `value` is given,
+ * so it also works with an element whose children are owned by a framework.
+ * @param {HTMLElement} element - DOM element
+ * @param {Object} [options] - Options
+ * @param {string|number} [options.value] - Initial value; defaults to the element's text
+ * @param {number} [options.stagger=40] - Delay between digits in ms
+ * @returns {{ update: (value: string|number) => void }} Controller
+ */
+export function initNumberSwapElement(element, options = {}) {
+  if (!element) return null;
+
+  const { value = element.textContent || '', stagger = 40 } = options;
+
+  function render(next) {
+    element.classList.add('tm-number-swap');
+    element.innerHTML = '';
+
+    String(next).split('').forEach((char, i) => {
+      const span = document.createElement('span');
+      span.textContent = char;
+      span.style.setProperty('--tm-stagger', i);
+      span.style.setProperty('--tm-number-stagger-step', `${stagger}ms`);
+      element.appendChild(span);
+    });
+  }
+
+  render(value);
+
+  return { update: render };
+}
+
+/**
+ * Vanilla JS: Initialize text that resolves in word by word
+ * Reads the element's own text for the first render unless `text` is given.
+ * Whitespace between words is preserved as plain text nodes, so the
+ * paragraph still wraps normally -- only the words themselves are spans.
+ * @param {HTMLElement} element - DOM element
+ * @param {Object} [options] - Options
+ * @param {string} [options.text] - Text to stream; defaults to the element's text
+ * @param {number} [options.stagger=60] - Delay between words in ms
+ * @returns {{ update: (text: string) => void }} Controller
+ */
+export function initStreamTextElement(element, options = {}) {
+  if (!element) return null;
+
+  const { text = element.textContent || '', stagger = 60 } = options;
+
+  function render(nextText) {
+    element.classList.add('tm-stream-text');
+    element.textContent = '';
+
+    let wordIndex = 0;
+    nextText.split(/(\s+)/).forEach((token) => {
+      if (token === '') return;
+
+      if (/^\s+$/.test(token)) {
+        element.appendChild(document.createTextNode(token));
+        return;
+      }
+
+      const span = document.createElement('span');
+      span.textContent = token;
+      span.style.setProperty('--tm-stagger', wordIndex);
+      span.style.setProperty('--tm-stream-text-stagger-step', `${stagger}ms`);
+      element.appendChild(span);
+      wordIndex += 1;
+    });
+  }
+
+  render(text);
+
+  return { update: render };
+}
+
+/**
  * Vanilla JS: Initialize text flip on a DOM element
  * Only use this for vanilla JS projects, not with React/Vue/etc.
  * @param {HTMLElement} element - DOM element
@@ -393,5 +469,7 @@ export default {
   
   // Vanilla JS DOM helpers
   initCountRevealElement,
+  initNumberSwapElement,
+  initStreamTextElement,
   initTextFlipElement
 };

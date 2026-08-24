@@ -99,6 +99,12 @@ export const catalog = [
     description: 'Sweeping highlight for skeletons. Colour comes from currentColor.',
     preview: 'shimmer',
   }),
+  entry('shimmer-text', 'keyframes', 'loop', {
+    popular: true,
+    description: 'The same sweep, clipped to the text itself. No data-text duplication needed.',
+    preview: 'shimmer-text',
+    markup: '<p class="tm-shimmer-text">Shimmering text</p>',
+  }),
   entry('sparkle', 'keyframes', 'loop', { popular: true, description: 'Twinkling scale and rotation.' }),
   entry('glow', 'keyframes', 'loop', {
     popular: true,
@@ -237,6 +243,27 @@ export const catalog = [
     description: 'A single digit sliding into place.',
     markup: '<span class="tm-slide-digit">7</span>',
   }),
+  entry('number-swap', 'recipes', 'text', {
+    requires: 'js',
+    description: 'Digits pop in together and replay whenever the value changes. Needs initNumberSwapElement.',
+    preview: 'number-swap',
+    markup:
+      '<span id="score" class="tm-number-swap">42</span>\n\n' +
+      "import { initNumberSwapElement } from 'tailmotion/utils';\n" +
+      "const score = initNumberSwapElement(document.getElementById('score'));\n" +
+      'score.update(43); // whenever the value changes',
+  }),
+  entry('stream-text', 'recipes', 'text', {
+    requires: 'js',
+    description: 'Words resolve in one by one, left to right. Needs initStreamTextElement.',
+    preview: 'stream-text',
+    markup:
+      '<p id="reply" class="tm-stream-text"></p>\n\n' +
+      "import { initStreamTextElement } from 'tailmotion/utils';\n" +
+      "const reply = initStreamTextElement(document.getElementById('reply'), {\n" +
+      "  text: 'Here is the first paragraph.',\n" +
+      '});',
+  }),
   entry('text-flip', 'recipes', 'text', {
     requires: 'js',
     description: 'Rotating words with a flip. Needs initTextFlipElement to swap the text.',
@@ -297,7 +324,7 @@ export const catalog = [
       '<div class="tm-avatar-group">\n' +
       '  <div class="tm-avatar tm-avatar-ring">A</div>\n' +
       '  <div class="tm-avatar tm-avatar-ring">B</div>\n' +
-      '  <div class="tm-avatar">+3</div>\n' +
+      '  <div class="tm-avatar tm-avatar-more">+3</div>\n' +
       '</div>',
   }),
 ];

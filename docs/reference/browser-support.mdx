@@ -15,8 +15,8 @@ ever declared inside the block that also says how it comes back.
 
 | Feature | Used by | Chrome | Safari | Firefox | Without it |
 |---|---|---|---|---|---|
-| `color-mix()` | glow, shadow, outline tokens | 111 | 16.2 | 113 | Falls back to a flat `--tm-color` |
-| `in oklab` gradients | shimmer, liquid | 111 | 16.2 | 113 | Falls back to sRGB interpolation |
+| `color-mix()` | glow, shadow, outline, shimmer-text tokens | 111 | 16.2 | 113 | Falls back to a flat `--tm-color` |
+| `in oklab` gradients | shimmer, shimmer-text, liquid | 111 | 16.2 | 113 | Falls back to sRGB interpolation |
 | Individual `translate` / `scale` / `rotate` | 32 keyframes, every presence class | 104 | 14.1 | 72 | — |
 | `transition-behavior: allow-discrete` | native exits from `display: none` and the top layer | 117 | 17.4 | 129 | Exits are instant; entrances are unaffected |
 | `@starting-style` | presence and native entrances on first paint | 117 | 17.5 | 129 | An element mounted already-open appears rather than animating in |

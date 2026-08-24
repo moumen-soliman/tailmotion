@@ -473,7 +473,7 @@ Do not force every consumer to manually manage token ordering.
 ```html
 <link
   rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/tailmotion@0.8.0/tailmotion.css"
+  href="https://cdn.jsdelivr.net/npm/tailmotion@0.9.0/tailmotion.css"
 >
 ```
 

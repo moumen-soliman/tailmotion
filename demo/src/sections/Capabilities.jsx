@@ -384,7 +384,7 @@ function RecipesPanel() {
         <button
           type="button"
           className={cx(
-            'tm-hold-confirm h-9 rounded-md border border-line px-4 text-micro font-medium text-red-400',
+            'tm-hold-confirm h-9 rounded-md px-4 text-micro font-medium text-red-600',
             'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent'
           )}
         >

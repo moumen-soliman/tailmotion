@@ -1,5 +1,70 @@
 # Changelog
 
+## 0.9.0 · 2026-08-25
+
+Text can now shimmer, swap values and stream in word by word; stagger can opt
+into blur; avatar stacks have a first-class overflow cell; and every bundled
+`hover:` animation now has a stable `group-hover:` form.
+
+### Added
+
+- **Three text-motion utilities.** `tm-shimmer-text` sweeps a gradient through
+  the element's own glyphs without duplicate markup. `tm-number-swap` animates
+  characters with a 40ms default stagger, and `tm-stream-text` resolves words
+  with a 60ms default stagger and tunable blur.
+- **Two dependency-free helpers.** `initNumberSwapElement(element, options)`
+  returns an `update(value)` controller, and
+  `initStreamTextElement(element, options)` returns an `update(text)`
+  controller. Both are exported from `tailmotion/utils`, included on the
+  default `TailMotion` object, and fully typed.
+- **Opt-in stagger blur.** Add `tm-stagger-blur` beside `tm-stagger` to resolve
+  children through an 8px blur on entrance and exit. Existing stagger markup
+  remains unchanged because `--tm-stagger-blur` defaults to `0px`.
+- **Avatar overflow cells.** `tm-avatar-more` provides the visual and stacking
+  behavior for a `+N` cell inside `tm-avatar-group`.
+- **Complete stable-hover coverage.** All 43 bundled `hover:tm-*` classes now
+  have matching `group-hover:tm-*` variants, including translation, scale,
+  rotation, flip, celebration and ambient effects.
+- New public variables for shimmer text, number and stream stagger timing,
+  stream blur, stagger blur and avatar overflow colour.
+- `npm run check` now fails when a bundled hover variant has no matching
+  `group-hover:` selector.
+
+### Fixed
+
+- **Hover animations no longer need to chase their own hit target.** The demo,
+  copied examples and documentation now put `group` on a stationary parent and
+  `group-hover:tm-*` on the moving child. This prevents geometry-changing
+  keyframes from repeatedly losing and regaining `:hover`.
+- **Avatar rings no longer look like the avatar is growing.** The ring now
+  fades at a fixed width instead of animating its spread from zero.
+- Explorer search renders one clear control instead of the browser's native
+  search control beside a custom one.
+
+### Changed
+
+- **Avatar groups respond per avatar.** Hovering or focusing one avatar lifts
+  that avatar and reveals its own ring and tooltip; the whole stack no longer
+  spreads on group hover. Lift now uses the individual `translate` property.
+- **Migration note:** `--tm-avatar-gap` was removed. Use the stack's existing
+  overlap behavior and `tm-avatar-more` for overflow rather than retuning a
+  group spread.
+- `tm-stagger` children include `filter` in their motion path so the optional
+  blur can enter and exit cleanly.
+- The full stylesheet is now about 215 KB raw and 31.6 KB gzipped.
+
+### Documentation and demo
+
+- Added structured recipes for shimmer text, number swaps, streaming text and
+  avatar overflow, plus the stable-parent hover pattern.
+- Expanded Tailwind v3 preflight guidance for `tm-hold-delete` and
+  `tm-liquid-btn`, including appearance-class workarounds.
+- Added live Explorer previews for the new text utilities and updated the
+  composability examples to generate safe `group-hover:` markup.
+- Refined the landing-page content and navigation: related destinations now
+  share an Explore menu, mobile uses one combined Menu, and all navbar controls
+  share a common alignment and spacing system.
+
 ## 0.8.0 · 2026-08-24
 
 TailMotion stops being a keyframe collection. Six layers turn it into a motion

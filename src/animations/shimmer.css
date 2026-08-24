@@ -99,3 +99,68 @@
     transform: translate3d(100%, 0, 0);
   }
 }
+
+/* --------------------------------------------------------------------------
+   Shimmer, clipped to the text itself.
+
+   tm-shimmer-text paints the gradient directly onto the glyphs it sits on,
+   so it needs no duplicated markup and no [data-text] attribute -- the
+   element's own content is the mask.
+
+   -webkit-text-fill-color hides the glyph fill instead of the `color`
+   property, so `color` is left alone: --tm-shimmer-text-color's default
+   still resolves against the element's real, inherited color rather than
+   the transparent the clip trick would otherwise leave behind for anything
+   reading currentColor.
+
+   Without background-clip: text support the class is a no-op and the
+   element keeps its normal, fully visible color.
+   -------------------------------------------------------------------------- */
+
+@layer utilities {
+  @supports ((background-clip: text) or (-webkit-background-clip: text)) {
+    .tm-shimmer-text {
+      background-image: linear-gradient(
+        var(--tm-shimmer-text-angle, 100deg),
+        var(--tm-shimmer-text-resting) 0%,
+        var(--tm-shimmer-text-resting) 40%,
+        var(--tm-shimmer-text-color) 50%,
+        var(--tm-shimmer-text-resting) 60%,
+        var(--tm-shimmer-text-resting) 100%
+      );
+      background-size: var(--tm-shimmer-text-band, 400%) 100%;
+      background-repeat: no-repeat;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation-name: tm-shimmer-text;
+      animation-duration: var(--tm-duration, calc(2000ms * var(--tm-duration-scale, 1)));
+      animation-delay: var(--tm-delay, 0ms);
+      animation-timing-function: var(--tm-easing, linear);
+      animation-iteration-count: var(--tm-iteration-count, infinite);
+    }
+
+    @supports (background-image: linear-gradient(in oklab, red, red)) {
+      .tm-shimmer-text {
+        background-image: linear-gradient(
+          in oklab var(--tm-shimmer-text-angle, 100deg),
+          var(--tm-shimmer-text-resting) 0%,
+          var(--tm-shimmer-text-resting) 40%,
+          var(--tm-shimmer-text-color) 50%,
+          var(--tm-shimmer-text-resting) 60%,
+          var(--tm-shimmer-text-resting) 100%
+        );
+      }
+    }
+  }
+}
+
+@keyframes tm-shimmer-text {
+  from {
+    background-position: 100% 0;
+  }
+
+  to {
+    background-position: 0% 0;
+  }
+}

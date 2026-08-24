@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Plus } from 'lucide-react';
 import { Card, Code, CONTROL_TRANSITION, Section, SectionHeading, cx } from '../lib/ui';
+import { markupForTrigger } from '../lib/variants';
 
 /* --------------------------------------------------------------------------
    Composability.
@@ -13,7 +14,7 @@ const PARTS = [
   { id: 'duration', token: 'tm-duration-300', note: 'Adjust the rhythm' },
   { id: 'delay', token: 'tm-delay-150', note: 'Sequence with its neighbors' },
   { id: 'ease', token: 'tm-ease-snappy', note: 'Change its personality' },
-  { id: 'hover', token: 'hover:', note: 'Use any Tailwind variant' },
+  { id: 'hover', token: 'group-hover:', note: 'Keep the hover target stable' },
 ];
 
 export function Composability() {
@@ -21,10 +22,13 @@ export function Composability() {
 
   const toggle = (id) => setEnabled((prev) => ({ ...prev, [id]: !prev[id] }));
 
-  const base = enabled.hover ? 'hover:tm-pop' : 'tm-pop';
+  const base = enabled.hover ? 'group-hover:tm-pop' : 'tm-pop';
   const tokens = PARTS.filter((p) => p.id !== 'hover' && enabled[p.id]).map((p) => p.token);
   const classString = [base, ...tokens].join(' ');
-  const snippet = `<button class="${classString}">\n  Preview motion\n</button>`;
+  const snippet = markupForTrigger(classString, enabled.hover ? 'hover' : 'load', {
+    tag: 'button',
+    content: 'Preview motion',
+  });
 
   return (
     <Section id="compose" className="border-t border-line">
@@ -93,7 +97,12 @@ export function Composability() {
               </p>
             </div>
             <div className="grid flex-1 place-items-center p-8">
-              <div className="flex flex-col items-center gap-3">
+              <div
+                className={cx(
+                  'flex w-full flex-col items-center gap-3 rounded-md py-6',
+                  enabled.hover && 'group'
+                )}
+              >
                 <button type="button" key={classString} className={cx(classString, 'rounded-md bg-ink-strong px-5 py-2.5 text-label font-medium text-page')}>
                   Preview motion
                 </button>

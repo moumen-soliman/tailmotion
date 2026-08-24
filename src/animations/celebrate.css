@@ -74,6 +74,37 @@
     animation-fill-mode: both;
   }
 
+  /* Number swap - digits pop in together, replayed by re-rendering them */
+  .tm-number-swap {
+    display: inline-flex;
+    overflow: hidden;
+  }
+
+  .tm-number-swap > * {
+    display: inline-block;
+    animation-name: tm-number-pop;
+    animation-duration: var(--tm-duration, calc(420ms * var(--tm-duration-scale, 1)));
+    animation-delay: calc(
+      var(--tm-delay, 0ms) + var(--tm-stagger, 0) * var(--tm-number-stagger-step, 40ms)
+    );
+    animation-timing-function: var(--tm-easing, var(--tm-ease-emphasis));
+    animation-iteration-count: var(--tm-iteration-count, 1);
+    animation-fill-mode: both;
+    will-change: transform, opacity, filter;
+  }
+
+  /* Auto-stagger children, same 10-child cap as tm-count-reveal */
+  .tm-number-swap > *:nth-child(1) { --tm-stagger: 0; }
+  .tm-number-swap > *:nth-child(2) { --tm-stagger: 1; }
+  .tm-number-swap > *:nth-child(3) { --tm-stagger: 2; }
+  .tm-number-swap > *:nth-child(4) { --tm-stagger: 3; }
+  .tm-number-swap > *:nth-child(5) { --tm-stagger: 4; }
+  .tm-number-swap > *:nth-child(6) { --tm-stagger: 5; }
+  .tm-number-swap > *:nth-child(7) { --tm-stagger: 6; }
+  .tm-number-swap > *:nth-child(8) { --tm-stagger: 7; }
+  .tm-number-swap > *:nth-child(9) { --tm-stagger: 8; }
+  .tm-number-swap > *:nth-child(10) { --tm-stagger: 9; }
+
   /* Confetti - falling celebration particles */
   .tm-confetti {
     animation-name: tm-confetti;
@@ -166,6 +197,20 @@
   100% {
     transform: translateY(0);
     opacity: 1;
+  }
+}
+
+@keyframes tm-number-pop {
+  from {
+    transform: translateY(var(--tm-distance, 12px));
+    opacity: 0;
+    filter: blur(3px);
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+    filter: blur(0);
   }
 }
 

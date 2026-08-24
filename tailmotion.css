@@ -1,4 +1,4 @@
-/* TailMotion v0.8.0 — tailmotion.css | Generated 2026-08-24T19:30:24.296Z */
+/* TailMotion v0.9.0 — tailmotion.css | Generated 2026-08-24T22:51:20.871Z */
 /* Entry point for TailMotion.
 
    base.css pulls in the shared token layer and the motion profiles, so it must
@@ -128,6 +128,12 @@
        color-mix() stop, so strength lives in --tm-shimmer-opacity instead. */
     --tm-shimmer-color: var(--tm-color);
     --tm-shimmer-opacity: 0.35;
+
+    /* tm-shimmer-text paints its own gradient rather than overlaying one, so
+       it needs a resting (dim) and a peak (full-strength) stop instead of a
+       single opacity. Both derive from the same color by default. */
+    --tm-shimmer-text-color: var(--tm-color);
+    --tm-shimmer-text-resting: color-mix(in oklab, var(--tm-shimmer-text-color) 45%, transparent);
   }
 
   /* Safe fallback where color-mix() is unavailable. */
@@ -137,6 +143,7 @@
       --tm-shadow-color: var(--tm-color);
       --tm-glow-color: var(--tm-color);
       --tm-outline-color: var(--tm-color);
+      --tm-shimmer-text-resting: var(--tm-shimmer-text-color);
     }
   }
 
@@ -174,6 +181,8 @@
     [class*="tm-"]::after,
     .tm-stagger > *,
     .tm-count-reveal > *,
+    .tm-number-swap > *,
+    .tm-stream-text > *,
     .tm-icon-swap > *,
     .tm-view-morph > [data-tm-panel],
     .tm-text-flip-chars > span {
@@ -1516,6 +1525,13 @@
    A nested tm-stagger sequences its own children from its own delay; it does
    not continue the outer count, and its step does not leak back out. Offset a
    nested group with tm-delay-* when the two should read as one sequence.
+
+   Blur
+   ----
+   tm-stagger-blur adds an 8px resolve-in/out blur, off by default so it never
+   changes existing markup. Keep it at or below the 8px default on a long
+   list: a rasterized blur is the most expensive part of this animation, and
+   several children blurring at once is the case that shows it.
    -------------------------------------------------------------------------- */
 
 
@@ -1543,6 +1559,7 @@
     animation-timing-function: var(--tm-easing, var(--tm-ease-entrance, cubic-bezier(0.22, 1, 0.36, 1)));
     animation-iteration-count: var(--tm-iteration-count, 1);
     animation-fill-mode: both;
+    will-change: opacity, translate, filter;
   }
 
   /* Count from the last child instead of the first. */
@@ -1604,6 +1621,15 @@
     --tm-stagger-step: 200ms;
   }
 
+  /* Opt-in blur, off by default so existing tm-stagger markup is unaffected.
+     8px matches the library's own ceiling -- see Safari, specifically in
+     browser-support.mdx: no blur here exceeds it, because a rasterized blur
+     is the most expensive part of this animation and Safari pays for it even
+     on elements not yet visible. Keep it at or below 8px on long lists. */
+  .tm-stagger-blur {
+    --tm-stagger-blur: 8px;
+  }
+
   /* Generated child indices. Forward, then counted from the end. */
   .tm-stagger > *:nth-child(1) { --tm-stagger-index: 0; }
   .tm-stagger > *:nth-child(2) { --tm-stagger-index: 1; }
@@ -1654,11 +1680,13 @@
   from {
     opacity: 0;
     translate: 0 var(--tm-distance, 12px);
+    filter: blur(var(--tm-stagger-blur, 0px));
   }
 
   to {
     opacity: 1;
     translate: 0 0;
+    filter: blur(0);
   }
 }
 
@@ -1666,12 +1694,14 @@
   from {
     opacity: 1;
     translate: 0 0;
+    filter: blur(0);
   }
 
   to {
     opacity: 0;
     translate: 0
       calc(var(--tm-exit-distance, calc(var(--tm-distance, 12px) * 0.7)) * -1);
+    filter: blur(var(--tm-stagger-blur, 0px));
   }
 }
 
@@ -3247,11 +3277,77 @@
   }
 }
 
+/* --------------------------------------------------------------------------
+   Shimmer, clipped to the text itself.
+
+   tm-shimmer-text paints the gradient directly onto the glyphs it sits on,
+   so it needs no duplicated markup and no [data-text] attribute -- the
+   element's own content is the mask.
+
+   -webkit-text-fill-color hides the glyph fill instead of the `color`
+   property, so `color` is left alone: --tm-shimmer-text-color's default
+   still resolves against the element's real, inherited color rather than
+   the transparent the clip trick would otherwise leave behind for anything
+   reading currentColor.
+
+   Without background-clip: text support the class is a no-op and the
+   element keeps its normal, fully visible color.
+   -------------------------------------------------------------------------- */
+
+@layer utilities {
+  @supports ((background-clip: text) or (-webkit-background-clip: text)) {
+    .tm-shimmer-text {
+      background-image: linear-gradient(
+        var(--tm-shimmer-text-angle, 100deg),
+        var(--tm-shimmer-text-resting) 0%,
+        var(--tm-shimmer-text-resting) 40%,
+        var(--tm-shimmer-text-color) 50%,
+        var(--tm-shimmer-text-resting) 60%,
+        var(--tm-shimmer-text-resting) 100%
+      );
+      background-size: var(--tm-shimmer-text-band, 400%) 100%;
+      background-repeat: no-repeat;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation-name: tm-shimmer-text;
+      animation-duration: var(--tm-duration, calc(2000ms * var(--tm-duration-scale, 1)));
+      animation-delay: var(--tm-delay, 0ms);
+      animation-timing-function: var(--tm-easing, linear);
+      animation-iteration-count: var(--tm-iteration-count, infinite);
+    }
+
+    @supports (background-image: linear-gradient(in oklab, red, red)) {
+      .tm-shimmer-text {
+        background-image: linear-gradient(
+          in oklab var(--tm-shimmer-text-angle, 100deg),
+          var(--tm-shimmer-text-resting) 0%,
+          var(--tm-shimmer-text-resting) 40%,
+          var(--tm-shimmer-text-color) 50%,
+          var(--tm-shimmer-text-resting) 60%,
+          var(--tm-shimmer-text-resting) 100%
+        );
+      }
+    }
+  }
+}
+
+@keyframes tm-shimmer-text {
+  from {
+    background-position: 100% 0;
+  }
+
+  to {
+    background-position: 0% 0;
+  }
+}
+
 
 /* --- src/animations/avatar-group.css --- */
 /* ==========================================================================
    AVATAR GROUP SYSTEM
-   Overlapping avatar stack with hover lift and optional tooltips.
+   Overlapping avatar stack with hover lift, optional tooltips and a "+N"
+   overflow badge (.tm-avatar-more).
    Works with TailMotion utilities: tm-duration-*, tm-delay-*, tm-ease-*
    ========================================================================== */
 
@@ -3260,7 +3356,6 @@
   :host {
     /* Avatar group specific defaults */
     --tm-avatar-overlap: -0.75rem;
-    --tm-avatar-gap: 0.25rem;
     --tm-avatar-lift: -30%;
     --tm-avatar-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
   }
@@ -3280,6 +3375,12 @@
   /* --------------------------------------------------------------------------
      Avatar Item: .tm-avatar
      Individual avatar with overlap and hover lift
+
+     Hovering one avatar only ever moves that avatar: a small lift, plus its
+     own tooltip and ring. Nothing about the rest of the stack changes, so
+     there's nothing to reflow and no neighbor for the hover state to jump
+     to. (0.8 briefly spread the whole stack apart on hover; removed --
+     the movement was bigger than the "look here" it was meant to convey.)
      -------------------------------------------------------------------------- */
   .tm-avatar {
     position: relative;
@@ -3287,23 +3388,20 @@
     align-items: center;
     justify-content: center;
     border-radius: 9999px;
-    transition-property: transform, margin-inline-start;
+    translate: 0 var(--tm-avatar-shift-y, 0);
+    box-shadow: var(--tm-avatar-ring-shadow, 0 0 0 0 transparent);
+    transition-property: translate, box-shadow;
     transition-duration: var(--tm-duration, calc(200ms * var(--tm-duration-scale, 1)));
     transition-timing-function: var(--tm-easing, var(--tm-avatar-spring));
     transition-delay: var(--tm-delay, 0ms);
     cursor: pointer;
   }
 
-  /* Overlap: all but first avatar gets negative margin */
+  /* Overlap: all but first avatar gets negative margin. Static -- this never
+     animates. */
   .tm-avatar-group .tm-avatar:not(:first-child),
   .tm-avatar-group-invert .tm-avatar:not(:first-child) {
     margin-inline-start: var(--tm-avatar-overlap);
-  }
-
-  /* Group hover/focus: spread the stack so every avatar is reachable */
-  .tm-avatar-group:is(:hover, :focus-within) .tm-avatar:not(:first-child),
-  .tm-avatar-group-invert:is(:hover, :focus-within) .tm-avatar:not(:first-child) {
-    margin-inline-start: var(--tm-avatar-gap);
   }
 
   /* Z-index stacking: later avatars on top (default) */
@@ -3333,7 +3431,7 @@
   /* Hover: lift avatar up */
   .tm-avatar:hover,
   .tm-avatar:focus-visible {
-    transform: translateY(var(--tm-avatar-lift));
+    --tm-avatar-shift-y: var(--tm-avatar-lift);
     z-index: 50 !important;
   }
 
@@ -3487,18 +3585,44 @@
 
   /* --------------------------------------------------------------------------
      Ring/Border on hover
+
+     The spread stays at a constant --tm-ring-width; only the color
+     transitions, from transparent to --tm-outline-color. Animating the
+     spread itself (0 to 3px) used to make a hovered avatar look like it had
+     grown -- a solid ring inflating outward reads as size, not as "look
+     here." A ring that fades in at its resting width reads as the latter.
      -------------------------------------------------------------------------- */
   .tm-avatar-ring {
-    box-shadow: 0 0 0 0 transparent;
-    transition-property: transform, box-shadow;
-    transition-duration: var(--tm-duration, calc(200ms * var(--tm-duration-scale, 1)));
-    transition-timing-function: var(--tm-easing, var(--tm-avatar-spring));
-    transition-delay: var(--tm-delay, 0ms);
+    --tm-avatar-ring-shadow: 0 0 0 var(--tm-ring-width, 3px) transparent;
   }
 
   .tm-avatar-ring:hover,
   .tm-avatar-ring:focus-visible {
-    box-shadow: 0 0 0 var(--tm-ring-width, 3px) var(--tm-outline-color);
+    --tm-avatar-ring-shadow: 0 0 0 var(--tm-ring-width, 3px) var(--tm-outline-color);
+  }
+
+  /* --------------------------------------------------------------------------
+     Overflow badge: .tm-avatar-more
+     Pair with .tm-avatar for a "+N" cell at the end of the stack -- same
+     markup, same sizing, same overlap. Only the fill, ring and z-index
+     differ, so it reads as "more of these" rather than another member.
+     -------------------------------------------------------------------------- */
+  .tm-avatar-more {
+    background: var(--tm-avatar-more-bg, var(--tm-outline-color));
+    box-shadow: inset 0 0 0 1px var(--tm-shadow-color);
+    color: var(--tm-color);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    cursor: default;
+  }
+
+  /* Sits behind the avatar before it, so that avatar's circle overlaps the
+     badge's edge instead of the badge clipping a real member. Same
+     specificity as the nth-child stacking rules above; wins on source
+     order because it comes after them. */
+  .tm-avatar-group .tm-avatar.tm-avatar-more,
+  .tm-avatar-group-invert .tm-avatar.tm-avatar-more {
+    z-index: 0;
   }
 }
 
@@ -4420,6 +4544,37 @@
     animation-fill-mode: both;
   }
 
+  /* Number swap - digits pop in together, replayed by re-rendering them */
+  .tm-number-swap {
+    display: inline-flex;
+    overflow: hidden;
+  }
+
+  .tm-number-swap > * {
+    display: inline-block;
+    animation-name: tm-number-pop;
+    animation-duration: var(--tm-duration, calc(420ms * var(--tm-duration-scale, 1)));
+    animation-delay: calc(
+      var(--tm-delay, 0ms) + var(--tm-stagger, 0) * var(--tm-number-stagger-step, 40ms)
+    );
+    animation-timing-function: var(--tm-easing, var(--tm-ease-emphasis));
+    animation-iteration-count: var(--tm-iteration-count, 1);
+    animation-fill-mode: both;
+    will-change: transform, opacity, filter;
+  }
+
+  /* Auto-stagger children, same 10-child cap as tm-count-reveal */
+  .tm-number-swap > *:nth-child(1) { --tm-stagger: 0; }
+  .tm-number-swap > *:nth-child(2) { --tm-stagger: 1; }
+  .tm-number-swap > *:nth-child(3) { --tm-stagger: 2; }
+  .tm-number-swap > *:nth-child(4) { --tm-stagger: 3; }
+  .tm-number-swap > *:nth-child(5) { --tm-stagger: 4; }
+  .tm-number-swap > *:nth-child(6) { --tm-stagger: 5; }
+  .tm-number-swap > *:nth-child(7) { --tm-stagger: 6; }
+  .tm-number-swap > *:nth-child(8) { --tm-stagger: 7; }
+  .tm-number-swap > *:nth-child(9) { --tm-stagger: 8; }
+  .tm-number-swap > *:nth-child(10) { --tm-stagger: 9; }
+
   /* Confetti - falling celebration particles */
   .tm-confetti {
     animation-name: tm-confetti;
@@ -4512,6 +4667,20 @@
   100% {
     transform: translateY(0);
     opacity: 1;
+  }
+}
+
+@keyframes tm-number-pop {
+  from {
+    transform: translateY(var(--tm-distance, 12px));
+    opacity: 0;
+    filter: blur(3px);
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+    filter: blur(0);
   }
 }
 
@@ -5049,6 +5218,33 @@
       filter: blur(0);
     }
   }
+
+  /* Streaming text - words resolve in one by one, left to right.
+     No transform: unlike the flip/rotate/morph words above, a stream reads
+     as arriving text, not as a swap, so only opacity and blur move. The
+     container keeps its natural display so a real paragraph still wraps. */
+  .tm-stream-text > * {
+    animation-name: tm-stream-text-word-in;
+    animation-duration: var(--tm-duration, calc(350ms * var(--tm-duration-scale, 1)));
+    animation-delay: calc(
+      var(--tm-delay, 0ms) + var(--tm-stagger, 0) * var(--tm-stream-text-stagger-step, 60ms)
+    );
+    animation-timing-function: var(--tm-easing, var(--tm-ease-entrance));
+    animation-iteration-count: var(--tm-iteration-count, 1);
+    animation-fill-mode: both;
+    will-change: opacity, filter;
+  }
+
+  @keyframes tm-stream-text-word-in {
+    from {
+      opacity: 0;
+      filter: blur(var(--tm-stream-text-blur, 6px));
+    }
+    to {
+      opacity: 1;
+      filter: blur(0);
+    }
+  }
 }
 
 
@@ -5129,15 +5325,36 @@
   .group:hover .group-hover\:tm-bounce { animation: tm-bounce var(--tm-duration, calc(600ms * var(--tm-duration-scale, 1))) var(--tm-easing, cubic-bezier(0.34, 1.56, 0.64, 1)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .group:hover .group-hover\:tm-pulse { animation: tm-pulse var(--tm-duration, calc(1200ms * var(--tm-duration-scale, 1))) var(--tm-easing, ease-in-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .group:hover .group-hover\:tm-spin { animation: tm-spin var(--tm-duration, calc(1000ms * var(--tm-duration-scale, 1))) var(--tm-easing, linear) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .group:hover .group-hover\:tm-float { animation: tm-float var(--tm-duration, calc(3000ms * var(--tm-duration-scale, 1))) var(--tm-easing, ease-in-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .group:hover .group-hover\:tm-drift { animation: tm-drift var(--tm-duration, calc(4000ms * var(--tm-duration-scale, 1))) var(--tm-easing, ease-in-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .group:hover .group-hover\:tm-shake { animation: tm-shake var(--tm-duration, calc(500ms * var(--tm-duration-scale, 1))) var(--tm-easing, ease-in-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .group:hover .group-hover\:tm-wiggle { animation: tm-wiggle var(--tm-duration, calc(600ms * var(--tm-duration-scale, 1))) var(--tm-easing, ease-in-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .group:hover .group-hover\:tm-glow { animation: tm-glow var(--tm-duration, calc(1500ms * var(--tm-duration-scale, 1))) var(--tm-easing, ease-in-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .group:hover .group-hover\:tm-morph { animation: tm-morph var(--tm-duration, calc(4000ms * var(--tm-duration-scale, 1))) var(--tm-easing, ease-in-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .group:hover .group-hover\:tm-sway { animation: tm-sway var(--tm-duration, calc(2500ms * var(--tm-duration-scale, 1))) var(--tm-easing, ease-in-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .group:hover .group-hover\:tm-ripple { animation: tm-ripple var(--tm-duration, calc(1500ms * var(--tm-duration-scale, 1))) var(--tm-easing, ease-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .group:hover .group-hover\:tm-elastic { animation: tm-elastic var(--tm-duration, calc(800ms * var(--tm-duration-scale, 1))) var(--tm-easing, var(--tm-ease-emphasis, cubic-bezier(0.68, -0.55, 0.265, 1.55))) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .group:hover .group-hover\:tm-fade-in { animation: tm-fade-in var(--tm-duration, calc(250ms * var(--tm-duration-scale, 1))) var(--tm-easing, var(--tm-ease-entrance, cubic-bezier(0.4, 0, 0.2, 1))) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .group:hover .group-hover\:tm-slide-up { animation: tm-slide-block-start var(--tm-duration, calc(260ms * var(--tm-duration-scale, 1))) var(--tm-easing, var(--tm-ease-entrance, cubic-bezier(0.4, 0, 0.2, 1))) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .group:hover .group-hover\:tm-slide-down { animation: tm-slide-block-end var(--tm-duration, calc(260ms * var(--tm-duration-scale, 1))) var(--tm-easing, var(--tm-ease-entrance, cubic-bezier(0.4, 0, 0.2, 1))) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .group:hover .group-hover\:tm-slide-left { animation: tm-slide-inline-start var(--tm-duration, calc(260ms * var(--tm-duration-scale, 1))) var(--tm-easing, var(--tm-ease-entrance, cubic-bezier(0.4, 0, 0.2, 1))) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .group:hover .group-hover\:tm-slide-right { animation: tm-slide-inline-end var(--tm-duration, calc(260ms * var(--tm-duration-scale, 1))) var(--tm-easing, var(--tm-ease-entrance, cubic-bezier(0.4, 0, 0.2, 1))) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .group:hover .group-hover\:tm-pop { animation: tm-pop var(--tm-duration, calc(400ms * var(--tm-duration-scale, 1))) var(--tm-easing, var(--tm-ease-emphasis, cubic-bezier(0.34, 1.56, 0.64, 1))) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .group:hover .group-hover\:tm-drop { animation: tm-drop-in var(--tm-duration, calc(500ms * var(--tm-duration-scale, 1))) var(--tm-easing, var(--tm-ease-emphasis, cubic-bezier(0.34, 1.56, 0.64, 1))) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .group:hover .group-hover\:tm-blur-in { animation: tm-blur-in var(--tm-duration, calc(280ms * var(--tm-duration-scale, 1))) var(--tm-easing, var(--tm-ease-entrance, cubic-bezier(0.23, 1, 0.32, 1))) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
-  .group:hover .group-hover\:tm-reveal { animation: tm-reveal var(--tm-duration, calc(700ms * var(--tm-duration-scale, 1))) var(--tm-easing, var(--tm-ease-entrance, cubic-bezier(0.23, 1, 0.32, 1))) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
   .group:hover .group-hover\:tm-zoom-in { animation: tm-zoom-in var(--tm-duration, calc(400ms * var(--tm-duration-scale, 1))) var(--tm-easing, var(--tm-ease-entrance, cubic-bezier(0.4, 0, 0.2, 1))) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .group:hover .group-hover\:tm-zoom-out { animation: tm-zoom-out var(--tm-duration, calc(400ms * var(--tm-duration-scale, 1))) var(--tm-easing, var(--tm-ease-entrance, cubic-bezier(0.4, 0, 0.2, 1))) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .group:hover .group-hover\:tm-flip-x { animation: tm-flip-x var(--tm-duration, calc(600ms * var(--tm-duration-scale, 1))) var(--tm-easing, ease-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .group:hover .group-hover\:tm-flip-y { animation: tm-flip-y var(--tm-duration, calc(600ms * var(--tm-duration-scale, 1))) var(--tm-easing, ease-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .group:hover .group-hover\:tm-rotate-in { animation: tm-rotate-in var(--tm-duration, calc(280ms * var(--tm-duration-scale, 1))) var(--tm-easing, var(--tm-ease-entrance, ease-out)) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .group:hover .group-hover\:tm-reveal { animation: tm-reveal var(--tm-duration, calc(700ms * var(--tm-duration-scale, 1))) var(--tm-easing, var(--tm-ease-entrance, cubic-bezier(0.23, 1, 0.32, 1))) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .group:hover .group-hover\:tm-unfold { animation: tm-unfold var(--tm-duration, calc(800ms * var(--tm-duration-scale, 1))) var(--tm-easing, var(--tm-ease-entrance, cubic-bezier(0.23, 1, 0.32, 1))) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .group:hover .group-hover\:tm-glide { animation: tm-glide var(--tm-duration, calc(600ms * var(--tm-duration-scale, 1))) var(--tm-easing, var(--tm-ease-entrance, cubic-bezier(0.4, 0, 0.2, 1))) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .group:hover .group-hover\:tm-glide-right { animation: tm-glide-right var(--tm-duration, calc(600ms * var(--tm-duration-scale, 1))) var(--tm-easing, var(--tm-ease-entrance, cubic-bezier(0.4, 0, 0.2, 1))) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .group:hover .group-hover\:tm-scale-fade { animation: tm-scale-fade var(--tm-duration, calc(500ms * var(--tm-duration-scale, 1))) var(--tm-easing, var(--tm-ease-entrance, cubic-bezier(0.4, 0, 0.2, 1))) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .group:hover .group-hover\:tm-rise { animation: tm-rise var(--tm-duration, calc(700ms * var(--tm-duration-scale, 1))) var(--tm-easing, var(--tm-ease-entrance, cubic-bezier(0.23, 1, 0.32, 1))) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .group:hover .group-hover\:tm-sparkle { animation: tm-sparkle var(--tm-duration, calc(1400ms * var(--tm-duration-scale, 1))) var(--tm-easing, ease-in-out) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
+  .group:hover .group-hover\:tm-burst { animation: tm-burst var(--tm-duration, calc(600ms * var(--tm-duration-scale, 1))) var(--tm-easing, var(--tm-ease-emphasis, cubic-bezier(0.22, 1, 0.36, 1))) var(--tm-delay, 0ms) var(--tm-iteration-count, 1) both; }
 
   /* ========================================
      FOCUS-WITHIN VARIANTS

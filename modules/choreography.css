@@ -1,4 +1,4 @@
-/* TailMotion v0.8.0 — modules/choreography.css | Generated 2026-08-24T19:30:24.296Z */
+/* TailMotion v0.9.0 — modules/choreography.css | Generated 2026-08-24T22:51:20.871Z */
 /* tailmotion/choreography.css
    Stagger choreography on its own, with the token layer it reads.
    Already included in "tailmotion/css". */
@@ -49,6 +49,13 @@
    A nested tm-stagger sequences its own children from its own delay; it does
    not continue the outer count, and its step does not leak back out. Offset a
    nested group with tm-delay-* when the two should read as one sequence.
+
+   Blur
+   ----
+   tm-stagger-blur adds an 8px resolve-in/out blur, off by default so it never
+   changes existing markup. Keep it at or below the 8px default on a long
+   list: a rasterized blur is the most expensive part of this animation, and
+   several children blurring at once is the case that shows it.
    -------------------------------------------------------------------------- */
 
 
@@ -152,6 +159,12 @@
        color-mix() stop, so strength lives in --tm-shimmer-opacity instead. */
     --tm-shimmer-color: var(--tm-color);
     --tm-shimmer-opacity: 0.35;
+
+    /* tm-shimmer-text paints its own gradient rather than overlaying one, so
+       it needs a resting (dim) and a peak (full-strength) stop instead of a
+       single opacity. Both derive from the same color by default. */
+    --tm-shimmer-text-color: var(--tm-color);
+    --tm-shimmer-text-resting: color-mix(in oklab, var(--tm-shimmer-text-color) 45%, transparent);
   }
 
   /* Safe fallback where color-mix() is unavailable. */
@@ -161,6 +174,7 @@
       --tm-shadow-color: var(--tm-color);
       --tm-glow-color: var(--tm-color);
       --tm-outline-color: var(--tm-color);
+      --tm-shimmer-text-resting: var(--tm-shimmer-text-color);
     }
   }
 
@@ -198,6 +212,8 @@
     [class*="tm-"]::after,
     .tm-stagger > *,
     .tm-count-reveal > *,
+    .tm-number-swap > *,
+    .tm-stream-text > *,
     .tm-icon-swap > *,
     .tm-view-morph > [data-tm-panel],
     .tm-text-flip-chars > span {
@@ -241,6 +257,7 @@
     animation-timing-function: var(--tm-easing, var(--tm-ease-entrance, cubic-bezier(0.22, 1, 0.36, 1)));
     animation-iteration-count: var(--tm-iteration-count, 1);
     animation-fill-mode: both;
+    will-change: opacity, translate, filter;
   }
 
   /* Count from the last child instead of the first. */
@@ -302,6 +319,15 @@
     --tm-stagger-step: 200ms;
   }
 
+  /* Opt-in blur, off by default so existing tm-stagger markup is unaffected.
+     8px matches the library's own ceiling -- see Safari, specifically in
+     browser-support.mdx: no blur here exceeds it, because a rasterized blur
+     is the most expensive part of this animation and Safari pays for it even
+     on elements not yet visible. Keep it at or below 8px on long lists. */
+  .tm-stagger-blur {
+    --tm-stagger-blur: 8px;
+  }
+
   /* Generated child indices. Forward, then counted from the end. */
   .tm-stagger > *:nth-child(1) { --tm-stagger-index: 0; }
   .tm-stagger > *:nth-child(2) { --tm-stagger-index: 1; }
@@ -352,11 +378,13 @@
   from {
     opacity: 0;
     translate: 0 var(--tm-distance, 12px);
+    filter: blur(var(--tm-stagger-blur, 0px));
   }
 
   to {
     opacity: 1;
     translate: 0 0;
+    filter: blur(0);
   }
 }
 
@@ -364,12 +392,14 @@
   from {
     opacity: 1;
     translate: 0 0;
+    filter: blur(0);
   }
 
   to {
     opacity: 0;
     translate: 0
       calc(var(--tm-exit-distance, calc(var(--tm-distance, 12px) * 0.7)) * -1);
+    filter: blur(var(--tm-stagger-blur, 0px));
   }
 }
 

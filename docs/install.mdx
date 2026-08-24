@@ -17,7 +17,7 @@ document.
 No Tailwind, no build step, no plugin. Every class in the library works.
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailmotion@0.8.0/tailmotion.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailmotion@0.9.0/tailmotion.css">
 ```
 
 <Warning>
@@ -70,14 +70,43 @@ Then import the stylesheet after Tailwind's directives:
 @import "tailmotion/css";
 ```
 
-<Note>
-Tailwind v3 emits its utilities **unlayered**, and unlayered CSS beats every
-layered rule regardless of specificity. On the rare element where a Tailwind
-utility and a TailMotion class fight over the same property — `opacity-0` on a
-`tm-presence-*` panel is the realistic case — the Tailwind utility wins in v3
-and TailMotion wins in v4. Let TailMotion own `opacity`, `translate`, `scale`
-and `visibility` on an element it is animating, and the question never comes up.
-</Note>
+<Warning>
+Tailwind v3 emits **preflight and its utilities unlayered**, and unlayered CSS
+beats every layered rule regardless of specificity. TailMotion's rules live in
+`@layer utilities`, so anything preflight sets wins.
+
+In practice this only bites the two legacy classes that own their own
+appearance. On a `<button>`, preflight's
+`button { color: inherit; padding: 0 }` and
+`button { background-color: transparent }` strip `tm-hold-delete` and
+`tm-liquid-btn` of their colour, background and padding — the animation still
+runs, so the result looks broken rather than missing:
+
+| `tm-hold-delete` on | color | background | padding |
+|---|---|---|---|
+| `<div>` | red-500 | red-50 | 12px 24px |
+| `<button>` under Tailwind v3 | inherited | transparent | **0** |
+
+Give those two classes their appearance with Tailwind instead, which is what the
+rest of the library expects anyway:
+
+```html
+<button class="tm-hold-delete gap-2 rounded-lg bg-red-50 px-6 py-3 text-red-600">
+  Hold to delete
+</button>
+```
+
+Or use [`tm-hold-confirm`](/docs/guides/recipes#hold-to-confirm), which sets no
+colour, background or padding at all and is immune by design.
+
+Every other class in the library only animates `transform`, `translate`,
+`scale`, `opacity` and `filter`, none of which preflight touches. The one other
+case worth knowing is a Tailwind utility fighting a TailMotion class over the
+same property — `opacity-0` on a `tm-presence-*` panel — where the Tailwind
+utility wins in v3 and TailMotion wins in v4. Let TailMotion own `opacity`,
+`translate`, `scale` and `visibility` on an element it is animating and the
+question never comes up.
+</Warning>
 
 ## The Tailwind plugin is optional
 

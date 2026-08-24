@@ -74,6 +74,26 @@ If one of these lands on an element you have transformed with Tailwind, wrap it:
 </div>
 ```
 
+## Keep hover hit targets stationary
+
+A hover-triggered keyframe that moves or shrinks its own element can move the
+element's hitbox out from under the pointer. That removes `:hover`, resets the
+animation, returns the element under the pointer, and starts the cycle again.
+
+Put the hover state on a stationary parent and the motion on its child:
+
+```html
+<div class="group">
+  <div class="group-hover:tm-slide-block-start">
+    Stable hover target, moving content
+  </div>
+</div>
+```
+
+TailMotion ships a matching `group-hover:` form for every prebuilt `hover:`
+variant. Direct `hover:` remains useful for opacity-only effects and for cases
+where the element's hitbox does not move.
+
 ## Stacking two keyframe classes
 
 Two keyframe classes on one element do **not** both run. Whichever comes later

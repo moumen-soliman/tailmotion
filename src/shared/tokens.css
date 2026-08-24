@@ -97,6 +97,12 @@
        color-mix() stop, so strength lives in --tm-shimmer-opacity instead. */
     --tm-shimmer-color: var(--tm-color);
     --tm-shimmer-opacity: 0.35;
+
+    /* tm-shimmer-text paints its own gradient rather than overlaying one, so
+       it needs a resting (dim) and a peak (full-strength) stop instead of a
+       single opacity. Both derive from the same color by default. */
+    --tm-shimmer-text-color: var(--tm-color);
+    --tm-shimmer-text-resting: color-mix(in oklab, var(--tm-shimmer-text-color) 45%, transparent);
   }
 
   /* Safe fallback where color-mix() is unavailable. */
@@ -106,6 +112,7 @@
       --tm-shadow-color: var(--tm-color);
       --tm-glow-color: var(--tm-color);
       --tm-outline-color: var(--tm-color);
+      --tm-shimmer-text-resting: var(--tm-shimmer-text-color);
     }
   }
 
@@ -143,6 +150,8 @@
     [class*="tm-"]::after,
     .tm-stagger > *,
     .tm-count-reveal > *,
+    .tm-number-swap > *,
+    .tm-stream-text > *,
     .tm-icon-swap > *,
     .tm-view-morph > [data-tm-panel],
     .tm-text-flip-chars > span {

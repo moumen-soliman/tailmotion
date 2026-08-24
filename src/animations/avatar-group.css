@@ -1,6 +1,7 @@
 /* ==========================================================================
    AVATAR GROUP SYSTEM
-   Overlapping avatar stack with hover lift and optional tooltips.
+   Overlapping avatar stack with hover lift, optional tooltips and a "+N"
+   overflow badge (.tm-avatar-more).
    Works with TailMotion utilities: tm-duration-*, tm-delay-*, tm-ease-*
    ========================================================================== */
 
@@ -9,7 +10,6 @@
   :host {
     /* Avatar group specific defaults */
     --tm-avatar-overlap: -0.75rem;
-    --tm-avatar-gap: 0.25rem;
     --tm-avatar-lift: -30%;
     --tm-avatar-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
   }
@@ -29,6 +29,12 @@
   /* --------------------------------------------------------------------------
      Avatar Item: .tm-avatar
      Individual avatar with overlap and hover lift
+
+     Hovering one avatar only ever moves that avatar: a small lift, plus its
+     own tooltip and ring. Nothing about the rest of the stack changes, so
+     there's nothing to reflow and no neighbor for the hover state to jump
+     to. (0.8 briefly spread the whole stack apart on hover; removed --
+     the movement was bigger than the "look here" it was meant to convey.)
      -------------------------------------------------------------------------- */
   .tm-avatar {
     position: relative;
@@ -36,23 +42,20 @@
     align-items: center;
     justify-content: center;
     border-radius: 9999px;
-    transition-property: transform, margin-inline-start;
+    translate: 0 var(--tm-avatar-shift-y, 0);
+    box-shadow: var(--tm-avatar-ring-shadow, 0 0 0 0 transparent);
+    transition-property: translate, box-shadow;
     transition-duration: var(--tm-duration, calc(200ms * var(--tm-duration-scale, 1)));
     transition-timing-function: var(--tm-easing, var(--tm-avatar-spring));
     transition-delay: var(--tm-delay, 0ms);
     cursor: pointer;
   }
 
-  /* Overlap: all but first avatar gets negative margin */
+  /* Overlap: all but first avatar gets negative margin. Static -- this never
+     animates. */
   .tm-avatar-group .tm-avatar:not(:first-child),
   .tm-avatar-group-invert .tm-avatar:not(:first-child) {
     margin-inline-start: var(--tm-avatar-overlap);
-  }
-
-  /* Group hover/focus: spread the stack so every avatar is reachable */
-  .tm-avatar-group:is(:hover, :focus-within) .tm-avatar:not(:first-child),
-  .tm-avatar-group-invert:is(:hover, :focus-within) .tm-avatar:not(:first-child) {
-    margin-inline-start: var(--tm-avatar-gap);
   }
 
   /* Z-index stacking: later avatars on top (default) */
@@ -82,7 +85,7 @@
   /* Hover: lift avatar up */
   .tm-avatar:hover,
   .tm-avatar:focus-visible {
-    transform: translateY(var(--tm-avatar-lift));
+    --tm-avatar-shift-y: var(--tm-avatar-lift);
     z-index: 50 !important;
   }
 
@@ -236,17 +239,43 @@
 
   /* --------------------------------------------------------------------------
      Ring/Border on hover
+
+     The spread stays at a constant --tm-ring-width; only the color
+     transitions, from transparent to --tm-outline-color. Animating the
+     spread itself (0 to 3px) used to make a hovered avatar look like it had
+     grown -- a solid ring inflating outward reads as size, not as "look
+     here." A ring that fades in at its resting width reads as the latter.
      -------------------------------------------------------------------------- */
   .tm-avatar-ring {
-    box-shadow: 0 0 0 0 transparent;
-    transition-property: transform, box-shadow;
-    transition-duration: var(--tm-duration, calc(200ms * var(--tm-duration-scale, 1)));
-    transition-timing-function: var(--tm-easing, var(--tm-avatar-spring));
-    transition-delay: var(--tm-delay, 0ms);
+    --tm-avatar-ring-shadow: 0 0 0 var(--tm-ring-width, 3px) transparent;
   }
 
   .tm-avatar-ring:hover,
   .tm-avatar-ring:focus-visible {
-    box-shadow: 0 0 0 var(--tm-ring-width, 3px) var(--tm-outline-color);
+    --tm-avatar-ring-shadow: 0 0 0 var(--tm-ring-width, 3px) var(--tm-outline-color);
+  }
+
+  /* --------------------------------------------------------------------------
+     Overflow badge: .tm-avatar-more
+     Pair with .tm-avatar for a "+N" cell at the end of the stack -- same
+     markup, same sizing, same overlap. Only the fill, ring and z-index
+     differ, so it reads as "more of these" rather than another member.
+     -------------------------------------------------------------------------- */
+  .tm-avatar-more {
+    background: var(--tm-avatar-more-bg, var(--tm-outline-color));
+    box-shadow: inset 0 0 0 1px var(--tm-shadow-color);
+    color: var(--tm-color);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    cursor: default;
+  }
+
+  /* Sits behind the avatar before it, so that avatar's circle overlaps the
+     badge's edge instead of the badge clipping a real member. Same
+     specificity as the nth-child stacking rules above; wins on source
+     order because it comes after them. */
+  .tm-avatar-group .tm-avatar.tm-avatar-more,
+  .tm-avatar-group-invert .tm-avatar.tm-avatar-more {
+    z-index: 0;
   }
 }

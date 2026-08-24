@@ -2,7 +2,7 @@ import { useDeferredValue, useEffect, useMemo, useState } from 'react';
 import { RotateCcw, Search, X } from 'lucide-react';
 import { CATEGORIES, GROUPS, REPLAYABLE, catalog } from '../animations';
 import { AnimationPreview } from '../lib/previews';
-import { classForTrigger, triggersFor } from '../lib/variants';
+import { classForTrigger, markupForTrigger, triggersFor } from '../lib/variants';
 import {
   Badge,
   Button,
@@ -121,9 +121,9 @@ export function Explorer({ variants }) {
   if (!entry) return null;
 
   const className = REPLAYABLE.has(entry.name)
-    ? classForTrigger(entry.name, activeTrigger)
+    ? classForTrigger(entry.name, activeTrigger, { stableHover: true })
     : `tm-${entry.name}`;
-  const markup = entry.markup || `<div class="${className}">\n  Content\n</div>`;
+  const markup = entry.markup || markupForTrigger(className, activeTrigger);
   const canReplay = REPLAYABLE.has(entry.name) && activeTrigger === 'load';
 
   return (
@@ -143,7 +143,9 @@ export function Explorer({ variants }) {
                 aria-hidden
               />
               <input
-                type="search"
+                type="text"
+                role="searchbox"
+                inputMode="search"
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
                 placeholder="Search classes"
@@ -242,7 +244,12 @@ export function Explorer({ variants }) {
             </div>
 
             <div className="grid min-h-[14rem] place-items-center bg-page p-6 sm:min-h-[17rem]">
-              <AnimationPreview entry={entry} appliedClass={className} replayKey={replayKey} />
+              <AnimationPreview
+                entry={entry}
+                appliedClass={className}
+                replayKey={replayKey}
+                trigger={activeTrigger}
+              />
             </div>
 
             {triggers.length > 1 ? (

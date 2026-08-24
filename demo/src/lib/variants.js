@@ -72,8 +72,28 @@ export function triggersFor(name, variants) {
   return triggers;
 }
 
-export function classForTrigger(name, trigger) {
-  if (trigger === 'hover') return `hover:tm-${name}`;
+export function classForTrigger(name, trigger, { stableHover = false } = {}) {
+  if (trigger === 'hover') {
+    return `${stableHover ? 'group-hover' : 'hover'}:tm-${name}`;
+  }
   if (trigger === 'press') return `active:tm-${name}`;
   return `tm-${name}`;
+}
+
+/**
+ * Hover keyframes can move their own hit target out from under the pointer.
+ * The stable form keeps `group` on a stationary parent and animates its child.
+ */
+export function markupForTrigger(className, trigger, { tag = 'div', content = 'Content' } = {}) {
+  if (trigger !== 'hover') {
+    return `<${tag} class="${className}">\n  ${content}\n</${tag}>`;
+  }
+
+  return (
+    `<div class="group">\n` +
+    `  <${tag} class="${className}">\n` +
+    `    ${content}\n` +
+    `  </${tag}>\n` +
+    `</div>`
+  );
 }

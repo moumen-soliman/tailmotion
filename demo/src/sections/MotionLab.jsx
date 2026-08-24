@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { ArrowRight, RotateCcw } from 'lucide-react';
 import { AnimationPreview } from '../lib/previews';
-import { classForTrigger, triggersFor } from '../lib/variants';
+import { classForTrigger, markupForTrigger, triggersFor } from '../lib/variants';
 import { Button, Card, Chip, ChipGroup, CopyButton, cx } from '../lib/ui';
 
 /* --------------------------------------------------------------------------
@@ -38,12 +38,14 @@ export function MotionLab({ variants }) {
   const activeTrigger = triggers.some((t) => t.id === trigger) ? trigger : 'load';
 
   const classString = useMemo(
-    () => `${classForTrigger(name, activeTrigger)} tm-duration-${duration} tm-ease-${easing}`,
+    () =>
+      `${classForTrigger(name, activeTrigger, { stableHover: true })} ` +
+      `tm-duration-${duration} tm-ease-${easing}`,
     [name, activeTrigger, duration, easing]
   );
 
   const entry = { name, preview: undefined };
-  const snippet = `<div class="${classString}">\n  Content\n</div>`;
+  const snippet = markupForTrigger(classString, activeTrigger);
 
   return (
     <Card className="overflow-hidden">
@@ -66,7 +68,12 @@ export function MotionLab({ variants }) {
       {/* Preview stage. Fixed aspect rather than a fixed pixel height, so it
           keeps its shape from narrow phones up to 200% zoom. */}
       <div className="grid h-56 place-items-center border-b border-line bg-page p-6 sm:h-64">
-        <AnimationPreview entry={entry} appliedClass={classString} replayKey={replayKey} />
+        <AnimationPreview
+          entry={entry}
+          appliedClass={classString}
+          replayKey={replayKey}
+          trigger={activeTrigger}
+        />
       </div>
 
       <div className="space-y-3.5 p-4">

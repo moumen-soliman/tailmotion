@@ -245,14 +245,14 @@ Full details, including every duration and easing role, in the
 <summary><strong>Modular imports</strong></summary>
 
 ```css
-@import "tailmotion/css";            /* everything — 29.5 KB gzipped */
+@import "tailmotion/css";            /* everything — 31.6 KB gzipped */
 
-@import "tailmotion/profiles.css";   /* 3.6 KB */
-@import "tailmotion/presence.css";   /* 4.6 KB */
-@import "tailmotion/native.css";     /* 4.9 KB */
-@import "tailmotion/recipes.css";    /* 6.3 KB */
-@import "tailmotion/scroll.css";     /* 4.0 KB */
-@import "tailmotion/choreography.css"; /* 4.3 KB */
+@import "tailmotion/profiles.css";   /* 3.7 KB */
+@import "tailmotion/presence.css";   /* 4.7 KB */
+@import "tailmotion/native.css";     /* 5.0 KB */
+@import "tailmotion/recipes.css";    /* 6.4 KB */
+@import "tailmotion/scroll.css";     /* 4.1 KB */
+@import "tailmotion/choreography.css"; /* 4.8 KB */
 
 @import "tailmotion/animations/base.css";  /* or one family at a time */
 @import "tailmotion/animations/fade.css";
