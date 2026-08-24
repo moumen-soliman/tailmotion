@@ -75,7 +75,7 @@ export function Installation({ variants }) {
   const breakpoints = [...variants.breakpoints];
 
   return (
-    <Section id="install">
+    <Section id="install" className="border-t border-line">
       <SectionHeading eyebrow="Install" title="Three steps, whichever setup you are on">
         The plugin is optional: it adds the timing, easing, stagger and distance token utilities with
         theme configuration and arbitrary values. The animations themselves come from the stylesheet.

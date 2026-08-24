@@ -83,7 +83,7 @@ export function ViewMorph() {
   };
 
   return (
-    <Section id="view-morph">
+    <Section id="view-morph" className="border-t border-line">
       <SectionHeading eyebrow="Structured recipe" title="One surface, continuous state">
         Keep each view mounted, move one state attribute, and let the container reshape around
         the next interface without a motion runtime.

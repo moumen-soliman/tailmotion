@@ -1,4 +1,4 @@
-import{c as r}from"./tailmotion-DWrMj-Uy.js";/**
+import{c as r}from"./tailmotion-BUAl7PmA.js";/**
  * @license lucide-react v0.460.0 - ISC
  *
  * This source code is licensed under the ISC license.

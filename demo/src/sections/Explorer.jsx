@@ -127,7 +127,7 @@ export function Explorer({ variants }) {
   const canReplay = REPLAYABLE.has(entry.name) && activeTrigger === 'load';
 
   return (
-    <Section id="explorer">
+    <Section id="explorer" className="border-t border-line">
       <SectionHeading eyebrow="Explorer" title="Every class, one at a time">
         {catalog.length} classes, grouped by how they work. Keyframes play and replay; transitions
         respond to a state; recipes need a little markup.

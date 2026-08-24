@@ -1,13 +1,25 @@
-import { ArrowRight, Github } from 'lucide-react';
+import { Accessibility, ArrowRight, Braces, Github, RefreshCw } from 'lucide-react';
 import { MotionLab } from './MotionLab';
 import { Button, Code, CopyButton, Shell } from '../lib/ui';
 
 const GITHUB = 'https://github.com/moumen-soliman/tailmotion';
 
 const PROOF = [
-  { label: 'Pure CSS', detail: 'No JavaScript behind any keyframe or transition class.' },
-  { label: 'Framework agnostic', detail: 'One stylesheet. React, Vue, Svelte or plain HTML.' },
-  { label: 'Reduced-motion ready', detail: 'Honors prefers-reduced-motion out of the box.' },
+  {
+    icon: Braces,
+    label: 'Purpose-built',
+    detail: 'Press, presence, toast and stagger encode the behavior — not animation plumbing.',
+  },
+  {
+    icon: RefreshCw,
+    label: 'State-aware',
+    detail: 'Reads data-state and ARIA state, with transitions that reverse smoothly mid-flight.',
+  },
+  {
+    icon: Accessibility,
+    label: 'CSS-native',
+    detail: 'Zero runtime in the core, logical RTL direction and reduced-motion handling included.',
+  },
 ];
 
 export function Hero({ variants }) {
@@ -16,24 +28,27 @@ export function Hero({ variants }) {
       <Shell>
         <div className="grid grid-cols-1 items-start gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.06fr)] lg:gap-16">
           {/* Copy. One staggered entrance, on first paint only. */}
-          <div className="tm-stagger min-w-0 space-y-7 [--tm-stagger-step:90ms]">
+          <div className="tm-stagger min-w-0 space-y-7 [--tm-stagger-step:90ms] lg:pt-3">
             <div>
-              <h1 className="text-balance text-display font-semibold text-ink-strong sm:text-display-lg">
-                Motion that speaks Tailwind
+              <p className="font-mono text-overline uppercase text-accent">
+                A motion language for product interfaces
+              </p>
+              <h1 className="mt-4 text-balance text-display font-semibold text-ink-strong sm:text-display-lg">
+                Purposeful motion that speaks Tailwind
               </h1>
-              <p className="mt-5 max-w-measure text-pretty text-body-lg text-ink-muted">
-                Polished CSS animations.
-                <br className="hidden sm:inline" /> One class. Zero runtime.
+              <p className="mt-5 max-w-[54ch] text-pretty text-body-lg text-ink-muted">
+                Add tuned entrances, interruptible state transitions and product-ready recipes with
+                composable classes. Tailwind owns the look. TailMotion owns how it moves.
               </p>
             </div>
 
-            <Code label="Drop it on anything" copyValue='<div class="tm-pop tm-duration-300">...</div>'>
-              {'<div class="tm-pop tm-duration-300">...</div>'}
+            <Code label="Add the behavior you mean" copyValue='<button class="tm-press">Save changes</button>'>
+              {'<button class="tm-press">Save changes</button>'}
             </Code>
 
             <div className="flex flex-wrap items-center gap-2.5">
               <Button as="a" href="/#explorer" variant="primary">
-                Explore animations
+                Explore the motion language
                 <ArrowRight className="h-4 w-4" aria-hidden />
               </Button>
               <CopyButton
@@ -56,13 +71,17 @@ export function Hero({ variants }) {
           </div>
         </div>
 
-        {/* Proof strip spans both columns, giving the section one closing edge
-            instead of leaving a ragged gap beside the taller lab. */}
-        <ul className="mt-12 grid grid-cols-1 gap-x-8 gap-y-6 border-t border-line pt-8 sm:grid-cols-3 lg:mt-16">
-          {PROOF.map((item) => (
-            <li key={item.label} className="min-w-0">
-              <p className="text-label font-medium text-ink">{item.label}</p>
-              <p className="mt-1 text-micro text-ink-muted">{item.detail}</p>
+        {/* Proof spans both columns and closes the hero as one responsive panel. */}
+        <ul className="mt-12 grid grid-cols-1 divide-y divide-line overflow-hidden rounded-lg border border-line bg-card sm:grid-cols-3 sm:divide-x sm:divide-y-0 lg:mt-16">
+          {PROOF.map(({ icon: Icon, label, detail }) => (
+            <li key={label} className="flex min-w-0 gap-3 p-4 sm:block sm:p-5 lg:flex">
+              <span className="grid h-8 w-8 shrink-0 place-items-center rounded-md border border-line-strong bg-page text-accent">
+                <Icon className="h-4 w-4" strokeWidth={1.75} aria-hidden />
+              </span>
+              <div className="min-w-0">
+                <p className="text-label font-medium text-ink-strong">{label}</p>
+                <p className="mt-1 text-micro text-ink-muted">{detail}</p>
+              </div>
             </li>
           ))}
         </ul>

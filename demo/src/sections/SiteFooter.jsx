@@ -8,7 +8,7 @@ const LINK = cx('hover:text-ink', CONTROL_TRANSITION);
 export function SiteFooter() {
   return (
     <footer className="border-t border-line">
-      <div className="mx-auto flex w-full max-w-shell flex-wrap items-center gap-x-6 gap-y-2 px-5 py-8 text-label text-ink-muted sm:px-6 lg:px-8">
+      <div className="flex w-full flex-wrap items-center gap-x-6 gap-y-2 px-5 py-8 text-label text-ink-muted sm:px-6 lg:px-8">
         <span>MIT License</span>
         <span className="font-mono text-micro text-ink-faint">tailmotion</span>
         <div className="ms-auto flex items-center gap-5">

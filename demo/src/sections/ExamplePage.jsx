@@ -57,7 +57,7 @@ export function ExamplePage() {
 
   return (
     <main>
-      <Section className="border-b border-line">
+      <Section>
         <div className="tm-stagger max-w-measure">
           <p className="font-mono text-overline uppercase text-accent">React example</p>
           <h1 className="mt-3 text-balance text-display font-semibold text-ink-strong sm:text-display-lg">
@@ -79,7 +79,7 @@ export function ExamplePage() {
         </div>
       </Section>
 
-      <Section>
+      <Section className="border-t border-line">
         <SectionHeading eyebrow="Product UI" title="The same classes you copy from the explorer">
           Entrances, press feedback, hover lift, a counter, and an icon swap. Each one is a class on
           ordinary HTML.

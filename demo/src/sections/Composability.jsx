@@ -10,10 +10,10 @@ import { Card, Code, CONTROL_TRANSITION, Section, SectionHeading, cx } from '../
    -------------------------------------------------------------------------- */
 
 const PARTS = [
-  { id: 'duration', token: 'tm-duration-300', label: 'Duration', note: 'How long it runs' },
-  { id: 'delay', token: 'tm-delay-150', label: 'Delay', note: 'When it starts' },
-  { id: 'ease', token: 'tm-ease-snappy', label: 'Easing', note: 'How it accelerates' },
-  { id: 'hover', token: 'hover:', label: 'Hover', note: 'What triggers it' },
+  { id: 'duration', token: 'tm-duration-300', note: 'Adjust the rhythm' },
+  { id: 'delay', token: 'tm-delay-150', note: 'Sequence with its neighbors' },
+  { id: 'ease', token: 'tm-ease-snappy', note: 'Change its personality' },
+  { id: 'hover', token: 'hover:', note: 'Use any Tailwind variant' },
 ];
 
 export function Composability() {
@@ -24,25 +24,29 @@ export function Composability() {
   const base = enabled.hover ? 'hover:tm-pop' : 'tm-pop';
   const tokens = PARTS.filter((p) => p.id !== 'hover' && enabled[p.id]).map((p) => p.token);
   const classString = [base, ...tokens].join(' ');
-  const snippet = `<button class="${classString}">\n  Hover me\n</button>`;
+  const snippet = `<button class="${classString}">\n  Preview motion\n</button>`;
 
   return (
-    <Section id="compose">
-      <SectionHeading eyebrow="Composable" title="Stack the parts, skip the keyframes">
-        Motion is assembled from small classes that each own one decision. You never write an
-        <code className="mx-1 font-mono text-ink-muted">@keyframes</code> block, and you never fork a
-        component to change a duration.
+    <Section id="compose" className="border-t border-line">
+      <SectionHeading eyebrow="Decision-first" title="Stack the parts. Skip the animation plumbing.">
+        Start with a named behavior whose movement is already tuned. Add a Tailwind variant or a
+        timing token only when the context asks for it — without creating another component or
+        shipping an animation runtime.
       </SectionHeading>
 
       <div className="mt-8 grid grid-cols-1 gap-6 lg:mt-10 lg:grid-cols-2 lg:gap-8">
         <Card className="min-w-0 p-5">
-          <p className="mb-3 font-mono text-micro uppercase tracking-wider text-ink-faint">
-            Parts (toggle any of them)
-          </p>
+          <div className="mb-4">
+            <p className="font-mono text-overline uppercase text-accent">01 · Choose the behavior</p>
+            <p className="mt-1 text-label text-ink-muted">The useful decision comes first; tuning stays optional.</p>
+          </div>
           <ul className="space-y-2">
-            <li className="flex items-center gap-3 rounded-md border border-line-strong bg-card-hover px-3 py-2">
+            <li className="flex items-center gap-3 rounded-md border border-accent/40 bg-accent/10 px-3 py-2.5">
               <span dir="ltr" className="font-mono text-label text-ink-strong">tm-pop</span>
-              <span className="ms-auto text-micro text-ink-muted">The animation. Always required.</span>
+              <span className="ms-auto text-micro text-ink-muted">Tuned entrance behavior</span>
+            </li>
+            <li className="pb-1 pt-3">
+              <p className="font-mono text-overline uppercase text-ink-faint">02 · Tune the context</p>
             </li>
             {PARTS.map((part) => (
               <li key={part.id}>
@@ -77,18 +81,26 @@ export function Composability() {
         </Card>
 
         <div className="flex min-w-0 flex-col gap-6">
-          <Code label="Result" copyValue={snippet} className="shrink-0">
+          <Code label="Copyable result" copyValue={snippet} className="shrink-0">
             {snippet}
           </Code>
 
-          <Card className="grid flex-1 place-items-center bg-page p-8">
-            <div className="flex flex-col items-center gap-3">
-              <button type="button" key={classString} className={cx(classString, 'rounded-md bg-ink-strong px-5 py-2.5 text-label font-medium text-page')}>
-                Hover me
-              </button>
-              <p className="text-center text-micro text-ink-muted">
-                {enabled.hover ? 'Runs on hover' : 'Ran once, when it mounted'}
+          <Card className="flex min-h-48 flex-1 flex-col bg-page">
+            <div className="border-b border-line px-4 py-3">
+              <p className="font-mono text-overline uppercase text-ink-faint">Live composition</p>
+              <p className="mt-1 text-micro text-ink-muted">
+                The behavior stays readable even after you tune it.
               </p>
+            </div>
+            <div className="grid flex-1 place-items-center p-8">
+              <div className="flex flex-col items-center gap-3">
+                <button type="button" key={classString} className={cx(classString, 'rounded-md bg-ink-strong px-5 py-2.5 text-label font-medium text-page')}>
+                  Preview motion
+                </button>
+                <p className="text-center text-micro text-ink-muted">
+                  {enabled.hover ? 'Hover to trigger the named behavior' : 'Replays when the composition changes'}
+                </p>
+              </div>
             </div>
           </Card>
         </div>

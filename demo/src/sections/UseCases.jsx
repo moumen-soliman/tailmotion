@@ -196,9 +196,9 @@ function AnimatedBackground() {
     <div
       className="tm-wavy-bg h-24 w-full max-w-[14rem] rounded-md border border-line"
       style={{
-        '--tm-wavy-color1': 'oklch(0.6973 0.1597 258 / 0.22)',
-        '--tm-wavy-color2': 'oklch(0.7776 0.1135 259 / 0.12)',
-        '--tm-wavy-color3': 'oklch(0.88 0.09 155 / 0.12)',
+        '--tm-wavy-color1': 'oklch(0.53 0.1597 258 / 0.22)',
+        '--tm-wavy-color2': 'oklch(0.68 0.1135 259 / 0.12)',
+        '--tm-wavy-color3': 'oklch(0.7 0.09 155 / 0.12)',
       }}
     />
   );
@@ -327,7 +327,7 @@ const GROUPS = [
 
 export function UseCases() {
   return (
-    <Section id="use-cases">
+    <Section id="use-cases" className="border-t border-line">
       <SectionHeading eyebrow="In practice" title="What it looks like in a real interface">
         Three places motion earns its keep. Every example below is plain utility classes — no
         component library, no wrapper.

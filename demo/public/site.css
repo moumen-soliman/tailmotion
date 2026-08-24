@@ -1,5 +1,5 @@
 :root {
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 html {
@@ -55,16 +55,14 @@ html[data-force-reduced-motion='on'] .tm-hold-confirm[data-state='holding']::aft
 }
 
 ::selection {
-  background: oklch(0.6973 0.1597 258 / 0.3);
-  color: oklch(1 0 0);
+  background: oklch(0.53 0.1597 258 / 0.22);
+  color: oklch(0.205 0 0);
 }
 
 .logo img {
   width: 92px;
   height: 27px;
   display: block;
-  /* The wordmark ships as black paths; invert it for the dark page. */
-  filter: invert(1);
 }
 
 @media (max-width: 380px) {

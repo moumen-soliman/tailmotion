@@ -31,7 +31,7 @@ export default function App() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-page">
+    <div className="mx-auto min-h-screen max-w-shell border-x border-line bg-page">
       <Nav />
       <main>
         <Hero variants={variants} />

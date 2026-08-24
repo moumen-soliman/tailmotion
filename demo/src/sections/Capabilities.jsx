@@ -104,14 +104,25 @@ function NativePanel() {
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-center gap-2">
-        <Button popovertarget="tm-capability-popover" className="tm-press">
+        <Button
+          popovertarget="tm-capability-popover"
+          className="tm-press"
+          style={{ anchorName: '--tm-capability-popover-anchor' }}
+        >
           Account menu
         </Button>
         <div
           id="tm-capability-popover"
           popover=""
           className="tm-native-popover rounded-lg border border-line bg-card p-3 text-micro text-ink shadow-2xl"
-          style={{ '--tm-origin': 'top center' }}
+          style={{
+            '--tm-origin': 'top center',
+            positionAnchor: '--tm-capability-popover-anchor',
+            positionArea: 'bottom center',
+            positionTryFallbacks: 'flip-block',
+            margin: 0,
+            marginTop: '8px',
+          }}
         >
           <ul className="space-y-1.5">
             <li>Billing</li>
@@ -272,7 +283,13 @@ function ScrollPanel() {
       </p>
 
       <div className="h-64 overflow-y-auto rounded-lg border border-line bg-page p-4">
-        <div className="tm-scroll-progress sticky top-0 -mt-4 mb-3 h-0.5 bg-accent" />
+        {/* The shipped class times itself off the page scrollbar (it's built for a
+            fixed, full-page reading bar). This demo scrolls its own small box
+            instead, so it needs its own nearest-scroller timeline. */}
+        <div
+          className="tm-scroll-progress sticky top-0 -mt-4 mb-3 h-0.5 bg-accent"
+          style={{ animationTimeline: 'scroll(nearest block)' }}
+        />
         <p className="pb-6 text-micro text-ink-faint">Scroll this box.</p>
         {['tm-scroll-reveal', 'tm-scroll-fade', 'tm-scroll-scale', 'tm-scroll-slide-block'].map(
           (className) => (
@@ -320,26 +337,31 @@ function RecipesPanel() {
         </div>
       </div>
 
-      {/* Extra headroom so the tooltip has somewhere to sit above its trigger. */}
-      <div className="relative inline-block pt-8">
-        <Button
-          className="tm-press"
-          onFocus={() => setTip(true)}
-          onBlur={() => setTip(false)}
-          onMouseEnter={() => setTip(true)}
-          onMouseLeave={() => setTip(false)}
-          aria-describedby="tm-capability-tip"
-        >
-          Hover for a tooltip
-        </Button>
-        <div
-          id="tm-capability-tip"
-          role="tooltip"
-          data-side="top"
-          data-state={tip ? 'open' : 'closed'}
-          className="tm-tooltip absolute bottom-full start-0 mb-2 whitespace-nowrap rounded border border-line bg-card px-2 py-1 text-micro text-ink"
-        >
-          120ms, because the pointer is already here
+      {/* The headroom lives on this outer wrapper, not the positioned element
+          inside it -- `bottom-full` resolves against its own containing
+          block's padding box, so padding there would push the tooltip up by
+          that much extra. */}
+      <div className="pt-8">
+        <div className="relative inline-block">
+          <Button
+            className="tm-press"
+            onFocus={() => setTip(true)}
+            onBlur={() => setTip(false)}
+            onMouseEnter={() => setTip(true)}
+            onMouseLeave={() => setTip(false)}
+            aria-describedby="tm-capability-tip"
+          >
+            Hover for a tooltip
+          </Button>
+          <div
+            id="tm-capability-tip"
+            role="tooltip"
+            data-side="top"
+            data-state={tip ? 'open' : 'closed'}
+            className="tm-tooltip absolute bottom-full start-0 mb-2 whitespace-nowrap rounded border border-line bg-card px-2 py-1 text-micro text-ink"
+          >
+            120ms, because the pointer is already here
+          </div>
         </div>
       </div>
 

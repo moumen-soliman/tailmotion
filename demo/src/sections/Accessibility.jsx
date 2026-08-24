@@ -87,7 +87,7 @@ export function Accessibility() {
   }, []);
 
   return (
-    <Section id="accessibility">
+    <Section id="accessibility" className="border-t border-line">
       <SectionHeading eyebrow="Accessible by default" title="Motion you can turn down">
         Four things you can verify in the stylesheet, not four things to take on trust.
       </SectionHeading>

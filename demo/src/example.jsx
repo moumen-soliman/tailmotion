@@ -8,7 +8,7 @@ import 'tailmotion/css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <div className="min-h-screen bg-page">
+    <div className="mx-auto min-h-screen max-w-shell border-x border-line bg-page">
       <Nav current="example" />
       <ExamplePage />
       <SiteFooter />

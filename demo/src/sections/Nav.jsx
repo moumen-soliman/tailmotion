@@ -23,7 +23,7 @@ export function Nav({ current }) {
     <header className="sticky top-0 z-50 border-b border-line bg-page/80 backdrop-blur-md">
       <nav
         aria-label="Main"
-        className="mx-auto flex h-14 w-full max-w-shell items-center gap-3 px-5 sm:px-6 lg:px-8"
+        className="flex h-14 w-full items-center gap-3 px-5 sm:px-6 lg:px-8"
       >
         <a href="/" className="flex shrink-0 items-center gap-2.5" aria-label="TailMotion, home">
           <span className="logo">

@@ -31,7 +31,7 @@ function GlowPreview({ className }) {
   // currentColor drives the halo, so the box carries the effect colour while
   // the label stays readable against it.
   return (
-    <div className={cx(OBJECT, className)} style={{ color: 'oklch(0.6973 0.1597 258)' }}>
+    <div className={cx(OBJECT, className)} style={{ color: 'oklch(0.53 0.1597 258)' }}>
       <span className="font-mono text-micro font-medium text-page">tm</span>
     </div>
   );
@@ -84,7 +84,7 @@ function CardPreview({ name }) {
         'w-44 rounded-md border border-line bg-card-hover p-4 text-start',
         'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent'
       )}
-      style={{ '--tm-lift-shadow': '0 16px 32px -16px oklch(1 0 0 / 0.24)' }}
+      style={{ '--tm-lift-shadow': '0 16px 32px -16px oklch(0.205 0 0 / 0.22)' }}
     >
       <span className="block text-label font-medium text-ink">Hover or tab to me</span>
       <span className="mt-0.5 block text-micro text-ink-muted">tm-{name}</span>
@@ -121,7 +121,7 @@ function LiquidPreview({ name }) {
     <button
       type="button"
       className={cx(`tm-${name}`, 'rounded-md border border-line-strong px-6 py-2.5 text-label text-ink hover:text-page')}
-      style={{ '--tm-liquid-color': 'oklch(0.9461 0 0)', '--tm-liquid-bg': 'transparent' }}
+      style={{ '--tm-liquid-color': 'oklch(0.205 0 0)', '--tm-liquid-bg': 'transparent' }}
     >
       Hover me
     </button>

@@ -4,14 +4,21 @@
    Colours are OKLCH so the greys step evenly in perceived lightness and
    the accent keeps one hue at every lightness. Each is written with
    Tailwind's <alpha-value> placeholder, so `bg-card/60` still works.
-   Measured against the page (oklch(0 0 0)):
 
-     ink         16.9:1     accent        7.3:1
-     ink-muted    7.7:1     ink-faint     4.6:1
+   This is the light surface: every token keeps the hue and chroma of its
+   dark-mode counterpart and only trades lightness, so the palette reads as
+   the same system, not a second one. The two darkest text roles stop short
+   of pure black (ink-strong is 0.205, not 0) — a page can be bright white
+   without its type needing to be that extreme too.
+
+   Measured against the page (oklch(1 0 0)):
+
+     ink        12.2:1     accent        5.4:1
+     ink-muted   6.0:1     ink-faint     4.7:1
 
    Two roles carry meaning and nothing else does:
-     ink-strong (white)  the primary action, and the selected state
-     accent (blue)       links, focus rings, section eyebrows
+     ink-strong (near-black)  the primary action, and the selected state
+     accent (blue)            links, focus rings, section eyebrows
    ------------------------------------------------------------------ */
 tailwind.config = {
   darkMode: 'class',
@@ -22,24 +29,24 @@ tailwind.config = {
         mono: ['Geist Mono', 'ui-monospace', 'monospace'],
       },
       colors: {
-        page: 'oklch(0 0 0 / <alpha-value>)',
+        page: 'oklch(1 0 0 / <alpha-value>)',
         card: {
-          DEFAULT: 'oklch(0.1448 0 0 / <alpha-value>)',
-          hover: 'oklch(0.1913 0 0 / <alpha-value>)',
+          DEFAULT: 'oklch(0.978 0 0 / <alpha-value>)',
+          hover: 'oklch(0.94 0 0 / <alpha-value>)',
         },
         line: {
-          DEFAULT: 'oklch(0.2405 0.0057 286 / <alpha-value>)',
-          strong: 'oklch(0.3032 0.0089 286 / <alpha-value>)',
+          DEFAULT: 'oklch(0.913 0.0057 286 / <alpha-value>)',
+          strong: 'oklch(0.83 0.0089 286 / <alpha-value>)',
         },
         ink: {
-          DEFAULT: 'oklch(0.9461 0 0 / <alpha-value>)',
-          strong: 'oklch(1 0 0 / <alpha-value>)',
-          muted: 'oklch(0.7105 0.0072 286 / <alpha-value>)',
-          faint: 'oklch(0.5815 0.0091 286 / <alpha-value>)',
+          DEFAULT: 'oklch(0.33 0 0 / <alpha-value>)',
+          strong: 'oklch(0.205 0 0 / <alpha-value>)',
+          muted: 'oklch(0.5 0.0072 286 / <alpha-value>)',
+          faint: 'oklch(0.56 0.0091 286 / <alpha-value>)',
         },
         accent: {
-          DEFAULT: 'oklch(0.6973 0.1597 258 / <alpha-value>)',
-          soft: 'oklch(0.7776 0.1135 259 / <alpha-value>)',
+          DEFAULT: 'oklch(0.53 0.1597 258 / <alpha-value>)',
+          soft: 'oklch(0.68 0.1135 259 / <alpha-value>)',
         },
       },
       /* A role-based scale: one decision per role, size and spacing
