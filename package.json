@@ -1,7 +1,7 @@
 {
   "name": "tailmotion",
-  "version": "0.7.1",
-  "description": "Tiny motion utility pack for Tailwind CSS using pure CSS keyframes. Framework-agnostic.",
+  "version": "0.8.0",
+  "description": "A motion language for product interfaces: scoped motion personalities, state-driven presence, native HTML motion, product recipes and scroll-driven reveals. Zero runtime, pure CSS, framework-agnostic.",
   "main": "src/index.js",
   "module": "src/index.js",
   "style": "tailmotion.css",
@@ -9,6 +9,7 @@
   "type": "module",
   "files": [
     "tailmotion.css",
+    "modules",
     "tailmotion.config.cjs",
     "src",
     "dist",
@@ -22,9 +23,11 @@
   ],
   "scripts": {
     "build": "node ./scripts/build.mjs",
+    "check": "node ./scripts/build.mjs && node ./scripts/check.mjs",
+    "verify": "node ./scripts/serve-verify.mjs",
     "dev": "npm run build && cd demo && npm install && npm run dev",
     "demo": "cd demo && npm run dev",
-    "prepublishOnly": "npm run build",
+    "prepublishOnly": "npm run check",
     "release:patch": "npm version patch && npm publish --access public",
     "release:minor": "npm version minor && npm publish --access public",
     "release:major": "npm version major && npm publish --access public"
@@ -46,6 +49,12 @@
     },
     "./css": "./tailmotion.css",
     "./tailmotion.css": "./tailmotion.css",
+    "./profiles.css": "./modules/profiles.css",
+    "./presence.css": "./modules/presence.css",
+    "./native.css": "./modules/native.css",
+    "./recipes.css": "./modules/recipes.css",
+    "./scroll.css": "./modules/scroll.css",
+    "./choreography.css": "./modules/choreography.css",
     "./dist/tailmotion.js": "./dist/tailmotion.js",
     "./animations/*": "./src/animations/*",
     "./package.json": "./package.json"
@@ -58,10 +67,20 @@
     "css",
     "utilities",
     "motion",
+    "motion-design",
     "transitions",
     "keyframes",
-    "hover",
+    "presence",
+    "data-state",
+    "popover",
+    "dialog",
+    "details",
+    "scroll-driven-animations",
+    "view-timeline",
+    "stagger",
     "micro-interactions",
+    "reduced-motion",
+    "rtl",
     "ui",
     "react",
     "vue",
@@ -91,5 +110,6 @@
   },
   "engines": {
     "node": ">=16.0.0"
-  }
+  },
+  "documentation": "https://docs.tailmotion.moumen.dev/"
 }

@@ -3,92 +3,25 @@
 
    Tailwind owns the interface design. TailMotion owns only the movement.
 
+   The token layer lives in ../shared/tokens.css and is shared with every
+   optional module, so a module can be imported on its own. This file adds the
+   element-level utilities that override those tokens.
+
    Timing tokens (--tm-duration, --tm-delay, --tm-easing,
    --tm-iteration-count) are deliberately NOT given root values: every motion
-   class carries its own tuned default via `var(--tm-duration, 250ms)`, and a
-   root value would shadow all of them. Set them per element with the
-   tm-duration, tm-delay, tm-ease and tm-repeat utilities, the Tailwind
-   plugin, or an inline style.
+   class carries its own tuned default, written as
+
+     var(--tm-duration, calc(250ms * var(--tm-duration-scale, 1)))
+
+   so an explicit --tm-duration replaces the class default outright, while an
+   inherited motion profile only scales it. A root --tm-duration value would
+   shadow every one of those defaults, which is why there is none. Set the
+   tokens per element with the tm-duration, tm-delay, tm-ease and tm-repeat
+   utilities, the Tailwind plugin, or an inline style.
    -------------------------------------------------------------------------- */
 
-@layer base {
-  :root,
-  :host {
-    /* Choreography */
-    --tm-stagger-step: 100ms;
-
-    /* Travel distance. Exits travel 70% of an entrance. */
-    --tm-distance: 12px;
-    --tm-exit-distance: calc(var(--tm-distance) * 0.7);
-
-    /* Sign of inline-axis motion: 1 in LTR, -1 in RTL. */
-    --tm-inline-flip: 1;
-
-    /* Effect colors. TailMotion ships no palette: every effect inherits the
-       consumer's color and every token can be replaced with an exact value,
-       alpha included. */
-    --tm-color: currentColor;
-    --tm-shadow-color: color-mix(in oklab, var(--tm-color) 25%, transparent);
-    --tm-glow-color: color-mix(in oklab, var(--tm-color) 45%, transparent);
-    --tm-outline-color: color-mix(in oklab, var(--tm-color) 40%, transparent);
-
-    /* The shimmer highlight keeps its color and its strength apart: browsers
-       drop gradient interpolation hints from any gradient holding a
-       color-mix() stop, so strength lives in --tm-shimmer-opacity instead. */
-    --tm-shimmer-color: var(--tm-color);
-    --tm-shimmer-opacity: 0.35;
-  }
-
-  /* Safe fallback where color-mix() is unavailable. */
-  @supports not (color: color-mix(in oklab, currentColor, transparent)) {
-    :root,
-    :host {
-      --tm-shadow-color: var(--tm-color);
-      --tm-glow-color: var(--tm-color);
-      --tm-outline-color: var(--tm-color);
-    }
-  }
-
-  /* Mirror inline-axis motion in right-to-left contexts. */
-  [dir="ltr"] {
-    --tm-inline-flip: 1;
-  }
-
-  [dir="rtl"] {
-    --tm-inline-flip: -1;
-  }
-
-  @supports selector(:dir(rtl)) {
-    [dir="auto"]:dir(ltr) {
-      --tm-inline-flip: 1;
-    }
-
-    [dir="auto"]:dir(rtl) {
-      --tm-inline-flip: -1;
-    }
-  }
-
-  /* Motion is supplementary feedback. When it is not wanted, every animation
-     lands on its final state immediately instead of being skipped, so the
-     state a class communicates stays visible. Container classes that animate
-     unclassed children are listed explicitly. */
-  @media (prefers-reduced-motion: reduce) {
-    [class*="tm-"],
-    [class*="tm-"]::before,
-    [class*="tm-"]::after,
-    .tm-stagger > *,
-    .tm-count-reveal > *,
-    .tm-icon-swap > *,
-    .tm-view-morph > [data-tm-panel],
-    .tm-text-flip-chars > span {
-      animation-duration: 1ms !important;
-      animation-delay: 0ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 1ms !important;
-      transition-delay: 0ms !important;
-    }
-  }
-}
+@import "../shared/tokens.css";
+@import "../profiles/profiles.css";
 
 @layer utilities {
   .tm-perspective {
@@ -255,7 +188,9 @@
     --tm-iteration-count: infinite;
   }
 
-  /* Stagger step tokens, for .tm-stagger containers */
+  /* Stagger step tokens, for .tm-stagger containers. A motion profile also
+     sets --tm-stagger-step; these are declared after the profiles, so putting
+     both on one element leaves the explicit step in charge. */
   .tm-stagger-step-50 {
     --tm-stagger-step: 50ms;
   }
@@ -276,7 +211,11 @@
     --tm-stagger-step: 200ms;
   }
 
-  /* Travel distance tokens. Every slide and exit derives from --tm-distance. */
+  /* Travel distance tokens. Every slide, exit and presence offset derives from
+     --tm-distance, and --tm-exit-distance is resolved where it is used rather
+     than on :root, so one utility retunes entrances and exits together. A
+     motion profile sets --tm-distance too; these come later in the sheet, so
+     an explicit distance wins even on the same element. */
   .tm-distance-4 {
     --tm-distance: 4px;
   }

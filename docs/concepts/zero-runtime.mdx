@@ -1,0 +1,132 @@
+---
+title: "The zero-runtime boundary"
+description: "Exactly what TailMotion does, what your application does, and why the line is there."
+---
+
+"Zero runtime" is easy to claim and easy to erode. This page is the line, stated
+precisely enough to hold you to it.
+
+## The split
+
+| TailMotion does | Your application does |
+|---|---|
+| Every transition, keyframe, duration, easing and transform origin | Owns the state: `data-state`, `aria-expanded`, `open` |
+| Reads the state attribute you already set | Mounts and unmounts, and keeps a closed element alive until its exit ends |
+| Mirrors inline-axis motion in right-to-left contexts | Measures anything that needs measuring — the tab indicator's offset and width |
+| Handles `prefers-reduced-motion` for every class | Chooses colors, sizes, spacing, radius and shadows, with Tailwind |
+| Ships zero JavaScript in the CSS core | Adds a key handler for `tm-hold-confirm` if the hold must be keyboard-reachable |
+
+## What "zero runtime" means here
+
+Importing `tailmotion/css` adds **one stylesheet and no JavaScript**. There is no
+initialiser, no observer, no `requestAnimationFrame` loop, no mutation observer
+watching for `data-state`, and nothing that runs on hydration.
+
+That has consequences worth naming:
+
+- Motion works before your JavaScript loads, and keeps working if it fails.
+- Motion runs on the compositor where the browser can, not on a frame loop that
+  competes with React rendering.
+- Server-rendered HTML animates correctly on first paint via `@starting-style`,
+  with no hydration flash.
+- There is no bundle-size cost in JavaScript, and no version to keep in step
+  with your framework.
+
+## The optional JavaScript
+
+`tailmotion/utils` is a separate entry with a few helpers — a count-up tween, a
+text rotator, small class and style builders:
+
+```js
+import { animateValue, createTextRotator, tm } from "tailmotion/utils";
+```
+
+<Note>
+These are opt-in and **no class in the stylesheet requires them**. They exist
+because counting from 0 to 4,271 and rotating a word list genuinely cannot be
+done in CSS. Importing `tailmotion/css` does not pull them in.
+</Note>
+
+## Where the line gets tested
+
+Four cases where it would be tempting to add a runtime, and what TailMotion does
+instead.
+
+<AccordionGroup>
+  <Accordion title="Unmounting a closed panel">
+    **Tempting:** ship an `AnimatePresence`-style wrapper that delays removal.
+
+    **Instead:** document the mounting contract and let the framework do it. Every
+    framework already has this — React with a `setTimeout`, Vue with
+    `<Transition>`, Svelte with `transition:`, and Radix / Base UI / Ark with
+    their own presence primitives that already emit `data-state`. A fifth
+    implementation would only be a fifth thing to keep in step.
+  </Accordion>
+
+  <Accordion title="Animating an accordion to `height: auto`">
+    **Tempting:** measure `scrollHeight` in JavaScript and set an explicit pixel
+    height.
+
+    **Instead:** `tm-accordion-panel` uses a `0fr` → `1fr` grid row, which is the
+    one height animation CSS can express without measuring anything. For
+    `<details>`, `tm-native-disclosure` uses `::details-content` with
+    `interpolate-size` where the browser has it, and a content entrance
+    everywhere else.
+  </Accordion>
+
+  <Accordion title="Revealing content on scroll">
+    **Tempting:** an `IntersectionObserver` that adds a class.
+
+    **Instead:** `tm-scroll-*` uses CSS view timelines, which the browser drives
+    on the compositor. Where they are unsupported, content renders normally and
+    visibly — a fallback an observer cannot offer, because an observer-based
+    reveal has to hide the content first and then hope its JavaScript runs.
+  </Accordion>
+
+  <Accordion title="Sliding a tab indicator">
+    **Tempting:** read the active tab's `getBoundingClientRect()` inside the
+    library.
+
+    **Instead:** `tm-tab-indicator` transitions `translate` and `inline-size`
+    from `--tm-tab-offset` and `--tm-tab-size`, which your component sets. The
+    measurement genuinely requires the DOM, so it stays where the DOM already
+    is. TailMotion animates between whatever two values you give it.
+  </Accordion>
+</AccordionGroup>
+
+## What the package will never add
+
+These are permanent, and written down before anyone asks:
+
+- **A JavaScript animation runtime.** No spring solver, no timeline, no
+  `animate()` calls.
+- **Styled React, Vue or Svelte components.** One CSS API, four identical
+  integrations. A component library is a different product.
+- **Colors, sizes, spacing or radius in a motion class.** That is Tailwind's
+  job. The two existing classes that break this rule — `tm-hold-delete`,
+  `tm-liquid-btn` — are kept for compatibility and superseded by motion-only
+  replacements.
+- **A `useMotion()` hook.** If the answer is a hook, the answer is not this
+  package.
+
+## Verifying the claim
+
+The boundary is checked, not just asserted:
+
+```bash
+npm run check
+```
+
+fails the build if a class points at missing keyframes, a rule hides content
+outside an `@supports` guard, `:root` picks up a timing token that would shadow
+per-class defaults, or a module ships without a reduced-motion reset.
+
+And the simplest check of all — the published stylesheet is one self-contained
+file with no `@import`, no `<script>`, and no JavaScript of any kind:
+
+```bash
+grep -c "@import\|<script" node_modules/tailmotion/tailmotion.css   # 0
+```
+
+The build inlines every `@import` from `src/`, so what ships is a single file
+your browser fetches once.

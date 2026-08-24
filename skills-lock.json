@@ -1,6 +1,12 @@
 {
   "version": 1,
   "skills": {
+    "animation-vocabulary": {
+      "source": "emilkowalski/skills",
+      "sourceType": "github",
+      "skillPath": "skills/animation-vocabulary/SKILL.md",
+      "computedHash": "39319fc9a33c15be08666b3685f58666f042ff36bb902b7814c0834a5ba99df4"
+    },
     "better-colors": {
       "source": "jakubkrehel/skills",
       "sourceType": "github",
@@ -24,6 +30,12 @@
       "sourceType": "github",
       "skillPath": "skills/better-ui/SKILL.md",
       "computedHash": "f383af38a3718c9f6884ace2d69191c8b7b6d633390873ed9074fe12a1fd3ade"
+    },
+    "hyperframes-animation": {
+      "source": "heygen-com/hyperframes",
+      "sourceType": "github",
+      "skillPath": "skills/hyperframes-animation/SKILL.md",
+      "computedHash": "44fc6be05c919a5122d5728f28f8cf433e29da2847da7ce6e5f05a0ce5896c0b"
     }
   }
 }

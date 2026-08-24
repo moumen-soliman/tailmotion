@@ -1,0 +1,142 @@
+---
+title: "Choreography"
+description: "Stagger that can enter, exit and reverse — without reordering the DOM."
+---
+
+```html
+<ul data-state="open" class="tm-stagger tm-stagger-75 tm-stagger-from-start">
+  <li>Profile</li>
+  <li>Settings</li>
+  <li>Sign out</li>
+</ul>
+```
+
+`tm-stagger` sequences its **direct children**. It needs no classes on the
+children themselves.
+
+## The vocabulary
+
+| Class | Effect |
+|---|---|
+| `tm-stagger` | Children enter in document order |
+| `tm-stagger-from-end` | Last child first. `tm-stagger-reverse` is an alias |
+| `tm-stagger-from-start` | Explicit forward, to override an inherited modifier |
+| `tm-stagger-exit` | Children leave in sequence |
+| `tm-stagger-50` … `tm-stagger-200` | Step between children |
+| `tm-stagger-step-50` … `tm-stagger-step-200` | The 0.6 spelling of the same utility |
+
+## State-triggered replay
+
+A container carrying `data-state` plays the entrance when open and the exit when
+closed:
+
+```html
+<ul data-state={open ? "open" : "closed"} class="tm-stagger">
+  …
+</ul>
+```
+
+Switching `animation-name` is what re-triggers a keyframe animation, so toggling
+the attribute replays the choreography in the new direction with no JavaScript
+and no key-remounting trick.
+
+A container with **no** state attribute keeps the pre-0.8 behaviour exactly: its
+children enter once, on mount.
+
+## Reverse without reordering
+
+`tm-stagger-from-end` reads a second generated index counted from the last
+child. Nothing moves in the DOM.
+
+```text
+tm-stagger                      0ms   100ms  200ms  300ms
+tm-stagger tm-stagger-from-end  300ms 200ms  100ms    0ms
+```
+
+Same markup, same reading order, same tab order, same accessibility tree.
+TailMotion never sets `flex-direction: row-reverse`, `order`, or a negative
+delay — three tricks that all break keyboard navigation or screen-reader order
+to buy a visual effect.
+
+<Note>
+Combine `tm-stagger-exit` (or a closed `data-state`) with `tm-stagger-from-end`
+to get the shape most people want: the list arrives top-down and leaves
+bottom-up, as if it were being folded away.
+</Note>
+
+## Nesting
+
+A nested `tm-stagger` sequences its own children from its own delay. It does not
+continue the outer count, and its step does not leak back out.
+
+```html
+<ul class="tm-stagger tm-stagger-200">
+  <li>Outer 1</li>              <!--   0ms -->
+  <li>                          <!-- 200ms -->
+    <ul class="tm-stagger tm-stagger-50">
+      <li>Inner 1</li>          <!--   0ms, from the inner container -->
+      <li>Inner 2</li>          <!--  50ms -->
+    </ul>
+  </li>
+  <li>Outer 3</li>              <!-- 400ms -->
+</ul>
+```
+
+The container resets `--tm-stagger-index` on itself, so a nested scope can never
+inherit its parent's position. To make the two read as one continuous sequence,
+offset the inner group with `tm-delay-*`.
+
+## The generated-child limit
+
+Indices are generated for the first **20** children. Child 21 onward reuses the
+last index.
+
+That means a long list lands together at the end rather than all starting at the
+front — the failure mode is "the tail arrives as a group", not "the tail jumps
+ahead of the head".
+
+<Note>
+With the default 100ms step a 20-item sequence already runs for 1.9 seconds. Past
+that, a stagger stops reading as choreography and starts reading as a loading
+bar. If you have 200 rows, you want a single entrance on the container, not a
+stagger.
+</Note>
+
+The limit lives in `MAX_STAGGER_CHILDREN` in `scripts/build.mjs` if you are
+building the stylesheet yourself.
+
+## When a stagger is the wrong answer
+
+Stagger reads as **hierarchy** when the siblings are semantic — title, then
+description, then actions — and as a **queue** when it is a list of equivalent
+rows.
+
+```html
+<!-- reads as hierarchy -->
+<div class="tm-stagger">
+  <h1>Welcome</h1>
+  <p>A description of the page.</p>
+  <div><button class="tm-press">Get started</button></div>
+</div>
+```
+
+Reach for it on a first load or an empty state. Avoid it on a tab switch, a
+filter change, or anything a user repeats all day: the delay you added to make
+the first view feel considered becomes the delay they wait through a hundred
+times.
+
+## Tuning
+
+| Variable | Default | Effect |
+|---|---|---|
+| `--tm-stagger-step` | `100ms` | Delay between children. Set by every motion profile |
+| `--tm-delay` | `0ms` | Offsets the whole sequence |
+| `--tm-duration` | `260ms` | Each child's own animation |
+| `--tm-distance` | `12px` | How far each child travels |
+| `--tm-presence-exit-scale` | `0.7` | Ratio of the exit duration to the entrance |
+
+## Reduced motion
+
+Every child collapses to a 1ms animation with no delay, so the list appears at
+once, fully legible. The container is named explicitly in the reduced-motion
+rule because it animates children that carry no `tm-` class of their own.

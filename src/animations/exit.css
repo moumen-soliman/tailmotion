@@ -2,29 +2,33 @@
    Exit keyframes.
 
    Exits are quieter than the entrances they mirror: roughly 20% faster, and
-   they travel --tm-exit-distance (8px) instead of --tm-distance (12px). The
-   user's attention is already moving on, so these do not compete for it.
+   they travel 70% of --tm-distance. That ratio is resolved here, on the
+   element, rather than on :root -- a custom property declared on :root is
+   substituted there, so the old `--tm-exit-distance: calc(var(--tm-distance) *
+   0.7)` froze at 8.4px and never noticed a tm-distance-* utility further down
+   the tree. Setting --tm-exit-distance explicitly still overrides the ratio.
 
    Each exit ends on its final frame (fill-mode: both), so the element stays
    hidden but still occupies layout. Remove the node, or apply `hidden`, once
-   the animation has finished.
+   the animation has finished. For an exit driven by application state that has
+   to be interruptible mid-flight, reach for tm-presence-* instead.
    -------------------------------------------------------------------------- */
 
 @layer utilities {
   .tm-fade-out {
     animation-name: tm-fade-out;
-    animation-duration: var(--tm-duration, 200ms);
+    animation-duration: var(--tm-duration, calc(200ms * var(--tm-duration-scale, 1)));
     animation-delay: var(--tm-delay, 0ms);
-    animation-timing-function: var(--tm-easing, ease-out);
+    animation-timing-function: var(--tm-easing, var(--tm-ease-exit, ease-out));
     animation-iteration-count: var(--tm-iteration-count, 1);
     animation-fill-mode: both;
   }
 
   .tm-scale-out {
     animation-name: tm-scale-out;
-    animation-duration: var(--tm-duration, 180ms);
+    animation-duration: var(--tm-duration, calc(180ms * var(--tm-duration-scale, 1)));
     animation-delay: var(--tm-delay, 0ms);
-    animation-timing-function: var(--tm-easing, ease-out);
+    animation-timing-function: var(--tm-easing, var(--tm-ease-exit, ease-out));
     animation-iteration-count: var(--tm-iteration-count, 1);
     animation-fill-mode: both;
   }
@@ -32,9 +36,9 @@
   /* Leaves toward the block-start edge. */
   .tm-slide-block-out {
     animation-name: tm-slide-block-out;
-    animation-duration: var(--tm-duration, 210ms);
+    animation-duration: var(--tm-duration, calc(210ms * var(--tm-duration-scale, 1)));
     animation-delay: var(--tm-delay, 0ms);
-    animation-timing-function: var(--tm-easing, ease-out);
+    animation-timing-function: var(--tm-easing, var(--tm-ease-exit, ease-out));
     animation-iteration-count: var(--tm-iteration-count, 1);
     animation-fill-mode: both;
   }
@@ -42,18 +46,18 @@
   /* Leaves toward the inline-end edge, mirrored in RTL. */
   .tm-slide-inline-out {
     animation-name: tm-slide-inline-out;
-    animation-duration: var(--tm-duration, 210ms);
+    animation-duration: var(--tm-duration, calc(210ms * var(--tm-duration-scale, 1)));
     animation-delay: var(--tm-delay, 0ms);
-    animation-timing-function: var(--tm-easing, ease-out);
+    animation-timing-function: var(--tm-easing, var(--tm-ease-exit, ease-out));
     animation-iteration-count: var(--tm-iteration-count, 1);
     animation-fill-mode: both;
   }
 
   .tm-blur-out {
     animation-name: tm-blur-out;
-    animation-duration: var(--tm-duration, 220ms);
+    animation-duration: var(--tm-duration, calc(220ms * var(--tm-duration-scale, 1)));
     animation-delay: var(--tm-delay, 0ms);
-    animation-timing-function: var(--tm-easing, ease-out);
+    animation-timing-function: var(--tm-easing, var(--tm-ease-exit, ease-out));
     animation-iteration-count: var(--tm-iteration-count, 1);
     animation-fill-mode: both;
   }
@@ -72,36 +76,42 @@
 @keyframes tm-scale-out {
   from {
     opacity: 1;
-    transform: scale(1);
+    scale: 1;
   }
 
   to {
     opacity: 0;
-    transform: scale(var(--tm-exit-scale, 0.96));
+    scale: var(--tm-exit-scale, calc(1 - 0.04 * var(--tm-emphasis, 1)));
   }
 }
 
 @keyframes tm-slide-block-out {
   from {
     opacity: 1;
-    transform: translate3d(0, 0, 0);
+    translate: 0 0;
   }
 
   to {
     opacity: 0;
-    transform: translate3d(0, calc(var(--tm-exit-distance, 8px) * -1), 0);
+    translate: 0
+      calc(var(--tm-exit-distance, calc(var(--tm-distance, 12px) * 0.7)) * -1);
   }
 }
 
 @keyframes tm-slide-inline-out {
   from {
     opacity: 1;
-    transform: translate3d(0, 0, 0);
+    translate: 0 0;
   }
 
   to {
     opacity: 0;
-    transform: translate3d(calc(var(--tm-exit-distance, 8px) * var(--tm-inline-flip, 1)), 0, 0);
+    translate:
+      calc(
+        var(--tm-exit-distance, calc(var(--tm-distance, 12px) * 0.7)) *
+          var(--tm-inline-flip, 1)
+      )
+      0;
   }
 }
 
@@ -113,6 +123,6 @@
 
   to {
     opacity: 0;
-    filter: blur(var(--tm-exit-blur, 4px));
+    filter: blur(calc(var(--tm-exit-blur, 4px) * var(--tm-emphasis, 1)));
   }
 }

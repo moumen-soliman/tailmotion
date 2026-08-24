@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <title>TailMotion verification harness</title>
+    <link rel="stylesheet" href="/tailmotion.css" />
+    <style>
+      body { font: 14px/1.5 system-ui, sans-serif; margin: 24px; }
+      .box { width: 90px; height: 44px; background: #111; color: #fff; display: grid; place-items: center; border-radius: 8px; }
+      section { margin-block: 20px; padding: 12px; border: 1px solid #ddd; border-radius: 10px; }
+      h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .06em; color: #666; margin: 0 0 10px; }
+      .row { display: flex; gap: 12px; align-items: center; }
+      pre { background: #f6f6f6; padding: 8px; border-radius: 6px; overflow-x: auto; }
+    </style>
+  </head>
+  <body>
+    <h1>TailMotion verification harness</h1>
+
+    <section id="default">
+      <h2>default</h2>
+      <div class="row"><div class="box tm-slide-block-start" id="d-slide">slide</div><div class="box tm-pop" id="d-pop">pop</div><button class="box tm-press" id="d-press">press</button></div>
+    </section>
+
+    <section id="calm" class="tm-motion-calm">
+      <h2>tm-motion-calm</h2>
+      <div class="row"><div class="box tm-slide-block-start" id="c-slide">slide</div><div class="box tm-pop" id="c-pop">pop</div><button class="box tm-press" id="c-press">press</button></div>
+    </section>
+
+    <section id="productive" class="tm-motion-productive">
+      <h2>tm-motion-productive</h2>
+      <div class="row"><div class="box tm-slide-block-start" id="p-slide">slide</div><div class="box tm-pop" id="p-pop">pop</div><button class="box tm-press" id="p-press">press</button></div>
+    </section>
+
+    <section id="expressive" class="tm-motion-expressive">
+      <h2>tm-motion-expressive</h2>
+      <div class="row">
+        <div class="box tm-slide-block-start" id="e-slide">slide</div>
+        <div class="box tm-pop" id="e-pop">pop</div>
+        <button class="box tm-press" id="e-press">press</button>
+        <div class="box tm-slide-block-start tm-duration-300 tm-distance-4" id="e-override">override</div>
+        <div class="tm-motion-calm"><div class="box tm-slide-block-start" id="e-nested">nested calm</div></div>
+      </div>
+    </section>
+
+    <pre id="out">reading…</pre>
+
+    <script>
+      const read = (id, prop) => getComputedStyle(document.getElementById(id)).getPropertyValue(prop).trim();
+      const rows = [
+        ['default slide duration', read('d-slide', 'animation-duration')],
+        ['calm slide duration', read('c-slide', 'animation-duration')],
+        ['productive slide duration', read('p-slide', 'animation-duration')],
+        ['expressive slide duration', read('e-slide', 'animation-duration')],
+        ['override slide duration (tm-duration-300)', read('e-override', 'animation-duration')],
+        ['nested calm slide duration', read('e-nested', 'animation-duration')],
+        ['default distance', read('d-slide', '--tm-distance')],
+        ['calm distance', read('c-slide', '--tm-distance')],
+        ['expressive distance', read('e-slide', '--tm-distance')],
+        ['override distance (tm-distance-4)', read('e-override', '--tm-distance')],
+        ['nested calm distance', read('e-nested', '--tm-distance')],
+        ['default pop easing', read('d-pop', 'animation-timing-function')],
+        ['calm pop easing', read('c-pop', 'animation-timing-function')],
+        ['expressive pop easing', read('e-pop', 'animation-timing-function')],
+        ['default press transition', read('d-press', 'transition-duration')],
+        ['productive press transition', read('p-press', 'transition-duration')],
+        ['calm overshoot', read('c-pop', '--tm-overshoot')],
+        ['expressive overshoot', read('e-pop', '--tm-overshoot')],
+      ];
+      document.getElementById('out').textContent = rows.map(([k, v]) => `${k.padEnd(42)} ${v}`).join('\n');
+    </script>
+  </body>
+</html>

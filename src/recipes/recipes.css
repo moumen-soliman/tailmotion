@@ -1,0 +1,427 @@
+/* --------------------------------------------------------------------------
+   Product-motion recipes.
+
+   Each recipe encodes the motion decisions a real interface pattern needs --
+   which direction it comes from, what its transform origin is, how much
+   shorter the exit is than the entrance -- and nothing else. No colors, no
+   type, no dimensions, no spacing, no shadows, no component structure beyond
+   the minimum the movement requires. Tailwind keeps all of that.
+
+   They read the same state contract as tm-presence-*:
+
+     data-state="open"    / "closed"
+     data-state="active"  / "inactive"
+     data-state="checked" / "unchecked"
+     data-state="on"      / "off"
+     aria-expanded        / aria-pressed / aria-checked
+     .tm-open             / .tm-closed
+
+   An element with no recognised state is treated as open, so a typo leaves
+   content visible.
+
+   Where a recipe needs specific children, the contract is written above it and
+   in the README. Recipes with a child contract are opt-in: nothing here
+   applies to markup that does not carry the class.
+   -------------------------------------------------------------------------- */
+
+@import "../shared/tokens.css";
+
+@layer utilities {
+  /* --- Shared presence engine for the panel recipes ---------------------
+     Same shape as src/presence/presence.css: the base rule is the open state,
+     one closed rule reads two per-recipe custom properties. */
+  .tm-menu,
+  .tm-tooltip,
+  .tm-dialog,
+  .tm-dialog-backdrop,
+  .tm-toast,
+  .tm-tab-panel {
+    opacity: 1;
+    visibility: visible;
+    translate: 0 0;
+    scale: 1;
+    transition-property: opacity, visibility, translate, scale;
+    transition-duration: var(--tm-duration, calc(var(--tm-recipe-duration, 220ms) * var(--tm-duration-scale, 1)));
+    transition-delay: var(--tm-delay, 0ms);
+    transition-timing-function: var(--tm-easing, var(--tm-ease-entrance, cubic-bezier(0.22, 1, 0.36, 1)));
+    transform-origin: var(--tm-origin, center);
+  }
+
+  :is(
+      .tm-menu,
+      .tm-tooltip,
+      .tm-dialog,
+      .tm-dialog-backdrop,
+      .tm-toast,
+      .tm-tab-panel
+    ):is(
+      [data-state="closed"],
+      [data-state="inactive"],
+      [data-state="unchecked"],
+      [data-state="off"],
+      [aria-expanded="false"],
+      [aria-pressed="false"],
+      [aria-checked="false"],
+      .tm-closed
+    ) {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    translate: var(--tm-recipe-closed-translate, 0 0);
+    scale: var(--tm-recipe-closed-scale, 1);
+    transition-duration: var(
+      --tm-exit-duration,
+      calc(
+        var(
+            --tm-duration,
+            calc(var(--tm-recipe-duration, 220ms) * var(--tm-duration-scale, 1))
+          ) * var(--tm-presence-exit-scale, 0.7)
+      )
+    );
+    transition-timing-function: var(--tm-easing, var(--tm-ease-exit, cubic-bezier(0.25, 0.46, 0.45, 0.94)));
+  }
+
+  @supports (transition-behavior: allow-discrete) {
+    @starting-style {
+      .tm-menu,
+      .tm-tooltip,
+      .tm-dialog,
+      .tm-dialog-backdrop,
+      .tm-toast,
+      .tm-tab-panel {
+        opacity: 0;
+        translate: var(--tm-recipe-closed-translate, 0 0);
+        scale: var(--tm-recipe-closed-scale, 1);
+      }
+    }
+  }
+
+  /* --- 1. Menu and popover ---------------------------------------------
+
+       <div class="tm-menu" data-state="open" data-side="bottom">…</div>
+
+     A menu should look like it comes out of its trigger, not out of its own
+     middle, so data-side sets the transform origin. The names follow the
+     convention Radix UI, Base UI and Floating UI already emit, and
+     --tm-origin overrides them (Radix users can pass
+     --tm-origin: var(--radix-popper-transform-origin)). */
+  .tm-menu {
+    --tm-recipe-duration: 180ms;
+    --tm-recipe-closed-translate: 0 0;
+    --tm-recipe-closed-scale: calc(1 - 0.04 * var(--tm-emphasis, 1));
+  }
+
+  /* --- 2. Dialog --------------------------------------------------------
+
+       <div class="tm-dialog-backdrop" data-state="open"></div>
+       <div class="tm-dialog" role="dialog" data-state="open">…</div>
+
+     For a <dialog> element use tm-native-dialog instead: the browser handles
+     the top layer and the backdrop for you. This pair is for the div-based
+     dialogs headless libraries build.
+
+     Both halves move as one unit, so they share a duration and an easing. */
+  .tm-dialog {
+    --tm-recipe-duration: 240ms;
+    --tm-recipe-closed-translate: 0 calc(var(--tm-distance, 12px) * -0.5);
+    --tm-recipe-closed-scale: calc(1 - 0.04 * var(--tm-emphasis, 1));
+  }
+
+  .tm-dialog-backdrop {
+    --tm-recipe-duration: 240ms;
+    --tm-recipe-closed-translate: 0 0;
+    --tm-recipe-closed-scale: 1;
+  }
+
+  /* --- 3. Toast ---------------------------------------------------------
+
+       <div role="status" data-state="open" class="tm-toast">Changes saved</div>
+
+     Slides in from the edge it is anchored to. The default is the inline-end
+     edge, mirrored in right-to-left contexts; the modifiers below cover
+     bottom- and top-anchored stacks. Toasts appear without being asked for,
+     so the travel is short and the exit is quick. */
+  .tm-toast {
+    --tm-recipe-duration: 260ms;
+    --tm-recipe-closed-translate: calc(
+        var(--tm-toast-distance, calc(var(--tm-distance, 12px) * 1.6)) *
+          var(--tm-inline-flip, 1)
+      )
+      0;
+    --tm-recipe-closed-scale: 1;
+  }
+
+  .tm-toast-from-inline-start {
+    --tm-recipe-closed-translate: calc(
+        var(--tm-toast-distance, calc(var(--tm-distance, 12px) * 1.6)) *
+          var(--tm-inline-flip, 1) * -1
+      )
+      0;
+  }
+
+  .tm-toast-from-block-end {
+    --tm-recipe-closed-translate: 0
+      var(--tm-toast-distance, calc(var(--tm-distance, 12px) * 1.6));
+  }
+
+  .tm-toast-from-block-start {
+    --tm-recipe-closed-translate: 0
+      calc(var(--tm-toast-distance, calc(var(--tm-distance, 12px) * 1.6)) * -1);
+  }
+
+  /* --- 4. Tooltip -------------------------------------------------------
+
+       <div role="tooltip" data-state="open" data-side="top" class="tm-tooltip">…</div>
+
+     The fastest thing in the library. A tooltip that takes 200ms to appear
+     feels broken, because the pointer is already there. Travel is a third of
+     the usual distance and the exit is nearly instant. */
+  .tm-tooltip {
+    --tm-recipe-duration: 120ms;
+    --tm-presence-exit-scale: 0.5;
+    --tm-recipe-closed-translate: 0
+      calc(var(--tm-distance, 12px) * -0.33 * var(--tm-tooltip-direction, 1));
+    --tm-recipe-closed-scale: calc(1 - 0.03 * var(--tm-emphasis, 1));
+  }
+
+  /* A tooltip above its trigger should retreat upward, one below it downward.
+     data-side gives that for free. */
+  .tm-tooltip[data-side="bottom"] {
+    --tm-tooltip-direction: -1;
+  }
+
+  /* Transform origin from the side the panel is anchored on. Kept as one rule
+     per side so the mapping is readable, and applied to both panel recipes. */
+  :is(.tm-menu, .tm-tooltip)[data-side="top"] {
+    --tm-origin: bottom center;
+  }
+
+  :is(.tm-menu, .tm-tooltip)[data-side="bottom"] {
+    --tm-origin: top center;
+  }
+
+  :is(.tm-menu, .tm-tooltip)[data-side="left"] {
+    --tm-origin: center right;
+  }
+
+  :is(.tm-menu, .tm-tooltip)[data-side="right"] {
+    --tm-origin: center left;
+  }
+
+  /* Alignment is deliberately not mapped. transform-origin takes no logical
+     keywords, so a data-align rule would hard-code left/right and break in
+     right-to-left contexts. Positioning libraries already publish a resolved
+     origin -- pass it straight through:
+
+       style="--tm-origin: var(--radix-popper-transform-origin)"  */
+
+  /* --- 5. Accordion / disclosure ---------------------------------------
+
+       <div class="tm-accordion-panel" data-state="open">
+         <div>…exactly one child…</div>
+       </div>
+
+     Child contract: exactly one element child, which TailMotion clips.
+     The 0fr -> 1fr grid row is the one height animation CSS can express
+     without measuring anything, so this needs no JavaScript and no fixed
+     height. For a <details> element use tm-native-disclosure instead.
+
+     Support: Chrome 107, Safari 16, Firefox 66. Older browsers show and hide
+     the panel without the height tween -- open content is never hidden. */
+  .tm-accordion-panel {
+    display: grid;
+    grid-template-rows: 1fr;
+    transition-property: grid-template-rows, opacity, visibility;
+    transition-duration: var(--tm-duration, calc(260ms * var(--tm-duration-scale, 1)));
+    transition-delay: var(--tm-delay, 0ms);
+    transition-timing-function: var(--tm-easing, var(--tm-ease-morph, cubic-bezier(0.2, 0, 0, 1)));
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .tm-accordion-panel > * {
+    overflow: hidden;
+    min-block-size: 0;
+  }
+
+  .tm-accordion-panel:is(
+      [data-state="closed"],
+      [data-state="inactive"],
+      [data-state="off"],
+      [aria-expanded="false"],
+      .tm-closed
+    ) {
+    grid-template-rows: 0fr;
+    opacity: 0;
+    visibility: hidden;
+    transition-duration: var(
+      --tm-exit-duration,
+      calc(
+        var(--tm-duration, calc(260ms * var(--tm-duration-scale, 1))) *
+          var(--tm-presence-exit-scale, 0.7)
+      )
+    );
+  }
+
+  /* --- 6. Tabs ----------------------------------------------------------
+
+     Two independent pieces.
+
+     The panel cross-fade needs no measurement:
+
+       <div class="tm-tab-panel" data-state="active">…</div>
+
+     The indicator does need measurement, and that stays with your component:
+     set --tm-tab-offset and --tm-tab-size from the active tab's box and
+     TailMotion animates between them. TailMotion never reads the DOM. */
+  .tm-tab-panel {
+    --tm-recipe-duration: 160ms;
+    --tm-recipe-closed-translate: 0 0;
+    --tm-recipe-closed-scale: 1;
+  }
+
+  .tm-tab-indicator {
+    translate: var(--tm-tab-offset, 0) 0;
+    inline-size: var(--tm-tab-size, 0);
+    transition-property: translate, inline-size;
+    transition-duration: var(--tm-duration, calc(260ms * var(--tm-duration-scale, 1)));
+    transition-timing-function: var(--tm-easing, var(--tm-ease-morph, cubic-bezier(0.2, 0, 0, 1)));
+  }
+
+  /* --- 7. Loading to success -------------------------------------------
+
+       <button data-state="loading" class="tm-feedback-button">
+         <span class="tm-feedback-idle">Save</span>
+         <span class="tm-feedback-loading">Saving</span>
+         <span class="tm-feedback-success">Saved</span>
+       </button>
+
+     Child contract: one element per state, in any order, each carrying its
+     state's class. All three stay mounted and share one grid cell, so the
+     button never resizes mid-transition and the outgoing label animates out
+     as cleanly as the incoming one animates in. States: idle, loading,
+     success, and optionally error.
+
+     Grid stacking here is structural, not styling -- the same decision
+     tm-icon-swap already makes. */
+  .tm-feedback-button {
+    display: inline-grid;
+    grid-template-areas: "tm-feedback";
+    place-items: center;
+  }
+
+  .tm-feedback-button > .tm-feedback-idle,
+  .tm-feedback-button > .tm-feedback-loading,
+  .tm-feedback-button > .tm-feedback-success,
+  .tm-feedback-button > .tm-feedback-error {
+    grid-area: tm-feedback;
+    opacity: 0;
+    visibility: hidden;
+    translate: 0 calc(var(--tm-distance, 12px) * 0.5);
+    transition-property: opacity, visibility, translate;
+    transition-duration: var(--tm-duration, calc(220ms * var(--tm-duration-scale, 1)));
+    transition-timing-function: var(--tm-easing, var(--tm-ease-entrance, cubic-bezier(0.22, 1, 0.36, 1)));
+  }
+
+  .tm-feedback-button:not([data-state]) > .tm-feedback-idle,
+  .tm-feedback-button[data-state="idle"] > .tm-feedback-idle,
+  .tm-feedback-button[data-state="loading"] > .tm-feedback-loading,
+  .tm-feedback-button[data-state="success"] > .tm-feedback-success,
+  .tm-feedback-button[data-state="error"] > .tm-feedback-error {
+    opacity: 1;
+    visibility: visible;
+    translate: 0 0;
+  }
+
+  /* Success is the one moment in a form worth celebrating, so it is the only
+     state that arrives with a spring. --tm-overshoot: 0 removes it. */
+  .tm-feedback-button[data-state="success"] > .tm-feedback-success {
+    transition-timing-function: var(--tm-easing, var(--tm-ease-emphasis, cubic-bezier(0.34, 1.56, 0.64, 1)));
+  }
+
+  /* --- 8. Destructive hold confirmation --------------------------------
+
+       <button class="tm-hold-confirm">Hold to delete</button>
+
+     A progress fill that sweeps across the button while the pointer is held,
+     and retreats quickly the moment it is released. Linear easing is correct
+     here and almost nowhere else: the fill is a clock, and any other curve
+     would misreport how much time is left.
+
+     Motion only. The fill inherits the button's own color through
+     --tm-color; TailMotion picks no red. `overflow` and `isolation` are here
+     because the fill has to be clipped to the button's box -- your radius,
+     padding and color all stay yours.
+
+     Keyboard: pair this with a key handler that sets data-state="holding" on
+     keydown, otherwise the interaction is pointer-only and inaccessible. */
+  .tm-hold-confirm {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    /* The press itself gets the same tactile feedback as tm-press. */
+    transition-property: scale;
+    transition-duration: var(--tm-duration, calc(150ms * var(--tm-duration-scale, 1)));
+    transition-timing-function: var(--tm-easing, var(--tm-ease-interaction, cubic-bezier(0.25, 0.46, 0.45, 0.94)));
+  }
+
+  .tm-hold-confirm:active:not(:disabled):not([aria-disabled="true"]) {
+    scale: var(--tm-press-scale, 0.98);
+  }
+
+  .tm-hold-confirm::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--tm-hold-fill, var(--tm-color, currentColor));
+    opacity: var(--tm-hold-fill-opacity, 0.18);
+    transform-origin: left center;
+    scale: 0 1;
+    /* Release: snap back. */
+    transition: scale var(--tm-hold-release-duration, 160ms) var(--tm-ease-exit, ease-out);
+  }
+
+  [dir="rtl"] .tm-hold-confirm::after {
+    transform-origin: right center;
+  }
+
+  @supports selector(:dir(rtl)) {
+    .tm-hold-confirm:dir(rtl)::after {
+      transform-origin: right center;
+    }
+  }
+
+  /* Hold: fill at a constant, readable rate. */
+  .tm-hold-confirm:active:not(:disabled):not([aria-disabled="true"])::after,
+  .tm-hold-confirm[data-state="holding"]::after {
+    scale: 1 1;
+    transition-duration: var(--tm-hold-duration, 1200ms);
+    transition-timing-function: linear;
+  }
+}
+
+/* Reduced motion. Repeated here so the module is safe to import on its own. */
+@media (prefers-reduced-motion: reduce) {
+  /* The hold fill keeps its full duration on purpose: it is a progress
+     readout, not decoration. Collapsing it to 1ms would confirm a destructive
+     action the instant the button was touched. This rule outranks the
+     library-wide [class*="tm-"]::after reset by specificity. */
+  .tm-hold-confirm:active:not(:disabled):not([aria-disabled="true"])::after,
+  .tm-hold-confirm[data-state="holding"]::after {
+    transition-duration: var(--tm-hold-duration, 1200ms) !important;
+  }
+
+  .tm-menu,
+  .tm-tooltip,
+  .tm-dialog,
+  .tm-dialog-backdrop,
+  .tm-toast,
+  .tm-tab-panel,
+  .tm-tab-indicator,
+  .tm-accordion-panel,
+  .tm-feedback-button > * {
+    transition-duration: 1ms !important;
+    transition-delay: 0ms !important;
+  }
+}

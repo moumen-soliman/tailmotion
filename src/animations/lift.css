@@ -8,8 +8,8 @@
 @layer utilities {
   .tm-lift-hover {
     transition-property: translate, box-shadow;
-    transition-duration: var(--tm-duration, 150ms);
-    transition-timing-function: var(--tm-easing, ease-out);
+    transition-duration: var(--tm-duration, calc(150ms * var(--tm-duration-scale, 1)));
+    transition-timing-function: var(--tm-easing, var(--tm-ease-interaction, ease-out));
   }
 
   .tm-lift-hover:hover,

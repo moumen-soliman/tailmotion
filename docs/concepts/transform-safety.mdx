@@ -1,0 +1,119 @@
+---
+title: "Transform safety"
+description: "Why 32 keyframes moved off `transform`, which ones did not, and what still cannot stack."
+---
+
+## The problem
+
+A keyframe that animates `transform` overwrites whatever `transform` the element
+already had. In Tailwind v3 that includes `rotate-45`, `scale-110` and
+`-translate-y-1`, so adding a motion class could silently delete a layout
+decision:
+
+```html
+<!-- before 0.8: the rotation vanished the moment the entrance ran -->
+<div class="tm-slide-block-start rotate-3">Tilted card</div>
+```
+
+Nothing errored. The card simply stopped being tilted, and the cause was three
+files away.
+
+## The fix
+
+CSS has individual `translate`, `scale` and `rotate` properties. They compose
+with `transform` rather than replacing it: the browser applies translate, then
+rotate, then scale, then whatever `transform` says.
+
+TailMotion ships 77 keyframes. 13 of them touch only opacity, filter, colour or
+clip-path and never had a transform to conflict with. Of the 64 that move an
+element, **32 now animate the individual properties**:
+
+<Note>
+That covers every entrance, every exit, every presence class, every scroll class
+and every stagger keyframe — the ones most likely to land on an element Tailwind
+has already transformed.
+</Note>
+
+```html
+<!-- 0.8: the rotation survives the entrance -->
+<div class="tm-slide-block-start rotate-3">Tilted card</div>
+```
+
+Every class in these families composes:
+
+`tm-slide-block-start` · `tm-slide-block-end` · `tm-slide-inline-start` ·
+`tm-slide-inline-end` · `tm-slide-block-out` · `tm-slide-inline-out` ·
+`tm-scale-in` · `tm-scale-out` · `tm-pop` · `tm-zoom-in` · `tm-zoom-out` ·
+`tm-drop-in` · `tm-rotate-in` · `tm-elastic` · `tm-reveal` · `tm-glide` ·
+`tm-glide-right` · `tm-scale-fade` · `tm-rise` · `tm-pulse` · `tm-spin` ·
+`tm-float` · `tm-drift` · `tm-shake` · `tm-wiggle` · `tm-bounce` ·
+every `tm-presence-*` · every `tm-scroll-*` · `tm-stagger`
+
+Browser support for individual transform properties is Chrome 104, Safari 14.1,
+Firefox 72 — older than most of the library's other requirements.
+
+## The 32 that did not move
+
+These still write `transform`, and are documented rather than converted, because
+converting them would change the motion.
+
+| Group | Classes | Why |
+|---|---|---|
+| **3D flips** | `tm-flip-*`, `tm-swing-*` | Need `perspective()` inside the transform function list. There is no individual `perspective` property that composes the same way |
+| **Order-sensitive** | `tm-sway`, `tm-morph`, `tm-unfold` | Rotate or scale *before* translating. Individual properties always apply in the order translate → rotate → scale, so converting them would move the element to a different place |
+| **Pseudo-element sweeps** | `tm-shimmer`, `tm-shimmer-hover`, `tm-ripple` | Animate a `::before` or `::after` you do not style, so there is no author transform to preserve |
+| **Ambient layers** | `tm-wavy-*`, `tm-dark-veil-*` | Same reason: decorative layers TailMotion owns entirely |
+| **Text effects** | `tm-text-flip-*`, `tm-text-rotate-*`, `tm-char-flip-in`, `tm-count-slide` | Animate generated children |
+| **Celebration** | `tm-sparkle`, `tm-burst`, `tm-confetti` | Multi-axis composite transforms where the order carries the effect |
+
+If one of these lands on an element you have transformed with Tailwind, wrap it:
+
+```html
+<div class="rotate-3">
+  <div class="tm-flip-x">Flips, inside something tilted</div>
+</div>
+```
+
+## Stacking two keyframe classes
+
+Two keyframe classes on one element do **not** both run. Whichever comes later
+in the stylesheet wins `animation-name`; the other is discarded. That is a
+property of CSS animations, not of this library, and no amount of transform
+safety changes it.
+
+```html
+<!-- only one of these runs -->
+<div class="tm-fade-in tm-scale-in">…</div>
+```
+
+Use a wrapper when you genuinely need two:
+
+```html
+<div class="tm-fade-in">
+  <div class="tm-scale-in">Two entrances, one element each</div>
+</div>
+```
+
+Or pick the class that already does both — `tm-scale-in` and `tm-pop` fade *and*
+scale, `tm-slide-*` fades *and* travels. Most requests for "fade plus slide" are
+already one class.
+
+<Note>
+Interaction and presence classes are transitions, not keyframes, so they **do**
+stack on one element. `tm-press` and `tm-hover-lift` together are fine, as is
+`tm-press` on an element that also carries a `tm-presence-*` class — they
+transition different properties.
+</Note>
+
+## What this does not claim
+
+TailMotion does not claim arbitrary keyframe composition, because CSS does not
+provide it. What it claims, and what is verified:
+
+- A motion class can be added to a Tailwind-transformed element without silently
+  removing the intended transform — for the 32 keyframes listed above and every
+  transition-based class.
+- The 32 that still overwrite `transform` are named, grouped by reason, and have
+  a documented wrapper workaround.
+- Two keyframe classes on one element is documented as unsupported rather than
+  quietly producing one of them.

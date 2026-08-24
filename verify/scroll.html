@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Scroll verification</title>
+    <link rel="stylesheet" href="/tailmotion.css" />
+    <style>
+      body { font: 14px/1.5 system-ui, sans-serif; margin: 0 24px 24px; }
+      section { border: 1px solid #ccc; border-radius: 10px; padding: 20px; margin-block: 60vh; }
+      #bar { position: fixed; inset-inline: 0; top: 0; height: 4px; background: #111; }
+      pre { background: #f6f6f6; padding: 8px; border-radius: 6px; position: sticky; top: 12px; }
+    </style>
+  </head>
+  <body>
+    <div id="bar" class="tm-scroll-progress"></div>
+    <pre id="out"></pre>
+    <section class="tm-scroll-fade" id="s1">fade</section>
+    <section class="tm-scroll-reveal" id="s2">reveal</section>
+    <section class="tm-scroll-slide-block tm-scroll-range-cover" id="s3">slide-block, cover range</section>
+    <section class="tm-scroll-scale tm-scroll-range-exit" id="s4">scale, exit range</section>
+    <script>
+      window.probe = () => {
+        const cs = (id, p) => getComputedStyle(document.getElementById(id)).getPropertyValue(p);
+        return {
+          supported: CSS.supports('animation-timeline', 'view()'),
+          bar: { name: cs('bar', 'animation-name'), timeline: cs('bar', 'animation-timeline'), scale: cs('bar', 'scale'), origin: cs('bar', 'transform-origin') },
+          s1: { name: cs('s1', 'animation-name'), timeline: cs('s1', 'animation-timeline'), range: cs('s1', 'animation-range'), opacity: cs('s1', 'opacity') },
+          s2: { name: cs('s2', 'animation-name'), range: cs('s2', 'animation-range') },
+          s3: { range: cs('s3', 'animation-range'), rangeVar: cs('s3', '--tm-scroll-range') },
+          s4: { range: cs('s4', 'animation-range'), rangeVar: cs('s4', '--tm-scroll-range') },
+        };
+      };
+      document.getElementById('out').textContent = JSON.stringify(window.probe(), null, 1);
+    </script>
+  </body>
+</html>

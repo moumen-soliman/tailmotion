@@ -1,7 +1,7 @@
 @layer utilities {
   .tm-swing-in {
     animation-name: tm-swing-in;
-    animation-duration: var(--tm-duration, 600ms);
+    animation-duration: var(--tm-duration, calc(600ms * var(--tm-duration-scale, 1)));
     animation-delay: var(--tm-delay, 0ms);
     animation-timing-function: var(--tm-easing, cubic-bezier(0.68, -0.55, 0.265, 1.55));
     animation-iteration-count: var(--tm-iteration-count, 1);
@@ -11,7 +11,7 @@
 
   .tm-swing-out {
     animation-name: tm-swing-out;
-    animation-duration: var(--tm-duration, 600ms);
+    animation-duration: var(--tm-duration, calc(600ms * var(--tm-duration-scale, 1)));
     animation-delay: var(--tm-delay, 0ms);
     animation-timing-function: var(--tm-easing, cubic-bezier(0.68, -0.55, 0.265, 1.55));
     animation-iteration-count: var(--tm-iteration-count, 1);
@@ -21,7 +21,7 @@
 
   .tm-swing-in-left {
     animation-name: tm-swing-in-left;
-    animation-duration: var(--tm-duration, 600ms);
+    animation-duration: var(--tm-duration, calc(600ms * var(--tm-duration-scale, 1)));
     animation-delay: var(--tm-delay, 0ms);
     animation-timing-function: var(--tm-easing, cubic-bezier(0.68, -0.55, 0.265, 1.55));
     animation-iteration-count: var(--tm-iteration-count, 1);
@@ -31,7 +31,7 @@
 
   .tm-swing-out-left {
     animation-name: tm-swing-out-left;
-    animation-duration: var(--tm-duration, 600ms);
+    animation-duration: var(--tm-duration, calc(600ms * var(--tm-duration-scale, 1)));
     animation-delay: var(--tm-delay, 0ms);
     animation-timing-function: var(--tm-easing, cubic-bezier(0.68, -0.55, 0.265, 1.55));
     animation-iteration-count: var(--tm-iteration-count, 1);
@@ -41,7 +41,7 @@
 
   .tm-swing-in-right {
     animation-name: tm-swing-in-right;
-    animation-duration: var(--tm-duration, 600ms);
+    animation-duration: var(--tm-duration, calc(600ms * var(--tm-duration-scale, 1)));
     animation-delay: var(--tm-delay, 0ms);
     animation-timing-function: var(--tm-easing, cubic-bezier(0.68, -0.55, 0.265, 1.55));
     animation-iteration-count: var(--tm-iteration-count, 1);
@@ -51,7 +51,7 @@
 
   .tm-swing-out-right {
     animation-name: tm-swing-out-right;
-    animation-duration: var(--tm-duration, 600ms);
+    animation-duration: var(--tm-duration, calc(600ms * var(--tm-duration-scale, 1)));
     animation-delay: var(--tm-delay, 0ms);
     animation-timing-function: var(--tm-easing, cubic-bezier(0.68, -0.55, 0.265, 1.55));
     animation-iteration-count: var(--tm-iteration-count, 1);

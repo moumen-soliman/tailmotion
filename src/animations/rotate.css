@@ -2,9 +2,9 @@
   /* Rotate entrance. */
   .tm-rotate-in {
     animation-name: tm-rotate-in;
-    animation-duration: var(--tm-duration, 280ms);
+    animation-duration: var(--tm-duration, calc(280ms * var(--tm-duration-scale, 1)));
     animation-delay: var(--tm-delay, 0ms);
-    animation-timing-function: var(--tm-easing, cubic-bezier(0.22, 1, 0.36, 1));
+    animation-timing-function: var(--tm-easing, var(--tm-ease-entrance, cubic-bezier(0.22, 1, 0.36, 1)));
     animation-iteration-count: var(--tm-iteration-count, 1);
     animation-fill-mode: both;
   }
@@ -13,8 +13,8 @@
      instead of replaying. */
   .tm-rotate-hover {
     transition-property: rotate;
-    transition-duration: var(--tm-duration, 150ms);
-    transition-timing-function: var(--tm-easing, ease-out);
+    transition-duration: var(--tm-duration, calc(150ms * var(--tm-duration-scale, 1)));
+    transition-timing-function: var(--tm-easing, var(--tm-ease-interaction, ease-out));
   }
 
   .tm-rotate-hover:hover,
@@ -24,8 +24,8 @@
 
   .tm-rotate-press {
     transition-property: scale, rotate;
-    transition-duration: var(--tm-duration, 150ms);
-    transition-timing-function: var(--tm-easing, ease-out);
+    transition-duration: var(--tm-duration, calc(150ms * var(--tm-duration-scale, 1)));
+    transition-timing-function: var(--tm-easing, var(--tm-ease-interaction, ease-out));
   }
 
   .tm-rotate-press:active:not(:disabled):not([aria-disabled="true"]) {
@@ -37,11 +37,13 @@
 @keyframes tm-rotate-in {
   from {
     opacity: 0;
-    transform: rotate(var(--tm-rotate-from, -6deg)) scale(var(--tm-scale-from, 0.96));
+    rotate: calc(var(--tm-rotate-from, -6deg) * var(--tm-emphasis, 1));
+    scale: var(--tm-scale-from, calc(1 - 0.04 * var(--tm-emphasis, 1)));
   }
 
   to {
     opacity: 1;
-    transform: rotate(0deg) scale(1);
+    rotate: 0deg;
+    scale: 1;
   }
 }

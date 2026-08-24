@@ -1,0 +1,125 @@
+---
+title: "Imports and bundle size"
+description: "Every entry point, what it costs, and the two things worth being honest about."
+---
+
+## The entry points
+
+| Import | Contains |
+|---|---|
+| `tailmotion/css` | Everything. The convenient default |
+| `tailmotion/profiles.css` | The token layer and the three motion personalities |
+| `tailmotion/presence.css` | `tm-presence-*` |
+| `tailmotion/native.css` | `tm-native-popover`, `-dialog`, `-disclosure` |
+| `tailmotion/recipes.css` | Menu, dialog, toast, tooltip, accordion, tabs, feedback, hold |
+| `tailmotion/scroll.css` | `tm-scroll-*` |
+| `tailmotion/choreography.css` | `tm-stagger` and its modifiers |
+| `tailmotion/animations/*.css` | One animation family at a time |
+| `tailmotion/plugin` | The optional Tailwind plugin |
+| `tailmotion/utils` | Optional JavaScript helpers |
+
+## Sizes
+
+Measured from the built output. Gzipped is the number that matters over the
+wire.
+
+| Entry | Raw | Gzipped |
+|---|---|---|
+| `tailmotion/css` | 203 KB | 29.5 KB |
+| `tailmotion/recipes.css` | 21.9 KB | 6.3 KB |
+| `tailmotion/native.css` | 16.9 KB | 4.9 KB |
+| `tailmotion/choreography.css` | 14.7 KB | 4.3 KB |
+| `tailmotion/presence.css` | 14.5 KB | 4.6 KB |
+| `tailmotion/scroll.css` | 12.1 KB | 4.0 KB |
+| `tailmotion/profiles.css` | 11.4 KB | 3.6 KB |
+
+Run `npm run check` in the repository to regenerate this table.
+
+<Note>
+A large share of every module is comments and the shared token layer. The
+stylesheets ship unminified on purpose — they are meant to be read — and every
+bundler and CDN minifies them on the way out.
+</Note>
+
+## Two things to be honest about
+
+<Warning>
+**The full bundle is not tree-shaken.** Importing `tailmotion/css` ships every
+class whether you use them or not, and 29.5 KB gzipped is the whole file. CSS
+has no import graph a bundler can prune, and TailMotion does not pretend
+otherwise. If size matters, take module entries or per-animation files.
+</Warning>
+
+**Modules repeat the token layer.** Each focused entry is self-contained so it
+works on its own, which means importing two of them ships the shared `:root`
+block twice. If you need more than one module, import `tailmotion/css` instead —
+its build inlines each shared file exactly once.
+
+## Choosing an entry
+
+<AccordionGroup>
+  <Accordion title="I want the whole library">
+    ```css
+    @import "tailmotion/css";
+    ```
+    29.5 KB gzipped, no build step, no plugin, every class available. This is
+    the right answer for most projects.
+  </Accordion>
+
+  <Accordion title="I only need presence">
+    ```css
+    @import "tailmotion/presence.css";
+    ```
+    4.6 KB gzipped, works standalone. Add `tailmotion/profiles.css` if you also
+    want motion personalities.
+  </Accordion>
+
+  <Accordion title="I need two or three modules">
+    ```css
+    @import "tailmotion/css";
+    ```
+    Once you are past one module, the full bundle is smaller than the sum of the
+    parts, because the shared token layer stops repeating.
+  </Accordion>
+
+  <Accordion title="I want the absolute minimum">
+    ```css
+    @import "tailmotion/animations/base.css";
+    @import "tailmotion/animations/fade.css";
+    @import "tailmotion/animations/interactions.css";
+    ```
+    Keep `base.css` first — it pulls in the token layer and the motion profiles,
+    and provides RTL mirroring and reduced-motion behaviour.
+
+    Per-animation imports do **not** include the prebuilt `hover:` / `focus:` /
+    responsive selectors from `variants.css`. Add them yourself with Tailwind
+    variants if you need them.
+  </Accordion>
+</AccordionGroup>
+
+## What is in the 203 KB
+
+Measured from the source files the build inlines. The remaining ~3 KB is the
+banner and the per-file markers the build inserts.
+
+| Part | Files | Raw |
+|---|---|---|
+| `variants.css` — prebuilt `hover:` / `focus:` / responsive selectors | 1 | 58.1 KB |
+| The 0.8 layers — tokens, profiles, presence, native, recipes, choreography, scroll | 8 | 54.2 KB |
+| Decorative families — dark veil, wavy, liquid, flip, swing, shimmer, avatar group, text | 13 | 51.8 KB |
+| Core entrances, exits, interactions and timing utilities | 23 | 35.7 KB |
+
+If `variants.css` is dead weight for your project — because you generate
+variants with Tailwind instead — per-animation imports skip it entirely.
+
+## Optional JavaScript
+
+```js
+import { animateValue, createTextRotator, tm } from "tailmotion/utils";
+```
+
+A separate entry, not pulled in by `tailmotion/css`, and required by no class in
+the stylesheet. It exists for the two things CSS genuinely cannot do: counting
+from 0 to 4,271, and rotating a list of words.
+
+See [the zero-runtime boundary](/docs/concepts/zero-runtime#the-optional-javascript).

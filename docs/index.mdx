@@ -1,0 +1,126 @@
+---
+title: "Introduction"
+description: "A tested motion language for product interfaces, with good decisions already made."
+---
+
+TailMotion is a CSS package for the motion in a product interface. Tailwind owns
+layout, color, spacing, radius, shadows and typography. TailMotion owns how an
+element enters, exits, responds, repeats and reacts to state.
+
+```css
+@import "tailmotion/css";
+```
+
+```html
+<button class="tm-press rounded-lg bg-blue-600 px-4 py-2 text-white">
+  Save changes
+</button>
+```
+
+**A keyframe collection answers "how do I fade this in?" TailMotion answers "how
+should this whole product move, and what happens when the state changes?"**
+
+## What a keyframe collection cannot do
+
+Fading something in is the easy part. The hard part is everything around it:
+making a whole surface feel calmer without editing 200 class names, animating
+the `data-state` your headless UI library already emits, giving `<dialog>` and
+`[popover]` an exit, and shipping a scroll reveal that fails safely in a browser
+that has never heard of view timelines.
+
+<CardGroup cols={2}>
+  <Card title="Scoped motion personalities" icon="sliders" href="/docs/concepts/personalities">
+    One class on an ancestor retunes the feel of everything below it. The
+    animation classes never change.
+  </Card>
+  <Card title="State-driven presence" icon="toggle-on" href="/docs/concepts/presence">
+    Animates the `data-state` and `aria-expanded` your application already sets.
+    Interruptible by construction.
+  </Card>
+  <Card title="Native HTML motion" icon="window" href="/docs/guides/native-elements">
+    Real entrances and exits for `[popover]`, `<dialog>` and `<details>`, with
+    the browser keeping focus and semantics.
+  </Card>
+  <Card title="Product recipes" icon="layer-group" href="/docs/guides/recipes">
+    Menu, dialog, toast, tooltip, accordion, tabs, loading-to-success and
+    hold-to-confirm — as motion only.
+  </Card>
+  <Card title="Scroll-driven motion" icon="arrow-down" href="/docs/guides/scroll">
+    CSS view timelines. No observer, no listener, and content stays visible where
+    the browser has none.
+  </Card>
+  <Card title="Choreography" icon="list-ol" href="/docs/concepts/choreography">
+    Stagger that can enter, exit and reverse — without reordering the DOM.
+  </Card>
+</CardGroup>
+
+## The shape of the library
+
+Seven categories, each with one job.
+
+| Category | Built from | Repeats | Use for |
+|---|---|---|---|
+| **Entrance** | keyframes | once | An element arriving |
+| **Exit** | keyframes | once | An element leaving |
+| **Continuous** | keyframes | infinite | Ambient and loading states |
+| **Interaction** | transitions | n/a | Hover, press, toggle |
+| **Presence** | transitions | n/a | Open and closed states your app owns |
+| **Choreography** | variables | n/a | Timing, easing, stagger, distance |
+| **Personality** | variables | n/a | The feel of a whole subtree |
+
+Interaction and presence are built from transitions because only they need to
+survive a change of mind mid-flight — a replayed keyframe would snap back to its
+start. Personality and choreography add no rules of their own: they are
+inherited custom properties every other category already reads.
+
+See [the motion model](/docs/concepts/motion-model) for how the four token
+groups fit together, and [which one do I want?](/docs/concepts/motion-model#which-one-do-i-want)
+for picking between them.
+
+## What is guaranteed
+
+<Note>
+Every one of these is verified by `npm run check`, which fails the build if a
+class points at missing keyframes, a rule hides content outside an `@supports`
+guard, `:root` picks up a timing token, or a module ships without a
+reduced-motion reset.
+</Note>
+
+- **Zero runtime in the CSS core.** Importing the stylesheet adds no JavaScript.
+  The optional helpers in `tailmotion/utils` are opt-in and no class requires
+  them.
+- **Nothing modern can hide content.** A hidden base state is only ever declared
+  inside the `@supports` block that also says how it comes back.
+- **Reduced motion preserves the state.** Animations collapse to 1ms rather than
+  being removed, so what a class communicates still lands — it just lands
+  instantly. Two classes are deliberate exceptions, for good reasons.
+- **Direction is logical.** Inline-axis motion mirrors in right-to-left
+  contexts. Block-axis motion does not, because up is up in every writing
+  direction.
+- **Tailwind v3, Tailwind v4, and no Tailwind at all** are all supported. The
+  prebuilt stylesheet needs no build step and no plugin.
+
+## Non-goals
+
+TailMotion will not grow into these, and it is worth saying so plainly.
+
+- **No JavaScript animation runtime.** If a behaviour needs one, it belongs in
+  your application, not here.
+- **No styled components** for React, Vue or Svelte. One CSS API, four
+  identical integrations.
+- **No colors, sizes, spacing or radius** in a motion class. That is Tailwind's
+  job, and mixing the two is how motion libraries become design systems nobody
+  asked for.
+- **No React Native.** TailMotion is CSS and DOM selectors. See
+  [Support](/docs/support#react-native).
+
+## Where to go next
+
+<CardGroup cols={2}>
+  <Card title="Quickstart" icon="play" href="/docs/quickstart">
+    Install, import, and ship the first four behaviours.
+  </Card>
+  <Card title="Class reference" icon="table-list" href="/docs/reference/classes">
+    Every class, its trigger, its states, its timing and its required markup.
+  </Card>
+</CardGroup>

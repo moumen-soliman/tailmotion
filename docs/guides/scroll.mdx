@@ -1,0 +1,143 @@
+---
+title: "Scroll-driven motion"
+description: "CSS view timelines. No observer, no listener, and content stays visible where the browser has none."
+---
+
+```html
+<section class="tm-scroll-reveal">Content</section>
+```
+
+That is the whole integration. The browser drives the animation from the scroll
+position, on the compositor, so it does not compete with your main thread the
+way an `IntersectionObserver` reveal does.
+
+<Note>
+This module is included in `tailmotion/css` and also available on its own as
+`tailmotion/scroll.css` — 12.1 KB raw, 4.0 KB gzipped. Every rule sits inside
+`@supports (animation-timeline: view())`, so in a browser without support not
+one declaration applies.
+</Note>
+
+## The vocabulary
+
+| Class | Motion |
+|---|---|
+| `tm-scroll-fade` | Opacity only |
+| `tm-scroll-reveal` | Fade plus a short rise. The workhorse |
+| `tm-scroll-slide-block` | Fade plus a longer rise |
+| `tm-scroll-scale` | Fade plus a small scale |
+| `tm-scroll-progress` | A reading-progress bar linked to the document scroll |
+
+## Ranges
+
+A view timeline runs from "this element starts entering the scrollport" to "it
+has left". Which slice of that you animate over is the whole design decision.
+
+| Range class | Timeline range | Reads as |
+|---|---|---|
+| `tm-scroll-range-entry` *(default)* | `entry 15% entry 65%` | While the element comes into the scrollport |
+| `tm-scroll-range-cover` | `cover 0% cover 40%` | Over the whole time any part is visible |
+| `tm-scroll-range-contain` | `contain 0% contain 100%` | While it is fully visible |
+| `tm-scroll-range-exit` | `exit 0% exit 100%` | While it is leaving |
+
+```html
+<article class="tm-scroll-reveal tm-scroll-range-entry">
+  Introduced as it enters the viewport
+</article>
+```
+
+Set `--tm-scroll-range` directly for anything more specific:
+
+```html
+<div class="tm-scroll-fade" style="--tm-scroll-range: entry 0% entry 40%">…</div>
+```
+
+<Note>
+The default range starts once the subject is properly on screen and finishes
+before it reaches the middle. Running a reveal across the full `entry` range
+means the reader watches text resolve while trying to read it — the animation
+finishes at the exact moment their eye arrives, which is the worst possible
+timing.
+</Note>
+
+## Progress bar
+
+```html
+<div class="tm-scroll-progress fixed inset-x-0 top-0 h-1 bg-black"></div>
+```
+
+Linked to `scroll(root block)`, so it tracks the document. It scales from the
+inline-start edge and mirrors in right-to-left contexts. You size and color the
+bar; TailMotion scales it.
+
+## Restraint
+
+Two rules this module follows, and you should too:
+
+- **No large parallax.** `tm-scroll-slide-block` travels twice `--tm-distance`
+  and no further. Long parallax travel on body content makes text arrive
+  somewhere the eye did not expect and measurably hurts reading.
+- **No continuous decorative movement.** Every class here settles at a final
+  state and stays there. Nothing loops while the reader is trying to read.
+
+## Support and fallback
+
+| | |
+|---|---|
+| Chrome / Edge | 115 |
+| Firefox | behind a flag |
+| Safari | not yet |
+
+Everything sits inside `@supports (animation-timeline: view())`. Where that is
+false, **not one declaration applies** and the section renders as ordinary,
+fully visible content.
+
+<Warning>
+This is the difference between a CSS reveal and an observer-based one. An
+observer-based reveal has to hide the content first and then hope its JavaScript
+runs. If the script fails, the bundle 404s, or the browser is old, the reader
+gets a blank page. A CSS reveal that is not supported is simply a page.
+</Warning>
+
+Check the current status on [caniuse](https://caniuse.com/css-scroll-timeline).
+
+## Reduced motion
+
+A progress-linked animation ignores `animation-duration`, so the library-wide
+1ms reset cannot stop these. They are switched off by name instead:
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  .tm-scroll-reveal { animation-name: none !important; animation-timeline: auto !important; }
+}
+```
+
+Each element then renders at its own authored state — visible, in place, fully
+legible.
+
+`tm-scroll-progress` shows its complete state rather than tracking the scroll. If
+a permanently full bar would misinform your readers, hide it as well:
+
+```html
+<div class="tm-scroll-progress motion-reduce:hidden fixed inset-x-0 top-0 h-1 bg-black"></div>
+```
+
+<Note>
+This is the one place TailMotion's reduced-motion behaviour is a judgement call
+rather than a mechanical rule. The library's convention is "land on the final
+state", and for a progress bar the final state is full. Naming the trade-off
+here rather than picking silently is the point.
+</Note>
+
+## Verifying it works
+
+Scroll-driven animations are attached as real `Animation` objects, so you can
+inspect them:
+
+```js
+document.querySelector(".tm-scroll-reveal").getAnimations()[0].timeline;
+// ViewTimeline { subject: section.tm-scroll-reveal, axis: "block" }
+```
+
+If `getAnimations()` returns an empty array, the browser has no support and the
+`@supports` guard did its job.

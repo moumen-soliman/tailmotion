@@ -1,0 +1,154 @@
+---
+title: "CSS variables"
+description: "Every --tm-* custom property, what reads it, and what it defaults to."
+---
+
+All of these are typed in `TailMotionVars`, so an inline style object
+autocompletes in TypeScript.
+
+```tsx
+import type { TailMotionVars } from "tailmotion";
+
+<div style={{ "--tm-origin": "top center" } satisfies TailMotionVars} />
+```
+
+## Explicit overrides
+
+Deliberately **unset** at `:root`, so each class keeps its own tuned default. An
+explicit value always wins over an inherited motion profile.
+
+| Variable | Default | Read by |
+|---|---|---|
+| `--tm-duration` | unset | Every animation and transition |
+| `--tm-delay` | `0ms` | Every animation and transition |
+| `--tm-easing` | unset | Every animation and transition |
+| `--tm-iteration-count` | per class | Every keyframe animation |
+| `--tm-exit-duration` | derived | Presence and recipe closed states, `tm-stagger-exit` |
+
+<Warning>
+Never set `--tm-duration`, `--tm-delay`, `--tm-easing` or `--tm-iteration-count`
+on `:root`. A root value shadows every per-class default in the library — that
+was a real bug in 0.5, and `npm run check` now fails the build if it comes back.
+Set them on an element, or use a [motion profile](/docs/concepts/personalities).
+</Warning>
+
+## Profile factors
+
+Inherited multipliers. A motion personality sets all of these; you can also set
+them directly on any scope.
+
+| Variable | Default | Effect |
+|---|---|---|
+| `--tm-duration-scale` | `1` | Multiplies every animation's own default duration |
+| `--tm-emphasis` | `1` | Scales how far a keyframe departs from rest |
+| `--tm-overshoot` | `1` | Scales only the frames that travel past rest. `0` removes the bounce |
+
+## Shared scalars
+
+One value each, shared by every class that uses them.
+
+| Variable | Default | Read by |
+|---|---|---|
+| `--tm-distance` | `12px` | Every slide, every presence offset, `tm-stagger`, `tm-scroll-reveal` |
+| `--tm-exit-distance` | 70% of `--tm-distance` | Every exit keyframe |
+| `--tm-stagger-step` | `100ms` | `tm-stagger` |
+| `--tm-stagger-index` | generated | Set by TailMotion per child |
+| `--tm-inline-flip` | `1`, or `-1` in RTL | Every inline-axis class. Set by TailMotion |
+
+<Note>
+`--tm-exit-distance` is resolved on the element, not on `:root`. A custom
+property declared on `:root` is substituted there, so a `calc()` written at the
+root freezes against the root's values and ignores a `tm-distance-*` utility
+further down the tree. Setting `--tm-exit-distance` explicitly still overrides
+the ratio.
+</Note>
+
+## Role easings
+
+Classes opt into a role; a profile retunes the role.
+
+| Variable | Default | Used by |
+|---|---|---|
+| `--tm-ease-entrance` | `cubic-bezier(0.22, 1, 0.36, 1)` | Anything arriving |
+| `--tm-ease-exit` | `cubic-bezier(0.25, 0.46, 0.45, 0.94)` | Anything leaving |
+| `--tm-ease-interaction` | `cubic-bezier(0.25, 0.46, 0.45, 0.94)` | Press, hover, rotate-on-hover |
+| `--tm-ease-morph` | `cubic-bezier(0.2, 0, 0, 1)` | Something on screen that moves or reshapes |
+| `--tm-ease-emphasis` | `cubic-bezier(0.34, 1.56, 0.64, 1)` | The only role allowed to overshoot |
+
+## Presence and recipes
+
+| Variable | Default | Effect |
+|---|---|---|
+| `--tm-presence-exit-scale` | `0.7` | Ratio of the closed duration to the open one |
+| `--tm-presence-direction` | `-1` | Which edge a slide presence starts from |
+| `--tm-origin` | `center` | `transform-origin` for presence, menu, tooltip, popover, dialog |
+| `--tm-toast-distance` | 1.6 × `--tm-distance` | How far a toast travels |
+| `--tm-tooltip-direction` | `1` | Which way a tooltip retreats. Set by `data-side` |
+| `--tm-tab-offset` | `0` | Where the tab indicator sits. **You set this** |
+| `--tm-tab-size` | `0` | How wide the tab indicator is. **You set this** |
+| `--tm-hold-duration` | `1200ms` | How long `tm-hold-confirm` must be held |
+| `--tm-hold-release-duration` | `160ms` | How fast the fill retreats |
+| `--tm-hold-fill` | `--tm-color` | The fill colour |
+| `--tm-hold-fill-opacity` | `0.18` | The fill strength |
+| `--tm-backdrop-duration` | `240ms` | `tm-native-dialog` backdrop timing |
+| `--tm-marker-rotate` | `90deg` | `[data-tm-marker]` rotation on open |
+
+## Scroll-driven
+
+| Variable | Default | Effect |
+|---|---|---|
+| `--tm-scroll-range` | `entry 15% entry 65%` | The `animation-range` for every `tm-scroll-*` reveal |
+
+## Per-animation
+
+| Variable | Default | Used by |
+|---|---|---|
+| `--tm-press-scale` | `0.96` | `tm-press`, `tm-rotate-press` |
+| `--tm-hover-scale` | `1.04` | `tm-hover-scale` |
+| `--tm-lift-distance` | `4px` | `tm-hover-lift`, `tm-lift-hover` |
+| `--tm-lift-shadow` | derived | `tm-hover-lift`, `tm-lift-hover` |
+| `--tm-rotate` | `6deg` / `-4deg` | `tm-rotate-hover`, `tm-rotate-press` |
+| `--tm-rotate-from` | `-6deg` | `tm-rotate-in` |
+| `--tm-scale-from` | derived from `--tm-emphasis` | `tm-scale-in`, `tm-rotate-in` |
+| `--tm-blur` | `8px` | `tm-blur-in` |
+| `--tm-exit-blur` | `4px` | `tm-blur-out` |
+| `--tm-exit-scale` | derived from `--tm-emphasis` | `tm-scale-out` |
+| `--tm-drop-distance` | 3.3 × `--tm-distance` | `tm-drop-in` |
+| `--tm-glow-size`, `--tm-glow-spread` | — | `tm-glow` |
+| `--tm-ripple-size` | — | `tm-ripple` |
+| `--tm-shimmer-angle` | — | `tm-shimmer` |
+| `--tm-ring-width` | — | `tm-avatar-ring` |
+
+## Colors
+
+See [Theming and color](/docs/guides/theming) for the full story.
+
+| Variable | Default |
+|---|---|
+| `--tm-color` | `currentColor` |
+| `--tm-shadow-color` | 25% of `--tm-color` |
+| `--tm-glow-color` | 45% of `--tm-color` |
+| `--tm-outline-color` | 40% of `--tm-color` |
+| `--tm-shimmer-color` | `--tm-color` |
+| `--tm-shimmer-opacity` | `0.35` |
+
+## View morph
+
+The structured recipe that reshapes a container between two mounted panels.
+
+| Variable | Effect |
+|---|---|
+| `--tm-view-width`, `--tm-view-height` | The active view's dimensions. **You set these** |
+| `--tm-view-stage-width`, `--tm-view-stage-height` | A fixed stage, so the reshape uses `clip-path` instead of layout |
+| `--tm-view-radius` | Corner radius of the clip |
+| `--tm-view-exit-y`, `--tm-view-exit-scale`, `--tm-view-exit-scale-x` | How the outgoing panel leaves |
+| `--tm-view-blur` | Blur on the outgoing panel. Skipped on touch devices |
+| `--tm-view-content-duration`, `--tm-view-content-easing` | Panel cross-fade timing |
+| `--tm-view-enter-delay` | How long the incoming panel waits |
+
+<Note>
+The `--tm-view-*` family belongs to `tm-view-morph` and predates the
+scroll-driven module — which is why the scroll classes are named `tm-scroll-*`
+rather than `tm-view-*`. Two unrelated ideas behind one prefix would have been
+worse than a slightly longer name.
+</Note>

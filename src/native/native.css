@@ -1,0 +1,272 @@
+/* --------------------------------------------------------------------------
+   Native HTML motion.
+
+   Recipes for elements the browser already owns: [popover], <dialog> and
+   <details>. TailMotion adds movement and nothing else -- no colors, no
+   dimensions, no padding, no radius, no shadow, and no JavaScript. Opening,
+   closing, focus handling, the top layer, light dismiss and the Escape key
+   all stay with the browser.
+
+   Support, and what happens without it
+   ------------------------------------
+   Every modern-CSS rule here sits behind an @supports guard, and the
+   unsupported path always leaves content visible and usable:
+
+     :popover-open            Chrome 114, Safari 17, Firefox 125.
+                              Without it the popover still opens and closes,
+                              with no transition.
+
+     transition-behavior:     Chrome 117, Safari 17.4, Firefox 129. This is
+     allow-discrete           what lets an element in `display: none` or the
+                              top layer animate *out*. Without it entrances
+                              still animate and exits are instant.
+
+     @starting-style          Ships with the property above in every engine, so
+                              the same guard covers both.
+
+     ::details-content        Chrome 131. Not in Safari or Firefox at the time
+                              of writing. Without it <details> gets the content
+                              entrance below and no height interpolation --
+                              which is exactly what those browsers do today,
+                              only smoother.
+
+     interpolate-size:        Chrome 129. Required to interpolate to `auto`
+     allow-keywords           height. Without it the disclosure opens at full
+                              height immediately.
+
+   None of these guards can leave an element permanently transparent: the
+   hidden base state is only ever declared inside the guard that also declares
+   how it becomes visible again.
+   -------------------------------------------------------------------------- */
+
+@import "../shared/tokens.css";
+
+@layer utilities {
+  /* --- Popover ---------------------------------------------------------
+
+       <button popovertarget="account-menu">Account</button>
+       <div id="account-menu" popover class="tm-native-popover">…</div>
+
+     Set --tm-origin to the corner the popover grows from -- for an anchored
+     menu that is the trigger's edge, which stops the panel from appearing to
+     inflate out of its own middle. */
+  @supports selector(:popover-open) {
+    .tm-native-popover[popover] {
+      opacity: 0;
+      scale: calc(1 - 0.04 * var(--tm-emphasis, 1));
+      transform-origin: var(--tm-origin, center);
+      /* `display` and `overlay` are discrete properties. Naming them here is
+         harmless in browsers that do not know them -- transition-property
+         accepts unknown names and simply never matches them. */
+      transition-property: opacity, scale, display, overlay;
+      transition-duration: var(--tm-duration, calc(200ms * var(--tm-duration-scale, 1)));
+      transition-timing-function: var(--tm-easing, var(--tm-ease-exit, cubic-bezier(0.25, 0.46, 0.45, 0.94)));
+    }
+
+    .tm-native-popover[popover]:popover-open {
+      opacity: 1;
+      scale: 1;
+      transition-timing-function: var(--tm-easing, var(--tm-ease-entrance, cubic-bezier(0.22, 1, 0.36, 1)));
+    }
+
+    /* The close is shorter than the open, as everywhere else in TailMotion. */
+    .tm-native-popover[popover]:not(:popover-open) {
+      transition-duration: var(
+        --tm-exit-duration,
+        calc(
+          var(--tm-duration, calc(200ms * var(--tm-duration-scale, 1))) * 0.7
+        )
+      );
+    }
+
+    @supports (transition-behavior: allow-discrete) {
+      .tm-native-popover[popover] {
+        transition-behavior: allow-discrete;
+      }
+
+      @starting-style {
+        .tm-native-popover[popover]:popover-open {
+          opacity: 0;
+          scale: calc(1 - 0.04 * var(--tm-emphasis, 1));
+        }
+      }
+    }
+  }
+
+  /* --- Dialog ----------------------------------------------------------
+
+       <dialog class="tm-native-dialog">…</dialog>
+
+     The dialog and its backdrop move as one unit, so they share a duration
+     and an easing. A closed <dialog> is `display: none` in the UA stylesheet,
+     so the transparent base state below can never strand visible content. */
+  @supports selector(dialog:modal) {
+    .tm-native-dialog {
+      opacity: 0;
+      scale: calc(1 - 0.04 * var(--tm-emphasis, 1));
+      translate: 0 calc(var(--tm-distance, 12px) * -0.5);
+      transform-origin: var(--tm-origin, center);
+      transition-property: opacity, scale, translate, display, overlay;
+      transition-duration: var(--tm-duration, calc(240ms * var(--tm-duration-scale, 1)));
+      transition-timing-function: var(--tm-easing, var(--tm-ease-exit, cubic-bezier(0.25, 0.46, 0.45, 0.94)));
+    }
+
+    .tm-native-dialog[open] {
+      opacity: 1;
+      scale: 1;
+      translate: 0 0;
+      transition-timing-function: var(--tm-easing, var(--tm-ease-entrance, cubic-bezier(0.22, 1, 0.36, 1)));
+    }
+
+    .tm-native-dialog:not([open]) {
+      transition-duration: var(
+        --tm-exit-duration,
+        calc(
+          var(--tm-duration, calc(240ms * var(--tm-duration-scale, 1))) * 0.7
+        )
+      );
+    }
+
+    /* Backdrop opacity only: the color is the browser's, or yours.
+
+       ::backdrop only started inheriting from its originating element
+       recently (Chrome 122, Firefox 123, Safari 17.4). Older engines resolve
+       these vars against nothing, so every fallback here is a literal that
+       matches the dialog's own unscaled default -- the pair stays in step
+       either way. Set --tm-backdrop-duration to pin it explicitly. */
+    .tm-native-dialog::backdrop {
+      opacity: 0;
+      transition-property: opacity, display, overlay;
+      transition-duration: var(--tm-backdrop-duration, 240ms);
+      transition-timing-function: var(--tm-ease-exit, cubic-bezier(0.25, 0.46, 0.45, 0.94));
+    }
+
+    .tm-native-dialog[open]::backdrop {
+      opacity: 1;
+      transition-timing-function: var(--tm-ease-entrance, cubic-bezier(0.22, 1, 0.36, 1));
+    }
+
+    @supports (transition-behavior: allow-discrete) {
+      .tm-native-dialog,
+      .tm-native-dialog::backdrop {
+        transition-behavior: allow-discrete;
+      }
+
+      @starting-style {
+        .tm-native-dialog[open] {
+          opacity: 0;
+          scale: calc(1 - 0.04 * var(--tm-emphasis, 1));
+          translate: 0 calc(var(--tm-distance, 12px) * -0.5);
+        }
+
+        .tm-native-dialog[open]::backdrop {
+          opacity: 0;
+        }
+      }
+    }
+  }
+
+  /* --- Disclosure ------------------------------------------------------
+
+       <details class="tm-native-disclosure">
+         <summary>Details <span data-tm-marker>›</span></summary>
+         <div>Disclosure content</div>
+       </details>
+
+     Two layers, so every browser gets something:
+
+       1. The content entrance below runs everywhere. <details> only renders
+          its content while open, so a plain keyframe is enough and needs no
+          measured height.
+       2. Where ::details-content and interpolate-size exist, the box height
+          interpolates as well, so the surrounding page reflows smoothly
+          instead of jumping. */
+  .tm-native-disclosure[open] > :not(summary) {
+    animation-name: tm-disclosure-content;
+    animation-duration: var(--tm-duration, calc(240ms * var(--tm-duration-scale, 1)));
+    animation-timing-function: var(--tm-easing, var(--tm-ease-entrance, cubic-bezier(0.22, 1, 0.36, 1)));
+    animation-fill-mode: both;
+  }
+
+  /* Optional marker child. summary::marker cannot be transformed, so rotation
+     needs an element you own. */
+  .tm-native-disclosure summary [data-tm-marker] {
+    display: inline-block;
+    transition-property: rotate;
+    transition-duration: var(--tm-duration, calc(200ms * var(--tm-duration-scale, 1)));
+    transition-timing-function: var(--tm-easing, var(--tm-ease-morph, cubic-bezier(0.2, 0, 0, 1)));
+  }
+
+  .tm-native-disclosure[open] summary [data-tm-marker] {
+    rotate: var(--tm-marker-rotate, 90deg);
+  }
+
+  @supports selector(::details-content) {
+    .tm-native-disclosure::details-content {
+      block-size: 0;
+      overflow-y: clip;
+      opacity: 0;
+      transition-property: block-size, content-visibility, opacity;
+      transition-duration: var(--tm-duration, calc(240ms * var(--tm-duration-scale, 1)));
+      transition-timing-function: var(--tm-easing, var(--tm-ease-morph, cubic-bezier(0.2, 0, 0, 1)));
+      transition-behavior: allow-discrete;
+    }
+
+    .tm-native-disclosure[open]::details-content {
+      block-size: auto;
+      opacity: 1;
+    }
+
+    /* Without interpolate-size, `auto` is not an interpolatable length and the
+       height simply snaps -- still open, still readable. */
+    @supports (interpolate-size: allow-keywords) {
+      .tm-native-disclosure {
+        interpolate-size: allow-keywords;
+      }
+    }
+
+    /* The box already animates its height; a second entrance on the child
+       would double the movement. */
+    .tm-native-disclosure[open] > :not(summary) {
+      animation-name: none;
+    }
+  }
+}
+
+@keyframes tm-disclosure-content {
+  from {
+    opacity: 0;
+    translate: 0 calc(var(--tm-distance, 12px) * -0.5);
+  }
+
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+/* Reduced motion. Repeated here so the module is safe to import on its own,
+   and extended to ::backdrop and ::details-content, which the token layer
+   cannot name without risking the whole rule in an older parser. */
+@media (prefers-reduced-motion: reduce) {
+  .tm-native-popover,
+  .tm-native-dialog,
+  .tm-native-disclosure,
+  .tm-native-disclosure > :not(summary),
+  .tm-native-disclosure summary [data-tm-marker] {
+    animation-duration: 1ms !important;
+    animation-delay: 0ms !important;
+    transition-duration: 1ms !important;
+    transition-delay: 0ms !important;
+  }
+
+  .tm-native-dialog::backdrop {
+    transition-duration: 1ms !important;
+  }
+
+  @supports selector(::details-content) {
+    .tm-native-disclosure::details-content {
+      transition-duration: 1ms !important;
+    }
+  }
+}

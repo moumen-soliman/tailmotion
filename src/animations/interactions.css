@@ -14,8 +14,8 @@
   /* Tactile press feedback. */
   .tm-press {
     transition-property: scale;
-    transition-duration: var(--tm-duration, 150ms);
-    transition-timing-function: var(--tm-easing, ease-out);
+    transition-duration: var(--tm-duration, calc(150ms * var(--tm-duration-scale, 1)));
+    transition-timing-function: var(--tm-easing, var(--tm-ease-interaction, ease-out));
   }
 
   .tm-press:active:not(:disabled):not([aria-disabled="true"]) {
@@ -25,8 +25,8 @@
   /* Rise with a shadow on hover or keyboard focus. */
   .tm-hover-lift {
     transition-property: translate, box-shadow;
-    transition-duration: var(--tm-duration, 150ms);
-    transition-timing-function: var(--tm-easing, ease-out);
+    transition-duration: var(--tm-duration, calc(150ms * var(--tm-duration-scale, 1)));
+    transition-timing-function: var(--tm-easing, var(--tm-ease-interaction, ease-out));
   }
 
   .tm-hover-lift:hover,
@@ -38,8 +38,8 @@
   /* Grow slightly on hover or keyboard focus. */
   .tm-hover-scale {
     transition-property: scale;
-    transition-duration: var(--tm-duration, 150ms);
-    transition-timing-function: var(--tm-easing, ease-out);
+    transition-duration: var(--tm-duration, calc(150ms * var(--tm-duration-scale, 1)));
+    transition-timing-function: var(--tm-easing, var(--tm-ease-interaction, ease-out));
   }
 
   .tm-hover-scale:hover,
@@ -68,8 +68,8 @@
   .tm-icon-swap > * {
     grid-area: tm-icon-swap;
     transition-property: opacity, scale, filter;
-    transition-duration: var(--tm-duration, 300ms);
-    transition-timing-function: var(--tm-easing, cubic-bezier(0.2, 0, 0, 1));
+    transition-duration: var(--tm-duration, calc(300ms * var(--tm-duration-scale, 1)));
+    transition-timing-function: var(--tm-easing, var(--tm-ease-morph, cubic-bezier(0.2, 0, 0, 1)));
   }
 
   .tm-icon-swap > * + * {

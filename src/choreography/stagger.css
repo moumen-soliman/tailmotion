@@ -1,0 +1,170 @@
+/* --------------------------------------------------------------------------
+   Stagger choreography.
+
+   A stagger container sequences its direct children. Group siblings
+   semantically -- title, description, actions -- so the sequence reads as
+   hierarchy rather than as a queue.
+
+     <ul class="tm-stagger tm-stagger-75 tm-stagger-from-start" data-state="open">
+       <li>Profile</li>
+       <li>Settings</li>
+       <li>Sign out</li>
+     </ul>
+
+   Order
+   -----
+   Children run in document order by default. tm-stagger-from-end reverses the
+   sequence by reading a second generated index counted from the last child, so
+   nothing in the DOM moves: reading order, tab order and the accessibility
+   tree are exactly what the markup says. TailMotion never reorders children --
+   no row-reverse, no order property, no negative delays.
+
+   Direction and state
+   -------------------
+     tm-stagger                     children enter, in document order
+     tm-stagger tm-stagger-from-end children enter, last one first
+     tm-stagger-exit                children leave, in document order
+     tm-stagger data-state="closed" children leave, in document order
+     ... plus tm-stagger-from-end   children leave, last one first
+
+   A container with no state keeps the pre-0.8 behaviour exactly: its children
+   enter once on mount.
+
+   Limit
+   -----
+   Indices are generated for the first 20 children (see MAX_STAGGER_CHILDREN in
+   scripts/build.mjs). Child 21 onwards reuses the last index, so a long list
+   ends together rather than starting together -- with the default 100ms step a
+   20-item sequence already runs for 1.9s, and past that a stagger stops
+   reading as choreography.
+
+   Nesting
+   -------
+   A nested tm-stagger sequences its own children from its own delay; it does
+   not continue the outer count, and its step does not leak back out. Offset a
+   nested group with tm-delay-* when the two should read as one sequence.
+   -------------------------------------------------------------------------- */
+
+@import "../shared/tokens.css";
+
+@layer utilities {
+  /* The container is a scope, not an animated item: reset the indices so a
+     stagger nested inside another cannot inherit its parent's position. */
+  .tm-stagger {
+    --tm-stagger-index: 0;
+    --tm-stagger-index-end: 0;
+  }
+
+  .tm-stagger > * {
+    /* Which end the sequence counts from. tm-stagger-from-end swaps it. */
+    --tm-stagger-position: var(--tm-stagger-index, 0);
+
+    animation-name: tm-stagger-item;
+    animation-duration: var(--tm-duration, calc(260ms * var(--tm-duration-scale, 1)));
+    animation-delay: calc(
+      var(--tm-delay, 0ms) + var(--tm-stagger-position, 0) *
+        var(--tm-stagger-step, 100ms)
+    );
+    animation-timing-function: var(--tm-easing, var(--tm-ease-entrance, cubic-bezier(0.22, 1, 0.36, 1)));
+    animation-iteration-count: var(--tm-iteration-count, 1);
+    animation-fill-mode: both;
+  }
+
+  /* Count from the last child instead of the first. */
+  .tm-stagger-from-end > *,
+  .tm-stagger-reverse > * {
+    --tm-stagger-position: var(--tm-stagger-index-end, 0);
+  }
+
+  /* Explicit forward, for markup that states its intent or overrides an
+     inherited modifier. */
+  .tm-stagger-from-start > * {
+    --tm-stagger-position: var(--tm-stagger-index, 0);
+  }
+
+  /* Leave in sequence. Either by class, or from the state the container
+     already carries -- switching animation-name is what re-triggers the
+     keyframes, so toggling data-state replays the choreography in the new
+     direction without any JavaScript. */
+  .tm-stagger-exit > *,
+  .tm-stagger:is(
+      [data-state="closed"],
+      [data-state="inactive"],
+      [data-state="off"],
+      [aria-expanded="false"],
+      .tm-closed
+    ) > * {
+    animation-name: tm-stagger-item-exit;
+    animation-duration: var(
+      --tm-exit-duration,
+      calc(
+        var(--tm-duration, calc(260ms * var(--tm-duration-scale, 1))) *
+          var(--tm-presence-exit-scale, 0.7)
+      )
+    );
+    animation-timing-function: var(--tm-easing, var(--tm-ease-exit, cubic-bezier(0.25, 0.46, 0.45, 0.94)));
+  }
+
+  /* Step tokens. tm-stagger-step-* (0.6 and earlier) and the shorter
+     tm-stagger-* spelling are the same utility; the short form is preferred in
+     new markup. Both are declared after the motion profiles, so an explicit
+     step wins over a profile's. */
+  .tm-stagger-50 {
+    --tm-stagger-step: 50ms;
+  }
+
+  .tm-stagger-75 {
+    --tm-stagger-step: 75ms;
+  }
+
+  .tm-stagger-100 {
+    --tm-stagger-step: 100ms;
+  }
+
+  .tm-stagger-150 {
+    --tm-stagger-step: 150ms;
+  }
+
+  .tm-stagger-200 {
+    --tm-stagger-step: 200ms;
+  }
+
+  /* Generated child indices. Forward, then counted from the end. */
+  /* @generate:stagger-indices:20 */
+
+  /* @generate:stagger-indices-end:20 */
+}
+
+@keyframes tm-stagger-item {
+  from {
+    opacity: 0;
+    translate: 0 var(--tm-distance, 12px);
+  }
+
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@keyframes tm-stagger-item-exit {
+  from {
+    opacity: 1;
+    translate: 0 0;
+  }
+
+  to {
+    opacity: 0;
+    translate: 0
+      calc(var(--tm-exit-distance, calc(var(--tm-distance, 12px) * 0.7)) * -1);
+  }
+}
+
+/* Reduced motion. Repeated here so the module is safe to import on its own;
+   the container animates unclassed children, so it has to be named. */
+@media (prefers-reduced-motion: reduce) {
+  .tm-stagger > * {
+    animation-duration: 1ms !important;
+    animation-delay: 0ms !important;
+  }
+}

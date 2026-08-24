@@ -3,7 +3,7 @@
      comes from --tm-outline-color, derived from currentColor by default. */
   .tm-ripple {
     animation-name: tm-ripple;
-    animation-duration: var(--tm-duration, 1800ms);
+    animation-duration: var(--tm-duration, calc(1800ms * var(--tm-duration-scale, 1)));
     animation-delay: var(--tm-delay, 0ms);
     animation-timing-function: var(--tm-easing, cubic-bezier(0.25, 0.46, 0.45, 0.94));
     animation-iteration-count: var(--tm-iteration-count, infinite);

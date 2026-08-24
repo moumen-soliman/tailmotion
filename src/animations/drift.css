@@ -1,7 +1,7 @@
 @layer utilities {
   .tm-drift {
     animation-name: tm-drift;
-    animation-duration: var(--tm-duration, 2800ms);
+    animation-duration: var(--tm-duration, calc(2800ms * var(--tm-duration-scale, 1)));
     animation-delay: var(--tm-delay, 0ms);
     animation-timing-function: var(--tm-easing, ease-in-out);
     animation-iteration-count: var(--tm-iteration-count, infinite);
@@ -12,23 +12,23 @@
 
 @keyframes tm-drift {
   0% {
-    transform: translateX(0);
+    translate: 0 0;
   }
 
   25% {
-    transform: translateX(6px) translateY(-2px);
+    translate: 6px -2px;
   }
 
   50% {
-    transform: translateX(0);
+    translate: 0 0;
   }
 
   75% {
-    transform: translateX(-6px) translateY(2px);
+    translate: -6px 2px;
   }
 
   100% {
-    transform: translateX(0);
+    translate: 0 0;
   }
 }
 

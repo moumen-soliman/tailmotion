@@ -1,0 +1,120 @@
+---
+title: "Browser support"
+description: "Every guarded feature, the version it needs, and exactly what happens without it."
+---
+
+The core — every entrance, exit, interaction, presence class, motion profile and
+stagger — works in all modern browsers that support CSS animations, custom
+properties and cascade layers.
+
+Newer features degrade rather than break. Each one sits behind an `@supports`
+guard, and **no guard can leave an element invisible**: the hidden state is only
+ever declared inside the block that also says how it comes back.
+
+## The full table
+
+| Feature | Used by | Chrome | Safari | Firefox | Without it |
+|---|---|---|---|---|---|
+| `color-mix()` | glow, shadow, outline tokens | 111 | 16.2 | 113 | Falls back to a flat `--tm-color` |
+| `in oklab` gradients | shimmer, liquid | 111 | 16.2 | 113 | Falls back to sRGB interpolation |
+| Individual `translate` / `scale` / `rotate` | 32 keyframes, every presence class | 104 | 14.1 | 72 | — |
+| `transition-behavior: allow-discrete` | native exits from `display: none` and the top layer | 117 | 17.4 | 129 | Exits are instant; entrances are unaffected |
+| `@starting-style` | presence and native entrances on first paint | 117 | 17.5 | 129 | An element mounted already-open appears rather than animating in |
+| `:popover-open` | `tm-native-popover` | 114 | 17 | 125 | The popover opens and closes, untransitioned |
+| `::details-content` | `tm-native-disclosure` height | 131 | not yet | not yet | The content entrance still runs; no height tween |
+| `interpolate-size: allow-keywords` | `tm-native-disclosure` height | 129 | not yet | not yet | The disclosure opens at full height immediately |
+| `grid-template-rows` animation | `tm-accordion-panel` | 107 | 16 | 66 | The panel shows and hides without the height tween |
+| `animation-timeline: view()` | every `tm-scroll-*` class | 115 | not yet | flagged | Content renders normally and visibly. Nothing else applies |
+| `:dir()` | RTL for the two progress fills | 120 | 16.4 | 49 | `[dir="rtl"]` still covers explicit markup |
+
+<Note>
+"not yet" is true at the time of writing and is the entry most likely to change.
+Check [caniuse](https://caniuse.com) before relying on it.
+</Note>
+
+## Safari, specifically
+
+Three things worth knowing if Safari is a first-class target.
+
+<AccordionGroup>
+  <Accordion title="Scroll-driven animations do not exist yet">
+    Safari has no `animation-timeline`. Every `tm-scroll-*` class is inside
+    `@supports (animation-timeline: view())`, so in Safari not one declaration
+    applies and the section is ordinary, fully visible content.
+
+    This is the strongest argument for the CSS approach over an
+    `IntersectionObserver`: an observer-based reveal has to hide the content
+    first and then hope its JavaScript runs.
+  </Accordion>
+
+  <Accordion title="17.4 and 17.5 differ by one frame">
+    `transition-behavior: allow-discrete` shipped in Safari 17.4;
+    `@starting-style` shipped in 17.5. TailMotion guards both on the former,
+    because the two shipped together in Chrome and Firefox.
+
+    In Safari 17.4 exactly, native exits animate and a panel mounted
+    already-open appears instead of animating in. Nothing breaks; one frame is
+    missing.
+  </Accordion>
+
+  <Accordion title="::backdrop inheritance is recent">
+    `::backdrop` only started inheriting custom properties from its originating
+    element in Chrome 122, Firefox 123 and Safari 17.4. Older engines resolve
+    `var()` there against nothing.
+
+    Every fallback in the `tm-native-dialog` backdrop rules is therefore a
+    literal matching the dialog's own unscaled default, so the dialog and its
+    backdrop stay in step either way. Set `--tm-backdrop-duration` to pin it
+    explicitly.
+  </Accordion>
+</AccordionGroup>
+
+Two Safari-specific performance decisions are already baked in:
+
+- `tm-view-morph` skips its live blur on touch-first devices
+  (`@media (hover: none) and (pointer: coarse)`), because Safari rasterizes it
+  even on hidden panels.
+- No blur in the library exceeds 8px. Large blur radii are expensive everywhere
+  and worst in Safari.
+
+## How the guards are verified
+
+```bash
+npm run check
+```
+
+fails the build if any rule sets `opacity: 0` or `visibility: hidden` outside an
+`@supports` guard, without a closed-state selector, and outside the small
+allowlist of two-face recipes where the counterpart is always visible.
+
+That is what makes "no guard can leave an element invisible" a checked property
+rather than a promise.
+
+## Cascade layers
+
+TailMotion's rules live in native `@layer base` and `@layer utilities`.
+
+| Setup | Who wins a conflict |
+|---|---|
+| **No Tailwind** | Your own unlayered CSS, always. Unlayered rules beat layered ones regardless of specificity or order — which is usually what you want, since it makes TailMotion easy to override |
+| **Tailwind v4** | Tailwind emits into `@layer utilities` too, so source order decides. Import TailMotion after Tailwind and TailMotion wins |
+| **Tailwind v3** | Tailwind's utilities are unlayered, so they beat TailMotion regardless of order |
+
+<Note>
+This only matters where both fight over the *same property* — `opacity-0` on a
+`tm-presence-*` panel is the realistic case. Let TailMotion own `opacity`,
+`translate`, `scale` and `visibility` on an element it is animating, and the
+question never comes up.
+</Note>
+
+## Not supported
+
+`@supports` itself, CSS custom properties, and cascade layers are hard
+requirements. In practice that means Chrome 99+, Safari 15.4+ and Firefox 97+.
+Below that, the stylesheet parses but the `@layer` blocks are discarded and no
+class applies — content stays visible and unstyled by TailMotion, which is the
+correct failure mode.
+
+## React Native
+
+Not supported. See [Support](/docs/support#react-native).

@@ -1,7 +1,7 @@
 @layer utilities {
   .tm-float {
     animation-name: tm-float;
-    animation-duration: var(--tm-duration, 3000ms);
+    animation-duration: var(--tm-duration, calc(3000ms * var(--tm-duration-scale, 1)));
     animation-delay: var(--tm-delay, 0ms);
     animation-timing-function: var(--tm-easing, ease-in-out);
     animation-iteration-count: var(--tm-iteration-count, infinite);
@@ -12,15 +12,15 @@
 
 @keyframes tm-float {
   0% {
-    transform: translateY(0);
+    translate: 0 0;
   }
 
   50% {
-    transform: translateY(-6px);
+    translate: 0 calc(-6px * var(--tm-emphasis, 1));
   }
 
   100% {
-    transform: translateY(0);
+    translate: 0 0;
   }
 }
 

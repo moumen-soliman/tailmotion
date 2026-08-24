@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Recipes verification</title>
+    <link rel="stylesheet" href="/tailmotion.css" />
+    <style>
+      body { font: 14px/1.5 system-ui, sans-serif; margin: 24px; }
+      .card { border: 1px solid #ccc; border-radius: 10px; padding: 12px; max-width: 320px; }
+      pre { background: #f6f6f6; padding: 8px; border-radius: 6px; }
+      button { padding: 8px 14px; border: 1px solid #ccc; border-radius: 8px; background: #fff; color: #b91c1c; }
+      #tabbar { position: relative; display: flex; gap: 4px; }
+      #ind { position: absolute; bottom: 0; height: 2px; background: #111; }
+    </style>
+  </head>
+  <body>
+    <h1>Recipes</h1>
+
+    <div class="card tm-menu" data-side="bottom" data-state="open" id="menu">menu</div>
+    <div class="card tm-tooltip" data-side="top" data-state="open" id="tip">tooltip</div>
+    <div class="card tm-toast" role="status" data-state="open" id="toast">toast</div>
+    <div class="card tm-toast tm-toast-from-block-end" data-state="open" id="toast2">toast block-end</div>
+    <div class="card tm-dialog" role="dialog" data-state="open" id="dlg">dialog</div>
+
+    <div class="tm-accordion-panel" data-state="open" id="acc">
+      <div><div class="card">accordion body with a couple of lines of text so the height is non-zero</div></div>
+    </div>
+
+    <div id="tabbar"><button>One</button><button>Two</button><div id="ind" class="tm-tab-indicator"></div></div>
+    <div class="card tm-tab-panel" data-state="active" id="tp1">panel one</div>
+
+    <button class="tm-feedback-button" data-state="idle" id="fb">
+      <span class="tm-feedback-idle">Save</span>
+      <span class="tm-feedback-loading">Saving</span>
+      <span class="tm-feedback-success">Saved</span>
+    </button>
+
+    <p><button class="tm-hold-confirm" id="hold">Hold to delete</button></p>
+
+    <pre id="out"></pre>
+    <script>
+      window.probe = () => {
+        const cs = (id, p) => getComputedStyle(document.getElementById(id)).getPropertyValue(p);
+        const child = (sel, p) => getComputedStyle(document.querySelector(sel)).getPropertyValue(p);
+        const after = (id, p) => getComputedStyle(document.getElementById(id), '::after').getPropertyValue(p);
+        return {
+          menu: { origin: cs('menu', 'transform-origin'), dur: cs('menu', 'transition-duration'), opacity: cs('menu', 'opacity') },
+          tooltip: { origin: cs('tip', 'transform-origin'), dur: cs('tip', 'transition-duration') },
+          toast: { closed: cs('toast', '--tm-recipe-closed-translate'), dur: cs('toast', 'transition-duration') },
+          toastBlock: { closed: cs('toast2', '--tm-recipe-closed-translate') },
+          dialog: { dur: cs('dlg', 'transition-duration'), closed: cs('dlg', '--tm-recipe-closed-translate') },
+          accordion: { rows: cs('acc', 'grid-template-rows'), dur: cs('acc', 'transition-duration'), childOverflow: child('.tm-accordion-panel > *', 'overflow') },
+          indicator: { dur: cs('ind', 'transition-duration'), props: cs('ind', 'transition-property') },
+          feedback: {
+            idle: child('.tm-feedback-idle', 'opacity') + '/' + child('.tm-feedback-idle', 'visibility'),
+            loading: child('.tm-feedback-loading', 'opacity'),
+            success: child('.tm-feedback-success', 'opacity'),
+            display: cs('fb', 'display'),
+          },
+          hold: { scale: after('hold', 'scale'), origin: after('hold', 'transform-origin'), dur: after('hold', 'transition-duration'), bg: after('hold', 'background-color'), opacity: after('hold', 'opacity') },
+        };
+      };
+      document.getElementById('out').textContent = JSON.stringify(window.probe(), null, 1);
+    </script>
+  </body>
+</html>

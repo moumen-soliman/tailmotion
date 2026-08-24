@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Stagger verification</title>
+    <link rel="stylesheet" href="/tailmotion.css" />
+    <style>
+      body { font: 14px/1.5 system-ui, sans-serif; margin: 24px; }
+      li { list-style: none; border: 1px solid #ccc; border-radius: 8px; padding: 6px 10px; margin-block: 4px; max-width: 220px; }
+      ul { padding: 0; }
+      pre { background: #f6f6f6; padding: 8px; border-radius: 6px; }
+    </style>
+  </head>
+  <body>
+    <h1>Stagger</h1>
+
+    <ul class="tm-stagger" id="a"><li>a1</li><li>a2</li><li>a3</li><li>a4</li></ul>
+    <ul class="tm-stagger tm-stagger-from-end" id="b"><li>b1</li><li>b2</li><li>b3</li><li>b4</li></ul>
+    <ul class="tm-stagger tm-stagger-75" id="c" data-state="open"><li>c1</li><li>c2</li><li>c3</li></ul>
+    <ul class="tm-stagger tm-stagger-exit" id="d"><li>d1</li><li>d2</li><li>d3</li></ul>
+
+    <ul class="tm-stagger tm-stagger-200" id="outer">
+      <li>o1</li>
+      <li>
+        <ul class="tm-stagger tm-stagger-50" id="inner"><li>i1</li><li>i2</li><li>i3</li></ul>
+      </li>
+      <li>o3</li>
+    </ul>
+
+    <ul class="tm-stagger" id="long"></ul>
+
+    <pre id="out"></pre>
+    <script>
+      const longList = document.getElementById('long');
+      for (let i = 1; i <= 24; i++) longList.insertAdjacentHTML('beforeend', `<li>L${i}</li>`);
+      window.probe = () => {
+        const delays = (id) => [...document.getElementById(id).children].map((el) => getComputedStyle(el).animationDelay);
+        const names = (id) => [...document.getElementById(id).children].map((el) => getComputedStyle(el).animationName);
+        return {
+          forward: delays('a'),
+          fromEnd: delays('b'),
+          step75: delays('c'),
+          exitNames: names('d'),
+          outerDelays: delays('outer'),
+          innerDelays: delays('inner'),
+          innerStep: getComputedStyle(document.getElementById('inner')).getPropertyValue('--tm-stagger-step'),
+          outerStep: getComputedStyle(document.getElementById('outer')).getPropertyValue('--tm-stagger-step'),
+          longTail: delays('long').slice(17, 24),
+        };
+      };
+      document.getElementById('out').textContent = JSON.stringify(window.probe(), null, 1);
+    </script>
+  </body>
+</html>

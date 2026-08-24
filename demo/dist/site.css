@@ -13,7 +13,7 @@ html {
   }
 }
 
-/* Simulated reduced motion, for the accessibility demo. Mirrors the rule
+/* Simulated reduced motion, for the accessibility demo. Mirrors the rules
    TailMotion ships under prefers-reduced-motion: reduce. */
 html[data-force-reduced-motion='on'] *,
 html[data-force-reduced-motion='on'] *::before,
@@ -23,6 +23,35 @@ html[data-force-reduced-motion='on'] *::after {
   animation-iteration-count: 1 !important;
   transition-duration: 1ms !important;
   transition-delay: 0ms !important;
+}
+
+/* A scroll-driven animation is progress-linked, so shortening its duration
+   does nothing. TailMotion switches these off by name instead, which leaves
+   each subject at its natural, visible state. Mirrored here so the simulation
+   matches what the real media query does. */
+html[data-force-reduced-motion='on'] :is(
+    .tm-scroll-fade,
+    .tm-scroll-reveal,
+    .tm-scroll-slide-block,
+    .tm-scroll-scale
+  ) {
+  animation-name: none !important;
+  animation-timeline: auto !important;
+}
+
+html[data-force-reduced-motion='on'] .tm-scroll-progress {
+  animation-name: none !important;
+  animation-timeline: auto !important;
+  scale: 1 1 !important;
+}
+
+/* The hold-to-confirm fill keeps its full duration under reduced motion,
+   because it is a progress readout rather than decoration. Mirrored from the
+   package so the simulation matches the real media query. */
+html[data-force-reduced-motion='on']
+  .tm-hold-confirm:active:not(:disabled):not([aria-disabled='true'])::after,
+html[data-force-reduced-motion='on'] .tm-hold-confirm[data-state='holding']::after {
+  transition-duration: var(--tm-hold-duration, 1200ms) !important;
 }
 
 ::selection {

@@ -1,0 +1,107 @@
+---
+title: "Support and non-goals"
+description: "What is supported, what will never be built, and where to ask."
+---
+
+## Supported
+
+| | |
+|---|---|
+| Tailwind CSS | v3 and v4, or none at all |
+| Frameworks | React, Next.js, Vue, Svelte, Angular, Astro, plain HTML — anything that renders DOM |
+| Headless UI | Radix UI, Base UI, Ark, Melt, and anything else emitting `data-state` |
+| Bundlers | Any, or none. The stylesheet is plain CSS |
+| Node | 16+, only if you install from npm |
+| Browsers | Chrome 99+, Safari 15.4+, Firefox 97+ for the core. Newer features degrade — see [Browser support](/docs/reference/browser-support) |
+
+The prebuilt stylesheet needs no build step, no plugin and no configuration.
+
+## React Native
+
+**Not supported.** TailMotion is CSS and DOM selectors: it needs a real
+stylesheet, `data-*` attribute selectors, `@supports`, cascade layers,
+pseudo-elements and `@keyframes`, none of which exist in React Native's style
+system.
+
+**React Native Web** can use TailMotion for its **browser target only**, where
+the output is real DOM and real CSS. Nothing in this package will run on the iOS
+or Android native renderer.
+
+<Warning>
+If a page tells you TailMotion works in React Native, it is describing React
+Native Web's browser build. There is no native implementation and none is
+planned — a CSS motion language and a native animation driver are different
+products.
+</Warning>
+
+## Non-goals
+
+These are permanent. They were decided before the first user arrived, because
+saying no in advance is cheaper than saying no later.
+
+- **No JavaScript animation runtime.** No spring solver, no timeline, no
+  `element.animate()`. If a behaviour needs one, it belongs in your application.
+- **No styled React, Vue or Svelte components.** One CSS API, four identical
+  integrations. A component library is a different product with a different
+  maintenance cost.
+- **No colors, sizes, spacing or radius in a motion class.** That is Tailwind's
+  job. The two classes that break this rule — `tm-hold-delete`, `tm-liquid-btn` —
+  pre-date it, are kept for compatibility, and have motion-only successors.
+- **No animations added to raise the class count.** Every class has to answer a
+  question the existing vocabulary cannot.
+- **No copying `tailwindcss-animate` or `tw-animate-css`.** Those solve a
+  different problem well; duplicating their API would leave TailMotion with no
+  reason to exist.
+- **No `useMotion()` hook.** If the answer is a hook, the answer is not this
+  package.
+
+## Compatibility promise
+
+- **Existing public classes keep working.** Nothing is removed without an alias
+  and a documented migration path.
+- **New modern CSS is always a progressive enhancement.** Unsupported browsers
+  keep visible, usable content — checked, not promised, by `npm run check`.
+- **Reduced motion preserves the communicated state.** Animations collapse to
+  1ms rather than being removed.
+- **The full bundle is not described as tree-shaken**, because it is not. See
+  [Imports and bundle size](/docs/reference/imports#two-things-to-be-honest-about).
+- **The optional plugin is never required** for the prebuilt classes.
+
+## Verifying a build
+
+```bash
+npm run check
+```
+
+Builds the stylesheets and runs the static checks:
+
+1. Every `animation-name` resolves to a real `@keyframes` block.
+2. No rule hides content outside an `@supports` guard or a closed-state
+   selector.
+3. `:root` carries no timing token that would shadow per-class defaults.
+4. `--tm-exit-distance` is not declared on `:root`, where `calc()` would freeze.
+5. Every module ships a reduced-motion reset.
+
+It also prints raw and gzipped sizes for every entry point.
+
+## Reporting a problem
+
+<CardGroup cols={2}>
+  <Card title="Issues" icon="bug" href="https://github.com/moumen-soliman/tailmotion/issues/new">
+    Bugs, missing fallbacks, incorrect documentation.
+  </Card>
+  <Card title="Contributing" icon="code-pull-request" href="https://github.com/moumen-soliman/tailmotion/blob/master/CONTRIBUTING.md">
+    Adding a class, a recipe, or a browser fallback.
+  </Card>
+</CardGroup>
+
+The most useful bug report names the browser and version, the class, and what
+you expected the fallback to do — most edge cases in a CSS motion library are
+support edge cases.
+
+## Live demo
+
+The [capabilities page](https://tailmotion.moumen.dev/capabilities/) switches the
+same interface between motion personalities, writing directions and motion
+preferences without changing any markup. It is the fastest way to see whether a
+behaviour does what you need before installing anything.

@@ -1,0 +1,107 @@
+---
+title: "Theming and color"
+description: "How effects inherit your palette, and the small set of variables that override them."
+---
+
+TailMotion ships no palette. Every effect derives its color from the element's
+own `currentColor`, so it matches whatever Tailwind already put there.
+
+```html
+<!-- the glow is purple because the text is purple -->
+<button class="text-purple-600 focus-visible:tm-glow">Save</button>
+
+<!-- the hold fill is red because the button's text is red -->
+<button class="tm-hold-confirm text-red-600">Hold to delete</button>
+```
+
+## The color tokens
+
+| Variable | Used by | Default |
+|---|---|---|
+| `--tm-color` | The root every other color derives from | `currentColor` |
+| `--tm-shadow-color` | `tm-hover-lift`, avatar tooltip shadow | 25% of `--tm-color` |
+| `--tm-glow-color` | `tm-glow` | 45% of `--tm-color` |
+| `--tm-outline-color` | `tm-ripple`, `tm-avatar-ring` | 40% of `--tm-color` |
+| `--tm-shimmer-color` | `tm-shimmer`, `tm-shimmer-hover` | `--tm-color` |
+| `--tm-shimmer-opacity` | Shimmer highlight strength | `0.35` |
+| `--tm-hold-fill` | `tm-hold-confirm` progress fill | `--tm-color` |
+| `--tm-hold-fill-opacity` | Fill strength | `0.18` |
+
+Override any of them with an exact value — alpha included, and it is preserved:
+
+```css
+:root {
+  --tm-glow-color: rgb(59 130 246 / 0.55);
+  --tm-shadow-color: oklch(0.2 0.02 260 / 0.35);
+}
+```
+
+Or per element, which is usually what you want:
+
+```html
+<div class="tm-glow" style="--tm-glow-color: oklch(0.7 0.19 25 / 0.5)">…</div>
+```
+
+## Why shimmer splits color from strength
+
+`--tm-shimmer-color` and `--tm-shimmer-opacity` are separate on purpose.
+Browsers drop gradient interpolation hints from any gradient holding a
+`color-mix()` stop, which visibly banded the sweep. Keeping strength in its own
+variable avoids the `color-mix()` in that one gradient.
+
+## Fallbacks
+
+Derived colors use `color-mix(in oklab, …)`, with a plain `--tm-color` fallback
+where `color-mix()` is unavailable:
+
+```css
+@supports not (color: color-mix(in oklab, currentColor, transparent)) {
+  :root {
+    --tm-shadow-color: var(--tm-color);
+    --tm-glow-color: var(--tm-color);
+    --tm-outline-color: var(--tm-color);
+  }
+}
+```
+
+Gradient effects interpolate `in oklab` where supported and fall back to sRGB
+otherwise. Neither fallback hides anything; both just look slightly flatter.
+
+## Dark mode
+
+There is nothing to do. Effects inherit `currentColor`, and your dark-mode text
+color is already correct. If you override a token globally, override it in both
+themes:
+
+```css
+:root { --tm-glow-color: rgb(37 99 235 / 0.45); }
+
+.dark { --tm-glow-color: rgb(96 165 250 / 0.55); }
+```
+
+## The two classes that own their appearance
+
+`tm-hold-delete` and `tm-liquid-btn` pre-date the motion-only rule and choose
+their own colors, padding and radius. They are kept working for compatibility
+and are superseded by motion-only replacements:
+
+| Legacy | Motion-only replacement |
+|---|---|
+| `tm-hold-delete` | [`tm-hold-confirm`](/docs/guides/recipes#hold-to-confirm) |
+
+Both legacy classes also expose named color presets — `tm-liquid-blue`,
+`tm-liquid-rose` and so on. Using a preset is opt-in and nothing else in the
+library does this.
+
+## What stays yours
+
+Color, contrast, theming and component appearance are your responsibility, and
+TailMotion deliberately gives you no help with them beyond inheriting what you
+already chose.
+
+<Warning>
+Never let a TailMotion effect be the only signal of a state. Pair it with a
+label, an icon or a focus ring, and verify any color you supply on its actual
+light and dark backgrounds. Motion disappears entirely under
+`prefers-reduced-motion`, and never existed for a user who cannot perceive it.
+</Warning>

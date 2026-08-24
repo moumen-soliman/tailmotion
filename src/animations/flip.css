@@ -48,7 +48,7 @@
     justify-content: center;
     backface-visibility: hidden;
     transition-property: transform, opacity;
-    transition-duration: var(--tm-duration, 400ms);
+    transition-duration: var(--tm-duration, calc(400ms * var(--tm-duration-scale, 1)));
     transition-timing-function: var(--tm-easing, var(--tm-flip-spring));
     transition-delay: var(--tm-delay, 0ms);
   }
@@ -176,7 +176,7 @@
   .tm-flip-hover:hover,
   .tm-flip-hover:focus-visible {
     animation-name: tm-flip;
-    animation-duration: var(--tm-duration, 320ms);
+    animation-duration: var(--tm-duration, calc(320ms * var(--tm-duration-scale, 1)));
     animation-delay: var(--tm-delay, 0ms);
     animation-timing-function: var(--tm-easing, ease-in-out);
     animation-iteration-count: var(--tm-iteration-count, 1);
@@ -207,7 +207,7 @@
   /* Flip X - horizontal flip (around X axis) */
   .tm-flip-x {
     animation-name: tm-flip-x;
-    animation-duration: var(--tm-duration, 600ms);
+    animation-duration: var(--tm-duration, calc(600ms * var(--tm-duration-scale, 1)));
     animation-delay: var(--tm-delay, 0ms);
     animation-timing-function: var(--tm-easing, ease-out);
     animation-iteration-count: var(--tm-iteration-count, 1);
@@ -218,7 +218,7 @@
   /* Flip Y - vertical flip (around Y axis) */
   .tm-flip-y {
     animation-name: tm-flip-y;
-    animation-duration: var(--tm-duration, 600ms);
+    animation-duration: var(--tm-duration, calc(600ms * var(--tm-duration-scale, 1)));
     animation-delay: var(--tm-delay, 0ms);
     animation-timing-function: var(--tm-easing, ease-out);
     animation-iteration-count: var(--tm-iteration-count, 1);

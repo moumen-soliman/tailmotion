@@ -50,7 +50,7 @@
   .tm-shimmer::after {
     opacity: var(--tm-shimmer-opacity, 0.35);
     animation-name: tm-shimmer;
-    animation-duration: var(--tm-duration, 1600ms);
+    animation-duration: var(--tm-duration, calc(1600ms * var(--tm-duration-scale, 1)));
     animation-delay: var(--tm-delay, 0ms);
     animation-timing-function: var(--tm-easing, linear);
     animation-iteration-count: var(--tm-iteration-count, infinite);
@@ -66,7 +66,7 @@
   .tm-shimmer-hover:hover::after,
   .tm-shimmer-hover:focus-visible::after {
     animation-name: tm-shimmer-hover;
-    animation-duration: var(--tm-duration, 900ms);
+    animation-duration: var(--tm-duration, calc(900ms * var(--tm-duration-scale, 1)));
     animation-delay: var(--tm-delay, 0ms);
     animation-timing-function: var(--tm-easing, cubic-bezier(0.4, 0, 0.2, 1));
     animation-iteration-count: var(--tm-iteration-count, 1);

@@ -7,16 +7,20 @@
    aliases of the logical classes.
 
    Travel distance comes from --tm-distance (12px), so tm-distance-* retunes
-   every slide at once.
+   every slide at once and a motion profile can shorten or lengthen the travel
+   for a whole subtree.
+
+   These animate the `translate` property, not `transform`, so a Tailwind
+   `rotate-*` or `scale-*` on the same element survives the entrance.
    -------------------------------------------------------------------------- */
 
 @layer utilities {
   .tm-slide-block-start,
   .tm-slide-up {
     animation-name: tm-slide-block-start;
-    animation-duration: var(--tm-duration, 260ms);
+    animation-duration: var(--tm-duration, calc(260ms * var(--tm-duration-scale, 1)));
     animation-delay: var(--tm-delay, 0ms);
-    animation-timing-function: var(--tm-easing, cubic-bezier(0.22, 1, 0.36, 1));
+    animation-timing-function: var(--tm-easing, var(--tm-ease-entrance, cubic-bezier(0.22, 1, 0.36, 1)));
     animation-iteration-count: var(--tm-iteration-count, 1);
     animation-fill-mode: both;
   }
@@ -24,9 +28,9 @@
   .tm-slide-block-end,
   .tm-slide-down {
     animation-name: tm-slide-block-end;
-    animation-duration: var(--tm-duration, 260ms);
+    animation-duration: var(--tm-duration, calc(260ms * var(--tm-duration-scale, 1)));
     animation-delay: var(--tm-delay, 0ms);
-    animation-timing-function: var(--tm-easing, cubic-bezier(0.22, 1, 0.36, 1));
+    animation-timing-function: var(--tm-easing, var(--tm-ease-entrance, cubic-bezier(0.22, 1, 0.36, 1)));
     animation-iteration-count: var(--tm-iteration-count, 1);
     animation-fill-mode: both;
   }
@@ -34,9 +38,9 @@
   .tm-slide-inline-start,
   .tm-slide-left {
     animation-name: tm-slide-inline-start;
-    animation-duration: var(--tm-duration, 260ms);
+    animation-duration: var(--tm-duration, calc(260ms * var(--tm-duration-scale, 1)));
     animation-delay: var(--tm-delay, 0ms);
-    animation-timing-function: var(--tm-easing, cubic-bezier(0.22, 1, 0.36, 1));
+    animation-timing-function: var(--tm-easing, var(--tm-ease-entrance, cubic-bezier(0.22, 1, 0.36, 1)));
     animation-iteration-count: var(--tm-iteration-count, 1);
     animation-fill-mode: both;
   }
@@ -44,9 +48,9 @@
   .tm-slide-inline-end,
   .tm-slide-right {
     animation-name: tm-slide-inline-end;
-    animation-duration: var(--tm-duration, 260ms);
+    animation-duration: var(--tm-duration, calc(260ms * var(--tm-duration-scale, 1)));
     animation-delay: var(--tm-delay, 0ms);
-    animation-timing-function: var(--tm-easing, cubic-bezier(0.22, 1, 0.36, 1));
+    animation-timing-function: var(--tm-easing, var(--tm-ease-entrance, cubic-bezier(0.22, 1, 0.36, 1)));
     animation-iteration-count: var(--tm-iteration-count, 1);
     animation-fill-mode: both;
   }
@@ -55,47 +59,47 @@
 @keyframes tm-slide-block-start {
   from {
     opacity: 0;
-    transform: translate3d(0, var(--tm-distance, 12px), 0);
+    translate: 0 var(--tm-distance, 12px);
   }
 
   to {
     opacity: 1;
-    transform: translate3d(0, 0, 0);
+    translate: 0 0;
   }
 }
 
 @keyframes tm-slide-block-end {
   from {
     opacity: 0;
-    transform: translate3d(0, calc(var(--tm-distance, 12px) * -1), 0);
+    translate: 0 calc(var(--tm-distance, 12px) * -1);
   }
 
   to {
     opacity: 1;
-    transform: translate3d(0, 0, 0);
+    translate: 0 0;
   }
 }
 
 @keyframes tm-slide-inline-start {
   from {
     opacity: 0;
-    transform: translate3d(calc(var(--tm-distance, 12px) * var(--tm-inline-flip, 1)), 0, 0);
+    translate: calc(var(--tm-distance, 12px) * var(--tm-inline-flip, 1)) 0;
   }
 
   to {
     opacity: 1;
-    transform: translate3d(0, 0, 0);
+    translate: 0 0;
   }
 }
 
 @keyframes tm-slide-inline-end {
   from {
     opacity: 0;
-    transform: translate3d(calc(var(--tm-distance, 12px) * var(--tm-inline-flip, 1) * -1), 0, 0);
+    translate: calc(var(--tm-distance, 12px) * var(--tm-inline-flip, 1) * -1) 0;
   }
 
   to {
     opacity: 1;
-    transform: translate3d(0, 0, 0);
+    translate: 0 0;
   }
 }

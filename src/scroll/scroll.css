@@ -1,0 +1,196 @@
+/* --------------------------------------------------------------------------
+   Scroll-driven motion.
+
+   Reveals tied to the scroll position with CSS view timelines. No
+   IntersectionObserver, no scroll listener, no JavaScript at all -- the
+   browser drives these on the compositor, so they do not compete with the main
+   thread the way an observer-based reveal does.
+
+     <section class="tm-scroll-reveal">Content</section>
+
+   Why tm-scroll-* and not tm-view-*
+   ---------------------------------
+   tm-view-morph and the whole --tm-view-* token family already mean something
+   else in this library: the container that reshapes between two mounted
+   panels. Naming a scroll module tm-view-* would put two unrelated ideas
+   behind one prefix.
+
+   Support
+   -------
+   Chrome 115 and Edge 115 support scroll-driven animations. Firefox ships them
+   behind a flag. Safari does not support them yet.
+
+   Everything here sits inside @supports (animation-timeline: view()). Where
+   that is false not one declaration below applies, so the section renders as
+   ordinary, fully visible content -- the reveal is the enhancement, never the
+   thing standing between a reader and the text.
+
+   Reduced motion
+   --------------
+   A progress-linked animation ignores animation-duration, so the library-wide
+   1ms reset cannot stop these. They are switched off by name instead, which
+   leaves each element at its natural, visible state.
+   -------------------------------------------------------------------------- */
+
+@import "../shared/tokens.css";
+
+@layer utilities {
+  @supports (animation-timeline: view()) {
+    .tm-scroll-fade,
+    .tm-scroll-reveal,
+    .tm-scroll-slide-block,
+    .tm-scroll-scale {
+      animation-timeline: view();
+      /* Default range: start once the subject is properly on screen, finish
+         before it reaches the middle. Running a reveal across the full entry
+         range means the reader watches text resolve while trying to read it. */
+      animation-range: var(--tm-scroll-range, entry 15% entry 65%);
+      animation-fill-mode: both;
+      animation-timing-function: linear;
+    }
+
+    .tm-scroll-fade {
+      animation-name: tm-scroll-fade;
+    }
+
+    /* Fade plus a short rise. The workhorse. */
+    .tm-scroll-reveal {
+      animation-name: tm-scroll-reveal;
+    }
+
+    .tm-scroll-slide-block {
+      animation-name: tm-scroll-slide-block;
+    }
+
+    .tm-scroll-scale {
+      animation-name: tm-scroll-scale;
+    }
+
+    /* Ranges. Named for what the reader sees, not for the timeline internals:
+
+         entry   while the element is coming into the scrollport
+         cover   the whole time any part of it is visible
+         contain while it is fully visible
+         exit    while it is leaving
+
+       Set --tm-scroll-range directly for anything more specific. */
+    .tm-scroll-range-entry {
+      --tm-scroll-range: entry 15% entry 65%;
+    }
+
+    .tm-scroll-range-cover {
+      --tm-scroll-range: cover 0% cover 40%;
+    }
+
+    .tm-scroll-range-contain {
+      --tm-scroll-range: contain 0% contain 100%;
+    }
+
+    .tm-scroll-range-exit {
+      --tm-scroll-range: exit 0% exit 100%;
+    }
+
+    /* Reading progress, linked to the document scroll rather than to one
+       element. Put it on a bar you have sized and colored yourself:
+
+         <div class="tm-scroll-progress fixed inset-x-0 top-0 h-1 bg-black"></div> */
+    .tm-scroll-progress {
+      animation-name: tm-scroll-progress;
+      animation-timeline: scroll(root block);
+      animation-fill-mode: both;
+      animation-timing-function: linear;
+      transform-origin: left center;
+      scale: 0 1;
+    }
+
+    [dir="rtl"] .tm-scroll-progress {
+      transform-origin: right center;
+    }
+
+    @supports selector(:dir(rtl)) {
+      .tm-scroll-progress:dir(rtl) {
+        transform-origin: right center;
+      }
+    }
+  }
+}
+
+@keyframes tm-scroll-fade {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes tm-scroll-reveal {
+  from {
+    opacity: 0;
+    translate: 0 var(--tm-distance, 12px);
+  }
+
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@keyframes tm-scroll-slide-block {
+  from {
+    opacity: 0;
+    /* Deliberately modest. Long parallax travel on body content makes text
+       arrive at a different place than the eye expects and hurts reading. */
+    translate: 0 calc(var(--tm-distance, 12px) * 2);
+  }
+
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@keyframes tm-scroll-scale {
+  from {
+    opacity: 0;
+    scale: calc(1 - 0.06 * var(--tm-emphasis, 1));
+  }
+
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+@keyframes tm-scroll-progress {
+  from {
+    scale: 0 1;
+  }
+
+  to {
+    scale: 1 1;
+  }
+}
+
+/* A progress-linked animation has no duration to shorten, so reduced motion
+   removes the animation instead. Each element then renders at its own
+   authored state: the reveals are plain visible content, and the progress bar
+   shows its complete state rather than tracking the scroll. If a permanently
+   full bar would misinform your readers, hide it as well with Tailwind's
+   motion-reduce:hidden. */
+@media (prefers-reduced-motion: reduce) {
+  .tm-scroll-fade,
+  .tm-scroll-reveal,
+  .tm-scroll-slide-block,
+  .tm-scroll-scale {
+    animation-name: none !important;
+    animation-timeline: auto !important;
+  }
+
+  .tm-scroll-progress {
+    animation-name: none !important;
+    animation-timeline: auto !important;
+    scale: 1 1 !important;
+  }
+}

@@ -30,9 +30,9 @@
     );
     contain: paint;
     transition-property: clip-path, inline-size, block-size;
-    transition-duration: var(--tm-duration, 360ms);
+    transition-duration: var(--tm-duration, calc(360ms * var(--tm-duration-scale, 1)));
     transition-timing-function:
-      var(--tm-easing, cubic-bezier(0.2, 0, 0, 1));
+      var(--tm-easing, var(--tm-ease-morph, cubic-bezier(0.2, 0, 0, 1)));
     transition-delay: var(--tm-delay, 0ms);
   }
 

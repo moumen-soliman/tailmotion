@@ -1,11 +1,13 @@
 @layer utilities {
   /* Resolves from blurred to sharp. Opacity and filter only, so it stacks with
-     Tailwind transforms without fighting them. */
+     Tailwind transforms without fighting them. --tm-blur sets the starting
+     radius; --tm-emphasis scales it, so a calm profile resolves from a softer
+     blur without a per-element override. */
   .tm-blur-in {
     animation-name: tm-blur-in;
-    animation-duration: var(--tm-duration, 280ms);
+    animation-duration: var(--tm-duration, calc(280ms * var(--tm-duration-scale, 1)));
     animation-delay: var(--tm-delay, 0ms);
-    animation-timing-function: var(--tm-easing, ease-out);
+    animation-timing-function: var(--tm-easing, var(--tm-ease-entrance, ease-out));
     animation-iteration-count: var(--tm-iteration-count, 1);
     animation-fill-mode: both;
   }
@@ -14,7 +16,7 @@
 @keyframes tm-blur-in {
   from {
     opacity: 0;
-    filter: blur(var(--tm-blur, 8px));
+    filter: blur(calc(var(--tm-blur, 8px) * var(--tm-emphasis, 1)));
   }
 
   to {

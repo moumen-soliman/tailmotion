@@ -1,0 +1,95 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "TailMotion",
+  "description": "A tested motion language for product interfaces. Scoped personalities, state-driven presence, native HTML motion, product recipes and scroll-driven reveals — zero runtime, pure CSS.",
+  "colors": {
+    "primary": "#171717",
+    "light": "#ffffff",
+    "dark": "#000000"
+  },
+  "favicon": "/docs/logo/light.svg",
+  "logo": {
+    "light": "/docs/logo/light.svg",
+    "dark": "/docs/logo/dark.svg",
+    "href": "https://tailmotion.moumen.dev/"
+  },
+  "appearance": {
+    "default": "system"
+  },
+  "navbar": {
+    "links": [
+      {
+        "label": "Live demo",
+        "href": "https://tailmotion.moumen.dev/capabilities/"
+      },
+      {
+        "label": "GitHub",
+        "href": "https://github.com/moumen-soliman/tailmotion"
+      }
+    ],
+    "primary": {
+      "type": "button",
+      "label": "Get started",
+      "href": "/docs/quickstart"
+    }
+  },
+  "navigation": {
+    "groups": [
+      {
+        "group": "Getting started",
+        "pages": [
+          "docs/index",
+          "docs/quickstart",
+          "docs/install"
+        ]
+      },
+      {
+        "group": "Concepts",
+        "pages": [
+          "docs/concepts/motion-model",
+          "docs/concepts/personalities",
+          "docs/concepts/presence",
+          "docs/concepts/choreography",
+          "docs/concepts/transform-safety",
+          "docs/concepts/zero-runtime"
+        ]
+      },
+      {
+        "group": "Guides",
+        "pages": [
+          "docs/guides/frameworks",
+          "docs/guides/native-elements",
+          "docs/guides/recipes",
+          "docs/guides/scroll",
+          "docs/guides/structured-recipes",
+          "docs/guides/accessibility",
+          "docs/guides/theming"
+        ]
+      },
+      {
+        "group": "Reference",
+        "pages": [
+          "docs/reference/classes",
+          "docs/reference/variables",
+          "docs/reference/plugin",
+          "docs/reference/imports",
+          "docs/reference/browser-support"
+        ]
+      },
+      {
+        "group": "Support",
+        "pages": [
+          "docs/migration",
+          "docs/support"
+        ]
+      }
+    ]
+  },
+  "footer": {
+    "socials": {
+      "github": "https://github.com/moumen-soliman/tailmotion",
+      "npm": "https://www.npmjs.com/package/tailmotion"
+    }
+  }
+}

@@ -2,9 +2,9 @@
   /* Reveal - smooth mask reveal from bottom */
   .tm-reveal {
     animation-name: tm-reveal;
-    animation-duration: var(--tm-duration, 800ms);
+    animation-duration: var(--tm-duration, calc(800ms * var(--tm-duration-scale, 1)));
     animation-delay: var(--tm-delay, 0ms);
-    animation-timing-function: var(--tm-easing, cubic-bezier(0.65, 0, 0.35, 1));
+    animation-timing-function: var(--tm-easing, var(--tm-ease-entrance, cubic-bezier(0.65, 0, 0.35, 1)));
     animation-iteration-count: var(--tm-iteration-count, 1);
     animation-fill-mode: both;
   }
@@ -12,9 +12,9 @@
   /* Unfold - elegant unfold from top */
   .tm-unfold {
     animation-name: tm-unfold;
-    animation-duration: var(--tm-duration, 700ms);
+    animation-duration: var(--tm-duration, calc(700ms * var(--tm-duration-scale, 1)));
     animation-delay: var(--tm-delay, 0ms);
-    animation-timing-function: var(--tm-easing, cubic-bezier(0.33, 1, 0.68, 1));
+    animation-timing-function: var(--tm-easing, var(--tm-ease-entrance, cubic-bezier(0.33, 1, 0.68, 1)));
     animation-iteration-count: var(--tm-iteration-count, 1);
     animation-fill-mode: both;
     transform-origin: top center;
@@ -23,18 +23,18 @@
   /* Glide - smooth horizontal entrance */
   .tm-glide {
     animation-name: tm-glide;
-    animation-duration: var(--tm-duration, 900ms);
+    animation-duration: var(--tm-duration, calc(900ms * var(--tm-duration-scale, 1)));
     animation-delay: var(--tm-delay, 0ms);
-    animation-timing-function: var(--tm-easing, cubic-bezier(0.22, 1, 0.36, 1));
+    animation-timing-function: var(--tm-easing, var(--tm-ease-entrance, cubic-bezier(0.22, 1, 0.36, 1)));
     animation-iteration-count: var(--tm-iteration-count, 1);
     animation-fill-mode: both;
   }
 
   .tm-glide-right {
     animation-name: tm-glide-right;
-    animation-duration: var(--tm-duration, 900ms);
+    animation-duration: var(--tm-duration, calc(900ms * var(--tm-duration-scale, 1)));
     animation-delay: var(--tm-delay, 0ms);
-    animation-timing-function: var(--tm-easing, cubic-bezier(0.22, 1, 0.36, 1));
+    animation-timing-function: var(--tm-easing, var(--tm-ease-entrance, cubic-bezier(0.22, 1, 0.36, 1)));
     animation-iteration-count: var(--tm-iteration-count, 1);
     animation-fill-mode: both;
   }
@@ -42,9 +42,9 @@
   /* Scale Fade - subtle scale with fade for cards */
   .tm-scale-fade {
     animation-name: tm-scale-fade;
-    animation-duration: var(--tm-duration, 600ms);
+    animation-duration: var(--tm-duration, calc(600ms * var(--tm-duration-scale, 1)));
     animation-delay: var(--tm-delay, 0ms);
-    animation-timing-function: var(--tm-easing, cubic-bezier(0.25, 0.46, 0.45, 0.94));
+    animation-timing-function: var(--tm-easing, var(--tm-ease-entrance, cubic-bezier(0.25, 0.46, 0.45, 0.94)));
     animation-iteration-count: var(--tm-iteration-count, 1);
     animation-fill-mode: both;
   }
@@ -52,39 +52,24 @@
   /* Rise - elegant rise with subtle rotation */
   .tm-rise {
     animation-name: tm-rise;
-    animation-duration: var(--tm-duration, 1000ms);
+    animation-duration: var(--tm-duration, calc(1000ms * var(--tm-duration-scale, 1)));
     animation-delay: var(--tm-delay, 0ms);
-    animation-timing-function: var(--tm-easing, cubic-bezier(0.16, 1, 0.3, 1));
+    animation-timing-function: var(--tm-easing, var(--tm-ease-entrance, cubic-bezier(0.16, 1, 0.3, 1)));
     animation-iteration-count: var(--tm-iteration-count, 1);
     animation-fill-mode: both;
   }
 
-  /* Stagger container. Children enter in DOM order, --tm-stagger-step apart
-     (100ms by default). Group siblings semantically -- title, description,
-     actions -- so the sequence reads as hierarchy rather than a queue. */
-  .tm-stagger > * {
-    animation-name: tm-stagger-item;
-    animation-duration: var(--tm-duration, 260ms);
-    animation-delay: calc(
-      var(--tm-delay, 0ms) + var(--tm-stagger-index, 0) * var(--tm-stagger-step, 100ms)
-    );
-    animation-timing-function: var(--tm-easing, cubic-bezier(0.25, 0.46, 0.45, 0.94));
-    animation-iteration-count: var(--tm-iteration-count, 1);
-    animation-fill-mode: both;
-  }
-
-  /* @generate:stagger-indices:20 */
 }
 
 @keyframes tm-reveal {
   0% {
     clip-path: inset(100% 0 0 0);
-    transform: translateY(20px);
+    translate: 0 20px;
   }
 
   100% {
     clip-path: inset(0 0 0 0);
-    transform: translateY(0);
+    translate: 0 0;
   }
 }
 
@@ -106,61 +91,51 @@
 
 @keyframes tm-glide {
   0% {
-    transform: translateX(-60px);
+    translate: -60px 0;
     opacity: 0;
   }
 
   100% {
-    transform: translateX(0);
+    translate: 0 0;
     opacity: 1;
   }
 }
 
 @keyframes tm-glide-right {
   0% {
-    transform: translateX(60px);
+    translate: 60px 0;
     opacity: 0;
   }
 
   100% {
-    transform: translateX(0);
+    translate: 0 0;
     opacity: 1;
   }
 }
 
 @keyframes tm-scale-fade {
   0% {
-    transform: scale(0.92);
+    scale: calc(1 - 0.08 * var(--tm-emphasis, 1));
     opacity: 0;
   }
 
   100% {
-    transform: scale(1);
+    scale: 1;
     opacity: 1;
   }
 }
 
 @keyframes tm-rise {
   0% {
-    transform: translateY(40px) rotate(1deg);
+    translate: 0 40px;
+    rotate: 1deg;
     opacity: 0;
   }
 
   100% {
-    transform: translateY(0) rotate(0deg);
+    translate: 0 0;
+    rotate: 0deg;
     opacity: 1;
-  }
-}
-
-@keyframes tm-stagger-item {
-  from {
-    opacity: 0;
-    transform: translate3d(0, var(--tm-distance, 12px), 0);
-  }
-
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
   }
 }
 

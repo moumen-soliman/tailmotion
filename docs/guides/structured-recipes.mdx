@@ -1,0 +1,209 @@
+---
+title: "Structured recipes"
+description: "The classes that need a documented child structure — avatar group, view morph, count reveal, text flip and liquid button."
+---
+
+Most of TailMotion works on any element. These do not: each one animates
+children, so it needs the markup described here.
+
+<Note>
+Treat these as **optional recipes**. TailMotion provides the movement; your
+Tailwind classes provide dimensions, colors and typography. Two of them —
+`tm-liquid-btn` and `tm-hold-delete` — pre-date that rule and choose their own
+appearance, which is noted where it applies.
+</Note>
+
+## View morph
+
+One surface that reshapes between several mounted views — the Dynamic Island
+shape.
+
+```html
+<div
+  class="tm-view-morph rounded-full bg-black"
+  style="
+    --tm-view-stage-width: 284px;
+    --tm-view-stage-height: 64px;
+    --tm-view-width: 100px;
+    --tm-view-height: 28px
+  "
+>
+  <div data-tm-panel data-tm-active>Idle</div>
+  <div data-tm-panel aria-hidden="true">Call</div>
+  <div data-tm-panel aria-hidden="true">Timer</div>
+</div>
+```
+
+**Child contract:** every view stays mounted and carries `data-tm-panel`. Move
+`data-tm-active` when your component state changes, and keep `aria-hidden` in
+step with it.
+
+Supply the active view's dimensions through `--tm-view-width` and
+`--tm-view-height`. Setting a fixed `--tm-view-stage-width` and
+`--tm-view-stage-height` makes the reshape animate a `clip-path: inset()`
+instead of layout, which is dramatically cheaper on phones.
+
+Tune the outgoing view with `--tm-view-exit-scale`, `--tm-view-exit-scale-x` and
+`--tm-view-exit-y`. The full variable list is in
+[CSS variables](/docs/reference/variables#view-morph).
+
+<Note>
+The live blur on the outgoing panel is skipped on touch-first devices
+(`@media (hover: none) and (pointer: coarse)`), because Safari rasterizes it even
+for hidden panels. The spatial cross-fade is unchanged.
+</Note>
+
+## Avatar group
+
+```html
+<div class="tm-avatar-group">
+  <img class="tm-avatar tm-avatar-ring" src="…" alt="Ana">
+  <img class="tm-avatar tm-avatar-ring" src="…" alt="Ben">
+  <img class="tm-avatar tm-avatar-ring" src="…" alt="Cleo">
+</div>
+```
+
+| Class | Role |
+|---|---|
+| `tm-avatar-group` | The stack. Sets the overlap and the hover choreography |
+| `tm-avatar` | One avatar in the stack |
+| `tm-avatar-ring` | Adds a ring, colored from `--tm-outline-color` |
+| `tm-avatar-tooltip` | A label revealed on hover. `-bottom`, `-left`, `-right` variants |
+| `tm-avatar-sm` / `-lg` / `-xl` | Size presets |
+| `tm-avatar-lift-none` / `-sm` / `-lg` | How far an avatar rises on hover |
+| `tm-avatar-group-invert` | Reverses the stacking order |
+
+Variables: `--tm-avatar-overlap`, `--tm-avatar-gap`, `--tm-avatar-lift`,
+`--tm-avatar-spring`, `--tm-ring-width`.
+
+## Count reveal
+
+Slot-machine style number reveal. Each character is its own child, staggered.
+
+```html
+<div class="tm-count-reveal">
+  <span>1</span><span>2</span><span>,</span><span>3</span><span>4</span><span>5</span>
+</div>
+```
+
+**Child contract:** one element per character. Indices are generated for the
+first 10; `--tm-count-stagger-step` sets the delay between them.
+
+To build the spans from a string, `tailmotion/utils` has a helper:
+
+```js
+import { createCountSpans } from "tailmotion/utils";
+
+createCountSpans("12,345", { stagger: 50 });
+// [{ char: "1", index: 0, style: { "--tm-stagger": 0 }, delay: 0 }, …]
+```
+
+That is data, not DOM — render it with your framework. For vanilla JS,
+`initCountRevealElement(element)` does the DOM work.
+
+## Text flip
+
+Rotating words with a blur transition. **This one genuinely needs JavaScript**,
+because CSS cannot hold a list of strings.
+
+```html
+<span id="headline" class="tm-text-flip"></span>
+```
+
+```js
+import { initTextFlipElement } from "tailmotion/utils";
+
+initTextFlipElement(document.getElementById("headline"), {
+  words: ["beautiful", "amazing", "powerful"],
+  variant: "flip",   // "flip" | "morph" | "rotate" | "chars"
+  interval: 2500,
+});
+```
+
+For React, Vue or Svelte, use `createTextRotator` instead — it is a headless
+state machine with no DOM access, so your framework keeps ownership of
+rendering:
+
+```js
+import { createTextRotator } from "tailmotion/utils";
+
+const rotator = createTextRotator({
+  words: ["beautiful", "amazing", "powerful"],
+  interval: 2500,
+  onFlip: ({ word, prevWord }) => setState({ word, prevWord }),
+});
+
+rotator.start();
+```
+
+| Class | Variant |
+|---|---|
+| `tm-text-flip` | Vertical flip |
+| `tm-text-morph` | Blur morph |
+| `tm-text-rotate` | 3D rotate |
+| `tm-text-flip-chars` | Per-character flip |
+
+## Liquid button
+
+<Warning>
+`tm-liquid-btn` chooses its own fill color and, in some variants, its own
+line height. It pre-dates the motion-only rule and is kept for compatibility.
+</Warning>
+
+```html
+<button
+  class="tm-liquid-btn rounded-lg border px-6 py-3"
+  style="--tm-liquid-color: white"
+>
+  Hover me
+</button>
+```
+
+| Variable | Default |
+|---|---|
+| `--tm-liquid-color` | `currentColor` |
+| `--tm-liquid-bg` | `transparent` |
+| `--tm-liquid-duration` | varies by variant |
+| `--tm-liquid-line-height` | `2px`, for the underline variant |
+
+Direction variants: `tm-liquid-btn-left`, `-right`, `-top`, `-center`.
+Speed: `tm-liquid-fast`, `tm-liquid-slow`.
+Color presets: `tm-liquid-blue`, `-purple`, `-emerald`, `-amber`, `-rose`,
+`-cyan`. Using a preset is opt-in.
+
+`tm-liquid-underline` and `tm-liquid-wave` are the non-button variants.
+
+## Icon swap
+
+Cross-fade between two glyphs, driven by real component state.
+
+```html
+<button class="tm-icon-swap" aria-pressed="false">
+  <svg><!-- shown when aria-pressed is false --></svg>
+  <svg><!-- shown when aria-pressed is true --></svg>
+</button>
+```
+
+**Child contract:** exactly two element children. Both stay in the DOM, so the
+outgoing icon animates out as cleanly as the incoming one animates in.
+
+The swapped state is read from `aria-pressed`, `aria-expanded`, `aria-checked`,
+`[data-tm-swap="on"]` or `.tm-swapped` — never a parallel flag. Grid stacking is
+structural, not styling: the two children share one cell so neither affects
+layout.
+
+## Hold to delete
+
+<Warning>
+`tm-hold-delete` chooses its own colors, padding and radius. It is kept working
+and unchanged, and superseded by
+[`tm-hold-confirm`](/docs/guides/recipes#hold-to-confirm), which owns no
+appearance at all.
+</Warning>
+
+```html
+<button class="tm-hold-delete">Hold to delete</button>
+```
+
+Variables: `--tm-hold-duration`, `--tm-hold-color`, `--tm-hold-bg`,
+`--tm-hold-success`, `--tm-hold-success-bg`, `--tm-hold-fg`.

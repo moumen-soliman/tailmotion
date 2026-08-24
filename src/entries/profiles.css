@@ -1,0 +1,6 @@
+/* tailmotion/profiles.css
+   The token layer and the three motion personalities, on their own. Import
+   this next to a hand-picked set of per-animation files when you are not
+   taking the full stylesheet. Already included in "tailmotion/css". */
+@import "../shared/tokens.css";
+@import "../profiles/profiles.css";

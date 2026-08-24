@@ -1,0 +1,174 @@
+---
+title: "State-driven presence"
+description: "Animate the open and closed states your application already manages."
+---
+
+Your component already knows whether the menu is open. Presence reads that
+state rather than asking for a second source of truth.
+
+```html
+<div class="tm-presence-pop" data-state="open">Menu content</div>
+```
+
+Toggle the attribute and the panel animates both ways. There is no class to
+swap, no runtime to install, and no `AnimatePresence` wrapper.
+
+## The state contract
+
+Put the state on the element itself.
+
+| Open | Closed |
+|---|---|
+| `data-state="open"` | `data-state="closed"` |
+| `data-state="active"` | `data-state="inactive"` |
+| `data-state="checked"` | `data-state="unchecked"` |
+| `data-state="on"` | `data-state="off"` |
+| `aria-expanded="true"` | `aria-expanded="false"` |
+| `aria-pressed="true"` | `aria-pressed="false"` |
+| `aria-checked="true"` | `aria-checked="false"` |
+| `class="tm-open"` | `class="tm-closed"` |
+
+<Note>
+An element carrying **none** of these is treated as open. That is deliberate: a
+missing or misspelled attribute leaves content visible rather than invisible.
+The failure mode of a typo should never be a blank screen.
+</Note>
+
+## The vocabulary
+
+Five classes, on purpose. A presence library with twenty entrance styles is a
+keyframe collection wearing a different hat.
+
+| Class | Open | Closed | Open duration | Closed duration |
+|---|---|---|---|---|
+| `tm-presence-fade` | `opacity: 1` | `opacity: 0` | 180ms | 126ms |
+| `tm-presence-scale` | `scale: 1` | `scale: 0.96`, faded | 220ms | 154ms |
+| `tm-presence-pop` | `scale: 1` | `scale: 0.9`, faded | 260ms | 182ms |
+| `tm-presence-slide-block` | `translate: 0` | block-axis offset, faded | 240ms | 168ms |
+| `tm-presence-slide-inline` | `translate: 0` | inline-axis offset, faded | 240ms | 168ms |
+
+**`tm-presence-fade`** is the safest default: nothing moves, so it composes with
+any layout and never fights a positioned popper.
+
+**`tm-presence-pop`** is the only one that overshoots, and the overshoot lives in
+the easing rather than a keyframe, so it stays interruptible. A calm profile —
+or `--tm-overshoot: 0` — flattens it back to a decelerating curve.
+
+Closed motion is quieter by design: the exit runs at 70% of the open duration
+(`--tm-presence-exit-scale`) on a weaker curve. The user has already decided;
+the exit should get out of the way rather than perform.
+
+## Direction is logical
+
+```html
+<div class="tm-presence-slide-inline tm-presence-from-end" data-state="open">…</div>
+```
+
+| Modifier | Starts from |
+|---|---|
+| `tm-presence-from-start` *(default)* | the block-start edge, or the inline-start edge |
+| `tm-presence-from-end` | the opposite edge |
+
+On the inline axis these mirror themselves in right-to-left contexts — "start"
+is the left edge in LTR and the right edge in RTL. On the block axis they do
+not, because up is up in every writing direction.
+
+Measured, in a real right-to-left document:
+
+| | LTR closed offset | RTL closed offset |
+|---|---|---|
+| `tm-presence-slide-inline` | −12px | +12px |
+| `tm-presence-slide-inline tm-presence-from-end` | +12px | −12px |
+| `tm-presence-slide-block` | −12px | −12px (unchanged) |
+
+## Interruptible by construction
+
+These are transitions, not keyframes. Reversing state halfway through retargets
+from the current position instead of snapping back to the start.
+
+Closing a `tm-presence-slide-block` panel and reversing at the midpoint:
+
+```text
+midway              opacity 0.228676   translate 0px -9.25588px
+reverse to open ->  the new transition's first keyframe is
+                    opacity 0.228676   translate 0px -9.25588px
+```
+
+The browser hands the in-flight value to the new transition. No JavaScript is
+involved, and no velocity is lost to a restart.
+
+## The mounting contract
+
+<Warning>
+A closed element must stay in the DOM until its closed transition finishes. If
+your framework unmounts it the moment state flips, there is nothing left to
+animate and the panel simply disappears.
+</Warning>
+
+TailMotion ships no JavaScript to mount or unmount anything — that is your
+framework's job, and every framework already has a tool for it. Three ways to
+satisfy the contract, in order of preference:
+
+1. **Keep it mounted.** For a menu, a tooltip or an accordion this is usually
+   correct anyway, and it is free.
+2. **Use your library's own presence primitive.** Radix UI, Base UI, Ark and
+   Melt all keep content mounted for the duration of the exit and set
+   `data-state` for you. The class is the entire integration.
+3. **Delay the unmount** past the closed duration. See
+   [Framework integration](/docs/guides/frameworks#delaying-an-unmount).
+
+## What closed actually means
+
+The closed state ends on `visibility: hidden`, not just `opacity: 0`. That
+matters more than it sounds:
+
+- A fully transparent element still swallows clicks. `pointer-events: none` and
+  `visibility: hidden` both stop that.
+- A fully transparent element is still read by a screen reader.
+  `visibility: hidden` removes it from the accessibility tree.
+
+`visibility` interpolates discretely at the end of a transition, so the element
+stays visible for the whole exit and only disappears once the animation is
+finished. It keeps its layout box, which is inherent to "keep it mounted" — for
+a panel in normal flow, position it or use a recipe like
+[`tm-accordion-panel`](/docs/guides/recipes#accordion) that animates the box
+itself.
+
+## First paint
+
+An element mounted **already open** has no previous state to transition from, so
+without help it would simply appear. `@starting-style` supplies the missing
+"before" frame, and TailMotion declares it for every presence class.
+
+```css
+@supports (transition-behavior: allow-discrete) {
+  @starting-style {
+    .tm-presence-fade { opacity: 0; }
+    /* … */
+  }
+}
+```
+
+Where the browser has no `@starting-style`, the element is visible immediately —
+correct, just not animated. See [Browser support](/docs/reference/browser-support).
+
+## Transform safety
+
+Every presence class animates `opacity`, `translate` and `scale` — never
+`transform`. A Tailwind `rotate-3`, `-translate-y-1` or `skew-x-2` on the same
+element survives:
+
+```html
+<div class="tm-presence-scale rotate-3" data-state="open">Still tilted</div>
+```
+
+## Tuning
+
+| Variable | Default | Effect |
+|---|---|---|
+| `--tm-duration` | per class | Replaces the open duration outright |
+| `--tm-exit-duration` | derived | Replaces the closed duration outright |
+| `--tm-presence-exit-scale` | `0.7` | Ratio of closed duration to open |
+| `--tm-presence-direction` | `-1` | Which edge a slide starts from |
+| `--tm-origin` | `center` | `transform-origin` for scale and pop |
+| `--tm-distance` | `12px` | Travel, shared with every slide in the library |
