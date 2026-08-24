@@ -56,6 +56,31 @@ const DEFAULT_TOKENS = {
     20: '20px',
     30: '30px',
   },
+  // Motion-profile factors. These multiply each animation's own tuned default
+  // rather than replacing it, so a scope keeps its relative character.
+  speed: {
+    75: '0.75',
+    85: '0.85',
+    100: '1',
+    110: '1.1',
+    125: '1.25',
+    150: '1.5',
+  },
+  emphasis: {
+    0: '0',
+    50: '0.5',
+    75: '0.75',
+    100: '1',
+    125: '1.25',
+    150: '1.5',
+  },
+  // How long a destructive hold has to be held.
+  hold: {
+    800: '800ms',
+    1200: '1200ms',
+    1600: '1600ms',
+    2000: '2000ms',
+  },
 };
 
 const withImportant = (value) =>
@@ -128,14 +153,65 @@ module.exports = plugin.withOptions(
         }
       );
 
+      // tm-stagger-step-* is the 0.6 spelling; tm-stagger-* is the shorter one
+      // introduced with the choreography module. Same token, same behaviour.
       matchUtilities(
         {
           'tm-stagger-step': (value) => ({
             '--tm-stagger-step': withImportant(value),
           }),
+          'tm-stagger': (value) => ({
+            '--tm-stagger-step': withImportant(value),
+          }),
         },
         {
           values: tokens.stagger,
+          supportsNegativeValues: false,
+        }
+      );
+
+      // Motion-profile factors, for a scope that needs one axis of a
+      // personality without taking a whole tm-motion-* profile.
+      matchUtilities(
+        {
+          'tm-speed': (value) => ({
+            '--tm-duration-scale': withImportant(value),
+          }),
+        },
+        {
+          values: tokens.speed,
+          supportsNegativeValues: false,
+        }
+      );
+
+      // Emphasis moves how far a keyframe departs from rest; overshoot moves
+      // only the frames that travel past it. tm-emphasis sets both, which is
+      // what a personality wants; tm-overshoot flattens the spring on its own.
+      matchUtilities(
+        {
+          'tm-emphasis': (value) => ({
+            '--tm-emphasis': withImportant(value),
+            '--tm-overshoot': withImportant(value),
+          }),
+          'tm-overshoot': (value) => ({
+            '--tm-overshoot': withImportant(value),
+          }),
+        },
+        {
+          values: tokens.emphasis,
+          supportsNegativeValues: false,
+        }
+      );
+
+      // Hold duration for tm-hold-confirm.
+      matchUtilities(
+        {
+          'tm-hold': (value) => ({
+            '--tm-hold-duration': withImportant(value),
+          }),
+        },
+        {
+          values: tokens.hold,
           supportsNegativeValues: false,
         }
       );

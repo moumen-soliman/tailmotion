@@ -1,0 +1,242 @@
+---
+title: "Framework integration"
+description: "React, Vue, Svelte, plain HTML and headless UI libraries — one CSS API, four identical integrations."
+---
+
+There is one API, and it is CSS classes plus the state attributes you already
+set. No framework gets a different implementation, an adapter, or a package of
+its own.
+
+## The same component, four ways
+
+<CodeGroup>
+```jsx React / Next.js
+import "tailmotion/css";
+
+export function SavePanel({ open }) {
+  return (
+    <div className="tm-motion-productive">
+      <button className="tm-press rounded-md bg-black px-4 py-2 text-white">
+        Save changes
+      </button>
+
+      <div
+        data-state={open ? "open" : "closed"}
+        className="tm-presence-slide-block rounded-lg border p-4"
+      >
+        Saved
+      </div>
+    </div>
+  );
+}
+```
+
+```vue Vue
+<script setup>
+import "tailmotion/css";
+defineProps({ open: Boolean });
+</script>
+
+<template>
+  <div class="tm-motion-productive">
+    <button class="tm-press rounded-md bg-black px-4 py-2 text-white">
+      Save changes
+    </button>
+
+    <div
+      :data-state="open ? 'open' : 'closed'"
+      class="tm-presence-slide-block rounded-lg border p-4"
+    >
+      Saved
+    </div>
+  </div>
+</template>
+```
+
+```svelte Svelte
+<script>
+  import "tailmotion/css";
+  export let open = false;
+</script>
+
+<div class="tm-motion-productive">
+  <button class="tm-press rounded-md bg-black px-4 py-2 text-white">
+    Save changes
+  </button>
+
+  <div
+    data-state={open ? "open" : "closed"}
+    class="tm-presence-slide-block rounded-lg border p-4"
+  >
+    Saved
+  </div>
+</div>
+```
+
+```html Plain HTML
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailmotion@0.8.0/tailmotion.css">
+
+<div class="tm-motion-productive">
+  <button class="tm-press rounded-md bg-black px-4 py-2 text-white">
+    Save changes
+  </button>
+
+  <div id="saved" data-state="closed" class="tm-presence-slide-block rounded-lg border p-4">
+    Saved
+  </div>
+</div>
+
+<script>
+  // The only JavaScript involved is your own state change.
+  saved.dataset.state = "open";
+</script>
+```
+</CodeGroup>
+
+Identical motion in all four. The differences are entirely in how each framework
+spells "set an attribute".
+
+## Delaying an unmount
+
+Presence needs the element to stay in the DOM until its closed transition
+finishes. Keeping it mounted is the simplest answer; when you genuinely must
+remove it, delay past the closed duration.
+
+<CodeGroup>
+```jsx React
+function useDelayedUnmount(open, exitMs = 240) {
+  const [mounted, setMounted] = useState(open);
+
+  useEffect(() => {
+    if (open) {
+      setMounted(true);
+      return;
+    }
+    const id = setTimeout(() => setMounted(false), exitMs);
+    return () => clearTimeout(id);
+  }, [open, exitMs]);
+
+  return mounted;
+}
+
+function Menu({ open }) {
+  const mounted = useDelayedUnmount(open);
+  if (!mounted) return null;
+
+  return (
+    <div data-state={open ? "open" : "closed"} className="tm-presence-slide-block">
+      Product menu
+    </div>
+  );
+}
+```
+
+```vue Vue
+<script setup>
+// Vue's own <Transition> already keeps the node alive for the leave phase.
+defineProps({ open: Boolean });
+</script>
+
+<template>
+  <Transition :duration="240">
+    <div v-if="open" data-state="open" class="tm-presence-slide-block">
+      Product menu
+    </div>
+  </Transition>
+</template>
+```
+
+```svelte Svelte
+<script>
+  export let open = false;
+  // Svelte keeps the node mounted until the outro duration elapses.
+  const hold = () => ({ duration: 240 });
+</script>
+
+{#if open}
+  <div out:hold data-state={open ? 'open' : 'closed'} class="tm-presence-slide-block">
+    Product menu
+  </div>
+{/if}
+```
+</CodeGroup>
+
+<Note>
+The closed duration is the open duration × 0.7 by default. For
+`tm-presence-slide-block` that is 240 × 0.7 = **168ms**, so a 240ms timeout is
+safely past it. Set `--tm-exit-duration` if you would rather pin an exact number
+on both sides.
+</Note>
+
+## Headless UI libraries
+
+Radix UI, Base UI, Ark and Melt already put `data-state="open" | "closed"` on
+their content parts and keep them mounted for the duration of the exit. The
+class is the entire integration — no timeout, no wrapper, no `forceMount`.
+
+```jsx
+<DropdownMenu.Content
+  className="tm-menu rounded-lg border bg-white p-1 shadow-lg"
+  style={{ "--tm-origin": "var(--radix-popper-transform-origin)" }}
+>
+  <DropdownMenu.Item>Profile</DropdownMenu.Item>
+  <DropdownMenu.Item>Settings</DropdownMenu.Item>
+</DropdownMenu.Content>
+```
+
+`tm-menu` and `tm-tooltip` also read `data-side`, which these libraries emit, and
+map it to a transform origin so the panel grows out of its trigger rather than
+its own middle. Passing the library's resolved origin through `--tm-origin`
+handles alignment as well.
+
+| Library | Sets `data-state` | Sets `data-side` | Keeps content mounted for the exit |
+|---|---|---|---|
+| Radix UI | yes | yes | yes |
+| Base UI | yes | yes | yes |
+| Ark UI | yes | yes | yes |
+| Melt UI | yes | yes | yes |
+| Headless UI | no — it uses its own `<Transition>` | no | yes |
+
+For Headless UI, apply the presence class and drive `data-state` yourself from
+its render-prop state, or use its `<Transition>` classes directly.
+
+## TypeScript
+
+`TailMotionVars` types every custom property TailMotion reads, so an inline
+style object autocompletes and a typo fails the build:
+
+```tsx
+import type { TailMotionVars } from "tailmotion";
+
+<div
+  className="tm-menu"
+  style={{ "--tm-origin": "top center" } satisfies TailMotionVars}
+/>
+```
+
+`TailMotionProfile` and `TailMotionState` are useful for props:
+
+```tsx
+import type { TailMotionProfile, TailMotionState } from "tailmotion";
+
+type PanelProps = {
+  motion?: TailMotionProfile;   // "tm-motion-calm" | "tm-motion-productive" | …
+  state: Extract<TailMotionState, "open" | "closed">;
+};
+```
+
+## Server rendering
+
+Nothing here needs hydration. An element rendered on the server with
+`data-state="open"` animates in on first paint via `@starting-style`, with no
+flash and no `useEffect`.
+
+The one thing to avoid is rendering a presence element with **no** state
+attribute and adding the real state after hydration — the element is treated as
+open and visible in the server HTML, then jumps closed. Render the real state on
+the server.
+
+## React Native
+
+Not supported. See [Support](/docs/support#react-native) — React Native Web can
+use TailMotion for its browser target only.

@@ -1,7 +1,7 @@
 @layer utilities {
   .tm-spin {
     animation-name: tm-spin;
-    animation-duration: var(--tm-duration, 1200ms);
+    animation-duration: var(--tm-duration, calc(1200ms * var(--tm-duration-scale, 1)));
     animation-delay: var(--tm-delay, 0ms);
     animation-timing-function: var(--tm-easing, linear);
     animation-iteration-count: var(--tm-iteration-count, infinite);
@@ -12,11 +12,11 @@
 
 @keyframes tm-spin {
   0% {
-    transform: rotate(0deg);
+    rotate: 0deg;
   }
 
   100% {
-    transform: rotate(360deg);
+    rotate: 360deg;
   }
 }
 

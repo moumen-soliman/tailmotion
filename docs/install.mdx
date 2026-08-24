@@ -1,0 +1,162 @@
+---
+title: "Installation"
+description: "Tailwind v3, Tailwind v4, standalone CSS, the CDN, and the optional plugin."
+---
+
+TailMotion is a stylesheet. Everything below is about getting that stylesheet
+into your project in the right order.
+
+## The one rule
+
+**Import `tailmotion/css` after Tailwind.** TailMotion's rules live in a native
+`@layer utilities`, and it expects Tailwind's output to already be in the
+document.
+
+## Standalone CSS
+
+No Tailwind, no build step, no plugin. Every class in the library works.
+
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailmotion@0.8.0/tailmotion.css">
+```
+
+<Warning>
+Pin the CDN URL to the release you tested. In an application with a bundler,
+prefer the CSS or JavaScript import — you get the same file with a hash your
+deploy controls.
+</Warning>
+
+## Tailwind CSS v4
+
+```css
+@import "tailwindcss";
+@plugin "tailmotion/plugin";   /* optional */
+@import "tailmotion/css";
+```
+
+Tailwind v4 emits its own utilities into a native `@layer utilities`, the same
+layer TailMotion uses, so source order decides conflicts. Importing TailMotion
+last means a motion class wins over a Tailwind utility that touches the same
+property.
+
+## Tailwind CSS v3
+
+<CodeGroup>
+```js tailwind.config.js
+module.exports = {
+  content: ["./src/**/*.{js,jsx,ts,tsx,html}"],
+  plugins: [require("tailmotion/plugin")],
+};
+```
+
+```ts tailwind.config.ts
+import type { Config } from "tailwindcss";
+import tailmotion from "tailmotion/plugin";
+
+export default {
+  content: ["./src/**/*.{js,jsx,ts,tsx,html}"],
+  plugins: [tailmotion],
+} satisfies Config;
+```
+</CodeGroup>
+
+Then import the stylesheet after Tailwind's directives:
+
+```css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import "tailmotion/css";
+```
+
+<Note>
+Tailwind v3 emits its utilities **unlayered**, and unlayered CSS beats every
+layered rule regardless of specificity. On the rare element where a Tailwind
+utility and a TailMotion class fight over the same property — `opacity-0` on a
+`tm-presence-*` panel is the realistic case — the Tailwind utility wins in v3
+and TailMotion wins in v4. Let TailMotion own `opacity`, `translate`, `scale`
+and `visibility` on an element it is animating, and the question never comes up.
+</Note>
+
+## The Tailwind plugin is optional
+
+The prebuilt stylesheet already contains every timing, easing, distance and
+stagger token at its shipped value. Add the plugin only when you want to
+**change or extend** those tokens, or use arbitrary values like
+`tm-duration-[420ms]`.
+
+Nothing in `tailmotion.css` requires the plugin, and nothing breaks without it.
+
+See the [plugin reference](/docs/reference/plugin) for every utility it
+generates and every option it accepts.
+
+## Module entries
+
+The convenient entry is the whole library and is **not** tree-shaken. Each
+focused entry below is a real bundle boundary — you can take presence or scroll
+without the rest — and carries the shared token layer it needs, so it works on
+its own.
+
+```css
+@import "tailmotion/profiles.css";
+@import "tailmotion/presence.css";
+@import "tailmotion/native.css";
+@import "tailmotion/recipes.css";
+@import "tailmotion/scroll.css";
+@import "tailmotion/choreography.css";
+```
+
+Sizes and the trade-off are in [Imports and bundle size](/docs/reference/imports).
+
+## Per-animation files
+
+For the smallest possible stylesheet, import the base plus only the animations
+you use:
+
+```css
+@import "tailmotion/animations/base.css";
+@import "tailmotion/animations/fade.css";
+@import "tailmotion/animations/interactions.css";
+```
+
+Keep `base.css` first: it pulls in the token layer and the motion profiles, and
+provides RTL mirroring and reduced-motion behaviour. Per-animation imports do
+**not** include the prebuilt `hover:` / `focus:` / responsive selectors from
+`variants.css`.
+
+## TypeScript
+
+Types ship with the package. The ones worth knowing about:
+
+```ts
+import type {
+  TailMotionVars,       // every --tm-* custom property, documented
+  TailMotionProfile,    // "tm-motion-calm" | "tm-motion-productive" | …
+  TailMotionState,      // "open" | "closed" | "active" | …
+} from "tailmotion";
+```
+
+`TailMotionVars` is the useful one — it makes an inline style object
+autocomplete every variable TailMotion reads:
+
+```tsx
+<div style={{ "--tm-origin": "top center" } satisfies TailMotionVars}>
+```
+
+## Verifying an install
+
+```bash
+npm run check
+```
+
+Inside this repository that builds the stylesheets and runs the static checks.
+In your own project the equivalent smoke test is one element:
+
+```html
+<div class="tm-slide-block-start">If this slides in, the stylesheet is loaded.</div>
+```
+
+If it appears without moving, the stylesheet did not load, or
+`prefers-reduced-motion: reduce` is on — which is the correct behaviour, not a
+bug.

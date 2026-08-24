@@ -1,7 +1,7 @@
 @layer utilities {
   .tm-wiggle {
     animation-name: tm-wiggle;
-    animation-duration: var(--tm-duration, 500ms);
+    animation-duration: var(--tm-duration, calc(500ms * var(--tm-duration-scale, 1)));
     animation-delay: var(--tm-delay, 0ms);
     animation-timing-function: var(--tm-easing, ease-in-out);
     animation-iteration-count: var(--tm-iteration-count, 1);
@@ -11,27 +11,27 @@
 
 @keyframes tm-wiggle {
   0% {
-    transform: translateX(0);
+    translate: 0 0;
   }
 
   20% {
-    transform: translateX(-6px);
+    translate: -6px 0;
   }
 
   40% {
-    transform: translateX(6px);
+    translate: 6px 0;
   }
 
   60% {
-    transform: translateX(-4px);
+    translate: -4px 0;
   }
 
   80% {
-    transform: translateX(4px);
+    translate: 4px 0;
   }
 
   100% {
-    transform: translateX(0);
+    translate: 0 0;
   }
 }
 

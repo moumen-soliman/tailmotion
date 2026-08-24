@@ -5,7 +5,7 @@
      state -- pair it with a label, icon or focus ring. */
   .tm-glow {
     animation-name: tm-glow;
-    animation-duration: var(--tm-duration, 1600ms);
+    animation-duration: var(--tm-duration, calc(1600ms * var(--tm-duration-scale, 1)));
     animation-delay: var(--tm-delay, 0ms);
     animation-timing-function: var(--tm-easing, ease-in-out);
     animation-iteration-count: var(--tm-iteration-count, infinite);

@@ -1,9 +1,23 @@
+/* --------------------------------------------------------------------------
+   tm-pop: an entrance that arrives slightly small, passes the target, and
+   settles.
+
+   The two departures from rest are separately tunable, so a motion profile can
+   keep the entrance and drop the overshoot:
+
+     --tm-emphasis   scales the 0.15 the element starts below full size
+     --tm-overshoot  scales the 0.05 it passes above it
+
+   Animates the `scale` property rather than `transform`, so a Tailwind
+   `rotate-*` or `translate-*` on the same element survives the animation.
+   -------------------------------------------------------------------------- */
+
 @layer utilities {
   .tm-pop {
     animation-name: tm-pop;
-    animation-duration: var(--tm-duration, 380ms);
+    animation-duration: var(--tm-duration, calc(380ms * var(--tm-duration-scale, 1)));
     animation-delay: var(--tm-delay, 0ms);
-    animation-timing-function: var(--tm-easing, cubic-bezier(0.18, 0.89, 0.32, 1.28));
+    animation-timing-function: var(--tm-easing, var(--tm-ease-emphasis, cubic-bezier(0.18, 0.89, 0.32, 1.28)));
     animation-iteration-count: var(--tm-iteration-count, 1);
     animation-fill-mode: both;
   }
@@ -11,18 +25,17 @@
 
 @keyframes tm-pop {
   0% {
-    transform: scale(0.85);
+    scale: calc(1 - 0.15 * var(--tm-emphasis, 1));
     opacity: 0;
   }
 
   70% {
-    transform: scale(1.05);
+    scale: calc(1 + 0.05 * var(--tm-overshoot, 1));
     opacity: 1;
   }
 
   100% {
-    transform: scale(1);
+    scale: 1;
     opacity: 1;
   }
 }
-

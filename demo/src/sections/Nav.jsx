@@ -7,7 +7,9 @@ import { AI_INSTALL_PROMPT } from '../lib/prompts';
    room for it rather than being pushed out of the row. */
 const LINKS = [
   { id: 'animations', href: '/#explorer', label: 'Animations', always: true },
+  { id: 'capabilities', href: '/capabilities/', label: 'Capabilities' },
   { id: 'example', href: '/example/', label: 'Example' },
+  { id: 'docs', href: 'https://docs.tailmotion.moumen.dev/docs', label: 'Docs' },
   { id: 'install', href: '/#install', label: 'Installation' },
   { id: 'changelog', href: '/changelog/', label: 'Changelog' },
 ];

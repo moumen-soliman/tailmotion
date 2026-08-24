@@ -15,6 +15,7 @@ export default defineConfig({
         main: path.join(demoDir, 'index.html'),
         changelog: path.join(demoDir, 'changelog', 'index.html'),
         example: path.join(demoDir, 'example', 'index.html'),
+        capabilities: path.join(demoDir, 'capabilities', 'index.html'),
       },
     },
   },

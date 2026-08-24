@@ -1,0 +1,177 @@
+---
+title: "Native elements"
+description: "Real entrances and exits for [popover], <dialog> and <details>, with the browser keeping focus and semantics."
+---
+
+`[popover]`, `<dialog>` and `<details>` are the three elements the browser
+already handles correctly — focus, the top layer, light dismiss, Escape,
+keyboard semantics — and the three that were historically impossible to animate
+*out*, because they end in `display: none`.
+
+Modern CSS fixed that. TailMotion packages the fix.
+
+```html
+<button popovertarget="account-menu">Account</button>
+<div id="account-menu" popover class="tm-native-popover">Menu content</div>
+
+<dialog class="tm-native-dialog">Dialog content</dialog>
+
+<details class="tm-native-disclosure">
+  <summary>Details <span data-tm-marker>›</span></summary>
+  <div>Disclosure content</div>
+</details>
+```
+
+<Note>
+TailMotion picks no color, dimension, padding, radius or shadow for any of
+these, and adds no JavaScript. It animates the panel, the backdrop's opacity,
+and the disclosure's height. Everything else stays yours and the browser's.
+</Note>
+
+## Popover
+
+```html
+<button popovertarget="account-menu">Account</button>
+
+<div
+  id="account-menu"
+  popover
+  class="tm-native-popover rounded-lg border bg-white p-3 shadow-lg"
+  style="--tm-origin: top center"
+>
+  <ul>
+    <li>Billing</li>
+    <li>Team</li>
+    <li>Sign out</li>
+  </ul>
+</div>
+```
+
+| | |
+|---|---|
+| Trigger | `:popover-open` |
+| Open | visible, `scale: 1` |
+| Closed | `display: none`, after the exit finishes |
+| Duration | 200ms open, 140ms closed |
+| Requires | the `popover` attribute on the same element |
+
+Set `--tm-origin` to the corner the popover grows from. For an anchored menu
+that is the trigger's edge, which stops the panel from appearing to inflate out
+of its own middle.
+
+The exit works because `display` and `overlay` are named in
+`transition-property` with `transition-behavior: allow-discrete`. Verified in
+Chrome: on close the element keeps `display: block` for the full 140ms and only
+then becomes `none`.
+
+## Dialog
+
+```html
+<dialog class="tm-native-dialog w-[min(24rem,90vw)] rounded-xl border bg-white p-5 backdrop:bg-black/60">
+  <h2>Delete workspace</h2>
+  <form method="dialog">
+    <button>Close</button>
+  </form>
+</dialog>
+```
+
+| | |
+|---|---|
+| Trigger | the `open` attribute, set by `showModal()` or `show()` |
+| Open | visible, `scale: 1`, `translate: 0` |
+| Closed | `display: none`, after the exit finishes |
+| Duration | 240ms open, 168ms closed |
+| Backdrop | opacity only, same duration and easing |
+
+The dialog and its backdrop move as one unit, so they share a duration and an
+easing. That is the "paired elements" rule: things that move together must feel
+like one thing.
+
+<Warning>
+`::backdrop` only started inheriting custom properties from its originating
+element recently — Chrome 122, Firefox 123, Safari 17.4. Older engines resolve
+`var()` there against nothing, so every fallback in the backdrop rules is a
+literal matching the dialog's own unscaled default. The pair stays in step
+either way. Set `--tm-backdrop-duration` to pin it explicitly.
+</Warning>
+
+A closed `<dialog>` is `display: none` in the UA stylesheet, so the transparent
+base state can never strand visible content.
+
+## Disclosure
+
+```html
+<details class="tm-native-disclosure rounded-lg border px-4 py-3">
+  <summary class="flex cursor-pointer list-none items-center gap-2">
+    <span data-tm-marker>›</span>
+    Shipping details
+  </summary>
+  <div class="pt-2">
+    Ships in two business days.
+  </div>
+</details>
+```
+
+Two layers, so every browser gets something:
+
+<Steps>
+  <Step title="A content entrance, everywhere">
+    `<details>` only renders its content while open, so a plain keyframe is
+    enough — no height has to be measured. This runs in every browser, including
+    Safari and Firefox today.
+  </Step>
+  <Step title="A height interpolation, where supported">
+    Where `::details-content` and `interpolate-size` exist, the box height
+    interpolates as well, so the surrounding page reflows smoothly instead of
+    jumping. TailMotion switches the content entrance off in that case, so the
+    movement is never doubled.
+  </Step>
+</Steps>
+
+`summary::marker` cannot be transformed, so marker rotation needs an element you
+own: add `data-tm-marker` to any child of the `<summary>`. It rotates 90° on
+open; `--tm-marker-rotate` changes the angle.
+
+<Note>
+For a div-based accordion — the shape most headless libraries produce — use
+[`tm-accordion-panel`](/docs/guides/recipes#accordion) instead. It animates a
+`0fr` → `1fr` grid row, which works everywhere and needs no measurement.
+</Note>
+
+## Support, and what happens without it
+
+Every modern rule sits behind an `@supports` guard, and the hidden base state is
+only ever declared inside the guard that also says how it comes back. No browser
+is left with invisible content.
+
+| Feature | Chrome | Safari | Firefox | Without it |
+|---|---|---|---|---|
+| `:popover-open` | 114 | 17 | 125 | The popover opens and closes, untransitioned |
+| `transition-behavior: allow-discrete` | 117 | 17.4 | 129 | Exits are instant; entrances are unaffected |
+| `@starting-style` | 117 | 17.5 | 129 | An element mounted already-open appears rather than animating in |
+| `::details-content` | 131 | not yet | not yet | The content entrance still runs; no height tween |
+| `interpolate-size: allow-keywords` | 129 | not yet | not yet | The disclosure opens at full height immediately |
+
+<Note>
+The guard for both discrete transitions and `@starting-style` is
+`@supports (transition-behavior: allow-discrete)`, because the two shipped
+together in Chrome and Firefox. Safari shipped them one point release apart, so
+in Safari 17.4 exactly the exits animate and a panel mounted already-open
+appears instead of animating in. Nothing breaks; one frame is missing.
+</Note>
+
+Check the current status on [caniuse](https://caniuse.com) — the "not yet"
+entries are true at the time of writing and are the ones most likely to change.
+
+## What stays with the browser
+
+Worth being explicit, because this is the reason to use native elements at all:
+
+- **Focus.** `showModal()` moves focus into the dialog and restores it on close.
+- **The top layer.** No `z-index` arms race.
+- **Light dismiss.** Clicking outside a popover closes it.
+- **Escape.** Works without a key handler.
+- **Semantics.** `<details>` is a real disclosure to a screen reader;
+  `<dialog>` is a real dialog.
+
+TailMotion never intercepts any of it.

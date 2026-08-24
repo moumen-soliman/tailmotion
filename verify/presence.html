@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Presence verification</title>
+    <link rel="stylesheet" href="/tailmotion.css" />
+    <style>
+      body { font: 14px/1.5 system-ui, sans-serif; margin: 24px; }
+      .panel { width: 160px; padding: 12px; background: #111; color: #fff; border-radius: 10px; }
+      .row { display: flex; gap: 16px; align-items: flex-start; margin-block: 14px; }
+      pre { background: #f6f6f6; padding: 8px; border-radius: 6px; }
+      button { padding: 6px 10px; }
+    </style>
+  </head>
+  <body>
+    <h1>Presence</h1>
+    <button id="toggle">toggle all</button>
+    <button id="rtl">toggle dir=rtl</button>
+
+    <div class="row">
+      <div class="panel tm-presence-fade" data-state="open">fade</div>
+      <div class="panel tm-presence-scale" data-state="open">scale</div>
+      <div class="panel tm-presence-pop" data-state="open">pop</div>
+      <div class="panel tm-presence-slide-block" data-state="open">slide-block</div>
+      <div class="panel tm-presence-slide-inline" data-state="open">slide-inline</div>
+      <div class="panel tm-presence-slide-inline tm-presence-from-end" data-state="open">from-end</div>
+    </div>
+
+    <div class="row">
+      <div class="panel tm-presence-fade" aria-expanded="true">aria-expanded</div>
+      <div class="panel tm-presence-scale tm-open">tm-open class</div>
+      <div class="panel tm-presence-fade">no state (must be visible)</div>
+    </div>
+
+    <pre id="out"></pre>
+
+    <script>
+      const stateful = [...document.querySelectorAll('[data-state], [aria-expanded]')];
+      const classy = [...document.querySelectorAll('.tm-open, .tm-closed')];
+      document.getElementById('toggle').onclick = () => {
+        for (const el of stateful) {
+          if (el.hasAttribute('data-state')) {
+            el.dataset.state = el.dataset.state === 'open' ? 'closed' : 'open';
+          } else {
+            el.setAttribute('aria-expanded', el.getAttribute('aria-expanded') === 'true' ? 'false' : 'true');
+          }
+        }
+        for (const el of classy) el.classList.toggle('tm-open'), el.classList.toggle('tm-closed');
+        report();
+      };
+      document.getElementById('rtl').onclick = () => {
+        document.documentElement.dir = document.documentElement.dir === 'rtl' ? 'ltr' : 'rtl';
+        report();
+      };
+      function report() {
+        const q = (sel) => document.querySelector(sel);
+        const cs = (el, p) => getComputedStyle(el).getPropertyValue(p).trim();
+        const rows = [
+          ['dir', document.documentElement.dir],
+          ['fade opacity', cs(q('.tm-presence-fade'), 'opacity')],
+          ['fade visibility', cs(q('.tm-presence-fade'), 'visibility')],
+          ['fade transition-duration', cs(q('.tm-presence-fade'), 'transition-duration')],
+          ['pop closed scale var', cs(q('.tm-presence-pop'), '--tm-presence-closed-scale')],
+          ['pop scale', cs(q('.tm-presence-pop'), 'scale')],
+          ['slide-block translate', cs(q('.tm-presence-slide-block'), 'translate')],
+          ['slide-inline translate', cs(q('.tm-presence-slide-inline'), 'translate')],
+          ['from-end translate', cs(q('.tm-presence-from-end'), 'translate')],
+          ['no-state opacity', cs([...document.querySelectorAll('.tm-presence-fade')].pop(), 'opacity')],
+          ['no-state visibility', cs([...document.querySelectorAll('.tm-presence-fade')].pop(), 'visibility')],
+          ['@starting-style supported', CSS.supports('transition-behavior', 'allow-discrete')],
+        ];
+        document.getElementById('out').textContent = rows.map(([k, v]) => `${String(k).padEnd(28)} ${v}`).join('\n');
+      }
+      report();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,383 @@
+/* TailMotion v0.8.0 — modules/choreography.css | Generated 2026-08-24T12:50:32.490Z */
+/* tailmotion/choreography.css
+   Stagger choreography on its own, with the token layer it reads.
+   Already included in "tailmotion/css". */
+
+/* --- src/choreography/stagger.css --- */
+/* --------------------------------------------------------------------------
+   Stagger choreography.
+
+   A stagger container sequences its direct children. Group siblings
+   semantically -- title, description, actions -- so the sequence reads as
+   hierarchy rather than as a queue.
+
+     <ul class="tm-stagger tm-stagger-75 tm-stagger-from-start" data-state="open">
+       <li>Profile</li>
+       <li>Settings</li>
+       <li>Sign out</li>
+     </ul>
+
+   Order
+   -----
+   Children run in document order by default. tm-stagger-from-end reverses the
+   sequence by reading a second generated index counted from the last child, so
+   nothing in the DOM moves: reading order, tab order and the accessibility
+   tree are exactly what the markup says. TailMotion never reorders children --
+   no row-reverse, no order property, no negative delays.
+
+   Direction and state
+   -------------------
+     tm-stagger                     children enter, in document order
+     tm-stagger tm-stagger-from-end children enter, last one first
+     tm-stagger-exit                children leave, in document order
+     tm-stagger data-state="closed" children leave, in document order
+     ... plus tm-stagger-from-end   children leave, last one first
+
+   A container with no state keeps the pre-0.8 behaviour exactly: its children
+   enter once on mount.
+
+   Limit
+   -----
+   Indices are generated for the first 20 children (see MAX_STAGGER_CHILDREN in
+   scripts/build.mjs). Child 21 onwards reuses the last index, so a long list
+   ends together rather than starting together -- with the default 100ms step a
+   20-item sequence already runs for 1.9s, and past that a stagger stops
+   reading as choreography.
+
+   Nesting
+   -------
+   A nested tm-stagger sequences its own children from its own delay; it does
+   not continue the outer count, and its step does not leak back out. Offset a
+   nested group with tm-delay-* when the two should read as one sequence.
+   -------------------------------------------------------------------------- */
+
+
+/* --- src/shared/tokens.css --- */
+/* --------------------------------------------------------------------------
+   TailMotion token layer.
+
+   Everything TailMotion animates reads from these four groups:
+
+     1. Explicit overrides  --tm-duration, --tm-delay, --tm-easing,
+                            --tm-iteration-count. Deliberately unset, so each
+                            motion class keeps its own tuned default. Set them
+                            per element with tm-duration-*, tm-delay-*,
+                            tm-ease-*, tm-repeat-*, the Tailwind plugin, or an
+                            inline style. An explicit value always wins.
+
+     2. Profile factors     --tm-duration-scale, --tm-emphasis, --tm-overshoot.
+                            Inherited multipliers. A motion personality
+                            (tm-motion-calm / -productive / -expressive)
+                            retunes a whole subtree by changing these, and each
+                            animation keeps its relative character because it
+                            multiplies its own default rather than being
+                            replaced by a global one.
+
+     3. Shared scalars      --tm-distance, --tm-stagger-step. One value each,
+                            already shared by every class that uses them, so a
+                            profile sets them outright.
+
+     4. Role easings        --tm-ease-entrance, --tm-ease-exit,
+                            --tm-ease-interaction, --tm-ease-emphasis. Classes
+                            opt into a role; a profile retunes the role.
+                            Animations with a character of their own (linear
+                            spins, ambient drifts) stay out of this and keep
+                            their literal curve.
+
+   This file carries no selectors of its own beyond :root, so a module can
+   import it and stand alone.
+   -------------------------------------------------------------------------- */
+
+@layer base {
+  :root,
+  :host {
+    /* --- Profile factors ------------------------------------------------ */
+
+    /* Multiplies every animation's own default duration. */
+    --tm-duration-scale: 1;
+
+    /* Multiplies how far a keyframe departs from its resting value: the 0.85
+       start scale of tm-pop, the blur of tm-blur-in. 0 removes the departure
+       entirely, so keep it above 0 unless the motion should become a pure
+       fade. */
+    --tm-emphasis: 1;
+
+    /* Multiplies only the frames that travel *past* the resting value: the
+       1.05 peak of tm-pop, the settle of tm-drop. 0 removes overshoot without
+       touching the entrance itself. */
+    --tm-overshoot: 1;
+
+    /* --- Shared scalars ------------------------------------------------- */
+
+    /* Choreography */
+    --tm-stagger-step: 100ms;
+
+    /* Travel distance. Exits travel 70% of an entrance, resolved at the point
+       of use so tm-distance-* retunes entrances and exits together. */
+    --tm-distance: 12px;
+
+    /* Sign of inline-axis motion: 1 in LTR, -1 in RTL. */
+    --tm-inline-flip: 1;
+
+    /* --- Role easings --------------------------------------------------- */
+
+    /* Arriving: decelerate into place. Anything that enters or leaves the
+       screen wants an ease-out, entrances and exits alike -- an ease-in exit
+       delays the visual feedback and reads as sluggish. */
+    --tm-ease-entrance: cubic-bezier(0.22, 1, 0.36, 1);
+
+    /* Leaving: the same family, weaker, because the exit should not perform. */
+    --tm-ease-exit: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+    /* Responding to a pointer or key, where the target can change mid-flight. */
+    --tm-ease-interaction: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+    /* Moving or reshaping something that is already on screen: accelerate out
+       of the old position, brake into the new one. */
+    --tm-ease-morph: cubic-bezier(0.2, 0, 0, 1);
+
+    /* Celebrating: the only curve that is allowed to overshoot. */
+    --tm-ease-emphasis: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+    /* --- Effect colors --------------------------------------------------
+       TailMotion ships no palette: every effect inherits the consumer's color
+       and every token can be replaced with an exact value, alpha included. */
+    --tm-color: currentColor;
+    --tm-shadow-color: color-mix(in oklab, var(--tm-color) 25%, transparent);
+    --tm-glow-color: color-mix(in oklab, var(--tm-color) 45%, transparent);
+    --tm-outline-color: color-mix(in oklab, var(--tm-color) 40%, transparent);
+
+    /* The shimmer highlight keeps its color and its strength apart: browsers
+       drop gradient interpolation hints from any gradient holding a
+       color-mix() stop, so strength lives in --tm-shimmer-opacity instead. */
+    --tm-shimmer-color: var(--tm-color);
+    --tm-shimmer-opacity: 0.35;
+  }
+
+  /* Safe fallback where color-mix() is unavailable. */
+  @supports not (color: color-mix(in oklab, currentColor, transparent)) {
+    :root,
+    :host {
+      --tm-shadow-color: var(--tm-color);
+      --tm-glow-color: var(--tm-color);
+      --tm-outline-color: var(--tm-color);
+    }
+  }
+
+  /* Mirror inline-axis motion in right-to-left contexts. */
+  [dir="ltr"] {
+    --tm-inline-flip: 1;
+  }
+
+  [dir="rtl"] {
+    --tm-inline-flip: -1;
+  }
+
+  @supports selector(:dir(rtl)) {
+    [dir="auto"]:dir(ltr) {
+      --tm-inline-flip: 1;
+    }
+
+    [dir="auto"]:dir(rtl) {
+      --tm-inline-flip: -1;
+    }
+  }
+
+  /* Motion is supplementary feedback. When it is not wanted, every animation
+     lands on its final state immediately instead of being skipped, so the
+     state a class communicates stays visible. Container classes that animate
+     unclassed children are listed explicitly.
+
+     Scroll-driven classes are progress-linked rather than time-linked, so a
+     1ms duration would not stop them. They are switched off in
+     src/scroll/scroll.css instead, which leaves their subject at its natural,
+     visible state. */
+  @media (prefers-reduced-motion: reduce) {
+    [class*="tm-"],
+    [class*="tm-"]::before,
+    [class*="tm-"]::after,
+    .tm-stagger > *,
+    .tm-count-reveal > *,
+    .tm-icon-swap > *,
+    .tm-view-morph > [data-tm-panel],
+    .tm-text-flip-chars > span {
+      animation-duration: 1ms !important;
+      animation-delay: 0ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 1ms !important;
+      transition-delay: 0ms !important;
+    }
+
+    /* Kept apart: a selector list is discarded whole if a browser cannot parse
+       one of its parts, and ::backdrop is younger than the rule above. */
+    [class*="tm-"]::backdrop {
+      animation-duration: 1ms !important;
+      animation-delay: 0ms !important;
+      transition-duration: 1ms !important;
+      transition-delay: 0ms !important;
+    }
+  }
+}
+
+
+@layer utilities {
+  /* The container is a scope, not an animated item: reset the indices so a
+     stagger nested inside another cannot inherit its parent's position. */
+  .tm-stagger {
+    --tm-stagger-index: 0;
+    --tm-stagger-index-end: 0;
+  }
+
+  .tm-stagger > * {
+    /* Which end the sequence counts from. tm-stagger-from-end swaps it. */
+    --tm-stagger-position: var(--tm-stagger-index, 0);
+
+    animation-name: tm-stagger-item;
+    animation-duration: var(--tm-duration, calc(260ms * var(--tm-duration-scale, 1)));
+    animation-delay: calc(
+      var(--tm-delay, 0ms) + var(--tm-stagger-position, 0) *
+        var(--tm-stagger-step, 100ms)
+    );
+    animation-timing-function: var(--tm-easing, var(--tm-ease-entrance, cubic-bezier(0.22, 1, 0.36, 1)));
+    animation-iteration-count: var(--tm-iteration-count, 1);
+    animation-fill-mode: both;
+  }
+
+  /* Count from the last child instead of the first. */
+  .tm-stagger-from-end > *,
+  .tm-stagger-reverse > * {
+    --tm-stagger-position: var(--tm-stagger-index-end, 0);
+  }
+
+  /* Explicit forward, for markup that states its intent or overrides an
+     inherited modifier. */
+  .tm-stagger-from-start > * {
+    --tm-stagger-position: var(--tm-stagger-index, 0);
+  }
+
+  /* Leave in sequence. Either by class, or from the state the container
+     already carries -- switching animation-name is what re-triggers the
+     keyframes, so toggling data-state replays the choreography in the new
+     direction without any JavaScript. */
+  .tm-stagger-exit > *,
+  .tm-stagger:is(
+      [data-state="closed"],
+      [data-state="inactive"],
+      [data-state="off"],
+      [aria-expanded="false"],
+      .tm-closed
+    ) > * {
+    animation-name: tm-stagger-item-exit;
+    animation-duration: var(
+      --tm-exit-duration,
+      calc(
+        var(--tm-duration, calc(260ms * var(--tm-duration-scale, 1))) *
+          var(--tm-presence-exit-scale, 0.7)
+      )
+    );
+    animation-timing-function: var(--tm-easing, var(--tm-ease-exit, cubic-bezier(0.25, 0.46, 0.45, 0.94)));
+  }
+
+  /* Step tokens. tm-stagger-step-* (0.6 and earlier) and the shorter
+     tm-stagger-* spelling are the same utility; the short form is preferred in
+     new markup. Both are declared after the motion profiles, so an explicit
+     step wins over a profile's. */
+  .tm-stagger-50 {
+    --tm-stagger-step: 50ms;
+  }
+
+  .tm-stagger-75 {
+    --tm-stagger-step: 75ms;
+  }
+
+  .tm-stagger-100 {
+    --tm-stagger-step: 100ms;
+  }
+
+  .tm-stagger-150 {
+    --tm-stagger-step: 150ms;
+  }
+
+  .tm-stagger-200 {
+    --tm-stagger-step: 200ms;
+  }
+
+  /* Generated child indices. Forward, then counted from the end. */
+  .tm-stagger > *:nth-child(1) { --tm-stagger-index: 0; }
+  .tm-stagger > *:nth-child(2) { --tm-stagger-index: 1; }
+  .tm-stagger > *:nth-child(3) { --tm-stagger-index: 2; }
+  .tm-stagger > *:nth-child(4) { --tm-stagger-index: 3; }
+  .tm-stagger > *:nth-child(5) { --tm-stagger-index: 4; }
+  .tm-stagger > *:nth-child(6) { --tm-stagger-index: 5; }
+  .tm-stagger > *:nth-child(7) { --tm-stagger-index: 6; }
+  .tm-stagger > *:nth-child(8) { --tm-stagger-index: 7; }
+  .tm-stagger > *:nth-child(9) { --tm-stagger-index: 8; }
+  .tm-stagger > *:nth-child(10) { --tm-stagger-index: 9; }
+  .tm-stagger > *:nth-child(11) { --tm-stagger-index: 10; }
+  .tm-stagger > *:nth-child(12) { --tm-stagger-index: 11; }
+  .tm-stagger > *:nth-child(13) { --tm-stagger-index: 12; }
+  .tm-stagger > *:nth-child(14) { --tm-stagger-index: 13; }
+  .tm-stagger > *:nth-child(15) { --tm-stagger-index: 14; }
+  .tm-stagger > *:nth-child(16) { --tm-stagger-index: 15; }
+  .tm-stagger > *:nth-child(17) { --tm-stagger-index: 16; }
+  .tm-stagger > *:nth-child(18) { --tm-stagger-index: 17; }
+  .tm-stagger > *:nth-child(19) { --tm-stagger-index: 18; }
+  .tm-stagger > *:nth-child(20) { --tm-stagger-index: 19; }
+  .tm-stagger > *:nth-child(n + 21) { --tm-stagger-index: 19; }
+
+  .tm-stagger > *:nth-last-child(1) { --tm-stagger-index-end: 0; }
+  .tm-stagger > *:nth-last-child(2) { --tm-stagger-index-end: 1; }
+  .tm-stagger > *:nth-last-child(3) { --tm-stagger-index-end: 2; }
+  .tm-stagger > *:nth-last-child(4) { --tm-stagger-index-end: 3; }
+  .tm-stagger > *:nth-last-child(5) { --tm-stagger-index-end: 4; }
+  .tm-stagger > *:nth-last-child(6) { --tm-stagger-index-end: 5; }
+  .tm-stagger > *:nth-last-child(7) { --tm-stagger-index-end: 6; }
+  .tm-stagger > *:nth-last-child(8) { --tm-stagger-index-end: 7; }
+  .tm-stagger > *:nth-last-child(9) { --tm-stagger-index-end: 8; }
+  .tm-stagger > *:nth-last-child(10) { --tm-stagger-index-end: 9; }
+  .tm-stagger > *:nth-last-child(11) { --tm-stagger-index-end: 10; }
+  .tm-stagger > *:nth-last-child(12) { --tm-stagger-index-end: 11; }
+  .tm-stagger > *:nth-last-child(13) { --tm-stagger-index-end: 12; }
+  .tm-stagger > *:nth-last-child(14) { --tm-stagger-index-end: 13; }
+  .tm-stagger > *:nth-last-child(15) { --tm-stagger-index-end: 14; }
+  .tm-stagger > *:nth-last-child(16) { --tm-stagger-index-end: 15; }
+  .tm-stagger > *:nth-last-child(17) { --tm-stagger-index-end: 16; }
+  .tm-stagger > *:nth-last-child(18) { --tm-stagger-index-end: 17; }
+  .tm-stagger > *:nth-last-child(19) { --tm-stagger-index-end: 18; }
+  .tm-stagger > *:nth-last-child(20) { --tm-stagger-index-end: 19; }
+  .tm-stagger > *:nth-last-child(n + 21) { --tm-stagger-index-end: 19; }
+}
+
+@keyframes tm-stagger-item {
+  from {
+    opacity: 0;
+    translate: 0 var(--tm-distance, 12px);
+  }
+
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@keyframes tm-stagger-item-exit {
+  from {
+    opacity: 1;
+    translate: 0 0;
+  }
+
+  to {
+    opacity: 0;
+    translate: 0
+      calc(var(--tm-exit-distance, calc(var(--tm-distance, 12px) * 0.7)) * -1);
+  }
+}
+
+/* Reduced motion. Repeated here so the module is safe to import on its own;
+   the container animates unclassed children, so it has to be named. */
+@media (prefers-reduced-motion: reduce) {
+  .tm-stagger > * {
+    animation-duration: 1ms !important;
+    animation-delay: 0ms !important;
+  }
+}

@@ -1,7 +1,7 @@
 @layer utilities {
   .tm-sway {
     animation-name: tm-sway;
-    animation-duration: var(--tm-duration, 3500ms);
+    animation-duration: var(--tm-duration, calc(3500ms * var(--tm-duration-scale, 1)));
     animation-delay: var(--tm-delay, 0ms);
     animation-timing-function: var(--tm-easing, cubic-bezier(0.37, 0, 0.63, 1));
     animation-iteration-count: var(--tm-iteration-count, infinite);

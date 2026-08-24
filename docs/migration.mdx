@@ -1,0 +1,164 @@
+---
+title: "Migration"
+description: "What changed in 0.8 and 0.6, and what you have to do about it."
+---
+
+## Migrating to 0.8
+
+0.8 adds six layers without removing anything. Every 0.7 class still exists and
+still does what it did. Five defaults changed, all deliberately.
+
+<Note>
+**If you upgrade and change nothing**, the only visible differences are
+`tm-pop`'s slightly stronger overshoot and the `tm-distance-*` fix below. Motion
+profiles do nothing until you add one.
+</Note>
+
+### Profiles are opt-in
+
+With no `tm-motion-*` class in the tree, every factor is 1 and every animation
+runs at exactly its 0.7 timing. Adding a profile is the entire migration for the
+biggest new feature.
+
+### Shared easing roles replaced some per-class curves
+
+Entrances, exits, interactions, morphs and emphasis now read
+`--tm-ease-entrance`, `--tm-ease-exit`, `--tm-ease-interaction`,
+`--tm-ease-morph` and `--tm-ease-emphasis`.
+
+Most classes kept their exact curve. One changed:
+
+| Class | 0.7 | 0.8 |
+|---|---|---|
+| `tm-pop` | `cubic-bezier(0.18, 0.89, 0.32, 1.28)` | the shared emphasis curve, `cubic-bezier(0.34, 1.56, 0.64, 1)` |
+
+It overshoots slightly more. To restore the old feel:
+
+```html
+<div class="tm-pop tm-ease-[cubic-bezier(0.18,0.89,0.32,1.28)]">…</div>
+```
+
+or remove the overshoot entirely with `tm-no-overshoot`.
+
+`tm-ease-*` on the element still overrides the role, exactly as before.
+
+### `tm-distance-*` now retunes exits
+
+<Warning>
+This is a bug fix, but it does change output. If you used `tm-distance-*`
+expecting exits to stay at 8.4px, they now scale with it.
+</Warning>
+
+`--tm-exit-distance` used to be declared on `:root` as
+`calc(var(--tm-distance) * 0.7)`. A custom property is substituted where it is
+declared, so that `calc()` froze at 8.4px against the root distance and never
+noticed a `tm-distance-*` utility further down the tree — the opposite of what
+the plugin documented.
+
+The ratio is now resolved on the element. Setting `--tm-exit-distance`
+explicitly still overrides it:
+
+```html
+<div class="tm-slide-block-out" style="--tm-exit-distance: 8.4px">…</div>
+```
+
+### 32 keyframes moved off `transform`
+
+Every entrance, exit, presence and scroll class now animates the individual
+`translate`, `scale` and `rotate` properties, so a TailMotion class on an element
+carrying a Tailwind `rotate-*`, `scale-*` or `-translate-*` no longer erases it.
+
+If you were **relying** on a TailMotion class to clear an element's transform,
+that no longer happens. Clear it explicitly with `transform-none`.
+
+See [Transform safety](/docs/concepts/transform-safety) for the 32 that still
+write `transform` and why.
+
+### `tm-stagger` moved file
+
+From `animations/professional.css` to `choreography/stagger.css`. Same class,
+same bundle, same behaviour. Only a per-animation import path changes:
+
+```diff
+- @import "tailmotion/animations/professional.css";
++ @import "tailmotion/choreography.css";
+```
+
+`tailmotion/css` users are unaffected.
+
+### Stagger past 20 children
+
+Child 21 onward now reuses the last delay instead of falling back to zero, so a
+long list lands together at the end rather than all at once at the front.
+
+### Two spellings, one utility
+
+`tm-stagger-50` … `tm-stagger-200` are the newer, shorter names for
+`tm-stagger-step-*`. The long form is **not** deprecated and will keep working.
+
+### New emphasis factors on existing keyframes
+
+These gained `--tm-emphasis` and `--tm-overshoot` so a profile can reach them:
+`tm-pop`, `tm-scale-in`, `tm-zoom-in`, `tm-zoom-out`, `tm-drop-in`, `tm-elastic`,
+`tm-bounce`, `tm-pulse`, `tm-shake`, `tm-blur-in`, `tm-scale-out`, `tm-blur-out`.
+
+With both factors at their default of 1, every one of them animates exactly as
+it did in 0.7.
+
+### Should I replace anything?
+
+Not required, but worth knowing:
+
+| If you built | Consider |
+|---|---|
+| A menu or dropdown with entrance and exit keyframes | [`tm-presence-*`](/docs/concepts/presence) or [`tm-menu`](/docs/guides/recipes#menu-and-popover) — interruptible, and half the code |
+| A dialog with a JavaScript-driven exit | [`tm-native-dialog`](/docs/guides/native-elements#dialog) |
+| An accordion with measured heights | [`tm-accordion-panel`](/docs/guides/recipes#accordion) |
+| A scroll reveal with `IntersectionObserver` | [`tm-scroll-*`](/docs/guides/scroll) |
+| `tm-hold-delete` | [`tm-hold-confirm`](/docs/guides/recipes#hold-to-confirm), which owns no colors |
+
+---
+
+## Migrating to 0.6
+
+0.6 turned the class list into a deliberate vocabulary. Nothing was removed, but
+some defaults changed.
+
+### Timing tokens behave as documented
+
+`--tm-duration`, `--tm-delay`, `--tm-easing` and `--tm-iteration-count` no longer
+carry `:root` values. Previously the root value shadowed every per-class default,
+so every animation ran at 400ms and every loop animation ran exactly once —
+`tm-spin`, `tm-pulse` and `tm-glow` included.
+
+Each class now uses its own tuned timing, and loop animations loop.
+`tm-duration-*`, `tm-delay-*`, `tm-ease-*` and `tm-repeat-*` override them
+exactly as before.
+
+<Note>
+`npm run check` now fails the build if a `:root` timing token comes back.
+</Note>
+
+### Logical direction names
+
+`tm-slide-up` / `-down` / `-left` / `-right` became `tm-slide-block-start` /
+`-block-end` / `-inline-start` / `-inline-end`. The physical names are kept as
+aliases and point at the same keyframes — which is exactly why they are
+misleading in a right-to-left context.
+
+### Interactions became transitions
+
+`tm-lift-hover`, `tm-rotate-hover` and `tm-rotate-press` replayed keyframes on a
+state change, so releasing early snapped or restarted. They are transitions now.
+`tm-rotate-press` also no longer leaves the element at `scale(0.98)` after a
+click.
+
+### Fixed in 0.6
+
+- `tm-rotate-in` was documented and had a `hover:` variant but no keyframes.
+- `hover:tm-drop` pointed at a keyframe name that was never defined.
+- Reduced motion did not reach pseudo-elements or the generated children of
+  `tm-stagger` and `tm-count-reveal`.
+
+Both missing-keyframe bugs are now impossible to reintroduce: `npm run check`
+resolves every `animation-name` against a real `@keyframes` block.

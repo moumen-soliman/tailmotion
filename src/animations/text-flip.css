@@ -10,7 +10,7 @@
   .tm-text-flip-word {
     display: inline-block;
     animation-name: tm-text-flip-in;
-    animation-duration: var(--tm-duration, 600ms);
+    animation-duration: var(--tm-duration, calc(600ms * var(--tm-duration-scale, 1)));
     animation-timing-function: var(--tm-easing, cubic-bezier(0.16, 1, 0.3, 1));
     animation-fill-mode: both;
     will-change: transform, opacity, filter;
@@ -67,7 +67,7 @@
   .tm-text-rotate-word {
     display: inline-block;
     animation-name: tm-text-rotate-in;
-    animation-duration: var(--tm-duration, 500ms);
+    animation-duration: var(--tm-duration, calc(500ms * var(--tm-duration-scale, 1)));
     animation-timing-function: var(--tm-easing, cubic-bezier(0.22, 1, 0.36, 1));
     animation-fill-mode: both;
     will-change: transform, opacity, filter;
@@ -115,7 +115,7 @@
   .tm-text-morph-word {
     display: inline-block;
     animation-name: tm-text-morph-in;
-    animation-duration: var(--tm-duration, 400ms);
+    animation-duration: var(--tm-duration, calc(400ms * var(--tm-duration-scale, 1)));
     animation-timing-function: var(--tm-easing, ease-out);
     animation-fill-mode: both;
     will-change: opacity, filter;
@@ -158,7 +158,7 @@
   .tm-text-flip-chars > span {
     display: inline-block;
     animation-name: tm-char-flip-in;
-    animation-duration: var(--tm-duration, 400ms);
+    animation-duration: var(--tm-duration, calc(400ms * var(--tm-duration-scale, 1)));
     animation-delay: calc(var(--tm-char-index, 0) * 40ms);
     animation-timing-function: var(--tm-easing, cubic-bezier(0.16, 1, 0.3, 1));
     animation-fill-mode: both;

@@ -1,0 +1,225 @@
+---
+title: "Class reference"
+description: "Every class, its trigger, its states, its timing, and the markup it requires."
+---
+
+Shared behaviour, true of every class below unless stated otherwise:
+
+- **Profile factors** `--tm-duration-scale`, `--tm-emphasis`, `--tm-overshoot`,
+  `--tm-distance` and `--tm-stagger-step` are inherited and scale the class.
+- **Explicit overrides** `--tm-duration`, `--tm-delay`, `--tm-easing`,
+  `--tm-iteration-count` and `--tm-exit-duration` win over any inherited profile.
+- **Reduced motion** collapses the class to 1ms. Two exceptions are marked.
+- **RTL**: inline-axis classes mirror, block-axis classes do not.
+- **Closed durations** shown are the default 70% ratio.
+
+## Motion personalities
+
+| Class | Duration factor | Travel | Emphasis | Overshoot | Stagger step |
+|---|---|---|---|---|---|
+| `tm-motion-calm` | ×1.1 | 8px | ×0.55 | 0 | 70ms |
+| `tm-motion-productive` | ×0.85 | 10px | ×0.85 | ×0.6 | 55ms |
+| `tm-motion-expressive` | ×1.2 | 22px | ×1.35 | ×1.3 | 110ms |
+| `tm-motion-default` | ×1 | 12px | ×1 | ×1 | 100ms |
+
+Single-axis: `tm-speed-75` … `tm-speed-150`, `tm-emphasis-0` … `tm-emphasis-150`,
+`tm-no-overshoot`.
+
+## Presence
+
+| Class | Trigger | Open | Closed | Duration | Easing role | Own variables |
+|---|---|---|---|---|---|---|
+| `tm-presence-fade` | state attribute | `opacity: 1` | `opacity: 0` | 180 / 126ms | entrance / exit | `--tm-presence-exit-scale` |
+| `tm-presence-scale` | state attribute | `scale: 1` | `scale: 0.96`, faded | 220 / 154ms | entrance / exit | `--tm-origin` |
+| `tm-presence-pop` | state attribute | `scale: 1` | `scale: 0.9`, faded | 260 / 182ms | emphasis / exit | `--tm-origin`, `--tm-overshoot` |
+| `tm-presence-slide-block` | state attribute | `translate: 0` | block-axis offset, faded | 240 / 168ms | entrance / exit | `--tm-presence-direction` |
+| `tm-presence-slide-inline` | state attribute | `translate: 0` | inline-axis offset, faded, mirrored | 240 / 168ms | entrance / exit | `--tm-presence-direction` |
+| `tm-presence-from-start` | — | modifier | modifier | — | — | `--tm-presence-direction: -1` |
+| `tm-presence-from-end` | — | modifier | modifier | — | — | `--tm-presence-direction: 1` |
+
+Requires: a recognised state attribute, or none — an element with no state is
+treated as open. Closed ends on `visibility: hidden`.
+Never repeats. Interruptible.
+See [State-driven presence](/docs/concepts/presence).
+
+## Native elements
+
+| Class | Trigger | Open | Closed | Duration | Requires | Fallback |
+|---|---|---|---|---|---|---|
+| `tm-native-popover` | `:popover-open` | visible, `scale: 1` | `display: none` after the exit | 200 / 140ms | the `popover` attribute | opens and closes untransitioned |
+| `tm-native-dialog` | the `open` attribute | visible | `display: none` after the exit | 240 / 168ms | a `<dialog>` element | opens and closes untransitioned |
+| `tm-native-disclosure` | the `open` attribute | full height | zero height | 240ms | a `<details>`; optional `[data-tm-marker]` in the `<summary>` | content entrance only, no height tween |
+
+Own variables: `--tm-origin`, `--tm-backdrop-duration`, `--tm-marker-rotate`.
+See [Native elements](/docs/guides/native-elements).
+
+## Product recipes
+
+| Class | Trigger | Open | Closed | Duration | Easing role | Requires |
+|---|---|---|---|---|---|---|
+| `tm-menu` | state attribute | visible | `scale: 0.96`, faded | 180 / 126ms | entrance / exit | optional `data-side` |
+| `tm-dialog` | state attribute | visible | offset up, faded | 240 / 168ms | entrance / exit | state on the backdrop too |
+| `tm-dialog-backdrop` | state attribute | visible | faded | 240 / 168ms | entrance / exit | — |
+| `tm-toast` | state attribute | visible | inline-end offset, faded | 260 / 182ms | entrance / exit | `role="status"` for announcement |
+| `tm-toast-from-inline-start` | — | modifier | modifier | — | — | `tm-toast` |
+| `tm-toast-from-block-end` | — | modifier | modifier | — | — | `tm-toast` |
+| `tm-toast-from-block-start` | — | modifier | modifier | — | — | `tm-toast` |
+| `tm-tooltip` | state attribute | visible | small offset, faded | 120 / 60ms | entrance / exit | `role="tooltip"`, optional `data-side` |
+| `tm-accordion-panel` | state attribute | `1fr` grid row | `0fr` grid row, faded | 260 / 182ms | morph | **exactly one element child** |
+| `tm-tab-panel` | `data-state="active"` | visible | faded | 160 / 112ms | entrance / exit | — |
+| `tm-tab-indicator` | your measurement | at the active tab | — | 260ms | morph | `--tm-tab-offset`, `--tm-tab-size` |
+| `tm-feedback-button` | `data-state` | the matching child visible | the others faded and hidden | 220ms | entrance, emphasis on success | one child per state |
+| `tm-hold-confirm` | `:active` or `data-state="holding"` | empty fill | fill retreats in 160ms | 1200ms hold | linear | a key handler for keyboard use |
+
+`tm-hold-confirm` **keeps its full duration under reduced motion**.
+See [Product recipes](/docs/guides/recipes).
+
+## Scroll-driven
+
+| Class | Trigger | Start of range | End of range | Requires |
+|---|---|---|---|---|
+| `tm-scroll-fade` | scroll position | `opacity: 0` | `opacity: 1` | nothing |
+| `tm-scroll-reveal` | scroll position | faded, offset by `--tm-distance` | in place | nothing |
+| `tm-scroll-slide-block` | scroll position | faded, offset by 2 × `--tm-distance` | in place | nothing |
+| `tm-scroll-scale` | scroll position | faded, slightly small | in place | nothing |
+| `tm-scroll-progress` | document scroll | `scale: 0 1` | `scale: 1 1` | a bar you size and color |
+
+Range modifiers: `tm-scroll-range-entry`, `-cover`, `-contain`, `-exit`.
+Easing is always linear — progress-linked motion should track the scroll exactly.
+**Switched off under reduced motion**, leaving content visible.
+See [Scroll-driven motion](/docs/guides/scroll).
+
+## Choreography
+
+| Class | Effect | Requires |
+|---|---|---|
+| `tm-stagger` | Direct children enter in document order | direct element children |
+| `tm-stagger-from-end` | Last child first. `tm-stagger-reverse` is an alias | `tm-stagger` |
+| `tm-stagger-from-start` | Explicit forward | `tm-stagger` |
+| `tm-stagger-exit` | Children leave in sequence | `tm-stagger` |
+| `tm-stagger-50` … `tm-stagger-200` | Step between children | `tm-stagger` |
+| `tm-stagger-step-50` … `tm-stagger-step-200` | The 0.6 spelling of the same utility | `tm-stagger` |
+
+A container with `data-state` plays the entrance when open and the exit when
+closed. Indices are generated for 20 children; child 21 onward reuses the last.
+See [Choreography](/docs/concepts/choreography).
+
+## Interactions
+
+Transitions, so they stack on one element and reverse mid-flight.
+
+| Class | Trigger | Active state | Duration | Own variables |
+|---|---|---|---|---|
+| `tm-press` | `:active` | `scale: 0.96` | 150ms | `--tm-press-scale` |
+| `tm-hover-lift` | `:hover`, `:focus-visible` | raised, with a shadow | 150ms | `--tm-lift-distance`, `--tm-lift-shadow` |
+| `tm-hover-scale` | `:hover`, `:focus-visible` | `scale: 1.04` | 150ms | `--tm-hover-scale` |
+| `tm-rotate-hover` | `:hover`, `:focus-visible` | `rotate: 6deg` | 150ms | `--tm-rotate` |
+| `tm-rotate-press` | `:active` | scaled and rotated | 150ms | `--tm-press-scale`, `--tm-rotate` |
+| `tm-icon-swap` | `aria-pressed`, `aria-expanded`, `aria-checked`, `[data-tm-swap]`, `.tm-swapped` | second child visible | 300ms | — |
+| `tm-lift-hover` | alias of `tm-hover-lift` | — | 150ms | — |
+
+`tm-press` and `tm-rotate-press` skip `:disabled` and `[aria-disabled="true"]`.
+`tm-icon-swap` requires exactly two element children.
+
+## Entrances
+
+Keyframes, once, `fill-mode: both`.
+
+| Class | Duration | Easing role | Motion |
+|---|---|---|---|
+| `tm-fade-in` | 250ms | entrance | opacity |
+| `tm-scale-in` | 220ms | entrance | opacity + scale from `--tm-scale-from` |
+| `tm-slide-block-start` / `tm-slide-up` | 260ms | entrance | opacity + travel toward the block-start edge |
+| `tm-slide-block-end` / `tm-slide-down` | 260ms | entrance | opacity + travel toward the block-end edge |
+| `tm-slide-inline-start` / `tm-slide-left` | 260ms | entrance | opacity + inline travel, mirrored |
+| `tm-slide-inline-end` / `tm-slide-right` | 260ms | entrance | opacity + inline travel, mirrored |
+| `tm-blur-in` | 280ms | entrance | opacity + blur from `--tm-blur` |
+| `tm-pop` | 380ms | emphasis | scale under, past, then settle |
+| `tm-drop` / `tm-drop-in` | 600ms | emphasis | falls from above, squashes, settles |
+| `tm-zoom-in` | 520ms | entrance | scale up with a small rise |
+| `tm-zoom-in-slow` | 900ms | entrance | as above, slower |
+| `tm-zoom-out` | 520ms | entrance | settles in from a larger scale |
+| `tm-rotate-in` | 280ms | entrance | opacity + rotate + scale |
+| `tm-elastic` | 900ms | emphasis | squash-and-stretch |
+| `tm-reveal` | 800ms | entrance | clip-path wipe + rise |
+| `tm-unfold` | 700ms | entrance | scaleY from the top edge |
+| `tm-glide` / `tm-glide-right` | 900ms | entrance | long horizontal travel |
+| `tm-scale-fade` | 600ms | entrance | subtle scale + fade, for cards |
+| `tm-rise` | 1000ms | entrance | long rise with a slight rotation |
+| `tm-swing-in` and variants | 600ms | — | 3D swing |
+| `tm-flip-x` / `tm-flip-y` | 600ms | — | 3D flip |
+
+<Note>
+`tm-zoom-out` is an **entrance** despite its name — it settles in from a larger
+scale. For a real exit use `tm-scale-out`. The name is kept for compatibility.
+</Note>
+
+## Exits
+
+| Class | Duration | Easing role | Motion |
+|---|---|---|---|
+| `tm-fade-out` | 200ms | exit | opacity |
+| `tm-scale-out` | 180ms | exit | opacity + scale down |
+| `tm-slide-block-out` | 210ms | exit | leaves toward the block-start edge |
+| `tm-slide-inline-out` | 210ms | exit | leaves toward the inline-end edge, mirrored |
+| `tm-blur-out` | 220ms | exit | opacity + blur |
+
+Each ends on its final frame, so the element stays hidden but still occupies
+layout. Remove the node, or apply `hidden`, once the animation finishes. For an
+exit that has to be interruptible, use [presence](/docs/concepts/presence)
+instead.
+
+## Continuous
+
+Loop by default. Every one is decorative — pair with `motion-safe:` when it
+carries no information.
+
+| Class | Duration | Motion |
+|---|---|---|
+| `tm-spin` | 1200ms | rotation |
+| `tm-pulse` | 1400ms | scale |
+| `tm-bounce` | 900ms | vertical bounce |
+| `tm-float` | 3000ms | slow vertical drift |
+| `tm-drift` | 2800ms | slow two-axis drift |
+| `tm-sway` | 3500ms | rotate + translate |
+| `tm-glow` | 1600ms | glow via `--tm-glow-color` |
+| `tm-morph` | 4000ms | subtle scale + rotate |
+| `tm-ripple` | 1800ms | expanding ring |
+| `tm-shimmer` | 1600ms | gradient sweep on a pseudo-element |
+| `tm-sparkle` | 1400ms | sparkle |
+
+## Attention
+
+Run once. Use for an error or a rejected action, never for decoration.
+
+| Class | Duration |
+|---|---|
+| `tm-shake` | 600ms |
+| `tm-wiggle` | 500ms |
+| `tm-burst` | 600ms |
+
+## Timing utilities
+
+| Group | Values |
+|---|---|
+| `tm-duration-*` | 150, 200, 300, 400, 500, 700, 900, 1000, 1200, 1400, 1600, 2000, 3000 |
+| `tm-delay-*` | 0, 75, 150, 200, 300, 400, 500, 700, 1000 |
+| `tm-ease-*` | linear, in, out, in-out, soft, snappy, bouncy |
+| `tm-repeat-*` | 1, 2, 3, infinite |
+| `tm-distance-*` | 4, 8, 12, 20, 30 |
+| `tm-stagger-*` / `tm-stagger-step-*` | 50, 75, 100, 150, 200 |
+| `tm-speed-*` | 75, 85, 100, 110, 125, 150 |
+| `tm-emphasis-*` | 0, 50, 75, 100, 125, 150 |
+| `tm-hold-*` | 800, 1200, 1600, 2000 |
+
+Plus `tm-motion-paused`, `tm-motion-running`, `tm-motion-reset`, `tm-gpu`,
+`tm-perspective`, `tm-3d`.
+
+## Prebuilt variants
+
+The bundled stylesheet includes a curated set: `hover:`, `focus:`,
+`focus-visible:`, `active:`, `focus-within:`, `group-hover:`, `motion-safe:`, and
+selected responsive combinations for the most common animations. The base `tm-*`
+class is always available.
+
+Per-animation imports do **not** include these — they live in `variants.css`.

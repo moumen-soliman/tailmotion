@@ -1,0 +1,15 @@
+# Everything that is not published documentation.
+src/
+scripts/
+demo/
+verify/
+modules/
+types/
+dist/
+node_modules/
+tailmotion.css
+tailmotion.config.cjs
+
+# Internal planning notes that live alongside the docs.
+docs/*_PLAN.md
+docs/*_PROMPT.md

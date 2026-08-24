@@ -1,10 +1,19 @@
+/* --------------------------------------------------------------------------
+   tm-drop-in: falls from above, compresses slightly, settles.
+
+   The fall derives from --tm-distance so a motion profile or tm-distance-*
+   retunes it; --tm-drop-distance overrides the derived value outright. The
+   squash-and-settle frames are governed by --tm-overshoot, so a calm profile
+   drops the element into place without the bounce.
+   -------------------------------------------------------------------------- */
+
 @layer utilities {
   .tm-drop,
   .tm-drop-in {
     animation-name: tm-drop-in;
-    animation-duration: var(--tm-duration, 600ms);
+    animation-duration: var(--tm-duration, calc(600ms * var(--tm-duration-scale, 1)));
     animation-delay: var(--tm-delay, 0ms);
-    animation-timing-function: var(--tm-easing, cubic-bezier(0.34, 1.56, 0.64, 1));
+    animation-timing-function: var(--tm-easing, var(--tm-ease-emphasis, cubic-bezier(0.34, 1.56, 0.64, 1)));
     animation-iteration-count: var(--tm-iteration-count, 1);
     animation-fill-mode: both;
     transform-origin: top center;
@@ -14,20 +23,25 @@
 @keyframes tm-drop-in {
   0% {
     opacity: 0;
-    transform: translateY(-40px) scaleY(1.08);
+    translate: 0
+      calc(var(--tm-drop-distance, calc(var(--tm-distance, 12px) * 3.3)) * -1);
+    scale: 1 calc(1 + 0.08 * var(--tm-emphasis, 1));
   }
 
   60% {
     opacity: 1;
-    transform: translateY(4px) scaleY(0.98);
+    translate: 0 calc(var(--tm-distance, 12px) * 0.33 * var(--tm-overshoot, 1));
+    scale: 1 calc(1 - 0.02 * var(--tm-overshoot, 1));
   }
 
   80% {
-    transform: translateY(-2px) scaleY(1.01);
+    translate: 0 calc(var(--tm-distance, 12px) * -0.17 * var(--tm-overshoot, 1));
+    scale: 1 calc(1 + 0.01 * var(--tm-overshoot, 1));
   }
 
   100% {
     opacity: 1;
-    transform: translateY(0) scaleY(1);
+    translate: 0 0;
+    scale: 1 1;
   }
 }

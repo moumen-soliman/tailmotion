@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Standalone module verification</title>
+    <!-- Only the presence module. No tailmotion.css, no profiles entry. -->
+    <link rel="stylesheet" href="/modules/presence.css" />
+    <style>
+      body { font: 14px/1.5 system-ui, sans-serif; margin: 24px; }
+      .panel { width: 180px; padding: 12px; background: #111; color: #fff; border-radius: 10px; }
+      pre { background: #f6f6f6; padding: 8px; border-radius: 6px; }
+    </style>
+  </head>
+  <body>
+    <h1>presence.css, standalone</h1>
+    <div class="panel tm-presence-slide-inline" id="p" data-state="open">slide-inline</div>
+    <div class="panel tm-presence-pop" id="q" data-state="open">pop</div>
+    <div class="tm-motion-calm">
+      <div class="panel tm-presence-fade" id="r" data-state="open">inside tm-motion-calm</div>
+    </div>
+    <pre id="out"></pre>
+    <script>
+      window.probe = () => {
+        const cs = (id, p) => getComputedStyle(document.getElementById(id)).getPropertyValue(p).trim();
+        const set = (id, s) => (document.getElementById(id).dataset.state = s);
+        const settle = (id) => document.getElementById(id).getAnimations().forEach((a) => a.finish());
+        const open = {
+          slideInlineOpacity: cs('p', 'opacity'),
+          inlineFlip: cs('p', '--tm-inline-flip'),
+          popDuration: cs('q', 'transition-duration'),
+          calmDurationScale: cs('r', '--tm-duration-scale'),
+        };
+        ['p', 'q', 'r'].forEach((id) => set(id, 'closed'));
+        void document.body.offsetWidth;
+        ['p', 'q', 'r'].forEach(settle);
+        const closed = {
+          slideInlineTranslate: cs('p', 'translate'),
+          slideInlineVisibility: cs('p', 'visibility'),
+          popScale: cs('q', 'scale'),
+          fadeOpacity: cs('r', 'opacity'),
+        };
+        // RTL, from the token layer this module carries
+        document.documentElement.dir = 'rtl';
+        ['p'].forEach((id) => set(id, 'closed'));
+        void document.body.offsetWidth;
+        settle('p');
+        const rtl = { slideInlineTranslate: cs('p', 'translate'), inlineFlip: cs('p', '--tm-inline-flip') };
+        document.documentElement.dir = 'ltr';
+        ['p', 'q', 'r'].forEach((id) => set(id, 'open'));
+        return { open, closed, rtl };
+      };
+      document.getElementById('out').textContent = JSON.stringify(window.probe(), null, 1);
+    </script>
+  </body>
+</html>

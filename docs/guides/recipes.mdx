@@ -1,0 +1,247 @@
+---
+title: "Product recipes"
+description: "Menu, dialog, toast, tooltip, accordion, tabs, loading-to-success and hold-to-confirm — as motion only."
+---
+
+Each recipe encodes the motion decisions one interface pattern needs — which
+direction it comes from, what its transform origin is, how much shorter the exit
+is — and nothing else.
+
+<Note>
+**Recipes provide** state selectors, transition and animation behaviour, timing,
+easing, transform origin where the behaviour requires it, and reduced-motion
+handling.
+
+**Recipes do not provide** colors, typography, dimensions, spacing, shadows,
+component structure beyond the minimum the movement requires, framework
+components, or application state.
+</Note>
+
+They read the same [state contract](/docs/concepts/presence#the-state-contract)
+as `tm-presence-*`, and an element with no recognised state is treated as open.
+
+## Menu and popover
+
+```html
+<div class="tm-menu rounded-lg border bg-white p-1 shadow-lg"
+     data-state="open"
+     data-side="bottom">
+  …
+</div>
+```
+
+180ms, scale from 0.96, and a transform origin taken from `data-side`. A menu
+should look like it comes out of its trigger, not out of its own middle.
+
+| `data-side` | `transform-origin` |
+|---|---|
+| `top` | `bottom center` |
+| `bottom` | `top center` |
+| `left` | `center right` |
+| `right` | `center left` |
+
+The names follow the convention Radix UI, Base UI and Floating UI already emit.
+
+<Note>
+Alignment is deliberately **not** mapped. `transform-origin` takes no logical
+keywords, so a `data-align` rule would hard-code `left` or `right` and break in
+right-to-left contexts. Positioning libraries already publish a resolved origin —
+pass it straight through with `style="--tm-origin: var(--radix-popper-transform-origin)"`.
+</Note>
+
+For a native `[popover]`, use [`tm-native-popover`](/docs/guides/native-elements#popover)
+instead: the browser handles the top layer and light dismiss.
+
+## Dialog
+
+```html
+<div class="tm-dialog-backdrop fixed inset-0 bg-black/60" data-state="open"></div>
+<div class="tm-dialog fixed inset-0 m-auto h-fit w-96 rounded-xl border bg-white p-6"
+     role="dialog"
+     data-state="open">
+  …
+</div>
+```
+
+Both halves move as one unit, so they share a duration (240ms) and an easing.
+Put the state attribute on **both**.
+
+For a `<dialog>` element use [`tm-native-dialog`](/docs/guides/native-elements#dialog),
+which gets the backdrop and the top layer for free.
+
+## Toast
+
+```html
+<div role="status" data-state="open" class="tm-toast rounded-lg border bg-white px-3 py-2 shadow">
+  Changes saved
+</div>
+```
+
+260ms, arriving from the edge it is anchored to. Toasts appear without being
+asked for, so the travel is short and the exit is quick.
+
+| Modifier | Arrives from |
+|---|---|
+| *(default)* | the inline-end edge, mirrored in RTL |
+| `tm-toast-from-inline-start` | the inline-start edge, mirrored in RTL |
+| `tm-toast-from-block-end` | below — for a bottom-centre stack |
+| `tm-toast-from-block-start` | above — for a top-centre stack |
+
+`role="status"` is yours to add: motion is not an announcement.
+
+## Tooltip
+
+```html
+<div role="tooltip" data-side="top" data-state="open"
+     class="tm-tooltip rounded border bg-white px-2 py-1 text-sm shadow">
+  Copy to clipboard
+</div>
+```
+
+The fastest thing in the library: 120ms, a third of the usual travel, and a
+60ms exit. A tooltip that takes 200ms to appear feels broken, because the
+pointer is already there.
+
+`data-side` sets the transform origin and the retreat direction — a tooltip above
+its trigger retreats upward, one below it downward.
+
+## Accordion
+
+```html
+<div class="tm-accordion-panel" data-state="open">
+  <div>
+    …exactly one element child…
+  </div>
+</div>
+```
+
+<Warning>
+**Child contract: exactly one element child**, which TailMotion clips. Text
+nodes and multiple children will not animate correctly. Wrap your content in a
+single `<div>`.
+</Warning>
+
+The `0fr` → `1fr` grid row is the one height animation CSS can express without
+measuring anything, so this needs no JavaScript and no fixed height.
+
+Support is Chrome 107, Safari 16, Firefox 66. Older browsers show and hide the
+panel without the height tween — open content is never hidden.
+
+For a `<details>` element use
+[`tm-native-disclosure`](/docs/guides/native-elements#disclosure).
+
+## Tabs
+
+Two independent pieces, because they have different requirements.
+
+**The panel cross-fade needs no measurement:**
+
+```html
+<div class="tm-tab-panel" data-state="active">…</div>
+<div class="tm-tab-panel" data-state="inactive">…</div>
+```
+
+**The indicator does need measurement, and that stays with your component:**
+
+```jsx
+<div className="relative flex">
+  {tabs.map(...)}
+  <div
+    className="tm-tab-indicator absolute bottom-0 h-0.5 bg-black"
+    style={{ "--tm-tab-offset": `${rect.left}px`, "--tm-tab-size": `${rect.width}px` }}
+  />
+</div>
+```
+
+TailMotion animates `translate` and `inline-size` between whatever two values you
+give it. It never reads the DOM — see
+[the zero-runtime boundary](/docs/concepts/zero-runtime#where-the-line-gets-tested).
+
+## Loading to success
+
+```html
+<button data-state="loading" class="tm-feedback-button rounded-md bg-black px-4 py-2 text-white">
+  <span class="tm-feedback-idle">Save</span>
+  <span class="tm-feedback-loading">Saving</span>
+  <span class="tm-feedback-success">Saved</span>
+</button>
+```
+
+<Warning>
+**Child contract: one element per state**, in any order, each carrying its
+state's class — `tm-feedback-idle`, `tm-feedback-loading`, `tm-feedback-success`,
+and optionally `tm-feedback-error`.
+</Warning>
+
+All labels stay mounted and share one grid cell, so the button never resizes
+mid-transition and the outgoing label animates out as cleanly as the incoming one
+animates in. The state comes from `data-state="idle" | "loading" | "success" |
+"error"`; a button with no `data-state` shows the idle label.
+
+Success is the only state in the library that arrives with a spring, because it
+is the one moment in a form worth celebrating. `--tm-overshoot: 0`, or a calm
+profile, removes it.
+
+## Hold to confirm
+
+```html
+<button class="tm-hold-confirm rounded-md border px-4 py-2 text-red-600">
+  Hold to delete
+</button>
+```
+
+A progress fill sweeps across the button while the pointer is held, and retreats
+in 160ms the moment it is released.
+
+Three things worth knowing:
+
+- **Linear easing is correct here and almost nowhere else.** The fill is a clock,
+  and any other curve would misreport how much time is left.
+- **The fill inherits the button's own color** through `--tm-color` at 18%
+  opacity. TailMotion picks no red. `overflow` and `isolation` are set because
+  the fill has to be clipped to the button's box; your radius, padding and color
+  stay yours.
+- **It keeps its full duration under reduced motion**, because it is a readout of
+  elapsed time rather than decoration. Collapsing it to 1ms would confirm a
+  destructive action the instant the button was touched.
+
+<Warning>
+Pair this with a key handler that sets `data-state="holding"` on keydown and
+removes it on keyup, or the interaction is pointer-only and inaccessible.
+</Warning>
+
+```js
+button.addEventListener("keydown", (e) => {
+  if (e.key === " " || e.key === "Enter") button.dataset.state = "holding";
+});
+button.addEventListener("keyup", () => delete button.dataset.state);
+```
+
+| Variable | Default |
+|---|---|
+| `--tm-hold-duration` | `1200ms` |
+| `--tm-hold-release-duration` | `160ms` |
+| `--tm-hold-fill` | `var(--tm-color, currentColor)` |
+| `--tm-hold-fill-opacity` | `0.18` |
+
+<Note>
+The older `tm-hold-delete` still works and is unchanged. It chooses its own
+colors, padding and radius, which is exactly why `tm-hold-confirm` exists.
+</Note>
+
+## Recipe timing at a glance
+
+| Recipe | Open | Closed | Easing role |
+|---|---|---|---|
+| `tm-tooltip` | 120ms | 60ms | entrance / exit |
+| `tm-tab-panel` | 160ms | 112ms | entrance / exit |
+| `tm-menu` | 180ms | 126ms | entrance / exit |
+| `tm-feedback-button` | 220ms | 220ms | entrance, emphasis on success |
+| `tm-dialog` + backdrop | 240ms | 168ms | entrance / exit |
+| `tm-toast` | 260ms | 182ms | entrance / exit |
+| `tm-accordion-panel` | 260ms | 182ms | morph |
+| `tm-tab-indicator` | 260ms | — | morph |
+| `tm-hold-confirm` | 1200ms hold | 160ms release | linear, on purpose |
+
+All of these scale with the [motion profile](/docs/concepts/personalities) and
+accept the usual `tm-duration-*` and `--tm-exit-duration` overrides.

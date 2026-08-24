@@ -1,0 +1,165 @@
+/* --------------------------------------------------------------------------
+   TailMotion token layer.
+
+   Everything TailMotion animates reads from these four groups:
+
+     1. Explicit overrides  --tm-duration, --tm-delay, --tm-easing,
+                            --tm-iteration-count. Deliberately unset, so each
+                            motion class keeps its own tuned default. Set them
+                            per element with tm-duration-*, tm-delay-*,
+                            tm-ease-*, tm-repeat-*, the Tailwind plugin, or an
+                            inline style. An explicit value always wins.
+
+     2. Profile factors     --tm-duration-scale, --tm-emphasis, --tm-overshoot.
+                            Inherited multipliers. A motion personality
+                            (tm-motion-calm / -productive / -expressive)
+                            retunes a whole subtree by changing these, and each
+                            animation keeps its relative character because it
+                            multiplies its own default rather than being
+                            replaced by a global one.
+
+     3. Shared scalars      --tm-distance, --tm-stagger-step. One value each,
+                            already shared by every class that uses them, so a
+                            profile sets them outright.
+
+     4. Role easings        --tm-ease-entrance, --tm-ease-exit,
+                            --tm-ease-interaction, --tm-ease-emphasis. Classes
+                            opt into a role; a profile retunes the role.
+                            Animations with a character of their own (linear
+                            spins, ambient drifts) stay out of this and keep
+                            their literal curve.
+
+   This file carries no selectors of its own beyond :root, so a module can
+   import it and stand alone.
+   -------------------------------------------------------------------------- */
+
+@layer base {
+  :root,
+  :host {
+    /* --- Profile factors ------------------------------------------------ */
+
+    /* Multiplies every animation's own default duration. */
+    --tm-duration-scale: 1;
+
+    /* Multiplies how far a keyframe departs from its resting value: the 0.85
+       start scale of tm-pop, the blur of tm-blur-in. 0 removes the departure
+       entirely, so keep it above 0 unless the motion should become a pure
+       fade. */
+    --tm-emphasis: 1;
+
+    /* Multiplies only the frames that travel *past* the resting value: the
+       1.05 peak of tm-pop, the settle of tm-drop. 0 removes overshoot without
+       touching the entrance itself. */
+    --tm-overshoot: 1;
+
+    /* --- Shared scalars ------------------------------------------------- */
+
+    /* Choreography */
+    --tm-stagger-step: 100ms;
+
+    /* Travel distance. Exits travel 70% of an entrance, resolved at the point
+       of use so tm-distance-* retunes entrances and exits together. */
+    --tm-distance: 12px;
+
+    /* Sign of inline-axis motion: 1 in LTR, -1 in RTL. */
+    --tm-inline-flip: 1;
+
+    /* --- Role easings --------------------------------------------------- */
+
+    /* Arriving: decelerate into place. Anything that enters or leaves the
+       screen wants an ease-out, entrances and exits alike -- an ease-in exit
+       delays the visual feedback and reads as sluggish. */
+    --tm-ease-entrance: cubic-bezier(0.22, 1, 0.36, 1);
+
+    /* Leaving: the same family, weaker, because the exit should not perform. */
+    --tm-ease-exit: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+    /* Responding to a pointer or key, where the target can change mid-flight. */
+    --tm-ease-interaction: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+    /* Moving or reshaping something that is already on screen: accelerate out
+       of the old position, brake into the new one. */
+    --tm-ease-morph: cubic-bezier(0.2, 0, 0, 1);
+
+    /* Celebrating: the only curve that is allowed to overshoot. */
+    --tm-ease-emphasis: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+    /* --- Effect colors --------------------------------------------------
+       TailMotion ships no palette: every effect inherits the consumer's color
+       and every token can be replaced with an exact value, alpha included. */
+    --tm-color: currentColor;
+    --tm-shadow-color: color-mix(in oklab, var(--tm-color) 25%, transparent);
+    --tm-glow-color: color-mix(in oklab, var(--tm-color) 45%, transparent);
+    --tm-outline-color: color-mix(in oklab, var(--tm-color) 40%, transparent);
+
+    /* The shimmer highlight keeps its color and its strength apart: browsers
+       drop gradient interpolation hints from any gradient holding a
+       color-mix() stop, so strength lives in --tm-shimmer-opacity instead. */
+    --tm-shimmer-color: var(--tm-color);
+    --tm-shimmer-opacity: 0.35;
+  }
+
+  /* Safe fallback where color-mix() is unavailable. */
+  @supports not (color: color-mix(in oklab, currentColor, transparent)) {
+    :root,
+    :host {
+      --tm-shadow-color: var(--tm-color);
+      --tm-glow-color: var(--tm-color);
+      --tm-outline-color: var(--tm-color);
+    }
+  }
+
+  /* Mirror inline-axis motion in right-to-left contexts. */
+  [dir="ltr"] {
+    --tm-inline-flip: 1;
+  }
+
+  [dir="rtl"] {
+    --tm-inline-flip: -1;
+  }
+
+  @supports selector(:dir(rtl)) {
+    [dir="auto"]:dir(ltr) {
+      --tm-inline-flip: 1;
+    }
+
+    [dir="auto"]:dir(rtl) {
+      --tm-inline-flip: -1;
+    }
+  }
+
+  /* Motion is supplementary feedback. When it is not wanted, every animation
+     lands on its final state immediately instead of being skipped, so the
+     state a class communicates stays visible. Container classes that animate
+     unclassed children are listed explicitly.
+
+     Scroll-driven classes are progress-linked rather than time-linked, so a
+     1ms duration would not stop them. They are switched off in
+     src/scroll/scroll.css instead, which leaves their subject at its natural,
+     visible state. */
+  @media (prefers-reduced-motion: reduce) {
+    [class*="tm-"],
+    [class*="tm-"]::before,
+    [class*="tm-"]::after,
+    .tm-stagger > *,
+    .tm-count-reveal > *,
+    .tm-icon-swap > *,
+    .tm-view-morph > [data-tm-panel],
+    .tm-text-flip-chars > span {
+      animation-duration: 1ms !important;
+      animation-delay: 0ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 1ms !important;
+      transition-delay: 0ms !important;
+    }
+
+    /* Kept apart: a selector list is discarded whole if a browser cannot parse
+       one of its parts, and ::backdrop is younger than the rule above. */
+    [class*="tm-"]::backdrop {
+      animation-duration: 1ms !important;
+      animation-delay: 0ms !important;
+      transition-duration: 1ms !important;
+      transition-delay: 0ms !important;
+    }
+  }
+}

@@ -1,0 +1,166 @@
+---
+title: "Quickstart"
+description: "From an empty project to four behaviours that normally need a runtime."
+---
+
+## Requirements
+
+- Any bundler, or none. The prebuilt stylesheet is plain CSS.
+- Tailwind CSS v3 or v4 for the appearance around the motion — optional, but
+  TailMotion is designed to sit next to it.
+- Node 16+ only if you install from npm.
+
+<Note>
+TailMotion ships no JavaScript in its CSS core. Nothing on this page installs a
+runtime, an animation library, or a React component.
+</Note>
+
+## 1. Install
+
+<CodeGroup>
+```bash npm
+npm install tailmotion
+```
+
+```bash pnpm
+pnpm add tailmotion
+```
+
+```bash yarn
+yarn add tailmotion
+```
+</CodeGroup>
+
+## 2. Import the stylesheet
+
+```css
+@import "tailmotion/css";
+```
+
+Or from JavaScript, which is what most bundlers want:
+
+```js
+import "tailmotion/css";
+```
+
+That single entry is the whole library: every animation, the motion profiles,
+presence, native-element motion, recipes, choreography, scroll, and a curated
+set of prebuilt variant selectors. It needs no Tailwind setup and no plugin.
+
+For a smaller stylesheet, take [module entries](/docs/reference/imports) instead.
+
+## 3. Add motion to something
+
+```html
+<button class="tm-press rounded-lg bg-blue-600 px-4 py-2 text-white">
+  Save changes
+</button>
+
+<div class="tm-slide-block-start rounded-lg border p-4">
+  Ready.
+</div>
+```
+
+`tm-press` is a transition, so releasing early reverses smoothly instead of
+snapping. `tm-slide-block-start` is a keyframe entrance that travels toward the
+block-start edge — the name says the direction, and it mirrors itself in
+right-to-left contexts.
+
+## 4. Give the whole surface a personality
+
+One class on an ancestor retunes every TailMotion descendant. Nothing below it
+changes.
+
+```html
+<main class="tm-motion-calm">
+  <button class="tm-press">Save</button>
+  <div class="tm-slide-block-start">Saved</div>
+</main>
+```
+
+| Profile | Use for |
+|---|---|
+| `tm-motion-calm` | Settings, finance, dashboards, long-form reading |
+| `tm-motion-productive` | The recommended default for product UI |
+| `tm-motion-expressive` | Onboarding, marketing, milestones, celebration |
+
+Duration is a **factor**, not a value, so each animation keeps its own relative
+character — `tm-pop` stays livelier than `tm-fade-in` in all three. Full detail
+in [Motion personalities](/docs/concepts/personalities).
+
+## 5. Animate the state you already have
+
+If your component knows whether the menu is open, TailMotion can read that
+directly. No second source of truth, no runtime.
+
+```html
+<div class="tm-presence-slide-block rounded-lg border p-4" data-state="open">
+  Product menu
+</div>
+```
+
+Toggle `data-state` between `"open"` and `"closed"` and the panel animates both
+ways. `aria-expanded`, `aria-pressed`, `aria-checked` and `.tm-open` /
+`.tm-closed` all work too.
+
+<Warning>
+A closed element has to stay in the DOM until its closed transition finishes, or
+there is nothing left to animate. TailMotion ships no JavaScript to mount or
+unmount anything — see [the mounting contract](/docs/concepts/presence#the-mounting-contract).
+</Warning>
+
+## 6. Animate a native element
+
+`[popover]`, `<dialog>` and `<details>` are the three elements the browser
+already handles correctly, and the three that were historically impossible to
+animate out. Modern CSS fixed that.
+
+```html
+<button popovertarget="account-menu">Account</button>
+<div id="account-menu" popover class="tm-native-popover rounded-lg border bg-white p-3">
+  Menu content
+</div>
+
+<dialog class="tm-native-dialog rounded-xl border bg-white p-6">
+  Dialog content
+</dialog>
+```
+
+The browser keeps focus management, the top layer, light dismiss and Escape.
+TailMotion adds the movement and picks no color, size, padding, radius or
+shadow. See [Native elements](/docs/guides/native-elements) for exactly what
+each browser supports and what happens without it.
+
+## 7. Sequence a list
+
+```html
+<ul class="tm-stagger tm-stagger-75" data-state="open">
+  <li>Profile</li>
+  <li>Settings</li>
+  <li>Sign out</li>
+</ul>
+```
+
+Switch `data-state` to `"closed"` and the list leaves in sequence. Add
+`tm-stagger-from-end` and it leaves last-item-first, with nothing reordered in
+the DOM. See [Choreography](/docs/concepts/choreography).
+
+## What you did not have to do
+
+- Install an animation runtime.
+- Write an `@keyframes` block.
+- Fork a component to change a duration.
+- Add an `IntersectionObserver`.
+- Write a `prefers-reduced-motion` media query.
+- Write a right-to-left variant.
+
+## Next
+
+<CardGroup cols={2}>
+  <Card title="Installation options" icon="download" href="/docs/install">
+    Tailwind v3, Tailwind v4, the CDN, and the optional plugin.
+  </Card>
+  <Card title="The motion model" icon="diagram-project" href="/docs/concepts/motion-model">
+    How the four token groups compose, and which class to reach for.
+  </Card>
+</CardGroup>

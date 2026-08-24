@@ -17,8 +17,10 @@
 </p>
 
 <p align="center">
-  <a href="#quickstart">Quickstart</a> ·
-  <a href="#motion-reference">Motion reference</a> ·
+  <a href="https://docs.tailmotion.moumen.dev/docs">Documentation</a> ·
+  <a href="https://docs.tailmotion.moumen.dev/docs/quickstart">Quickstart</a> ·
+  <a href="https://docs.tailmotion.moumen.dev/docs/reference/classes">Class reference</a> ·
+  <a href="https://tailmotion.moumen.dev/capabilities/">Live demo</a> ·
   <a href="https://tailmotion.moumen.dev/#explorer">Animation explorer</a> ·
   <a href="https://github.com/moumen-soliman/tailmotion/issues/new">Feedback</a> ·
   <a href="CONTRIBUTING.md">Contributing</a>
@@ -38,6 +40,10 @@
 
 ## Add motion without adding a runtime
 
+```bash
+npm install tailmotion
+```
+
 ```css
 @import "tailmotion/css";
 ```
@@ -46,835 +52,222 @@
 <button class="tm-press rounded-lg bg-blue-600 px-4 py-2 text-white">
   Save changes
 </button>
-
-<div class="tm-slide-block-start tm-duration-300 tm-ease-out">
-  Ready.
-</div>
 ```
 
-TailMotion leads with classes, not components. Tailwind owns layout, color,
-typography and responsive design; TailMotion owns how an element enters, exits,
-responds and repeats.
+TailMotion gives product interfaces a tested motion language with good decisions
+already made. Tailwind owns layout, color, spacing, radius, shadows and
+typography; TailMotion owns how an element enters, exits, responds, repeats and
+reacts to state.
 
-- **Zero-runtime CSS core** — importing the stylesheet adds no JavaScript.
-- **A deliberate motion vocabulary** — entrances, exits, continuous effects,
-  interactions and choreography utilities each have one job.
-- **Interruptible interactions** — press, hover and toggle utilities use
-  transitions, so they reverse smoothly when intent changes.
-- **Theme-ready** — core effects inherit `currentColor`; specialized effects
-  expose focused `--tm-*` variables and optional color presets.
-- **RTL-aware** — logical direction classes mirror in right-to-left contexts.
-- **Reduced-motion aware** — the shared base layer covers animations,
-  transitions, pseudo-elements and animated children.
-- **Framework-agnostic** — use the same classes in React, Vue, Svelte or HTML.
-- **Modular when needed** — import the full stylesheet or explicit
-  per-animation CSS files.
+**A keyframe collection answers "how do I fade this in?" TailMotion answers "how
+should this whole product move, and what happens when the state changes?"**
 
-## Quickstart
+📖 **[Full documentation →](https://docs.tailmotion.moumen.dev/docs)** ·
+🎛️ **[Live capability demo →](https://tailmotion.moumen.dev/capabilities/)**
 
-### Install
+## What it does that a keyframe collection cannot
 
-```bash
-npm install tailmotion
-# or
-pnpm add tailmotion
-# or
-yarn add tailmotion
-```
-
-### Import the stylesheet
-
-Import the CSS file in your project:
-
-```css
-@import 'tailmotion/css';
-```
-
-This path requires no Tailwind setup. It includes every animation plus a curated
-set of prebuilt state and responsive variant selectors.
-
-**In JavaScript/TypeScript:**
-```js
-// React, Next.js, Vue, Svelte, etc.
-import 'tailmotion/css';
-```
-
-**In standalone HTML:**
-```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailmotion@0.6.0/tailmotion.css">
-```
-
-Pin the CDN URL to the release you tested. In an application with a bundler,
-prefer the CSS or JavaScript import.
-
-### Add the Tailwind plugin (optional)
-
-The stylesheet contains the motion classes. Add the plugin when you also want
-configurable timing, easing, repeat, stagger and distance utilities:
-
-**Tailwind CSS v4:**
-
-```css
-@import 'tailwindcss';
-@plugin 'tailmotion/plugin';
-@import 'tailmotion/css';
-```
-
-**Tailwind CSS v3:**
-
-```js
-// tailwind.config.js (CommonJS)
-module.exports = {
-  content: ['./src/**/*.{js,jsx,ts,tsx,html}'],
-  plugins: [
-    require('tailmotion/plugin')
-  ]
-};
-
-// tailwind.config.ts (ESM)
-import type { Config } from 'tailwindcss';
-import tailmotion from 'tailmotion/plugin';
-
-export default {
-  content: ['./src/**/*.{js,jsx,ts,tsx,html}'],
-  plugins: [tailmotion]
-} satisfies Config;
-```
-
-Then import the CSS after Tailwind:
-
-```css
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-@import 'tailmotion/css';
-```
-
-### Import individual motion files
-
-The full `tailmotion/css` entry includes the entire library. For a smaller,
-explicit stylesheet, import the shared base and only the motion files you use:
-
-```css
-@import 'tailmotion/animations/base.css';
-@import 'tailmotion/animations/fade.css';
-@import 'tailmotion/animations/interactions.css';
-```
-
-Keep `base.css`: it provides shared variables, RTL mirroring and reduced-motion
-behavior. Per-animation imports do not automatically include the prebuilt
-selectors from `variants.css`.
-
-### Use the classes
+### One class changes the motion personality of a whole interface
 
 ```html
-<!-- Basic animation -->
-<div class="tm-fade-in">Hello</div>
+<main class="tm-motion-calm">
+  <button class="tm-press">Save</button>
+  <div class="tm-slide-block-start">Saved</div>
+</main>
+```
 
-<!-- With hover -->
-<button class="hover:tm-bounce">Click me</button>
+`tm-motion-calm`, `tm-motion-productive` and `tm-motion-expressive` retune every
+TailMotion descendant. Duration is a *factor*, not a value, so each animation
+keeps its own relative character — `tm-pop` stays livelier than `tm-fade-in` in
+all three. Element-level utilities like `tm-duration-300` still win.
 
-<!-- With timing -->
-<div class="tm-slide-block-start tm-duration-500 tm-delay-200">Delayed</div>
+→ [Motion personalities](https://docs.tailmotion.moumen.dev/docs/concepts/personalities)
 
-<!-- Responsive -->
-<div class="md:tm-pop lg:hover:tm-wiggle">Responsive</div>
+### Your existing `data-state` animates, with no runtime
 
-<!-- Motion composes with Tailwind; it never competes with it -->
-<button class="rounded-lg bg-blue-600 px-4 py-2 text-white tm-press focus-visible:tm-glow">
-  Save changes
+```html
+<div class="tm-presence-slide-block" data-state="open">Product menu</div>
+```
+
+Reads `data-state`, `aria-expanded`, `aria-pressed`, `aria-checked` or
+`.tm-open` / `.tm-closed`. Built from transitions, so reversing mid-flight
+retargets from the current position instead of restarting. Radix UI, Base UI,
+Ark and Melt work with no adapter — the class *is* the integration.
+
+→ [State-driven presence](https://docs.tailmotion.moumen.dev/docs/concepts/presence)
+
+### Native dialog, popover and disclosure get real exits
+
+```html
+<dialog class="tm-native-dialog">…</dialog>
+<div popover class="tm-native-popover">…</div>
+<details class="tm-native-disclosure">…</details>
+```
+
+The browser keeps focus management, the top layer, light dismiss, Escape and
+every native semantic. TailMotion adds the movement, picks no color or size, and
+adds no JavaScript.
+
+→ [Native elements](https://docs.tailmotion.moumen.dev/docs/guides/native-elements)
+
+### Product patterns as motion only
+
+```html
+<div role="status" data-state="open" class="tm-toast">Changes saved</div>
+
+<button data-state="loading" class="tm-feedback-button">
+  <span class="tm-feedback-idle">Save</span>
+  <span class="tm-feedback-loading">Saving</span>
+  <span class="tm-feedback-success">Saved</span>
 </button>
 ```
 
-## Framework examples
+Menu, dialog, toast, tooltip, accordion, tabs, loading-to-success and
+hold-to-confirm. State selectors, timing, easing and transform origin — no
+colors, no dimensions, no components.
 
-### React / Next.js
+→ [Product recipes](https://docs.tailmotion.moumen.dev/docs/guides/recipes)
 
-```jsx
-// app/layout.jsx or _app.jsx
-import 'tailmotion/css';
-
-export default function Button() {
-  return (
-    <button className="hover:tm-bounce tm-duration-300">
-      Click me
-    </button>
-  );
-}
-```
-
-### Vue
-
-```vue
-<script setup>
-import 'tailmotion/css';
-</script>
-
-<template>
-  <button class="hover:tm-shake">Click me</button>
-</template>
-```
-
-### Svelte
-
-```svelte
-<script>
-  import 'tailmotion/css';
-</script>
-
-<button class="hover:tm-wiggle">Click me</button>
-```
-
-### Vanilla HTML
+### Scroll reveals with no observer, that fail safely
 
 ```html
-<!DOCTYPE html>
-<html>
-<head>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailmotion@0.6.0/tailmotion.css">
-</head>
-<body>
-  <div class="tm-fade-in">Hello World</div>
-</body>
-</html>
+<section class="tm-scroll-reveal">Content</section>
 ```
 
-## Motion model
+CSS view timelines, driven by the browser on the compositor. Entirely inside
+`@supports (animation-timeline: view())`, so a browser without support renders
+ordinary, fully visible content — a fallback an `IntersectionObserver` cannot
+offer.
 
-The core model has five categories, each with one job:
+→ [Scroll-driven motion](https://docs.tailmotion.moumen.dev/docs/guides/scroll)
 
-| Category | Built from | Repeats | Use for |
-|----------|-----------|---------|---------|
-| **Entrance** | keyframes | once | An element arriving |
-| **Exit** | keyframes | once | An element leaving |
-| **Continuous** | keyframes | infinite | Ambient and loading states |
-| **Interaction** | transitions | n/a | Hover, press, toggle |
-| **Choreography** | variables | n/a | Timing, easing, stagger, distance |
-
-Only continuous animations default to `infinite`. Only interaction utilities are
-built from transitions, because only they need to survive a change of mind
-mid-flight.
-
-### Entrance
-| Class | Description |
-|-------|-------------|
-| `tm-fade-in` | Fade in. Opacity only |
-| `tm-scale-in` | Scale up from `--tm-scale-from` with a fade |
-| `tm-pop` | Scale up with overshoot |
-| `tm-blur-in` | Blur to focus |
-| `tm-slide-block-start` | Travel toward the block-start edge (enter from below) |
-| `tm-slide-block-end` | Travel toward the block-end edge (enter from above) |
-| `tm-slide-inline-start` | Travel toward the inline-start edge, mirrored in RTL |
-| `tm-slide-inline-end` | Travel toward the inline-end edge, mirrored in RTL |
-
-Entrances are short by default (220-280ms, ease-out) and travel `--tm-distance`
-(12px). Retune both with `tm-duration-*` and `tm-distance-*`.
-
-The physical names `tm-slide-up`, `tm-slide-down`, `tm-slide-left` and
-`tm-slide-right` are kept as aliases of the logical classes, in that order.
-Prefer the logical names: they mirror themselves in right-to-left contexts,
-where the physical names would send an element the wrong way.
-
-### Exit
-| Class | Description |
-|-------|-------------|
-| `tm-fade-out` | Fade out. Opacity only |
-| `tm-scale-out` | Shrink to `--tm-exit-scale` with a fade |
-| `tm-blur-out` | Focus to blur |
-| `tm-slide-block-out` | Leave toward the block-start edge |
-| `tm-slide-inline-out` | Leave toward the inline-end edge, mirrored in RTL |
-
-Exits are about 20% faster than the entrance they mirror and travel
-`--tm-exit-distance`, 70% of an entrance: the user's attention is already moving
-on, so an exit should not compete for it. Each exit holds its final frame, so
-the element stays hidden but still occupies layout - remove the node once the
-animation ends.
-
-`tm-zoom-out` predates this vocabulary and is an *entrance* despite its name.
-For a real exit use `tm-scale-out`.
-
-### Interaction
-Transitions, not keyframes: release a press halfway through and it reverses
-smoothly instead of restarting.
-
-| Class | Description |
-|-------|-------------|
-| `tm-press` | Scale to `0.96` while pressed, 150ms. Skips `:disabled` and `[aria-disabled]` |
-| `tm-hover-lift` | Rise `--tm-lift-distance` with a shadow on hover or keyboard focus |
-| `tm-hover-scale` | Grow to `--tm-hover-scale` on hover or keyboard focus |
-| `tm-icon-swap` | Cross-fade two glyphs, driven by real component state |
-| `tm-rotate-hover` | Rotate `--tm-rotate` on hover or keyboard focus |
-| `tm-rotate-press` | Scale and rotate while pressed |
-| `tm-lift-hover` | Alias of `tm-hover-lift` |
+### Stagger that can also leave
 
 ```html
-<button class="tm-press">Save</button>
-
-<button class="tm-icon-swap" aria-pressed="false">
-  <svg><!-- shown while aria-pressed is false --></svg>
-  <svg><!-- shown while aria-pressed is true --></svg>
-</button>
-```
-
-`tm-icon-swap` reads its state from `.tm-swapped`, `[data-tm-swap="on"]`,
-`aria-pressed`, `aria-expanded` or `aria-checked`, so the motion follows the
-state your component already exposes instead of a parallel flag. Both children
-stay in the DOM, so the outgoing glyph animates out as cleanly as the incoming
-one animates in.
-
-## Motion reference
-
-### Loop animations
-| Class | Description |
-|-------|-------------|
-| `tm-bounce` | Bouncing animation |
-| `tm-pulse` | Breathing scale effect |
-| `tm-spin` | 360° rotation |
-| `tm-float` | Gentle floating |
-| `tm-drift` | Ambient horizontal drift |
-| `tm-glow` | Pulsing glow/shadow |
-| `tm-morph` | Subtle breathing morph |
-| `tm-sway` | Pendulum sway |
-| `tm-sparkle` | Twinkling star effect |
-| `tm-shimmer` | Continuous sweeping highlight, for skeletons and loading |
-
-### Attention animations
-| Class | Description |
-|-------|-------------|
-| `tm-shake` | Horizontal shake |
-| `tm-wiggle` | Quick wiggle |
-| `tm-elastic` | Elastic bounce |
-| `tm-ripple` | Ripple pulse effect |
-| `tm-burst` | Explosion outward |
-
-### Other entrance animations
-Beyond the core entrance vocabulary above.
-
-| Class | Description |
-|-------|-------------|
-| `tm-drop` | Drop in with bounce |
-| `tm-zoom-in` | Zoom in with fade and overshoot |
-| `tm-zoom-in-slow` | The same, slower |
-| `tm-zoom-out` | Settle in from a larger scale (an entrance, despite the name) |
-| `tm-rotate-in` | Rotate and scale in |
-| `tm-swing-in` | Swing in from the top |
-| `tm-swing-in-left` | Swing in from the inline start |
-| `tm-swing-in-right` | Swing in from the inline end |
-
-### Professional animations
-| Class | Description |
-|-------|-------------|
-| `tm-reveal` | Clip-path reveal from bottom |
-| `tm-unfold` | Elegant unfold from top |
-| `tm-glide` | Smooth slide from left |
-| `tm-glide-right` | Smooth slide from right |
-| `tm-scale-fade` | Subtle scale with fade |
-| `tm-rise` | Rise up with slight rotation |
-| `tm-fill-up` | Bottom to top fill reveal |
-| `tm-stagger` | Auto-stagger children |
-
-### Transform animations
-| Class | Description |
-|-------|-------------|
-| `tm-flip-x` | 3D flip on X axis |
-| `tm-flip-y` | 3D flip on Y axis |
-
-### Interactive hover animations
-| Class | Description |
-|-------|-------------|
-| `tm-shimmer-hover` | Sheen sweep on hover |
-| `tm-liquid-btn` | Liquid fill button |
-| `tm-liquid-btn-top` | Liquid fill from top |
-| `tm-liquid-btn-left` | Liquid fill from left |
-| `tm-liquid-btn-right` | Liquid fill from right |
-| `tm-liquid-btn-center` | Liquid fill from center |
-| `tm-liquid-wave` | Wave fill effect |
-| `tm-liquid-underline` | Underline fill effect |
-| `tm-flip-hover` | 3D flip on hover |
-| `tm-hold-delete` | Press-and-hold confirmation |
-
-See **Interaction** above for `tm-press`, `tm-hover-lift`, `tm-hover-scale`,
-`tm-icon-swap`, `tm-rotate-hover` and `tm-rotate-press`.
-
-### Number and count animations
-| Class | Description |
-|-------|-------------|
-| `tm-count-reveal` | Slot-machine style digits (wrap in spans) |
-| `tm-slide-digit` | Single digit slide up |
-| `tm-confetti` | Falling celebration |
-
-### Text animations
-| Class | Description |
-|-------|-------------|
-| `tm-text-flip` | Container for text flip (requires JS) |
-| `tm-text-morph` | Container for text morph (requires JS) |
-| `tm-text-rotate` | Container for text rotate |
-
-### Structured recipes
-| Class | Description |
-|-------|-------------|
-| `tm-avatar-group` | Animated avatar stack |
-| `tm-avatar` | Individual avatar in group |
-| `tm-avatar-ring` | Avatar with ring effect |
-| `tm-avatar-tooltip` | Tooltip for avatar |
-| `tm-view-morph` | Cross-fade views while the container reshapes |
-
-These classes require the documented child structure. Treat them as optional
-recipes: TailMotion provides the movement, while your Tailwind classes should
-provide dimensions, colors and typography.
-
-#### View morph
-
-Keep every view mounted, add `data-tm-panel` to each one, and move
-`data-tm-active` when your component state changes. Update `--tm-view-width`
-and `--tm-view-height` to the active view's dimensions. Set a fixed
-`--tm-view-stage-width` and `--tm-view-stage-height` so the reshape uses
-`clip-path` instead of layout:
-
-```html
-<div
-  class="tm-view-morph rounded-full bg-black"
-  style="
-    --tm-view-stage-width: 284px;
-    --tm-view-stage-height: 64px;
-    --tm-view-width: 100px;
-    --tm-view-height: 28px
-  "
->
-  <div data-tm-panel data-tm-active>Idle</div>
-  <div data-tm-panel aria-hidden="true">Call</div>
-  <div data-tm-panel aria-hidden="true">Timer</div>
-</div>
-```
-
-Without a stage, the class still tweens the box size. Your component is
-responsible for setting the next values and keeping `data-tm-active` and
-`aria-hidden` in sync. Tune the outgoing view with `--tm-view-exit-scale`,
-`--tm-view-exit-scale-x` and `--tm-view-exit-y`.
-
-## Variants
-
-The bundled stylesheet includes a curated set of prebuilt variants for common
-animations. The supported combinations include `hover:`, `focus:`,
-`focus-visible:`, `active:`, `focus-within:`, `group-hover:`, `motion-safe:`
-and selected responsive combinations. The base `tm-*` class remains available
-for every animation.
-
-The set is deliberately finite: importing `tailmotion/css` does not generate
-every possible Tailwind variant for every class. Check
-[`src/animations/variants.css`](src/animations/variants.css) when a particular
-combination matters.
-
-```html
-<!-- State variants -->
-<div class="hover:tm-bounce">Hover me</div>
-<input class="focus-visible:tm-glow" />
-<button class="active:tm-shake">Press me</button>
-
-<!-- Group hover -->
-<div class="group">
-  <div class="group-hover:tm-spin">Icon</div>
-</div>
-
-<!-- Responsive -->
-<div class="sm:tm-fade-in md:tm-slide-up lg:tm-pop">
-  Different animation per breakpoint
-</div>
-
-<!-- Combined -->
-<div class="md:hover:tm-bounce">
-  Hover effect on medium screens+
-</div>
-
-<!-- Motion safe -->
-<div class="motion-safe:tm-bounce">
-  Only animates if user prefers motion
-</div>
-```
-
-## Timing utilities
-
-### Duration
-```html
-<div class="tm-bounce tm-duration-300">Fast</div>
-<div class="tm-bounce tm-duration-700">Slow</div>
-```
-
-Available: `150`, `200`, `300`, `400`, `500`, `700`, `900`, `1000`, `1200`, `1400`, `1600`, `2000`, `3000`
-
-### Delay
-```html
-<div class="tm-fade-in tm-delay-0">First</div>
-<div class="tm-fade-in tm-delay-150">Second</div>
-<div class="tm-fade-in tm-delay-300">Third</div>
-```
-
-Available: `0`, `75`, `150`, `200`, `300`, `400`, `500`, `700`, `1000`
-
-### Easing
-```html
-<div class="tm-pop tm-ease-bouncy">Bouncy</div>
-<div class="tm-pop tm-ease-snappy">Snappy</div>
-```
-
-Available: `linear`, `in`, `out`, `in-out`, `soft`, `snappy`, `bouncy`
-
-### Repeat
-```html
-<div class="tm-bounce tm-repeat-3">3 times</div>
-<div class="tm-bounce tm-repeat-infinite">Forever</div>
-```
-
-Available: `1`, `2`, `3`, `infinite`
-
-### Distance
-How far a slide entrance travels. Exits derive from it, at 70%.
-
-```html
-<div class="tm-slide-block-start tm-distance-4">Barely moves</div>
-<div class="tm-slide-block-start tm-distance-30">Pre-0.6 travel</div>
-```
-
-Available: `4`, `8`, `12` (default), `20`, `30`
-
-### Stagger step
-```html
-<ul class="tm-stagger tm-stagger-step-150">...</ul>
-```
-
-Available: `50`, `75`, `100` (default), `150`, `200`
-
-### GPU promotion
-TailMotion never promotes an element to its own compositing layer permanently.
-Add `tm-gpu` only where you have measured first-frame stutter, since every extra
-layer costs memory.
-
-```html
-<div class="tm-float tm-gpu">Measured, and it needed it</div>
-```
-
-## Stagger animation
-
-Children enter in DOM order, `--tm-stagger-step` apart (100ms by default, for up
-to 20 children):
-
-```html
-<ul class="tm-stagger">
-  <li>Item 1</li>  <!-- delay: 0ms -->
-  <li>Item 2</li>  <!-- delay: 100ms -->
-  <li>Item 3</li>  <!-- delay: 200ms -->
+<ul data-state="open" class="tm-stagger tm-stagger-75 tm-stagger-from-end">
+  <li>Profile</li><li>Settings</li><li>Sign out</li>
 </ul>
 ```
 
-Tune the step with a utility or a variable:
+Enter in document order, exit last-item-first, replay from a state change — with
+nothing reordered in the DOM, so reading order, tab order and the accessibility
+tree are untouched.
 
-```html
-<ul class="tm-stagger tm-stagger-step-150">...</ul>
+→ [Choreography](https://docs.tailmotion.moumen.dev/docs/concepts/choreography)
 
-<ul class="tm-stagger" style="--tm-stagger-step: 60ms">...</ul>
-```
+## What is guaranteed
 
-Stagger reads as hierarchy when the groups are semantic - title, then
-description, then actions - and as a queue when it is just a list of rows. Reach
-for it on a first load or an empty state, not on a hover or a tab switch that
-repeats all day.
+Every one of these is verified by `npm run check`, which fails the build if it
+stops being true.
 
-```html
-<div class="tm-stagger">
-  <h1>Welcome</h1>
-  <p>A description of the page.</p>
-  <div><button class="tm-press">Get started</button></div>
-</div>
-```
+- **Zero runtime in the CSS core.** No JavaScript, no observer, no frame loop.
+- **Nothing modern can hide content.** A hidden base state is only ever declared
+  inside the `@supports` block that also says how it comes back.
+- **Reduced motion preserves the state.** Animations collapse to 1ms rather than
+  being removed, with two deliberate, documented exceptions.
+- **Direction is logical.** Inline-axis motion mirrors in RTL; block-axis motion
+  does not.
+- **Transform-safe.** 32 keyframes — every entrance, exit, presence and scroll
+  class — animate `translate` / `scale` / `rotate`, so a Tailwind `rotate-3` on
+  the same element survives.
+- **Tailwind v3, Tailwind v4, or no Tailwind at all.**
 
-## Count reveal
+## Documentation
 
-For slot-machine style number reveal:
+| | |
+|---|---|
+| [Quickstart](https://docs.tailmotion.moumen.dev/docs/quickstart) | Install and ship the first four behaviours |
+| [Installation](https://docs.tailmotion.moumen.dev/docs/install) | Tailwind v3, v4, the CDN, the optional plugin |
+| [The motion model](https://docs.tailmotion.moumen.dev/docs/concepts/motion-model) | Four token groups and one override order |
+| [Class reference](https://docs.tailmotion.moumen.dev/docs/reference/classes) | Every class, trigger, state, duration and contract |
+| [CSS variables](https://docs.tailmotion.moumen.dev/docs/reference/variables) | Every `--tm-*` property and its default |
+| [Browser support](https://docs.tailmotion.moumen.dev/docs/reference/browser-support) | Every guarded feature and its exact fallback |
+| [Accessibility](https://docs.tailmotion.moumen.dev/docs/guides/accessibility) | Reduced motion, RTL, focus, and what motion must never be alone |
+| [Framework integration](https://docs.tailmotion.moumen.dev/docs/guides/frameworks) | React, Vue, Svelte, HTML, headless UI |
+| [Migration](https://docs.tailmotion.moumen.dev/docs/migration) | Upgrading to 0.8 |
+| [Support and non-goals](https://docs.tailmotion.moumen.dev/docs/support) | What is supported, and what will never be built |
 
-```html
-<div class="tm-count-reveal">
-  <span>1</span>
-  <span>2</span>
-  <span>,</span>
-  <span>3</span>
-  <span>4</span>
-  <span>5</span>
-</div>
-```
+The `docs/` folder in this repository is the source for all of the above.
 
-## Text flip (requires JavaScript)
+## Quick reference
 
-For rotating text with blur effect:
+<details>
+<summary><strong>Motion personalities</strong></summary>
 
-```html
-<span id="text-container" class="tm-text-flip"></span>
-```
+| Profile | Use for | Duration | Travel | Overshoot |
+|---|---|---|---|---|
+| `tm-motion-calm` | Settings, finance, long-form reading | ×1.1 | 8px | none |
+| `tm-motion-productive` | The recommended default for product UI | ×0.85 | 10px | ×0.6 |
+| `tm-motion-expressive` | Onboarding, marketing, celebration | ×1.2 | 22px | ×1.3 |
 
-```js
-import { initTextFlipElement } from 'tailmotion/utils';
+Plus `tm-speed-*`, `tm-emphasis-*` and `tm-no-overshoot` for one axis at a time.
+</details>
 
-initTextFlipElement(document.getElementById('text-container'), {
-  words: ['beautiful', 'amazing', 'powerful'],
-  variant: 'flip', // 'flip', 'morph', 'rotate', 'chars'
-  interval: 2500
-});
-```
+<details>
+<summary><strong>Presence and recipes</strong></summary>
 
-## Liquid button
+`tm-presence-fade` · `tm-presence-scale` · `tm-presence-pop` ·
+`tm-presence-slide-block` · `tm-presence-slide-inline`
 
-Interactive button with liquid fill effect:
+`tm-menu` · `tm-dialog` · `tm-dialog-backdrop` · `tm-toast` · `tm-tooltip` ·
+`tm-accordion-panel` · `tm-tab-panel` · `tm-tab-indicator` ·
+`tm-feedback-button` · `tm-hold-confirm`
 
-```html
-<button
-  class="tm-liquid-btn px-6 py-3 border rounded-lg text-gray-300 hover:text-black"
-  style="--tm-liquid-color: white;"
->
-  Hover me
-</button>
-```
+`tm-native-popover` · `tm-native-dialog` · `tm-native-disclosure`
+</details>
 
-CSS variables:
-- `--tm-liquid-color`: Fill color (default: currentColor)
-- `--tm-liquid-bg`: Background color (default: transparent)
-- `--tm-liquid-duration`: Animation duration (default: varies by variant)
-- `--tm-liquid-line-height`: Line height for underline variant (default: 2px)
+<details>
+<summary><strong>Entrances, exits and interactions</strong></summary>
 
-## Custom timing
+**Entrances** `tm-fade-in` · `tm-scale-in` · `tm-slide-block-start` ·
+`tm-slide-block-end` · `tm-slide-inline-start` · `tm-slide-inline-end` ·
+`tm-blur-in` · `tm-pop` · `tm-drop` · `tm-zoom-in` · `tm-zoom-out` ·
+`tm-rotate-in` · `tm-elastic` · `tm-reveal` · `tm-unfold` · `tm-glide` ·
+`tm-scale-fade` · `tm-rise` · `tm-flip-x` · `tm-flip-y` · `tm-swing-in`
 
-Use CSS variables for custom values:
+**Exits** `tm-fade-out` · `tm-scale-out` · `tm-slide-block-out` ·
+`tm-slide-inline-out` · `tm-blur-out`
 
-```html
-<div class="tm-bounce" style="--tm-duration: 1800ms; --tm-delay: 120ms;">
-  Custom timing
-</div>
-```
+**Interactions** `tm-press` · `tm-hover-lift` · `tm-hover-scale` ·
+`tm-rotate-hover` · `tm-rotate-press` · `tm-icon-swap`
 
-With the optional plugin, use arbitrary token values. Tailwind's arbitrary
-property syntax also works directly:
+**Continuous** `tm-spin` · `tm-pulse` · `tm-bounce` · `tm-float` · `tm-drift` ·
+`tm-sway` · `tm-glow` · `tm-morph` · `tm-ripple` · `tm-shimmer` · `tm-sparkle`
 
-```html
-<div class="tm-pulse tm-duration-[1350ms]">Custom duration</div>
-<div class="tm-slide-block-start [--tm-delay:420ms]">Custom delay</div>
-```
+**Timing** `tm-duration-*` · `tm-delay-*` · `tm-ease-*` · `tm-repeat-*` ·
+`tm-distance-*` · `tm-stagger-*`
 
-## Colors and theming
+Full details, including every duration and easing role, in the
+[class reference](https://docs.tailmotion.moumen.dev/docs/reference/classes).
+</details>
 
-General effects derive their color from the element's own `currentColor`, so
-they match whatever Tailwind already put on the element:
-
-```html
-<!-- The glow is purple because the text is purple -->
-<button class="text-purple-600 focus-visible:tm-glow">Save</button>
-```
-
-Override any of them with an exact value - alpha included, and it is preserved:
-
-| Variable | Used by | Default |
-|----------|---------|---------|
-| `--tm-color` | The root every other colour derives from | `currentColor` |
-| `--tm-shadow-color` | `tm-hover-lift`, avatar tooltip shadow | 25% of `--tm-color` |
-| `--tm-glow-color` | `tm-glow` | 45% of `--tm-color` |
-| `--tm-outline-color` | `tm-ripple`, `tm-avatar-ring` | 40% of `--tm-color` |
-| `--tm-shimmer-color` | `tm-shimmer`, `tm-shimmer-hover` | `--tm-color` |
-| `--tm-shimmer-opacity` | Shimmer highlight strength | `0.35` |
+<details>
+<summary><strong>Modular imports</strong></summary>
 
 ```css
-:root {
-  --tm-glow-color: rgb(59 130 246 / 0.55);
-  --tm-shadow-color: oklch(0.2 0.02 260 / 0.35);
-}
+@import "tailmotion/css";            /* everything — 29.5 KB gzipped */
+
+@import "tailmotion/profiles.css";   /* 3.6 KB */
+@import "tailmotion/presence.css";   /* 4.6 KB */
+@import "tailmotion/native.css";     /* 4.9 KB */
+@import "tailmotion/recipes.css";    /* 6.3 KB */
+@import "tailmotion/scroll.css";     /* 4.0 KB */
+@import "tailmotion/choreography.css"; /* 4.3 KB */
+
+@import "tailmotion/animations/base.css";  /* or one family at a time */
+@import "tailmotion/animations/fade.css";
 ```
 
-Derived colours use `color-mix(in oklab, ...)`, with a plain `--tm-color`
-fallback where `color-mix()` is unavailable. Gradient effects interpolate
-`in oklab` where supported, falling back to sRGB otherwise.
+The full bundle is **not** tree-shaken, and each module repeats the shared token
+layer — so if you need more than one, import `tailmotion/css` instead.
 
-Specialized effects such as liquid fills, wavy backgrounds and hold-to-delete
-expose their own variables. They also retain optional named color presets for
-convenience and backwards compatibility; using a preset is opt-in.
+→ [Imports and bundle size](https://docs.tailmotion.moumen.dev/docs/reference/imports)
+</details>
 
-Color, contrast, theming and component appearance remain your responsibility.
-Never let a TailMotion effect be the only signal of a state: pair it with a
-label, icon or focus ring, and verify any supplied color on its actual light
-and dark backgrounds.
+## React Native
 
-## Right-to-left
-
-Logical classes read `--tm-inline-flip`, which TailMotion sets to `-1` under
-`[dir="rtl"]`, so inline-axis motion mirrors itself with no extra markup:
-
-```html
-<div dir="rtl">
-  <!-- travels toward the inline start, which here is the right edge -->
-  <div class="tm-slide-inline-start">مرحبا</div>
-</div>
-```
-
-The physical aliases (`tm-slide-left`, `tm-slide-right`) mirror too, since they
-point at the same keyframes - which is exactly why their names are misleading in
-an RTL context and the logical ones are worth preferring.
-
-## Reduced motion
-
-Under `prefers-reduced-motion: reduce`, every TailMotion animation and
-transition collapses to 1ms rather than being removed. The state a class
-communicates still lands; it simply lands instantly. Pseudo-elements and the
-unclassed children of `tm-stagger`, `tm-count-reveal` and `tm-icon-swap` are
-covered too.
-
-Use `motion-safe:` for motion that carries no information at all:
-
-```html
-<div class="motion-safe:tm-float">Purely decorative</div>
-```
-
-## Optional JavaScript utilities
-
-The CSS core has no JavaScript runtime. A separate utilities entry is available
-when an application needs dynamic number interpolation, text rotation or class
-helpers:
-
-```js
-import {
-  animateValue,
-  createTextRotator,
-  formatNumber,
-  createCountSpans,
-  replayAnimation,
-  cssVars,
-  staggerStyle,
-  tm
-} from 'tailmotion/utils';
-
-// Animate a count
-animateValue({
-  from: 0,
-  to: 1000,
-  duration: 2000,
-  onUpdate: (value) => {
-    element.textContent = formatNumber(value);
-  }
-});
-
-// Create span data for count reveal (React/Vue friendly)
-const spans = createCountSpans('12,345');
-// Returns: [{ char: '1', style: { '--tm-stagger': 0 }, delay: 0 }, ...]
-
-// Replay an animation
-replayAnimation(element, 'tm-bounce');
-
-// Generate CSS variables
-const style = cssVars({ duration: '500ms', delay: '100ms' });
-// Returns: { '--tm-duration': '500ms', '--tm-delay': '100ms' }
-
-// Build animation class
-const className = tm('bounce', { duration: 500, delay: 200 });
-// Returns: 'tm-bounce tm-duration-500 tm-delay-200'
-```
-
-## Tailwind plugin configuration
-
-Extend or customize tokens via the plugin:
-
-```js
-// tailwind.config.js
-module.exports = {
-  plugins: [
-    require('tailmotion/plugin')({
-      durations: {
-        750: '750ms',
-        1500: '1500ms'
-      },
-      easing: {
-        springy: 'cubic-bezier(0.22, 1, 0.36, 1)'
-      },
-      delays: {
-        600: '600ms'
-      },
-      stagger: {
-        120: '120ms'
-      },
-      distance: {
-        16: '16px'
-      }
-    })
-  ]
-};
-```
-
-Or via theme:
-
-```js
-// tailwind.config.js
-module.exports = {
-  theme: {
-    extend: {
-      tailmotion: {
-        durations: { 750: '750ms' },
-        easing: { springy: 'cubic-bezier(0.22, 1, 0.36, 1)' }
-      }
-    }
-  },
-  plugins: [require('tailmotion/plugin')]
-};
-```
-
-## Browser support
-
-Works in all modern browsers that support CSS animations, custom properties and
-cascade layers. Two newer features degrade rather than break: `color-mix()` falls
-back to a flat `--tm-color`, and `in oklab` gradient interpolation falls back to
-sRGB.
-
-## Migrating to 0.6
-
-0.6 turns the class list into a deliberate vocabulary. Nothing was removed, but
-some defaults changed.
-
-**Timing tokens now behave as documented.** `--tm-duration`, `--tm-delay`,
-`--tm-easing` and `--tm-iteration-count` no longer carry root values. Previously
-the root value shadowed every per-class default, so every animation ran at 400ms
-and every loop animation ran exactly once - `tm-spin`, `tm-pulse` and
-`tm-glow` included. Each class now uses its own tuned timing, and loop
-animations loop. `tm-duration-*`, `tm-delay-*`, `tm-ease-*` and `tm-repeat-*`
-override them exactly as before.
-
-**Entrances are shorter and travel less.** Slides run 260ms over 12px, where
-they were 400ms over 30px. Restore the old feel with
-`tm-distance-30 tm-duration-500`, or globally:
-
-```css
-:root { --tm-distance: 30px; }
-```
-
-**`tm-fade-in` is opacity only.** It no longer lifts 10px. For fade plus lift,
-use `tm-slide-block-start`.
-
-**`tm-blur-in` is shorter and no longer scales.** 280ms, opacity and blur only.
-
-**Hover and press utilities are transitions.** `tm-lift-hover`,
-`tm-rotate-hover` and `tm-rotate-press` no longer replay a keyframe, so
-releasing early reverses smoothly. `tm-lift-hover` also stopped forcing
-`display: inline-flex` on the element; add `inline-flex` yourself if you were
-relying on it.
-
-**Effects no longer carry colors.** The blue in `tm-glow`, the indigo in
-`tm-ripple`, the white in `tm-shimmer-hover`, the black-and-white avatar tooltip
-and its blue ring are gone; all of them now derive from `currentColor`. See
-[Colors and theming](#colors-and-theming) to pin exact values.
-
-**`will-change` is opt-in.** It was removed from every one-shot animation and
-from properties that cannot be GPU-composited. Add `tm-gpu` where you have
-measured first-frame stutter.
-
-**Stagger steps 100ms, not 80ms.** `staggerStyle()` likewise defaults to 100ms
-and now emits `--tm-stagger-index` alongside `--tm-stagger`, so it drives
-`tm-stagger` containers as well as `tm-count-reveal`.
-
-**Prefer the logical slide names.** `tm-slide-up`, `tm-slide-down`,
-`tm-slide-left` and `tm-slide-right` still work, as aliases of
-`tm-slide-block-start`, `tm-slide-block-end`, `tm-slide-inline-start` and
-`tm-slide-inline-end`.
+Not supported. TailMotion is CSS and DOM selectors. **React Native Web** can use
+it for its browser target only, where the output is real DOM and real CSS.
 
 ## Community
 

@@ -1,0 +1,127 @@
+---
+title: "Tailwind plugin"
+description: "Every utility the optional plugin generates, and every option it accepts."
+---
+
+<Note>
+The plugin is **optional**. The prebuilt stylesheet already contains every
+token at its shipped value, and nothing in `tailmotion.css` requires the plugin.
+Add it when you want to change or extend those tokens, or use arbitrary values.
+</Note>
+
+## Setup
+
+<CodeGroup>
+```css Tailwind v4
+@import "tailwindcss";
+@plugin "tailmotion/plugin";
+@import "tailmotion/css";
+```
+
+```js Tailwind v3
+module.exports = {
+  content: ["./src/**/*.{js,jsx,ts,tsx,html}"],
+  plugins: [require("tailmotion/plugin")],
+};
+```
+</CodeGroup>
+
+## Generated utilities
+
+70 utilities across nine groups. Each writes one custom property with
+`!important`, so an element-level utility always beats an inherited motion
+profile.
+
+| Utility | Sets | Notes |
+|---|---|---|
+| `tm-duration-*` | `--tm-duration` | Replaces the class default outright, not scaled by a profile |
+| `tm-delay-*` | `--tm-delay` | |
+| `tm-ease-*` | `--tm-easing` | Beats the inherited easing role |
+| `tm-repeat-*` | `--tm-iteration-count` | |
+| `tm-distance-*` | `--tm-distance` | Retunes entrances, exits and presence offsets together |
+| `tm-stagger-*` | `--tm-stagger-step` | The shorter spelling |
+| `tm-stagger-step-*` | `--tm-stagger-step` | The 0.6 spelling. Same utility |
+| `tm-speed-*` | `--tm-duration-scale` | A factor. Applies to the whole subtree |
+| `tm-emphasis-*` | `--tm-emphasis` and `--tm-overshoot` | Both at once |
+| `tm-overshoot-*` | `--tm-overshoot` | Flattens a spring without shrinking the entrance |
+| `tm-hold-*` | `--tm-hold-duration` | For `tm-hold-confirm` |
+
+Arbitrary values work everywhere: `tm-duration-[420ms]`, `tm-speed-[0.9]`,
+`tm-distance-[3rem]`, `tm-ease-[cubic-bezier(0.2,0,0,1)]`.
+
+## Default token values
+
+| Group | Values |
+|---|---|
+| `durations` | 150, 200, 300, 400, 500, 700, 900, 1000, 1200, 1400, 1600, 2000, 3000 ms |
+| `delays` | 0, 75, 150, 200, 300, 400, 500, 700, 1000 ms |
+| `easing` | `linear`, `in`, `out`, `in-out`, `soft`, `snappy`, `bouncy` |
+| `repeat` | 1, 2, 3, `infinite` |
+| `stagger` | 50, 75, 100, 150, 200 ms |
+| `distance` | 4, 8, 12, 20, 30 px |
+| `speed` | 0.75, 0.85, 1, 1.1, 1.25, 1.5 |
+| `emphasis` | 0, 0.5, 0.75, 1, 1.25, 1.5 |
+| `hold` | 800, 1200, 1600, 2000 ms |
+
+## Extending the tokens
+
+Two equivalent ways. Options merge over the defaults; nothing is removed.
+
+<CodeGroup>
+```js As plugin options
+module.exports = {
+  plugins: [
+    require("tailmotion/plugin")({
+      durations: { 750: "750ms", 1500: "1500ms" },
+      easing: { springy: "cubic-bezier(0.22, 1, 0.36, 1)" },
+      delays: { 600: "600ms" },
+      stagger: { 120: "120ms" },
+      distance: { 16: "16px" },
+      speed: { 90: "0.9" },
+      emphasis: { 25: "0.25" },
+      hold: { 2500: "2500ms" },
+    }),
+  ],
+};
+```
+
+```js Via theme
+module.exports = {
+  theme: {
+    extend: {
+      tailmotion: {
+        durations: { 750: "750ms" },
+        easing: { springy: "cubic-bezier(0.22, 1, 0.36, 1)" },
+      },
+    },
+  },
+  plugins: [require("tailmotion/plugin")],
+};
+```
+</CodeGroup>
+
+The merge order is: package defaults, then `theme.extend.tailmotion`, then
+plugin options. The last one wins.
+
+## TypeScript
+
+```ts
+import type { Config } from "tailwindcss";
+import tailmotion from "tailmotion/plugin";
+
+export default {
+  content: ["./src/**/*.{js,jsx,ts,tsx,html}"],
+  plugins: [tailmotion],
+} satisfies Config;
+```
+
+Plugin options are typed as `TailMotionPluginOptions`.
+
+## What the plugin does not do
+
+- It does **not** generate the animation classes. Those live in
+  `tailmotion.css`, which you import separately.
+- It does **not** generate variants. The prebuilt `hover:` / `focus:` /
+  responsive selectors ship in `variants.css`, inside the stylesheet.
+- It does **not** require Tailwind at runtime. `tailwindcss` is an optional peer
+  dependency, and TailMotion works with no Tailwind at all.

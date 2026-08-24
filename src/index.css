@@ -1,5 +1,13 @@
-/* Entry point for TailMotion animations. */
+/* Entry point for TailMotion.
+
+   base.css pulls in the shared token layer and the motion profiles, so it must
+   stay first: everything below reads those tokens. */
 @import "./animations/base.css";
+@import "./presence/presence.css";
+@import "./native/native.css";
+@import "./recipes/recipes.css";
+@import "./choreography/stagger.css";
+@import "./scroll/scroll.css";
 @import "./animations/exit.css";
 @import "./animations/interactions.css";
 @import "./animations/view-morph.css";

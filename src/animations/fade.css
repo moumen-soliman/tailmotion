@@ -4,9 +4,9 @@
      should travel. */
   .tm-fade-in {
     animation-name: tm-fade-in;
-    animation-duration: var(--tm-duration, 250ms);
+    animation-duration: var(--tm-duration, calc(250ms * var(--tm-duration-scale, 1)));
     animation-delay: var(--tm-delay, 0ms);
-    animation-timing-function: var(--tm-easing, ease-out);
+    animation-timing-function: var(--tm-easing, var(--tm-ease-entrance, ease-out));
     animation-iteration-count: var(--tm-iteration-count, 1);
     animation-fill-mode: both;
   }

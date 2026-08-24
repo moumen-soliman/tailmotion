@@ -1,0 +1,149 @@
+---
+title: "Accessibility"
+description: "Reduced motion, right-to-left, focus, and the states motion must never be the only signal for."
+---
+
+## Reduced motion
+
+Under `prefers-reduced-motion: reduce`, every TailMotion animation and
+transition collapses to **1ms** rather than being removed.
+
+That choice matters. `animation: none` would leave `tm-fade-out` fully visible —
+the class would stop communicating "this is leaving" and the element would just
+sit there. Collapsing to 1ms means the state a class communicates still lands; it
+simply lands instantly.
+
+Coverage includes pseudo-elements and the unclassed children of container
+recipes:
+
+```css
+[class*="tm-"],
+[class*="tm-"]::before,
+[class*="tm-"]::after,
+.tm-stagger > *,
+.tm-count-reveal > *,
+.tm-icon-swap > *,
+.tm-view-morph > [data-tm-panel],
+.tm-text-flip-chars > span { /* … */ }
+```
+
+`::backdrop` is handled in its own rule, because one unparsed part of a selector
+list discards the whole list in an older engine.
+
+### The two exceptions
+
+| Class | Behaviour under reduced motion | Why |
+|---|---|---|
+| `tm-scroll-*` | Switched off by name, leaving content visible in place | Progress-linked animations ignore `animation-duration`, so 1ms would do nothing |
+| `tm-hold-confirm` | Keeps its full 1200ms hold | It is a readout of elapsed time. Collapsing it would confirm a destructive action the instant the button was touched |
+
+### Opting out entirely
+
+For motion that carries no information at all, use Tailwind's `motion-safe:`:
+
+```html
+<div class="motion-safe:tm-float">Purely decorative</div>
+```
+
+And `motion-reduce:` to hide something that only makes sense in motion:
+
+```html
+<div class="tm-scroll-progress motion-reduce:hidden fixed inset-x-0 top-0 h-1 bg-black"></div>
+```
+
+### Testing it
+
+<CodeGroup>
+```text macOS
+System Settings → Accessibility → Display → Reduce motion
+```
+
+```text Windows
+Settings → Accessibility → Visual effects → Animation effects
+```
+
+```text Chrome DevTools
+Rendering panel → Emulate CSS media feature prefers-reduced-motion
+```
+</CodeGroup>
+
+The demo at `/capabilities/` also has a simulated toggle, which mirrors the real
+media query including both exceptions above.
+
+## Right-to-left
+
+Logical classes read `--tm-inline-flip`, which TailMotion sets to `-1` under
+`[dir="rtl"]`, so inline-axis motion mirrors itself with no extra markup:
+
+```html
+<div dir="rtl">
+  <!-- travels toward the inline start, which here is the right edge -->
+  <div class="tm-slide-inline-start">مرحبا</div>
+</div>
+```
+
+Inline-axis motion mirrors. Block-axis motion does not, because up is up in
+every writing direction.
+
+| Class | LTR start / closed | RTL start / closed |
+|---|---|---|
+| `tm-slide-inline-start` | +distance (from the left) | −distance (from the right) |
+| `tm-slide-inline-end` | −distance | +distance |
+| `tm-slide-block-start` | +distance (from below) | +distance (unchanged) |
+| `tm-presence-slide-inline` | −distance | +distance |
+| `tm-presence-slide-block` | −distance (from above) | −distance (unchanged) |
+| `tm-toast` | +distance (toward the inline end) | −distance |
+| `tm-hold-confirm` fill | grows from the left edge | grows from the right edge |
+| `tm-scroll-progress` | grows from the left edge | grows from the right edge |
+
+The two fills use `[dir="rtl"]` plus `:dir(rtl)` behind an `@supports` guard,
+because `transform-origin` accepts no logical keywords.
+
+<Note>
+The physical aliases `tm-slide-left` and `tm-slide-right` mirror too, since they
+point at the same keyframes — which is exactly why their names are misleading in
+an RTL context, and why the logical names are worth preferring in new markup.
+</Note>
+
+`dir="auto"` is supported via `:dir()` where the browser has it.
+
+## Motion is never the only signal
+
+Every control in this library's own demo pairs its motion with a color, an icon
+or a text change. Do the same:
+
+- **`focus-visible:` variants must be paired with a visible focus ring.** A glow
+  that only exists in motion disappears under reduced motion, and never existed
+  for a user who cannot perceive it.
+- **A toast needs `role="status"`.** The animation is not an announcement.
+- **A dialog needs `role="dialog"` and a label**, or use `<dialog>` and let the
+  browser do it.
+- **A tooltip needs `role="tooltip"` and `aria-describedby`** on its trigger.
+- **`tm-hold-confirm` needs a key handler.** Without `data-state="holding"` on
+  keydown the interaction is pointer-only.
+
+## What presence does for you
+
+The closed state of every presence class and panel recipe ends on
+`visibility: hidden`, not just `opacity: 0`. A fully transparent element still
+swallows clicks and is still read aloud; a hidden one is neither.
+
+`visibility` interpolates discretely at the end of a transition, so the element
+stays visible for the whole exit and only leaves the accessibility tree once the
+animation is finished.
+
+## What choreography does not break
+
+`tm-stagger-from-end` reverses the *sequence*, not the DOM. TailMotion never sets
+`flex-direction: row-reverse`, `order`, or a negative delay — three tricks that
+buy a visual effect by breaking keyboard navigation or screen-reader order.
+
+Reading order, tab order and the accessibility tree are always exactly what your
+markup says.
+
+## Native elements keep their semantics
+
+`[popover]`, `<dialog>` and `<details>` keep focus management, the top layer,
+light dismiss, Escape and their native roles. TailMotion animates them and
+intercepts nothing. That is the main reason to prefer
+[`tm-native-*`](/docs/guides/native-elements) over a div-based equivalent.

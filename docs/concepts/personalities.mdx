@@ -1,0 +1,166 @@
+---
+title: "Motion personalities"
+description: "Change the feel of a whole interface with one class, without touching a single animation class."
+---
+
+A settings page and an onboarding flow should not move the same way. Doing that
+by hand means auditing every duration and distance in the product, and doing it
+again the next time the answer changes.
+
+```html
+<main class="tm-motion-calm">
+  <button class="tm-press">Save</button>
+  <div class="tm-slide-block-start">Saved</div>
+</main>
+```
+
+Neither `tm-press` nor `tm-slide-block-start` knows the profile exists. They
+read inherited custom properties, and the profile sets them.
+
+## The three profiles
+
+<Tabs>
+  <Tab title="Calm">
+    **Settings, finance, dashboards, long-form reading.**
+
+    Short travel, no overshoot, curves that only decelerate. Motion here
+    confirms a change without asking to be watched.
+
+    ```css
+    --tm-duration-scale: 1.1;
+    --tm-emphasis: 0.55;
+    --tm-overshoot: 0;
+    --tm-distance: 8px;
+    --tm-stagger-step: 70ms;
+    ```
+  </Tab>
+  <Tab title="Productive">
+    **The recommended default for product UI.**
+
+    Feedback arrives fast, movement stays small, and the state change is the
+    loudest thing on screen.
+
+    ```css
+    --tm-duration-scale: 0.85;
+    --tm-emphasis: 0.85;
+    --tm-overshoot: 0.6;
+    --tm-distance: 10px;
+    --tm-stagger-step: 55ms;
+    ```
+  </Tab>
+  <Tab title="Expressive">
+    **Onboarding, marketing, milestones, celebration.**
+
+    Travel is larger and the curves are allowed to spring, but the motion still
+    settles rather than oscillating.
+
+    ```css
+    --tm-duration-scale: 1.2;
+    --tm-emphasis: 1.35;
+    --tm-overshoot: 1.3;
+    --tm-distance: 22px;
+    --tm-stagger-step: 110ms;
+    ```
+  </Tab>
+</Tabs>
+
+`tm-motion-default` returns a subtree to the library defaults — useful for a
+region that should not inherit a surrounding personality.
+
+| | Duration | Travel | Emphasis | Overshoot | Stagger step |
+|---|---|---|---|---|---|
+| `tm-motion-calm` | ×1.1 | 8px | ×0.55 | none | 70ms |
+| `tm-motion-productive` | ×0.85 | 10px | ×0.85 | ×0.6 | 55ms |
+| `tm-motion-expressive` | ×1.2 | 22px | ×1.35 | ×1.3 | 110ms |
+| `tm-motion-default` | ×1 | 12px | ×1 | ×1 | 100ms |
+
+Each profile also sets all five [easing roles](/docs/concepts/motion-model#easing-roles).
+
+## A profile changes feel, not vocabulary
+
+Duration is a **factor**. `tm-pop` stays livelier than `tm-fade-in` in all three
+profiles, because each animation multiplies its own tuned default:
+
+| Class | Default | Calm | Productive | Expressive |
+|---|---|---|---|---|
+| `tm-fade-in` | 250ms | 275ms | 213ms | 300ms |
+| `tm-slide-block-start` | 260ms | 286ms | 221ms | 312ms |
+| `tm-pop` | 380ms | 418ms | 323ms | 456ms |
+| `tm-press` | 150ms | 165ms | 128ms | 180ms |
+
+The library never flattens everything to one global duration. That is the
+difference between a personality and a find-and-replace.
+
+## Explicit values still win
+
+```html
+<main class="tm-motion-calm">
+  <section class="tm-stagger">
+    <h2 class="tm-slide-block-start">Account</h2>
+
+    <!-- exactly 300ms, not 300ms x the calm factor -->
+    <button class="tm-press tm-duration-300">Save</button>
+  </section>
+
+  <aside class="tm-motion-expressive">
+    <div class="tm-pop">Upgrade complete</div>
+  </aside>
+</main>
+```
+
+`tm-duration-*`, `tm-delay-*`, `tm-ease-*`, `tm-repeat-*`, `tm-distance-*` and
+`tm-stagger-*` set `--tm-duration`, `--tm-easing` or `--tm-distance` directly on
+the element, and those are read *before* the profile factors rather than
+multiplied by them.
+
+## Nesting
+
+Profiles are inherited custom properties, so the nearest ancestor wins. There is
+no resolution order to learn beyond normal CSS inheritance.
+
+```html
+<main class="tm-motion-calm">        <!-- 8px travel, no overshoot -->
+  <aside class="tm-motion-expressive"> <!-- 22px travel, springy -->
+    <div class="tm-pop">Upgrade complete</div>
+  </aside>
+</main>
+```
+
+## One axis at a time
+
+Sometimes a subtree needs part of a personality and not the rest.
+
+| Utility | Sets |
+|---|---|
+| `tm-speed-75` … `tm-speed-150` | `--tm-duration-scale` |
+| `tm-emphasis-0` … `tm-emphasis-150` | `--tm-emphasis` and `--tm-overshoot` together |
+| `tm-no-overshoot` | `--tm-overshoot: 0` only |
+
+`tm-no-overshoot` is the one to reach for when a springy entrance is wrong in
+one place but the rest of the personality is right.
+
+## Reduced motion
+
+Profiles need no special handling. Under `prefers-reduced-motion: reduce` every
+animation and transition collapses to 1ms regardless of the factors, and the
+state a class communicates still lands. A calm profile and an expressive one
+behave identically — which is correct, because the user asked for neither.
+
+## Choosing a profile
+
+<Note>
+If you are unsure, use `tm-motion-productive`. It is the recommended default for
+product UI, and the one profile that is hard to get wrong: fast enough that
+frequently repeated interactions do not feel padded, restrained enough that
+nothing draws attention it has not earned.
+</Note>
+
+Two rules of thumb from the literature this library follows:
+
+- **Frequency beats taste.** If a user will see the animation a hundred times a
+  day, it should be short or absent. Calm and productive both respect that;
+  expressive does not, which is why it belongs on the paths a user walks once.
+- **Larger elements move slower.** A full-page dialog at the same duration as a
+  tooltip reads as sluggish for the tooltip and abrupt for the dialog. The
+  per-class defaults already encode this; profiles scale the whole set without
+  disturbing the ratios.

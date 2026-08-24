@@ -53,21 +53,91 @@ export interface TmModifiers {
   staggerStep?: string | number;
 }
 
+/** The three shipped motion personalities, plus the reset. */
+export type TailMotionProfile =
+  | 'tm-motion-calm'
+  | 'tm-motion-productive'
+  | 'tm-motion-expressive'
+  | 'tm-motion-default';
+
+/**
+ * The state contracts every tm-presence-* class and product recipe reads.
+ * An element carrying none of these is treated as open.
+ */
+export type TailMotionState =
+  | 'open'
+  | 'closed'
+  | 'active'
+  | 'inactive'
+  | 'checked'
+  | 'unchecked'
+  | 'on'
+  | 'off';
+
+/** States tm-feedback-button reads from its own data-state. */
+export type TailMotionFeedbackState = 'idle' | 'loading' | 'success' | 'error';
+
 /**
  * The CSS custom properties TailMotion reads. Timing tokens are intentionally
  * unset by default so each motion class can carry its own tuned value.
  */
 export interface TailMotionVars {
+  /* --- Explicit overrides. Always win over an inherited profile. --- */
   '--tm-duration'?: string;
   '--tm-delay'?: string;
   '--tm-easing'?: string;
   '--tm-iteration-count'?: string | number;
+  '--tm-exit-duration'?: string;
+
+  /* --- Profile factors. Inherited multipliers, not replacements. --- */
+  /** Multiplies every animation's own default duration. 1 is the library default. */
+  '--tm-duration-scale'?: string | number;
+  /** Scales how far a keyframe departs from its resting value. */
+  '--tm-emphasis'?: string | number;
+  /** Scales only the frames that travel past the resting value. 0 removes overshoot. */
+  '--tm-overshoot'?: string | number;
+
+  /* --- Role easings. A profile retunes these; classes opt into a role. --- */
+  '--tm-ease-entrance'?: string;
+  '--tm-ease-exit'?: string;
+  '--tm-ease-interaction'?: string;
+  /** For something already on screen that moves or reshapes. */
+  '--tm-ease-morph'?: string;
+  /** The only role allowed to overshoot. */
+  '--tm-ease-emphasis'?: string;
+
+  /* --- Shared scalars --- */
   '--tm-stagger-step'?: string;
   '--tm-stagger-index'?: number;
   '--tm-distance'?: string;
+  /** Defaults to 70% of --tm-distance, resolved on the element. */
   '--tm-exit-distance'?: string;
   /** 1 in left-to-right contexts, -1 in right-to-left. Set by TailMotion. */
   '--tm-inline-flip'?: 1 | -1;
+
+  /* --- Presence and recipes --- */
+  /** Ratio of the closed transition to the open one. Defaults to 0.7. */
+  '--tm-presence-exit-scale'?: string | number;
+  /** -1 starts from the block-start / inline-start edge, 1 from the other. */
+  '--tm-presence-direction'?: 1 | -1;
+  /** transform-origin for presence, menu, tooltip, popover and dialog motion. */
+  '--tm-origin'?: string;
+  '--tm-toast-distance'?: string;
+  /** Set from your component's measurement of the active tab. */
+  '--tm-tab-offset'?: string;
+  '--tm-tab-size'?: string;
+  /** How long tm-hold-confirm must be held. Defaults to 1200ms. */
+  '--tm-hold-duration'?: string;
+  '--tm-hold-release-duration'?: string;
+  '--tm-hold-fill'?: string;
+  '--tm-hold-fill-opacity'?: string | number;
+  /** Backdrop timing for tm-native-dialog. */
+  '--tm-backdrop-duration'?: string;
+  '--tm-marker-rotate'?: string;
+
+  /* --- Scroll-driven --- */
+  /** An animation-range value, e.g. "entry 15% entry 65%". */
+  '--tm-scroll-range'?: string;
   '--tm-color'?: string;
   '--tm-shadow-color'?: string;
   '--tm-glow-color'?: string;
@@ -190,8 +260,15 @@ declare module 'tailmotion/plugin' {
     delays?: Record<string | number, string>;
     easing?: Record<string, string>;
     repeat?: Record<string | number, string>;
+    /** Values for tm-stagger-* and its longer tm-stagger-step-* spelling. */
     stagger?: Record<string | number, string>;
     distance?: Record<string | number, string>;
+    /** Values for tm-speed-*, the --tm-duration-scale factor. */
+    speed?: Record<string | number, string>;
+    /** Values for tm-emphasis-* and tm-overshoot-*. */
+    emphasis?: Record<string | number, string>;
+    /** Values for tm-hold-*, the tm-hold-confirm duration. */
+    hold?: Record<string | number, string>;
   }
   
   const plugin: PluginCreator & {

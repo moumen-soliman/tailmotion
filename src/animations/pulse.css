@@ -1,7 +1,7 @@
 @layer utilities {
   .tm-pulse {
     animation-name: tm-pulse;
-    animation-duration: var(--tm-duration, 1400ms);
+    animation-duration: var(--tm-duration, calc(1400ms * var(--tm-duration-scale, 1)));
     animation-delay: var(--tm-delay, 0ms);
     animation-timing-function: var(--tm-easing, ease-in-out);
     animation-iteration-count: var(--tm-iteration-count, infinite);
@@ -13,12 +13,12 @@
 @keyframes tm-pulse {
   0%,
   100% {
-    transform: scale(1);
+    scale: 1;
     opacity: 1;
   }
 
   50% {
-    transform: scale(1.05);
+    scale: calc(1 + 0.05 * var(--tm-emphasis, 1));
     opacity: 0.85;
   }
 }

@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Native verification</title>
+    <link rel="stylesheet" href="/tailmotion.css" />
+    <style>
+      body { font: 14px/1.5 system-ui, sans-serif; margin: 24px; }
+      dialog { border: 1px solid #ccc; border-radius: 12px; padding: 20px; }
+      [popover] { border: 1px solid #ccc; border-radius: 10px; padding: 14px; }
+      details { border: 1px solid #ccc; border-radius: 10px; padding: 10px; max-width: 420px; }
+      summary { cursor: pointer; }
+      pre { background: #f6f6f6; padding: 8px; border-radius: 6px; }
+      button { padding: 6px 10px; }
+    </style>
+  </head>
+  <body>
+    <h1>Native</h1>
+
+    <p>
+      <button popovertarget="menu" id="popbtn">Account</button>
+      <div id="menu" popover class="tm-native-popover" style="--tm-origin: top left">
+        Popover content
+      </div>
+    </p>
+
+    <p>
+      <button id="opendlg">Open dialog</button>
+      <dialog class="tm-native-dialog" id="dlg">
+        Dialog content
+        <form method="dialog"><button>Close</button></form>
+      </dialog>
+    </p>
+
+    <details class="tm-native-disclosure" id="det">
+      <summary>Shipping details <span data-tm-marker>›</span></summary>
+      <div style="padding-top: 8px">
+        Ships in two business days. Returns accepted within 30 days of delivery.
+        Tracking is emailed as soon as the parcel leaves the warehouse.
+      </div>
+    </details>
+
+    <pre id="out"></pre>
+
+    <script>
+      document.getElementById('opendlg').onclick = () => document.getElementById('dlg').showModal();
+      window.probe = () => {
+        const cs = (el, p) => getComputedStyle(el).getPropertyValue(p);
+        const pop = document.getElementById('menu');
+        const dlg = document.getElementById('dlg');
+        const det = document.getElementById('det');
+        const marker = det.querySelector('[data-tm-marker]');
+        const content = det.querySelector('div');
+        return {
+          supports: {
+            popoverOpen: CSS.supports('selector(:popover-open)'),
+            allowDiscrete: CSS.supports('transition-behavior', 'allow-discrete'),
+            detailsContent: CSS.supports('selector(::details-content)'),
+            interpolateSize: CSS.supports('interpolate-size', 'allow-keywords'),
+            dialogModal: CSS.supports('selector(dialog:modal)'),
+          },
+          popover: {
+            open: pop.matches(':popover-open'),
+            opacity: cs(pop, 'opacity'),
+            scale: cs(pop, 'scale'),
+            origin: cs(pop, 'transform-origin'),
+            duration: cs(pop, 'transition-duration'),
+            behavior: cs(pop, 'transition-behavior'),
+            props: cs(pop, 'transition-property'),
+          },
+          dialog: {
+            open: dlg.hasAttribute('open'),
+            opacity: cs(dlg, 'opacity'),
+            duration: cs(dlg, 'transition-duration'),
+            props: cs(dlg, 'transition-property'),
+          },
+          details: {
+            open: det.hasAttribute('open'),
+            interpolateSize: cs(det, 'interpolate-size'),
+            markerRotate: cs(marker, 'rotate'),
+            markerTransition: cs(marker, 'transition-duration'),
+            contentAnimation: cs(content, 'animation-name'),
+          },
+        };
+      };
+      document.getElementById('out').textContent = JSON.stringify(window.probe(), null, 1);
+    </script>
+  </body>
+</html>

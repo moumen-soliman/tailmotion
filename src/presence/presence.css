@@ -1,0 +1,204 @@
+/* --------------------------------------------------------------------------
+   State-driven presence.
+
+   These classes animate between the open and closed states your application
+   or headless UI library already manages. TailMotion never mounts, unmounts
+   or toggles anything: it reads the state you already set.
+
+     <div class="tm-presence-pop" data-state="open">Menu content</div>
+
+   Recognised state contracts, on the element itself:
+
+     data-state="open"      / "closed"
+     data-state="active"    / "inactive"      (tabs)
+     data-state="checked"   / "unchecked"     (checkbox, switch)
+     data-state="on"        / "off"           (toggle)
+     aria-expanded="true"   / "false"
+     aria-pressed="true"    / "false"
+     aria-checked="true"    / "false"
+     class="tm-open"        / "tm-closed"
+
+   An element with no recognised state is treated as open. That is deliberate:
+   a missing or misspelled attribute leaves content visible rather than
+   invisible.
+
+   Everything here is a transition, not a keyframe, so reversing state
+   mid-flight retargets from the current position instead of snapping back to
+   the start. Interruptibility is the whole point of the module.
+
+   Shape of the code: the open state is the base rule, and one closed rule
+   reads two per-variant custom properties. Each variant class then only
+   declares where "closed" is. That keeps the state contract written down
+   once, so it cannot drift between variants.
+
+   Mounting contract: a closed element must stay in the DOM until its closed
+   transition finishes, otherwise there is nothing left to animate. React, Vue
+   and Svelte examples are in the README. The closed state ends on
+   `visibility: hidden`, so a closed element is neither clickable nor
+   announced by a screen reader while it waits.
+
+   Every class animates `opacity`, `translate` and `scale` -- never
+   `transform` -- so a Tailwind `rotate-*`, `-translate-*` or `skew-*` on the
+   same element survives.
+   -------------------------------------------------------------------------- */
+
+@import "../shared/tokens.css";
+
+@layer utilities {
+  /* Open. Also the resting state of an element with no state attribute. */
+  .tm-presence-fade,
+  .tm-presence-scale,
+  .tm-presence-pop,
+  .tm-presence-slide-block,
+  .tm-presence-slide-inline {
+    opacity: 1;
+    visibility: visible;
+    translate: 0 0;
+    scale: 1;
+    transition-property: opacity, visibility, translate, scale;
+    transition-duration: var(--tm-duration, calc(var(--tm-presence-duration, 220ms) * var(--tm-duration-scale, 1)));
+    transition-delay: var(--tm-delay, 0ms);
+    transition-timing-function: var(--tm-easing, var(--tm-ease-entrance, cubic-bezier(0.22, 1, 0.36, 1)));
+    transform-origin: var(--tm-origin, center);
+  }
+
+  /* Closed. Softer and shorter than the entrance -- the user has already
+     decided, so the exit gets out of the way rather than performing.
+     --tm-presence-exit-scale (0.7) sets that ratio; --tm-exit-duration
+     replaces it outright. */
+  :is(
+      .tm-presence-fade,
+      .tm-presence-scale,
+      .tm-presence-pop,
+      .tm-presence-slide-block,
+      .tm-presence-slide-inline
+    ):is(
+      [data-state="closed"],
+      [data-state="inactive"],
+      [data-state="unchecked"],
+      [data-state="off"],
+      [aria-expanded="false"],
+      [aria-pressed="false"],
+      [aria-checked="false"],
+      .tm-closed
+    ) {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    translate: var(--tm-presence-closed-translate, 0 0);
+    scale: var(--tm-presence-closed-scale, 1);
+    transition-duration: var(
+      --tm-exit-duration,
+      calc(
+        var(
+            --tm-duration,
+            calc(var(--tm-presence-duration, 220ms) * var(--tm-duration-scale, 1))
+          ) * var(--tm-presence-exit-scale, 0.7)
+      )
+    );
+    transition-timing-function: var(--tm-easing, var(--tm-ease-exit, cubic-bezier(0.25, 0.46, 0.45, 0.94)));
+  }
+
+  /* --- Where "closed" is, per variant ---------------------------------
+     Every variant sets both properties, including the ones it does not use,
+     so a presence element nested inside another cannot inherit its parent's
+     closed position. */
+
+  /* Opacity only. The safest default: nothing moves, so it composes with any
+     layout and never fights a positioned popper. */
+  .tm-presence-fade {
+    --tm-presence-closed-translate: 0 0;
+    --tm-presence-closed-scale: 1;
+    --tm-presence-duration: 180ms;
+  }
+
+  /* Settles up from slightly small. Never overshoots. */
+  .tm-presence-scale {
+    --tm-presence-closed-translate: 0 0;
+    --tm-presence-closed-scale: calc(1 - 0.04 * var(--tm-emphasis, 1));
+    --tm-presence-duration: 220ms;
+  }
+
+  /* Springs open. The overshoot lives in the easing rather than a keyframe, so
+     it stays interruptible; a profile with --tm-overshoot: 0 flattens it back
+     to a decelerating curve. */
+  .tm-presence-pop {
+    --tm-presence-closed-translate: 0 0;
+    --tm-presence-closed-scale: calc(1 - 0.1 * var(--tm-emphasis, 1));
+    --tm-presence-duration: 260ms;
+    transition-timing-function: var(--tm-easing, var(--tm-ease-emphasis, cubic-bezier(0.34, 1.56, 0.64, 1)));
+  }
+
+  .tm-no-overshoot .tm-presence-pop,
+  .tm-motion-calm .tm-presence-pop {
+    transition-timing-function: var(--tm-easing, var(--tm-ease-entrance, cubic-bezier(0.22, 1, 0.36, 1)));
+  }
+
+  /* Travels on the block axis. --tm-presence-direction picks the edge it
+     starts from: -1 (default) starts toward block-start and drops into place,
+     the shape a menu below its trigger wants; 1 starts toward block-end and
+     rises. Use tm-presence-from-start / tm-presence-from-end rather than
+     remembering the sign. */
+  .tm-presence-slide-block {
+    --tm-presence-closed-translate: 0
+      calc(var(--tm-distance, 12px) * var(--tm-presence-direction, -1));
+    --tm-presence-closed-scale: 1;
+    --tm-presence-duration: 240ms;
+  }
+
+  /* Travels on the inline axis, mirrored in right-to-left contexts:
+     "start" is the left edge in LTR and the right edge in RTL. */
+  .tm-presence-slide-inline {
+    --tm-presence-closed-translate: calc(
+        var(--tm-distance, 12px) * var(--tm-presence-direction, -1) *
+          var(--tm-inline-flip, 1)
+      )
+      0;
+    --tm-presence-closed-scale: 1;
+    --tm-presence-duration: 240ms;
+  }
+
+  /* Which edge a slide presence starts from. */
+  .tm-presence-from-start {
+    --tm-presence-direction: -1;
+  }
+
+  .tm-presence-from-end {
+    --tm-presence-direction: 1;
+  }
+
+  /* --- First paint ----------------------------------------------------
+     A presence element mounted already open has no previous state to
+     transition from, so it would simply appear. @starting-style supplies the
+     missing "before" frame. Guarded on transition-behavior, which shipped in
+     the same release as @starting-style in Chrome (117), Safari (17.4) and
+     Firefox (129), so the query is a reliable proxy. Without support the
+     element is visible immediately -- correct, just not animated. */
+  @supports (transition-behavior: allow-discrete) {
+    @starting-style {
+      .tm-presence-fade,
+      .tm-presence-scale,
+      .tm-presence-pop,
+      .tm-presence-slide-block,
+      .tm-presence-slide-inline {
+        opacity: 0;
+        translate: var(--tm-presence-closed-translate, 0 0);
+        scale: var(--tm-presence-closed-scale, 1);
+      }
+    }
+  }
+}
+
+/* Reduced motion: the state still changes instantly and stays legible, the
+   travel just does not happen. Repeated here so the module is safe to import
+   on its own, next to a project that does not take the full stylesheet. */
+@media (prefers-reduced-motion: reduce) {
+  .tm-presence-fade,
+  .tm-presence-scale,
+  .tm-presence-pop,
+  .tm-presence-slide-block,
+  .tm-presence-slide-inline {
+    transition-duration: 1ms !important;
+    transition-delay: 0ms !important;
+  }
+}
