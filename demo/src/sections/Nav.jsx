@@ -45,7 +45,7 @@ export function Nav({ current }) {
     <header className="sticky top-0 z-50 border-b border-line bg-page/80 backdrop-blur-md">
       <nav
         aria-label="Main"
-        className="flex h-14 w-full items-center gap-3 px-5 sm:px-6 lg:px-8"
+        className="flex h-14 w-full items-center px-5 sm:px-6 lg:px-8"
       >
         <a href="/" className="flex shrink-0 items-center gap-2.5" aria-label="TailMotion, home">
           <span className="logo">
@@ -54,84 +54,174 @@ export function Nav({ current }) {
           <span className="sr-only">TailMotion</span>
         </a>
 
-        <div className="relative ms-1 sm:ms-2">
-          <Button
-            variant="ghost"
-            size="sm"
-            popovertarget="nav-explore-menu"
-            aria-haspopup="true"
-            aria-controls="nav-explore-menu"
-            className={cx(
-              'gap-1.5 px-2 sm:px-2.5',
-              EXPLORE_LINKS.some((link) => link.id === current)
-                ? 'text-ink-strong'
-                : 'text-ink-muted'
-            )}
-            style={{ anchorName: '--nav-explore-anchor' }}
-          >
-            Explore
-            <ChevronDown className="h-3.5 w-3.5" strokeWidth={1.75} aria-hidden />
-          </Button>
+        <div className="ms-2 flex min-w-0 items-center gap-1">
+          {/* sm and up: Explore stays its own popover, and LINKS below renders
+              inline. Below sm there isn't room for a second trigger without
+              overflowing the header (measured: a same-sized "Docs" trigger
+              pushes the AI-prompt/GitHub icons off-screen up to ~390px wide),
+              so the two groups fold into one "Menu" popover instead of gaining
+              a second trigger. */}
+          <div className="relative hidden sm:block">
+            <Button
+              variant="ghost"
+              size="sm"
+              popovertarget="nav-explore-menu"
+              aria-haspopup="true"
+              aria-controls="nav-explore-menu"
+              className={cx(
+                'gap-1.5 px-2.5',
+                EXPLORE_LINKS.some((link) => link.id === current)
+                  ? 'text-ink-strong'
+                  : 'text-ink-muted'
+              )}
+              style={{ anchorName: '--nav-explore-anchor' }}
+            >
+              Explore
+              <ChevronDown className="h-3.5 w-3.5" strokeWidth={1.75} aria-hidden />
+            </Button>
 
-          <div
-            id="nav-explore-menu"
-            popover=""
-            aria-label="Explore TailMotion"
-            className="tm-native-popover w-64 rounded-lg border border-line bg-card p-1.5 shadow-2xl"
-            style={{
-              '--tm-origin': 'top center',
-              positionAnchor: '--nav-explore-anchor',
-              positionArea: 'bottom center',
-              margin: 0,
-              marginTop: '8px',
-            }}
-          >
-            <ul>
-              {EXPLORE_LINKS.map((link) => {
-                const active = current === link.id;
-                return (
-                  <li key={link.href}>
-                    <a
-                      href={link.href}
-                      aria-current={active ? 'page' : undefined}
-                      className={cx(
-                        'block rounded-md px-3 py-2.5',
-                        FOCUS_RING,
-                        CONTROL_TRANSITION,
-                        active ? 'bg-card-hover text-ink-strong' : 'hover:bg-card-hover'
-                      )}
-                    >
-                      <span className="block text-label font-medium text-ink-strong">{link.label}</span>
-                      <span className="mt-0.5 block text-micro text-ink-muted">{link.detail}</span>
-                    </a>
-                  </li>
-                );
-              })}
-            </ul>
+            <div
+              id="nav-explore-menu"
+              popover=""
+              aria-label="Explore TailMotion"
+              className="tm-native-popover w-64 rounded-lg border border-line bg-card p-1.5 shadow-2xl"
+              style={{
+                '--tm-origin': 'top center',
+                positionAnchor: '--nav-explore-anchor',
+                positionArea: 'bottom center',
+                margin: 0,
+                marginTop: '8px',
+              }}
+            >
+              <ul>
+                {EXPLORE_LINKS.map((link) => {
+                  const active = current === link.id;
+                  return (
+                    <li key={link.href}>
+                      <a
+                        href={link.href}
+                        aria-current={active ? 'page' : undefined}
+                        className={cx(
+                          'block rounded-md px-3 py-2.5',
+                          FOCUS_RING,
+                          CONTROL_TRANSITION,
+                          active ? 'bg-card-hover text-ink-strong' : 'hover:bg-card-hover'
+                        )}
+                      >
+                        <span className="block text-label font-medium text-ink-strong">{link.label}</span>
+                        <span className="mt-0.5 block text-micro text-ink-muted">{link.detail}</span>
+                      </a>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
           </div>
-        </div>
 
-        <ul className="flex items-center gap-1">
-          {LINKS.map((link) => {
-            const active = current === link.id;
-            return (
-              <li key={link.href} className="hidden sm:block">
-                <a
-                  href={link.href}
-                  aria-current={active ? 'page' : undefined}
-                  className={cx(
-                    'rounded-md px-2 py-1.5 text-label sm:px-2.5',
-                    active ? 'text-ink-strong' : 'text-ink-muted hover:bg-card-hover hover:text-ink',
-                    FOCUS_RING,
-                    CONTROL_TRANSITION
-                  )}
-                >
-                  {link.label}
-                </a>
-              </li>
-            );
-          })}
-        </ul>
+          {/* Below sm: one popover carries both Explore's links and Docs'
+              links, so Example and Docs stay reachable without a second
+              trigger competing for width. */}
+          <div className="relative sm:hidden">
+            <Button
+              variant="ghost"
+              size="sm"
+              popovertarget="nav-mobile-menu"
+              aria-haspopup="true"
+              aria-controls="nav-mobile-menu"
+              className={cx(
+                'gap-1.5 px-2',
+                [...EXPLORE_LINKS, ...LINKS].some((link) => link.id === current)
+                  ? 'text-ink-strong'
+                  : 'text-ink-muted'
+              )}
+              style={{ anchorName: '--nav-mobile-anchor' }}
+            >
+              Menu
+              <ChevronDown className="h-3.5 w-3.5" strokeWidth={1.75} aria-hidden />
+            </Button>
+
+            <div
+              id="nav-mobile-menu"
+              popover=""
+              aria-label="TailMotion menu"
+              className="tm-native-popover w-64 rounded-lg border border-line bg-card p-1.5 shadow-2xl"
+              style={{
+                '--tm-origin': 'top center',
+                positionAnchor: '--nav-mobile-anchor',
+                positionArea: 'bottom center',
+                margin: 0,
+                marginTop: '8px',
+              }}
+            >
+              <ul>
+                {EXPLORE_LINKS.map((link) => {
+                  const active = current === link.id;
+                  return (
+                    <li key={link.href}>
+                      <a
+                        href={link.href}
+                        aria-current={active ? 'page' : undefined}
+                        className={cx(
+                          'block rounded-md px-3 py-2.5',
+                          FOCUS_RING,
+                          CONTROL_TRANSITION,
+                          active ? 'bg-card-hover text-ink-strong' : 'hover:bg-card-hover'
+                        )}
+                      >
+                        <span className="block text-label font-medium text-ink-strong">{link.label}</span>
+                        <span className="mt-0.5 block text-micro text-ink-muted">{link.detail}</span>
+                      </a>
+                    </li>
+                  );
+                })}
+              </ul>
+              <div className="my-1.5 border-t border-line" role="separator" />
+              <ul>
+                {LINKS.map((link) => {
+                  const active = current === link.id;
+                  return (
+                    <li key={link.href}>
+                      <a
+                        href={link.href}
+                        aria-current={active ? 'page' : undefined}
+                        className={cx(
+                          'block rounded-md px-3 py-2.5 text-label font-medium',
+                          FOCUS_RING,
+                          CONTROL_TRANSITION,
+                          active ? 'bg-card-hover text-ink-strong' : 'text-ink-strong hover:bg-card-hover'
+                        )}
+                      >
+                        {link.label}
+                      </a>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          </div>
+
+          <ul className="hidden items-center gap-1 sm:flex">
+            {LINKS.map((link) => {
+              const active = current === link.id;
+              return (
+                <li key={link.href}>
+                  <a
+                    href={link.href}
+                    aria-current={active ? 'page' : undefined}
+                    className={cx(
+                      'inline-flex h-8 items-center rounded-md px-2.5 text-label font-medium',
+                      active ? 'text-ink-strong' : 'text-ink-muted hover:bg-card-hover hover:text-ink',
+                      FOCUS_RING,
+                      CONTROL_TRANSITION
+                    )}
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
 
         <div className="ms-auto flex items-center gap-2">
           <CommandPill command="npm i tailmotion" className="hidden lg:inline-flex" />

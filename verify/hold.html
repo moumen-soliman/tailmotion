@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Hold to delete — Tailwind v3 preflight interaction</title>
+    <!-- Exactly the demo's cascade: Tailwind v3 CDN (unlayered preflight),
+         the demo's tokens, then tailmotion.css. -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: { extend: { colors: {
+          page: 'oklch(1 0 0)',
+          card: { DEFAULT: 'oklch(0.978 0 0)', hover: 'oklch(0.94 0 0)' },
+          line: { DEFAULT: 'oklch(0.913 0.0057 286)', strong: 'oklch(0.83 0.0089 286)' },
+          ink: { DEFAULT: 'oklch(0.33 0 0)', strong: 'oklch(0.205 0 0)', muted: 'oklch(0.5 0.0072 286)' },
+        } } },
+      };
+    </script>
+    <link rel="stylesheet" href="/tailmotion.css" />
+    <style>
+      :root { color-scheme: light; }
+      body { font: 14px/1.5 system-ui, sans-serif; margin: 24px; background: #fff; }
+      .card { background: oklch(0.978 0 0); border: 1px solid oklch(0.913 0.0057 286); border-radius: 12px;
+              padding: 28px; margin-block: 14px; display: grid; place-items: center; gap: 10px; }
+      h2 { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: #666; margin: 0; }
+      pre { background: #f4f4f4; padding: 10px; border-radius: 6px; font-size: 12px; overflow-x: auto; }
+    </style>
+  </head>
+  <body class="text-ink-muted">
+    <h1 class="text-xl font-semibold text-ink">tm-hold-delete under Tailwind v3 preflight</h1>
+
+    <div class="card">
+      <h2>1 — bare class on a &lt;button&gt; (the bug)</h2>
+      <button type="button" id="bare" class="tm-hold-delete text-label">Hold to delete</button>
+    </div>
+
+    <div class="card">
+      <h2>2 — same class on a &lt;div&gt; (preflight does not apply)</h2>
+      <div id="asdiv" class="tm-hold-delete text-label">Hold to delete</div>
+    </div>
+
+    <div class="card">
+      <h2>3 — the fix: Tailwind owns the look, TailMotion owns the sweep</h2>
+      <button
+        type="button"
+        id="fixed"
+        class="tm-hold-delete text-label gap-2 rounded-lg bg-red-50 px-6 py-3 font-medium text-red-600"
+        style="--tm-hold-color: rgb(239 68 68); --tm-hold-success-bg: rgb(254 202 202); --tm-hold-fg: oklch(0.205 0 0)"
+      >Hold to delete</button>
+    </div>
+
+    <div class="card">
+      <h2>4 — tm-hold-confirm, immune by design</h2>
+      <button
+        type="button"
+        id="confirm"
+        class="tm-hold-confirm rounded-lg border border-line px-6 py-3 font-medium text-red-600"
+      >Hold to delete</button>
+    </div>
+
+    <pre id="out">measuring…</pre>
+    <script>
+      window.probe = () => {
+        const read = (id) => {
+          const el = document.getElementById(id);
+          const cs = getComputedStyle(el);
+          const after = getComputedStyle(el, '::after');
+          return {
+            color: cs.color,
+            background: cs.backgroundColor,
+            padding: cs.padding,
+            radius: cs.borderRadius,
+            fill: after.backgroundColor,
+            fillOpacity: after.opacity,
+          };
+        };
+        return { bare: read('bare'), asdiv: read('asdiv'), fixed: read('fixed'), confirm: read('confirm') };
+      };
+      // The Play CDN generates utilities after it scans the DOM.
+      const render = () => (document.getElementById('out').textContent = JSON.stringify(window.probe(), null, 1));
+      window.addEventListener('load', () => setTimeout(render, 300));
+    </script>
+  </body>
+</html>

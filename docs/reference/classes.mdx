@@ -99,6 +99,7 @@ See [Scroll-driven motion](/docs/guides/scroll).
 | `tm-stagger-exit` | Children leave in sequence | `tm-stagger` |
 | `tm-stagger-50` … `tm-stagger-200` | Step between children | `tm-stagger` |
 | `tm-stagger-step-50` … `tm-stagger-step-200` | The 0.6 spelling of the same utility | `tm-stagger` |
+| `tm-stagger-blur` | Adds an 8px blur to the entrance and exit. Off by default | `tm-stagger` |
 
 A container with `data-state` plays the entrance when open and the exit when
 closed. Indices are generated for 20 children; child 21 onward reuses the last.
@@ -186,6 +187,7 @@ carries no information.
 | `tm-morph` | 4000ms | subtle scale + rotate |
 | `tm-ripple` | 1800ms | expanding ring |
 | `tm-shimmer` | 1600ms | gradient sweep on a pseudo-element |
+| `tm-shimmer-text` | 2000ms | gradient sweep clipped to the text's own glyphs |
 | `tm-sparkle` | 1400ms | sparkle |
 
 ## Attention
@@ -221,5 +223,19 @@ The bundled stylesheet includes a curated set: `hover:`, `focus:`,
 `focus-visible:`, `active:`, `focus-within:`, `group-hover:`, `motion-safe:`, and
 selected responsive combinations for the most common animations. The base `tm-*`
 class is always available.
+
+Every bundled `hover:tm-*` class also has a `group-hover:tm-*` equivalent. Prefer
+the group form when an animation translates, scales or rotates its subject:
+
+```html
+<div class="group">
+  <div class="group-hover:tm-pop">Content</div>
+</div>
+```
+
+The parent remains a stationary pointer target while the child moves. Applying
+`hover:tm-pop` directly to the moving child can make the cursor leave its
+transformed hitbox, remove `:hover`, reset the animation, and immediately start
+it again when the child returns.
 
 Per-animation imports do **not** include these — they live in `variants.css`.

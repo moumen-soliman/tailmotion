@@ -25,13 +25,13 @@ wire.
 
 | Entry | Raw | Gzipped |
 |---|---|---|
-| `tailmotion/css` | 203 KB | 29.5 KB |
-| `tailmotion/recipes.css` | 21.9 KB | 6.3 KB |
-| `tailmotion/native.css` | 16.9 KB | 4.9 KB |
-| `tailmotion/choreography.css` | 14.7 KB | 4.3 KB |
-| `tailmotion/presence.css` | 14.5 KB | 4.6 KB |
-| `tailmotion/scroll.css` | 12.1 KB | 4.0 KB |
-| `tailmotion/profiles.css` | 11.4 KB | 3.6 KB |
+| `tailmotion/css` | 215 KB | 31.6 KB |
+| `tailmotion/recipes.css` | 22.3 KB | 6.4 KB |
+| `tailmotion/native.css` | 17.4 KB | 5.0 KB |
+| `tailmotion/choreography.css` | 16.1 KB | 4.8 KB |
+| `tailmotion/presence.css` | 15.0 KB | 4.7 KB |
+| `tailmotion/scroll.css` | 12.6 KB | 4.1 KB |
+| `tailmotion/profiles.css` | 11.8 KB | 3.7 KB |
 
 Run `npm run check` in the repository to regenerate this table.
 
@@ -45,7 +45,7 @@ bundler and CDN minifies them on the way out.
 
 <Warning>
 **The full bundle is not tree-shaken.** Importing `tailmotion/css` ships every
-class whether you use them or not, and 29.5 KB gzipped is the whole file. CSS
+class whether you use them or not, and 31.6 KB gzipped is the whole file. CSS
 has no import graph a bundler can prune, and TailMotion does not pretend
 otherwise. If size matters, take module entries or per-animation files.
 </Warning>
@@ -62,7 +62,7 @@ its build inlines each shared file exactly once.
     ```css
     @import "tailmotion/css";
     ```
-    29.5 KB gzipped, no build step, no plugin, every class available. This is
+    31.6 KB gzipped, no build step, no plugin, every class available. This is
     the right answer for most projects.
   </Accordion>
 
@@ -70,7 +70,7 @@ its build inlines each shared file exactly once.
     ```css
     @import "tailmotion/presence.css";
     ```
-    4.6 KB gzipped, works standalone. Add `tailmotion/profiles.css` if you also
+    4.7 KB gzipped, works standalone. Add `tailmotion/profiles.css` if you also
     want motion personalities.
   </Accordion>
 
@@ -97,16 +97,16 @@ its build inlines each shared file exactly once.
   </Accordion>
 </AccordionGroup>
 
-## What is in the 203 KB
+## What is in the bundle
 
-Measured from the source files the build inlines. The remaining ~3 KB is the
+Measured from the source files the build inlines. The remaining few KB is the
 banner and the per-file markers the build inserts.
 
 | Part | Files | Raw |
 |---|---|---|
 | `variants.css` — prebuilt `hover:` / `focus:` / responsive selectors | 1 | 58.1 KB |
-| The 0.8 layers — tokens, profiles, presence, native, recipes, choreography, scroll | 8 | 54.2 KB |
-| Decorative families — dark veil, wavy, liquid, flip, swing, shimmer, avatar group, text | 13 | 51.8 KB |
+| The 0.8 layers — tokens, profiles, presence, native, recipes, choreography, scroll | 8 | 55.6 KB |
+| Decorative families — dark veil, wavy, liquid, flip, swing, shimmer, avatar group, text | 13 | 59.9 KB |
 | Core entrances, exits, interactions and timing utilities | 23 | 35.7 KB |
 
 If `variants.css` is dead weight for your project — because you generate

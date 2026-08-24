@@ -177,5 +177,32 @@
       filter: blur(0);
     }
   }
+
+  /* Streaming text - words resolve in one by one, left to right.
+     No transform: unlike the flip/rotate/morph words above, a stream reads
+     as arriving text, not as a swap, so only opacity and blur move. The
+     container keeps its natural display so a real paragraph still wraps. */
+  .tm-stream-text > * {
+    animation-name: tm-stream-text-word-in;
+    animation-duration: var(--tm-duration, calc(350ms * var(--tm-duration-scale, 1)));
+    animation-delay: calc(
+      var(--tm-delay, 0ms) + var(--tm-stagger, 0) * var(--tm-stream-text-stagger-step, 60ms)
+    );
+    animation-timing-function: var(--tm-easing, var(--tm-ease-entrance));
+    animation-iteration-count: var(--tm-iteration-count, 1);
+    animation-fill-mode: both;
+    will-change: opacity, filter;
+  }
+
+  @keyframes tm-stream-text-word-in {
+    from {
+      opacity: 0;
+      filter: blur(var(--tm-stream-text-blur, 6px));
+    }
+    to {
+      opacity: 1;
+      filter: blur(0);
+    }
+  }
 }
 

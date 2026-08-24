@@ -15,6 +15,8 @@
      4. --tm-exit-distance is not declared on :root, where calc() would freeze
         against the root --tm-distance instead of the element's.
      5. Every module that ships motion also ships a reduced-motion reset.
+     6. Every prebuilt hover variant has a group-hover equivalent, so motion
+        can run on a child without moving the pointer's hit target.
 
    Run with `npm run check`. Exits non-zero on failure.
    -------------------------------------------------------------------------- */
@@ -159,6 +161,31 @@ const checkStylesheet = async (relativePath, { expectReducedMotion = true } = {}
   );
 };
 
+const checkHoverVariantParity = async () => {
+  const relativePath = 'src/animations/variants.css';
+  const source = stripComments(await readFile(path.join(rootDir, relativePath), 'utf8'));
+  const hover = new Set(
+    [...source.matchAll(/\.hover\\:tm-([\w-]+):hover/g)].map((match) => match[1])
+  );
+  const groupHover = new Set(
+    [...source.matchAll(/\.group:hover\s+\.group-hover\\:tm-([\w-]+)/g)].map(
+      (match) => match[1]
+    )
+  );
+  const missing = [...hover].filter((name) => !groupHover.has(name)).sort();
+
+  if (missing.length) {
+    fail(
+      `${relativePath}: hover variants without a stable group-hover equivalent: ` +
+        missing.map((name) => `tm-${name}`).join(', ')
+    );
+  }
+
+  notes.push(
+    `hover variant parity          ${String(hover.size).padStart(4)} hover classes have group-hover`
+  );
+};
+
 /* --------------------------------------------------------------------------
    Documentation checks.
 
@@ -245,6 +272,7 @@ const run = async () => {
     await checkStylesheet(file);
   }
 
+  await checkHoverVariantParity();
   await checkDocs();
 
   console.log(notes.join('\n'));

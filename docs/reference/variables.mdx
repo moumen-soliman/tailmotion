@@ -52,6 +52,7 @@ One value each, shared by every class that uses them.
 | `--tm-distance` | `12px` | Every slide, every presence offset, `tm-stagger`, `tm-scroll-reveal` |
 | `--tm-exit-distance` | 70% of `--tm-distance` | Every exit keyframe |
 | `--tm-stagger-step` | `100ms` | `tm-stagger` |
+| `--tm-stagger-blur` | `0px` | `tm-stagger`. `tm-stagger-blur` sets it to `8px` |
 | `--tm-stagger-index` | generated | Set by TailMotion per child |
 | `--tm-inline-flip` | `1`, or `-1` in RTL | Every inline-axis class. Set by TailMotion |
 
@@ -117,7 +118,13 @@ Classes opt into a role; a profile retunes the role.
 | `--tm-glow-size`, `--tm-glow-spread` | — | `tm-glow` |
 | `--tm-ripple-size` | — | `tm-ripple` |
 | `--tm-shimmer-angle` | — | `tm-shimmer` |
+| `--tm-shimmer-text-angle` | `100deg` | `tm-shimmer-text` |
+| `--tm-shimmer-text-band` | `400%` | `tm-shimmer-text` |
+| `--tm-number-stagger-step` | `40ms` | `tm-number-swap` |
+| `--tm-stream-text-stagger-step` | `60ms` | `tm-stream-text` |
+| `--tm-stream-text-blur` | `6px` | `tm-stream-text` |
 | `--tm-ring-width` | — | `tm-avatar-ring` |
+| `--tm-avatar-more-bg` | `--tm-outline-color` | `tm-avatar-more` |
 
 ## Colors
 
@@ -131,6 +138,8 @@ See [Theming and color](/docs/guides/theming) for the full story.
 | `--tm-outline-color` | 40% of `--tm-color` |
 | `--tm-shimmer-color` | `--tm-color` |
 | `--tm-shimmer-opacity` | `0.35` |
+| `--tm-shimmer-text-color` | `--tm-color` |
+| `--tm-shimmer-text-resting` | 45% of `--tm-shimmer-text-color` |
 
 ## View morph
 

@@ -1,6 +1,6 @@
 ---
 title: "Structured recipes"
-description: "The classes that need a documented child structure — avatar group, view morph, count reveal, text flip and liquid button."
+description: "The classes that need a documented child structure — avatar group, view morph, count reveal, number swap, streaming text, text flip and liquid button."
 ---
 
 Most of TailMotion works on any element. These do not: each one animates
@@ -65,16 +65,30 @@ for hidden panels. The spatial cross-fade is unchanged.
 
 | Class | Role |
 |---|---|
-| `tm-avatar-group` | The stack. Sets the overlap and the hover choreography |
-| `tm-avatar` | One avatar in the stack |
+| `tm-avatar-group` | The stack. Sets the overlap |
+| `tm-avatar` | One avatar in the stack. Lifts and shows its tooltip on hover -- only itself, never its neighbors |
 | `tm-avatar-ring` | Adds a ring, colored from `--tm-outline-color` |
+| `tm-avatar-more` | Pairs with `tm-avatar` for a "+N" overflow cell at the end of the stack |
 | `tm-avatar-tooltip` | A label revealed on hover. `-bottom`, `-left`, `-right` variants |
 | `tm-avatar-sm` / `-lg` / `-xl` | Size presets |
 | `tm-avatar-lift-none` / `-sm` / `-lg` | How far an avatar rises on hover |
 | `tm-avatar-group-invert` | Reverses the stacking order |
 
-Variables: `--tm-avatar-overlap`, `--tm-avatar-gap`, `--tm-avatar-lift`,
-`--tm-avatar-spring`, `--tm-ring-width`.
+```html
+<div class="tm-avatar-group">
+  <img class="tm-avatar tm-avatar-ring h-10 w-10" src="…" alt="Ana">
+  <img class="tm-avatar tm-avatar-ring h-10 w-10" src="…" alt="Ben">
+  <div class="tm-avatar tm-avatar-more h-10 w-10">+3</div>
+</div>
+```
+
+`tm-avatar-more` is sized and overlapped exactly like a real avatar — only
+its fill, ring and stacking order differ, and it sits *behind* the avatar
+before it so that avatar's circle overlaps its edge instead of the badge
+clipping a real member.
+
+Variables: `--tm-avatar-overlap`, `--tm-avatar-lift`, `--tm-avatar-spring`,
+`--tm-ring-width`, `--tm-avatar-more-bg`.
 
 ## Count reveal
 
@@ -100,6 +114,57 @@ createCountSpans("12,345", { stagger: 50 });
 
 That is data, not DOM — render it with your framework. For vanilla JS,
 `initCountRevealElement(element)` does the DOM work.
+
+## Number swap
+
+A number whose digits pop in together, and replay whenever the value changes
+— a live counter, a price, a score.
+
+```html
+<span id="score" class="tm-number-swap">42</span>
+```
+
+```js
+import { initNumberSwapElement } from "tailmotion/utils";
+
+const score = initNumberSwapElement(document.getElementById("score"));
+score.update(43); // call this whenever the value changes
+```
+
+**Child contract:** none to write by hand — the helper re-renders one `<span>`
+per character on every `update()` call. Fresh nodes are what replay the pop:
+there is no class to toggle. Indices are also generated for the first 10, so
+plain markup without the helper still staggers if you split the characters
+yourself. `--tm-number-stagger-step` sets the delay between them.
+
+For React, Vue or Svelte, split the value into characters yourself and key
+each digit's `<span>` by its slot, e.g. `` key={`${value}-${i}`} `` — remounting
+on value change is what replays the animation; the class only needs
+`--tm-stagger` on each child.
+
+## Streaming text
+
+Words that resolve in one by one, left to right — for text that should read
+as arriving rather than as a swap.
+
+```html
+<p id="reply" class="tm-stream-text"></p>
+```
+
+```js
+import { initStreamTextElement } from "tailmotion/utils";
+
+const reply = initStreamTextElement(document.getElementById("reply"), {
+  text: "Here is the first paragraph.",
+});
+
+reply.update("Here is the next paragraph.");
+```
+
+**Child contract:** none to write by hand — the helper wraps each word in a
+`<span>` and keeps the whitespace between them as plain text, so the
+paragraph still wraps normally. `--tm-stream-text-stagger-step` sets the gap
+between words and `--tm-stream-text-blur` the resolve-in blur.
 
 ## Text flip
 
@@ -148,6 +213,11 @@ rotator.start();
 <Warning>
 `tm-liquid-btn` chooses its own fill color and, in some variants, its own
 line height. It pre-dates the motion-only rule and is kept for compatibility.
+
+On a `<button>` under **Tailwind v3**, preflight is unlayered and strips its
+colour, background and padding — see
+[the preflight note](/docs/install#tailwind-css-v3). Set those with Tailwind
+classes on the same element.
 </Warning>
 
 ```html
@@ -199,6 +269,11 @@ layout.
 and unchanged, and superseded by
 [`tm-hold-confirm`](/docs/guides/recipes#hold-to-confirm), which owns no
 appearance at all.
+
+On a `<button>` under **Tailwind v3** it loses all three to unlayered preflight,
+which leaves an unpadded, uncoloured pill with the sweep still running — see
+[the preflight note](/docs/install#tailwind-css-v3). Either set the appearance
+with Tailwind classes on the same element, or use `tm-hold-confirm`.
 </Warning>
 
 ```html

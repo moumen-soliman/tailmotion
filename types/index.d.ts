@@ -108,6 +108,8 @@ export interface TailMotionVars {
 
   /* --- Shared scalars --- */
   '--tm-stagger-step'?: string;
+  /** Off (0px) by default. tm-stagger-blur sets it to 8px. */
+  '--tm-stagger-blur'?: string;
   '--tm-stagger-index'?: number;
   '--tm-distance'?: string;
   /** Defaults to 70% of --tm-distance, resolved on the element. */
@@ -144,6 +146,14 @@ export interface TailMotionVars {
   '--tm-outline-color'?: string;
   '--tm-shimmer-color'?: string;
   '--tm-shimmer-opacity'?: string | number;
+  '--tm-shimmer-text-color'?: string;
+  '--tm-shimmer-text-resting'?: string;
+  '--tm-shimmer-text-angle'?: string;
+  '--tm-shimmer-text-band'?: string;
+  '--tm-number-stagger-step'?: string;
+  '--tm-stream-text-stagger-step'?: string;
+  '--tm-stream-text-blur'?: string;
+  '--tm-avatar-more-bg'?: string;
   '--tm-view-width'?: string;
   '--tm-view-height'?: string;
   '--tm-view-stage-width'?: string;
@@ -168,6 +178,26 @@ export interface InitTextFlipOptions {
 
 export interface InitCountRevealOptions {
   stagger?: number;
+}
+
+export interface InitNumberSwapOptions {
+  /** Initial value; defaults to the element's own text content. */
+  value?: string | number;
+  stagger?: number;
+}
+
+export interface NumberSwapController {
+  update: (value: string | number) => void;
+}
+
+export interface InitStreamTextOptions {
+  /** Text to stream; defaults to the element's own text content. */
+  text?: string;
+  stagger?: number;
+}
+
+export interface StreamTextController {
+  update: (text: string) => void;
 }
 
 /**
@@ -227,6 +257,18 @@ export function tm(animation: string, modifiers?: TmModifiers): string;
 export function initCountRevealElement(element: HTMLElement, options?: InitCountRevealOptions): void;
 
 /**
+ * Vanilla JS: Initialize a number that pops its digits in on every change
+ * Only use this for vanilla JS projects, not with React/Vue/etc.
+ */
+export function initNumberSwapElement(element: HTMLElement, options?: InitNumberSwapOptions): NumberSwapController | null;
+
+/**
+ * Vanilla JS: Initialize text that resolves in word by word
+ * Only use this for vanilla JS projects, not with React/Vue/etc.
+ */
+export function initStreamTextElement(element: HTMLElement, options?: InitStreamTextOptions): StreamTextController | null;
+
+/**
  * Vanilla JS: Initialize text flip on a DOM element
  * Only use this for vanilla JS projects, not with React/Vue/etc.
  */
@@ -246,6 +288,8 @@ declare const TailMotion: {
   staggerStyle: typeof staggerStyle;
   tm: typeof tm;
   initCountRevealElement: typeof initCountRevealElement;
+  initNumberSwapElement: typeof initNumberSwapElement;
+  initStreamTextElement: typeof initStreamTextElement;
   initTextFlipElement: typeof initTextFlipElement;
 };
 

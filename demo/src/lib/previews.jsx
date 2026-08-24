@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Bookmark, Trash2 } from 'lucide-react';
-import { initTextFlipElement } from 'tailmotion/utils';
+import { initNumberSwapElement, initStreamTextElement, initTextFlipElement } from 'tailmotion/utils';
 import { cx, CONTROL_TRANSITION } from './ui';
 
 /* --------------------------------------------------------------------------
@@ -43,6 +43,81 @@ function ShimmerPreview({ className }) {
       <div className={cx(SURFACE, 'h-3 w-2/3', className)} />
       <div className={cx(SURFACE, 'h-3 w-full', className)} />
       <div className={cx(SURFACE, 'h-3 w-4/5', className)} />
+    </div>
+  );
+}
+
+function ShimmerTextPreview({ className }) {
+  return (
+    <p className={cx('text-center text-title font-semibold text-ink-strong', className)}>
+      Shimmering text
+    </p>
+  );
+}
+
+function NumberSwapPreview() {
+  const ref = useRef(null);
+  const controllerRef = useRef(null);
+  const [value, setValue] = useState(42);
+
+  useEffect(() => {
+    const node = ref.current;
+    if (!node) return undefined;
+    controllerRef.current = initNumberSwapElement(node, { value });
+  }, []);
+
+  const bump = () => {
+    const next = value + Math.ceil(Math.random() * 9) + 1;
+    setValue(next);
+    controllerRef.current?.update(next);
+  };
+
+  return (
+    <div className="flex flex-col items-center gap-3">
+      <span ref={ref} className="font-mono text-title font-semibold text-ink-strong" />
+      <button
+        type="button"
+        onClick={bump}
+        className="tm-press rounded-md border border-line px-4 py-1.5 text-label text-ink-muted"
+      >
+        Change value
+      </button>
+    </div>
+  );
+}
+
+const STREAM_TEXT_SENTENCES = [
+  'Motion should explain, not decorate.',
+  'Streaming text reads as arriving, not swapping.',
+];
+
+function StreamTextPreview() {
+  const ref = useRef(null);
+  const controllerRef = useRef(null);
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    const node = ref.current;
+    if (!node) return undefined;
+    controllerRef.current = initStreamTextElement(node, { text: STREAM_TEXT_SENTENCES[0] });
+  }, []);
+
+  const replay = () => {
+    const next = (index + 1) % STREAM_TEXT_SENTENCES.length;
+    setIndex(next);
+    controllerRef.current?.update(STREAM_TEXT_SENTENCES[next]);
+  };
+
+  return (
+    <div className="flex flex-col items-center gap-3 text-center">
+      <p ref={ref} className="max-w-xs text-xl text-ink" />
+      <button
+        type="button"
+        onClick={replay}
+        className="tm-press rounded-md border border-line px-4 py-1.5 text-label text-ink-muted"
+      >
+        Stream again
+      </button>
     </div>
   );
 }
@@ -128,16 +203,31 @@ function LiquidPreview({ name }) {
   );
 }
 
+/* tm-hold-delete is the one legacy class that ships its own colours and
+   padding, and on a <button> under Tailwind v3 it never gets to keep them:
+   preflight is unlayered, so `button { color: inherit; padding: 0 }` and
+   `button { background-color: transparent }` outrank anything in
+   @layer utilities. The result is an unpadded, uncoloured pill with a sweep
+   running through it.
+
+   So the preview does what the rest of the library asks for: Tailwind owns the
+   look, TailMotion owns the movement. The tokens still feed the ::before sweep
+   and the ::after success fill, which preflight does not touch.
+
+   tm-hold-confirm has none of this problem -- it sets no colour, no padding and
+   no background, and reads currentColor instead. */
 function HoldDeletePreview() {
   return (
     <button
       type="button"
-      className="tm-hold-delete text-label"
+      className={cx(
+        'tm-hold-delete text-label',
+        'gap-2 rounded-lg bg-red-50 px-6 py-3 font-medium text-red-600'
+      )}
       style={{
-        '--tm-hold-color': 'oklch(0.75 0.13 25)',
-        '--tm-hold-bg': 'oklch(0.28 0.09 25 / 0.5)',
-        '--tm-hold-success-bg': 'oklch(0.9461 0 0 / 0.9)',
-        '--tm-hold-fg': 'oklch(0 0 0)',
+        '--tm-hold-color': 'rgb(239 68 68)',
+        '--tm-hold-success-bg': 'rgb(254 202 202)',
+        '--tm-hold-fg': 'oklch(0.205 0 0)',
       }}
     >
       <Trash2 className="h-4 w-4" aria-hidden />
@@ -284,23 +374,26 @@ function FlipPreview({ name }) {
 }
 
 function AvatarGroupPreview() {
-  const people = ['AB', 'CD', 'EF', '+3'];
+  const people = ['AB', 'CD', 'EF'];
   return (
     <div className="tm-avatar-group" style={{ '--tm-tooltip-bg': 'oklch(0.1913 0 0)', '--tm-tooltip-color': 'oklch(0.9461 0 0)' }}>
-      {people.map((initials, i) => (
+      {people.map((initials) => (
         <div
           key={initials}
-          className={cx(
-            'tm-avatar tm-avatar-ring grid h-10 w-10 place-items-center rounded-full',
-            'border border-line-strong font-mono text-micro',
-            i === people.length - 1 ? 'bg-card-hover text-ink-muted' : 'bg-ink-strong text-page'
-          )}
+          className="tm-avatar tm-avatar-ring grid h-10 w-10 place-items-center rounded-full border border-line-strong bg-ink-strong font-mono text-micro text-page"
           tabIndex={0}
         >
           {initials}
           <span className="tm-avatar-tooltip">Teammate {initials}</span>
         </div>
       ))}
+      <div
+        className="tm-avatar tm-avatar-more grid h-10 w-10 place-items-center rounded-full font-mono text-micro"
+        tabIndex={0}
+      >
+        +3
+        <span className="tm-avatar-tooltip">3 more teammates</span>
+      </div>
     </div>
   );
 }
@@ -309,7 +402,10 @@ const RENDERERS = {
   surface: SurfacePreview,
   glow: GlowPreview,
   shimmer: ShimmerPreview,
+  'shimmer-text': ShimmerTextPreview,
   'shimmer-hover': ShimmerHoverPreview,
+  'number-swap': NumberSwapPreview,
+  'stream-text': StreamTextPreview,
   press: PressPreview,
   card: CardPreview,
   'icon-swap': IconSwapPreview,
@@ -326,20 +422,26 @@ const RENDERERS = {
 /**
  * Renders the preview for one catalogue entry.
  * `appliedClass` already includes any variant prefix the trigger needs.
+ * Hover previews use a stationary group wrapper so an animated child cannot
+ * move the pointer out of its own hit target and restart in a loop.
  */
-export function AnimationPreview({ entry, appliedClass, replayKey, staggerStep }) {
+export function AnimationPreview({ entry, appliedClass, replayKey, staggerStep, trigger = 'load' }) {
   const Renderer = entry.preview ? RENDERERS[entry.preview] : null;
 
-  if (Renderer) {
-    return (
-      <Renderer
-        name={entry.name}
-        className={appliedClass}
-        replayKey={replayKey}
-        step={staggerStep}
-      />
-    );
+  const preview = Renderer ? (
+    <Renderer
+      name={entry.name}
+      className={appliedClass}
+      replayKey={replayKey}
+      step={staggerStep}
+    />
+  ) : (
+    <DefaultPreview key={replayKey} className={appliedClass} />
+  );
+
+  if (trigger === 'hover') {
+    return <div className="group grid min-h-40 w-full place-items-center">{preview}</div>;
   }
 
-  return <DefaultPreview key={replayKey} className={appliedClass} />;
+  return preview;
 }

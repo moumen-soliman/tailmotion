@@ -1,4 +1,4 @@
-/* TailMotion v0.8.0 — modules/native.css | Generated 2026-08-24T19:30:24.296Z */
+/* TailMotion v0.9.0 — modules/native.css | Generated 2026-08-24T22:51:20.871Z */
 /* tailmotion/native.css
    Native popover, dialog and disclosure motion on its own, with the token
    layer it reads. Already included in "tailmotion/css". */
@@ -146,6 +146,12 @@
        color-mix() stop, so strength lives in --tm-shimmer-opacity instead. */
     --tm-shimmer-color: var(--tm-color);
     --tm-shimmer-opacity: 0.35;
+
+    /* tm-shimmer-text paints its own gradient rather than overlaying one, so
+       it needs a resting (dim) and a peak (full-strength) stop instead of a
+       single opacity. Both derive from the same color by default. */
+    --tm-shimmer-text-color: var(--tm-color);
+    --tm-shimmer-text-resting: color-mix(in oklab, var(--tm-shimmer-text-color) 45%, transparent);
   }
 
   /* Safe fallback where color-mix() is unavailable. */
@@ -155,6 +161,7 @@
       --tm-shadow-color: var(--tm-color);
       --tm-glow-color: var(--tm-color);
       --tm-outline-color: var(--tm-color);
+      --tm-shimmer-text-resting: var(--tm-shimmer-text-color);
     }
   }
 
@@ -192,6 +199,8 @@
     [class*="tm-"]::after,
     .tm-stagger > *,
     .tm-count-reveal > *,
+    .tm-number-swap > *,
+    .tm-stream-text > *,
     .tm-icon-swap > *,
     .tm-view-morph > [data-tm-panel],
     .tm-text-flip-chars > span {
