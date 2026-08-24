@@ -183,6 +183,8 @@ function ViewMorphPreview({ className }) {
       <div
         className={cx(className, 'rounded-full bg-black text-white')}
         style={{
+          '--tm-view-stage-width': '252px',
+          '--tm-view-stage-height': '60px',
           '--tm-view-width': `${dimensions[0]}px`,
           '--tm-view-height': `${dimensions[1]}px`,
         }}

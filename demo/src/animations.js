@@ -219,7 +219,7 @@ export const catalog = [
     preview: 'view-morph',
     markup:
       '<div class="tm-view-morph rounded-full bg-black"\n' +
-      '  style="--tm-view-width: 228px; --tm-view-height: 56px">\n' +
+      '  style="--tm-view-stage-width: 228px; --tm-view-stage-height: 56px; --tm-view-width: 228px; --tm-view-height: 56px">\n' +
       '  <div data-tm-panel aria-hidden="true">Idle</div>\n' +
       '  <div data-tm-panel data-tm-active>Call</div>\n' +
       '</div>',

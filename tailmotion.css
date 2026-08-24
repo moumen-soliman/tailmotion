@@ -1,4 +1,4 @@
-/* TailMotion v0.7.0 | Generated 2026-08-23T22:26:54.117Z */
+/* TailMotion v0.7.1 | Generated 2026-08-24T00:02:47.381Z */
 /* Entry point for TailMotion animations. */
 
 /* --- src/animations/base.css --- */
@@ -537,7 +537,8 @@
 
    Keep each view mounted and mark the current one with [data-tm-active]. The
    consumer supplies the target dimensions through --tm-view-width and
-   --tm-view-height; transitions can then retarget cleanly when state changes.
+   --tm-view-height. Set fixed --tm-view-stage-width and
+   --tm-view-stage-height values to animate a rounded inset instead of layout.
 
    TailMotion owns the movement and the minimum structural positioning only.
    Dimensions, radius, colour and content styling remain with the consumer.
@@ -546,14 +547,26 @@
 @layer utilities {
   .tm-view-morph {
     position: relative;
-    inline-size: var(--tm-view-width);
-    block-size: var(--tm-view-height);
+    inline-size: var(--tm-view-stage-width, var(--tm-view-width));
+    block-size: var(--tm-view-stage-height, var(--tm-view-height));
     overflow: hidden;
     overflow: clip;
-    transition-property: inline-size, block-size, border-radius;
-    transition-duration: var(--tm-duration, 420ms);
+    clip-path: inset(
+      calc(
+        (var(--tm-view-stage-height, var(--tm-view-height)) - var(--tm-view-height)) /
+          2
+      )
+      calc(
+        (var(--tm-view-stage-width, var(--tm-view-width)) - var(--tm-view-width)) /
+          2
+      )
+      round var(--tm-view-radius, 999px)
+    );
+    contain: paint;
+    transition-property: clip-path, inline-size, block-size;
+    transition-duration: var(--tm-duration, 360ms);
     transition-timing-function:
-      var(--tm-easing, cubic-bezier(0.34, 1.56, 0.64, 1));
+      var(--tm-easing, cubic-bezier(0.2, 0, 0, 1));
     transition-delay: var(--tm-delay, 0ms);
   }
 
@@ -586,6 +599,15 @@
     filter: blur(0);
     pointer-events: auto;
     transition-delay: var(--tm-view-enter-delay, 50ms);
+  }
+
+  /* Blur requires an offscreen raster on mobile browsers. Keep the spatial
+     cross-fade, but skip that extra paint on touch-first devices. */
+  @media (hover: none) and (pointer: coarse) {
+    .tm-view-morph > [data-tm-panel] {
+      filter: none;
+      transition-property: translate, scale, opacity;
+    }
   }
 }
 
