@@ -171,6 +171,11 @@ stops being true.
   class — animate `translate` / `scale` / `rotate`, so a Tailwind `rotate-3` on
   the same element survives.
 - **Tailwind v3, Tailwind v4, or no Tailwind at all.**
+- **Usage-generated CSS for the simple catalogue (experimental).** Tailwind v3
+  (via the plugin) and Tailwind v4 (via `tailmotion/tailwind.css`) can emit
+  only the fade/pop/bounce-style utilities and interactions your markup
+  actually uses, instead of the whole catalogue. See
+  [Installation](https://docs.tailmotion.moumen.dev/docs/install).
 
 ## Documentation
 

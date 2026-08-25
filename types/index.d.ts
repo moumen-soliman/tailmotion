@@ -313,6 +313,14 @@ declare module 'tailmotion/plugin' {
     emphasis?: Record<string | number, string>;
     /** Values for tm-hold-*, the tm-hold-confirm duration. */
     hold?: Record<string | number, string>;
+    /**
+     * Opt in to usage-generated CSS for the simple animation/interaction
+     * catalogue (Tailwind v3 only -- see docs/install.mdx). Registers those
+     * classes and their keyframes so Tailwind's JIT emits only what your
+     * content uses. Off by default: the plugin is commonly loaded alongside
+     * the complete `tailmotion/css` import, which already ships every class.
+     */
+    usageGenerated?: boolean;
   }
   
   const plugin: PluginCreator & {

@@ -1,4 +1,5 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { createRequire } from 'node:module';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -6,6 +7,8 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(__dirname, '..');
 const srcDir = path.join(rootDir, 'src');
 const modulesDir = path.join(rootDir, 'modules');
+const compilerDir = path.join(rootDir, 'dist', 'compiler');
+const require = createRequire(import.meta.url);
 
 /* The full stylesheet, plus the focused entries. Each focused entry is a real
    bundle boundary -- a project can take presence or scroll without the rest of
@@ -118,6 +121,100 @@ const processGenerators = (css) => {
   });
 };
 
+/* Phase 1 of usage-generated CSS (see docs/COMPILER_PLAN.md): serialize the
+   Tailwind v3 plugin's own utility/keyframe data into a Tailwind v4
+   `tailwind.css` entry (`@utility` blocks), so both Tailwind majors are driven
+   from one authored data set instead of a third hand-copied CSS file. Simple
+   object-to-CSS serialization only -- no CSS parsing, matching inlineCSS()
+   above. */
+const renderDeclarations = (rules, indent) => {
+  const lines = [];
+  for (const [key, value] of Object.entries(rules)) {
+    if (typeof value === 'object') {
+      lines.push(`${indent}${key} {`);
+      lines.push(renderDeclarations(value, `${indent}  `));
+      lines.push(`${indent}}`);
+    } else {
+      lines.push(`${indent}${key}: ${value};`);
+    }
+  }
+  return lines.join('\n');
+};
+
+const renderKeyframes = (keyframes) =>
+  Object.entries(keyframes)
+    .map(([name, steps]) => `@keyframes ${name} {\n${renderDeclarations(steps, '  ')}\n}`)
+    .join('\n\n');
+
+const renderUtilities = (utilities) => {
+  const blocks = [];
+  for (const [selectorList, body] of Object.entries(utilities)) {
+    for (const selector of selectorList.split(',')) {
+      const name = selector.trim().replace(/^\./, '');
+      blocks.push(`@utility ${name} {\n${renderDeclarations(body, '  ')}\n}`);
+    }
+  }
+  return blocks.join('\n\n');
+};
+
+/* Fixed-value counterpart to the v3 plugin's matchUtilities token groups
+   (tm-duration-*, tm-ease-*, etc. -- see TOKEN_UTILITY_GROUPS in
+   tailmotion.config.cjs), so tailwind.css is self-contained without also
+   requiring the JS plugin. Always uses DEFAULT_TOKENS -- there is no
+   JS-config step in this file to apply theme overrides, matching the
+   shipped values already hardcoded into src/animations/base.css for the
+   standalone path. Arbitrary values (tm-duration-[420ms]) still need the
+   plugin's matchUtilities, which supports them dynamically. */
+const renderTokenUtilities = (groups, defaultTokens) => {
+  const blocks = [];
+  for (const group of groups) {
+    for (const [key, value] of Object.entries(defaultTokens[group.tokenGroup])) {
+      const decls = Object.fromEntries(group.props.map((prop) => [prop, `${value} !important`]));
+      for (const name of group.names) {
+        blocks.push(`@utility ${name}-${key} {\n${renderDeclarations(decls, '  ')}\n}`);
+      }
+    }
+  }
+  return blocks.join('\n\n');
+};
+
+const buildTailwindCss = async (version, generated) => {
+  const tokensPath = path.join(srcDir, 'shared', 'tokens.css');
+  const tokensCss = (await inlineCSS(tokensPath)).trim();
+
+  const pluginPath = path.join(rootDir, 'tailmotion.config.cjs');
+  delete require.cache[require.resolve(pluginPath)];
+  const {
+    SIMPLE_KEYFRAMES,
+    SIMPLE_ANIMATION_UTILITIES,
+    SIMPLE_TRANSITION_UTILITIES,
+    SIMPLE_STATIC_UTILITIES,
+    TOKEN_UTILITY_GROUPS,
+    DEFAULT_TOKENS,
+  } = require(pluginPath).__simple;
+
+  const sections = [
+    '/* Mandatory dependency: color/easing tokens and the required\n   prefers-reduced-motion collapse. Always present, regardless of which\n   utilities below are used -- see docs/COMPILER_PLAN.md. */',
+    tokensCss,
+    '/* Keyframes ship unconditionally: Tailwind v4 does not prune a @keyframes\n   block tied to a custom-named utility. Small, fixed cost -- see\n   docs/COMPILER_PLAN.md’s measurements. */',
+    renderKeyframes(SIMPLE_KEYFRAMES),
+    renderUtilities(SIMPLE_ANIMATION_UTILITIES),
+    renderUtilities(SIMPLE_TRANSITION_UTILITIES),
+    renderUtilities(SIMPLE_STATIC_UTILITIES),
+    '/* Fixed-value token modifiers (tm-duration-*, tm-ease-*, etc.), shipped\n   values only -- see the plugin for theme overrides and arbitrary values. */',
+    renderTokenUtilities(TOKEN_UTILITY_GROUPS, DEFAULT_TOKENS),
+  ];
+
+  const css = sections.join('\n\n');
+  await mkdir(compilerDir, { recursive: true });
+  const out = path.join(compilerDir, 'tailwind.css');
+  const name = path.relative(rootDir, out);
+  const banner = `/* TailMotion v${version} — ${name} | Generated ${generated} */`;
+  await writeFile(out, `${banner}\n\n${css}\n`, 'utf8');
+  const kb = (Buffer.byteLength(css, 'utf8') / 1024).toFixed(1);
+  console.log(`Built ${name} (${kb} KB)`);
+};
+
 const build = async () => {
   const version = await readPackageVersion();
   const generated = new Date().toISOString();
@@ -132,6 +229,8 @@ const build = async () => {
     const kb = (Buffer.byteLength(css, 'utf8') / 1024).toFixed(1);
     console.log(`Built ${name} (${kb} KB)`);
   }
+
+  await buildTailwindCss(version, generated);
 };
 
 build().catch((error) => {
