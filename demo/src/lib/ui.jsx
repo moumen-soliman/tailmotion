@@ -166,7 +166,18 @@ export function CopyButton({
       ) : (
         <Copy className="h-3.5 w-3.5 shrink-0" aria-hidden />
       )}
-      <span className="whitespace-nowrap">{copied ? copiedLabel : label}</span>
+      {/* Both labels are always in the DOM, stacked in the same grid cell, so
+          the cell -- and the button -- is always sized to the wider of the
+          two. Swapping to "Copied" never changes the button's width, so
+          nothing next to it in a flex row has to reflow. */}
+      <span className="grid">
+        <span className={cx('col-start-1 row-start-1 whitespace-nowrap', copied && 'invisible')}>
+          {label}
+        </span>
+        <span className={cx('col-start-1 row-start-1 whitespace-nowrap', !copied && 'invisible')}>
+          {copiedLabel}
+        </span>
+      </span>
     </Button>
   );
 }

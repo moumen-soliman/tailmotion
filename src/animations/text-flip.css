@@ -1,7 +1,7 @@
 @layer utilities {
   /* Text Flip Container */
   .tm-text-flip {
-    display: inline-block;
+    display: inline-grid;
     position: relative;
     overflow: hidden;
     vertical-align: bottom;
@@ -9,6 +9,11 @@
 
   .tm-text-flip-word {
     display: inline-block;
+    grid-area: 1 / 1;
+    place-self: start;
+    --tm-cycle-enter: translateY(60%) rotateX(-40deg);
+    --tm-cycle-exit: translateY(-60%) rotateX(40deg);
+    --tm-cycle-blur: 8px;
     animation-name: tm-text-flip-in;
     animation-duration: var(--tm-duration, calc(600ms * var(--tm-duration-scale, 1)));
     animation-timing-function: var(--tm-easing, cubic-bezier(0.16, 1, 0.3, 1));
@@ -58,7 +63,7 @@
 
   /* Text Rotate - simpler horizontal blur transition */
   .tm-text-rotate {
-    display: inline-block;
+    display: inline-grid;
     position: relative;
     overflow: hidden;
     vertical-align: bottom;
@@ -66,6 +71,11 @@
 
   .tm-text-rotate-word {
     display: inline-block;
+    grid-area: 1 / 1;
+    place-self: start;
+    --tm-cycle-enter: translateY(40%);
+    --tm-cycle-exit: translateY(-40%);
+    --tm-cycle-blur: 10px;
     animation-name: tm-text-rotate-in;
     animation-duration: var(--tm-duration, calc(500ms * var(--tm-duration-scale, 1)));
     animation-timing-function: var(--tm-easing, cubic-bezier(0.22, 1, 0.36, 1));
@@ -108,12 +118,17 @@
 
   /* Text Morph - horizontal blur swap */
   .tm-text-morph {
-    display: inline-block;
+    display: inline-grid;
     position: relative;
   }
 
   .tm-text-morph-word {
     display: inline-block;
+    grid-area: 1 / 1;
+    place-self: start;
+    --tm-cycle-enter: none;
+    --tm-cycle-exit: none;
+    --tm-cycle-blur: 12px;
     animation-name: tm-text-morph-in;
     animation-duration: var(--tm-duration, calc(400ms * var(--tm-duration-scale, 1)));
     animation-timing-function: var(--tm-easing, ease-out);
@@ -148,6 +163,136 @@
       opacity: 0;
       filter: blur(12px);
     }
+  }
+
+  /* --------------------------------------------------------------------------
+     Word cycling -- CSS only, no JS required.
+
+     Render every word as a sibling `*-word` span up front (a framework's
+     `.map()`, or hand-written markup) and set [data-tm-count] on the
+     container to how many words there are. `grid-area: 1 / 1` above stacks
+     every word in the same cell instead of leaving them in normal flow,
+     which is what would otherwise run them together with no space between
+     words; an infinite animation, phased per word by :nth-child, cycles
+     through the stack forever. Nothing is mounted, ticked, or torn down.
+
+     initTextFlipElement() in src/utils.js is only a convenience for vanilla
+     projects that would rather pass a words array (or a data-tm-words="[...]"
+     attribute) than write the spans by hand: it renders this markup once,
+     then gets out of the way -- CSS owns every cycle after that.
+
+     Supports 2-6 words out of the box. Add another :nth-child delay and
+     [data-tm-count="N"]/@keyframes pair below if a longer list is ever
+     needed. */
+  .tm-text-flip[data-tm-count] > .tm-text-flip-word,
+  .tm-text-rotate[data-tm-count] > .tm-text-rotate-word,
+  .tm-text-morph[data-tm-count] > .tm-text-morph-word {
+    position: relative;
+    opacity: 0;
+    animation-duration: calc(var(--tm-count, 1) * var(--tm-interval, 2200ms));
+    animation-timing-function: var(--tm-easing, cubic-bezier(0.16, 1, 0.3, 1));
+    animation-iteration-count: infinite;
+  }
+
+  .tm-text-flip[data-tm-count] > .tm-text-flip-word:nth-child(1),
+  .tm-text-rotate[data-tm-count] > .tm-text-rotate-word:nth-child(1),
+  .tm-text-morph[data-tm-count] > .tm-text-morph-word:nth-child(1) {
+    animation-delay: calc(0 * var(--tm-interval, 2200ms));
+  }
+  .tm-text-flip[data-tm-count] > .tm-text-flip-word:nth-child(2),
+  .tm-text-rotate[data-tm-count] > .tm-text-rotate-word:nth-child(2),
+  .tm-text-morph[data-tm-count] > .tm-text-morph-word:nth-child(2) {
+    animation-delay: calc(1 * var(--tm-interval, 2200ms));
+  }
+  .tm-text-flip[data-tm-count] > .tm-text-flip-word:nth-child(3),
+  .tm-text-rotate[data-tm-count] > .tm-text-rotate-word:nth-child(3),
+  .tm-text-morph[data-tm-count] > .tm-text-morph-word:nth-child(3) {
+    animation-delay: calc(2 * var(--tm-interval, 2200ms));
+  }
+  .tm-text-flip[data-tm-count] > .tm-text-flip-word:nth-child(4),
+  .tm-text-rotate[data-tm-count] > .tm-text-rotate-word:nth-child(4),
+  .tm-text-morph[data-tm-count] > .tm-text-morph-word:nth-child(4) {
+    animation-delay: calc(3 * var(--tm-interval, 2200ms));
+  }
+  .tm-text-flip[data-tm-count] > .tm-text-flip-word:nth-child(5),
+  .tm-text-rotate[data-tm-count] > .tm-text-rotate-word:nth-child(5),
+  .tm-text-morph[data-tm-count] > .tm-text-morph-word:nth-child(5) {
+    animation-delay: calc(4 * var(--tm-interval, 2200ms));
+  }
+  .tm-text-flip[data-tm-count] > .tm-text-flip-word:nth-child(6),
+  .tm-text-rotate[data-tm-count] > .tm-text-rotate-word:nth-child(6),
+  .tm-text-morph[data-tm-count] > .tm-text-morph-word:nth-child(6) {
+    animation-delay: calc(5 * var(--tm-interval, 2200ms));
+  }
+
+  [data-tm-count="2"] > .tm-text-flip-word,
+  [data-tm-count="2"] > .tm-text-rotate-word,
+  [data-tm-count="2"] > .tm-text-morph-word {
+    --tm-count: 2;
+    animation-name: tm-text-cycle-2;
+  }
+  [data-tm-count="3"] > .tm-text-flip-word,
+  [data-tm-count="3"] > .tm-text-rotate-word,
+  [data-tm-count="3"] > .tm-text-morph-word {
+    --tm-count: 3;
+    animation-name: tm-text-cycle-3;
+  }
+  [data-tm-count="4"] > .tm-text-flip-word,
+  [data-tm-count="4"] > .tm-text-rotate-word,
+  [data-tm-count="4"] > .tm-text-morph-word {
+    --tm-count: 4;
+    animation-name: tm-text-cycle-4;
+  }
+  [data-tm-count="5"] > .tm-text-flip-word,
+  [data-tm-count="5"] > .tm-text-rotate-word,
+  [data-tm-count="5"] > .tm-text-morph-word {
+    --tm-count: 5;
+    animation-name: tm-text-cycle-5;
+  }
+  [data-tm-count="6"] > .tm-text-flip-word,
+  [data-tm-count="6"] > .tm-text-rotate-word,
+  [data-tm-count="6"] > .tm-text-morph-word {
+    --tm-count: 6;
+    animation-name: tm-text-cycle-6;
+  }
+
+  /* Each word is visible for one slot (100% / word count) per full cycle:
+     hidden -> enter (15% of the slot) -> hold (70%) -> exit (15%) -> hidden.
+     :nth-child above phase-shifts an otherwise identical timeline per word,
+     so only one keyframe set is needed per word count, not per variant. */
+  @keyframes tm-text-cycle-2 {
+    0%, 7.5% { opacity: 0; transform: var(--tm-cycle-enter); filter: blur(var(--tm-cycle-blur)); }
+    15%, 42.5% { opacity: 1; transform: none; filter: blur(0); }
+    50% { opacity: 0; transform: var(--tm-cycle-exit); filter: blur(var(--tm-cycle-blur)); }
+    100% { opacity: 0; transform: var(--tm-cycle-enter); filter: blur(var(--tm-cycle-blur)); }
+  }
+
+  @keyframes tm-text-cycle-3 {
+    0%, 5% { opacity: 0; transform: var(--tm-cycle-enter); filter: blur(var(--tm-cycle-blur)); }
+    10%, 28.33% { opacity: 1; transform: none; filter: blur(0); }
+    33.33% { opacity: 0; transform: var(--tm-cycle-exit); filter: blur(var(--tm-cycle-blur)); }
+    100% { opacity: 0; transform: var(--tm-cycle-enter); filter: blur(var(--tm-cycle-blur)); }
+  }
+
+  @keyframes tm-text-cycle-4 {
+    0%, 3.75% { opacity: 0; transform: var(--tm-cycle-enter); filter: blur(var(--tm-cycle-blur)); }
+    7.5%, 21.25% { opacity: 1; transform: none; filter: blur(0); }
+    25% { opacity: 0; transform: var(--tm-cycle-exit); filter: blur(var(--tm-cycle-blur)); }
+    100% { opacity: 0; transform: var(--tm-cycle-enter); filter: blur(var(--tm-cycle-blur)); }
+  }
+
+  @keyframes tm-text-cycle-5 {
+    0%, 3% { opacity: 0; transform: var(--tm-cycle-enter); filter: blur(var(--tm-cycle-blur)); }
+    6%, 17% { opacity: 1; transform: none; filter: blur(0); }
+    20% { opacity: 0; transform: var(--tm-cycle-exit); filter: blur(var(--tm-cycle-blur)); }
+    100% { opacity: 0; transform: var(--tm-cycle-enter); filter: blur(var(--tm-cycle-blur)); }
+  }
+
+  @keyframes tm-text-cycle-6 {
+    0%, 2.5% { opacity: 0; transform: var(--tm-cycle-enter); filter: blur(var(--tm-cycle-blur)); }
+    5%, 14.17% { opacity: 1; transform: none; filter: blur(0); }
+    16.67% { opacity: 0; transform: var(--tm-cycle-exit); filter: blur(var(--tm-cycle-blur)); }
+    100% { opacity: 0; transform: var(--tm-cycle-enter); filter: blur(var(--tm-cycle-blur)); }
   }
 
   /* Character-by-character flip */

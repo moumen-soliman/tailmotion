@@ -54,6 +54,10 @@ const TWO_FACE_RECIPES = [
   ['.tm-shimmer-hover::after', 'decorative sweep over visible content'],
   ['.tm-dark-veil::after', 'decorative layer over visible content'],
   ['.tm-avatar-tooltip', 'a tooltip is hidden until hover by definition'],
+  [
+    '.tm-text-flip[data-tm-count] > .tm-text-flip-word',
+    'tm-text-cycle: exactly one word in the stack is visible at a time, phased by :nth-child'
+  ],
 ];
 
 const findHidingRules = (css) => {

@@ -375,16 +375,49 @@ export function initStreamTextElement(element, options = {}) {
 }
 
 /**
+ * Vanilla JS: Read a words array off an element's `data-tm-words` attribute
+ * (a JSON array, e.g. `data-tm-words='["beautiful","amazing","powerful"]'`).
+ * @param {HTMLElement} element - DOM element
+ * @returns {string[]} Parsed words, or an empty array if absent/invalid
+ */
+function readWordsAttribute(element) {
+  const raw = element.dataset.tmWords;
+  if (!raw) return [];
+
+  try {
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    console.warn('initTextFlipElement: data-tm-words is not valid JSON', raw);
+    return [];
+  }
+}
+
+/**
  * Vanilla JS: Initialize text flip on a DOM element
  * Only use this for vanilla JS projects, not with React/Vue/etc.
+ *
+ * For "flip", "morph" and "rotate" this renders every word as a sibling
+ * span once and hands the cycle to CSS ([data-tm-count] in
+ * src/animations/text-flip.css) -- there is no interval, nothing ticks, and
+ * the returned controller only tears the markup back down. "chars" still
+ * needs JS to drive it: each word change re-splits fresh characters rather
+ * than swapping between two fixed states, which CSS keyframes cannot do.
  * @param {HTMLElement} element - DOM element
- * @param {Object} options - Options
+ * @param {Object} [options] - Options
+ * @param {string[]} [options.words] - Words to cycle through; defaults to
+ *   parsing the element's `data-tm-words='["a","b","c"]'` attribute
+ * @param {'flip'|'morph'|'rotate'|'chars'} [options.variant='flip'] - Effect
+ * @param {number} [options.duration=500] - "chars" only: entrance duration in ms
+ * @param {number} [options.interval=2500] - Time each word is shown, in ms
+ * @param {boolean} [options.loop=true] - "chars" only: whether to loop
+ * @returns {{ destroy: () => void }|Object|null} Controller
  */
 export function initTextFlipElement(element, options = {}) {
   if (!element) return null;
-  
+
   const {
-    words = [],
+    words = readWordsAttribute(element),
     variant = 'flip',
     duration = 500,
     interval = 2500,
@@ -393,65 +426,55 @@ export function initTextFlipElement(element, options = {}) {
 
   if (words.length < 2) return null;
 
-  const containerClass = variant === 'chars' ? 'tm-text-flip-chars' : 
-                         variant === 'morph' ? 'tm-text-morph' :
-                         variant === 'rotate' ? 'tm-text-rotate' : 'tm-text-flip';
-  
-  const wordClass = variant === 'chars' ? '' :
-                    variant === 'morph' ? 'tm-text-morph-word' :
-                    variant === 'rotate' ? 'tm-text-rotate-word' : 'tm-text-flip-word';
-  
-  const outClass = variant === 'morph' ? 'tm-morph-out' :
-                   variant === 'rotate' ? 'tm-rotate-out' : 'tm-flip-out';
+  if (variant === 'chars') {
+    element.classList.add('tm-text-flip-chars');
+    element.style.setProperty('--tm-duration', `${duration}ms`);
 
-  element.classList.add(containerClass);
-  element.style.setProperty('--tm-duration', `${duration}ms`);
-
-  function createWordSpan(word, isOut = false) {
-    if (variant === 'chars') {
-      const fragment = document.createDocumentFragment();
+    function renderChars(word) {
+      element.innerHTML = '';
       word.split('').forEach((char, i) => {
         const span = document.createElement('span');
         span.textContent = char === ' ' ? '\u00A0' : char;
         span.style.setProperty('--tm-char-index', i);
-        fragment.appendChild(span);
+        element.appendChild(span);
       });
-      return fragment;
-    } else {
-      const span = document.createElement('span');
-      span.textContent = word;
-      span.className = wordClass;
-      if (isOut) span.classList.add(outClass);
-      return span;
     }
+
+    const rotator = createTextRotator({
+      words,
+      interval,
+      loop,
+      onFlip: ({ word }) => renderChars(word)
+    });
+
+    rotator.start();
+    return rotator;
   }
 
-  const rotator = createTextRotator({
-    words,
-    interval,
-    loop,
-    onFlip: ({ word, prevWord }) => {
-      if (variant === 'chars') {
-        element.innerHTML = '';
-        element.appendChild(createWordSpan(word));
-      } else {
-        // Add new word first
-        element.appendChild(createWordSpan(word));
-        
-        // Animate out old word
-        if (prevWord !== null) {
-          const oldSpan = element.querySelector(`.${wordClass}:not(:last-child)`);
-          if (oldSpan) {
-            oldSpan.classList.add(outClass);
-            setTimeout(() => oldSpan.remove(), duration);
-          }
-        }
-      }
-    }
+  const containerClass = variant === 'morph' ? 'tm-text-morph' :
+                         variant === 'rotate' ? 'tm-text-rotate' : 'tm-text-flip';
+
+  const wordClass = variant === 'morph' ? 'tm-text-morph-word' :
+                    variant === 'rotate' ? 'tm-text-rotate-word' : 'tm-text-flip-word';
+
+  element.classList.add(containerClass);
+  element.style.setProperty('--tm-interval', `${interval}ms`);
+  element.setAttribute('data-tm-count', String(words.length));
+  element.innerHTML = '';
+
+  words.forEach((word) => {
+    const span = document.createElement('span');
+    span.textContent = word;
+    span.className = wordClass;
+    element.appendChild(span);
   });
 
-  rotator.start();
-  return rotator;
+  return {
+    destroy() {
+      element.removeAttribute('data-tm-count');
+      element.innerHTML = '';
+    }
+  };
 }
 
 // Default export with all utilities

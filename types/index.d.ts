@@ -169,11 +169,23 @@ export interface TailMotionVars {
 }
 
 export interface InitTextFlipOptions {
-  words: string[];
+  /** Words to cycle through; defaults to parsing the element's `data-tm-words='["a","b"]'` attribute. */
+  words?: string[];
   variant?: 'flip' | 'morph' | 'rotate' | 'chars';
+  /** "chars" only: entrance duration in ms. */
   duration?: number;
   interval?: number;
+  /** "chars" only: whether to loop. */
   loop?: boolean;
+}
+
+/**
+ * Controller for the "flip" | "morph" | "rotate" variants: the words are
+ * rendered once as siblings and CSS drives the cycle from there, so there is
+ * nothing to start/stop/advance -- only markup to tear down.
+ */
+export interface TextFlipController {
+  destroy: () => void;
 }
 
 export interface InitCountRevealOptions {
@@ -271,8 +283,12 @@ export function initStreamTextElement(element: HTMLElement, options?: InitStream
 /**
  * Vanilla JS: Initialize text flip on a DOM element
  * Only use this for vanilla JS projects, not with React/Vue/etc.
+ *
+ * "flip" | "morph" | "rotate" render once and hand the cycle to CSS
+ * ([data-tm-count] in tailmotion.css), returning a TextFlipController.
+ * "chars" still needs a running JS loop and returns a TextRotator.
  */
-export function initTextFlipElement(element: HTMLElement, options: InitTextFlipOptions): TextRotator | null;
+export function initTextFlipElement(element: HTMLElement, options?: InitTextFlipOptions): TextRotator | TextFlipController | null;
 
 /**
  * Default export containing all utilities

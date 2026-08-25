@@ -1,4 +1,4 @@
-/* TailMotion v0.10.0 — modules/choreography.css | Generated 2026-08-25T10:59:30.756Z */
+/* TailMotion v0.10.1 — modules/choreography.css | Generated 2026-08-25T11:52:10.977Z */
 /* tailmotion/choreography.css
    Stagger choreography on its own, with the token layer it reads.
    Already included in "tailmotion/css". */
@@ -231,6 +231,25 @@
       animation-delay: 0ms !important;
       transition-duration: 1ms !important;
       transition-delay: 0ms !important;
+    }
+
+    /* Word cycling (text-flip.css) has no static "current" state for the
+       collapse above to land on: every word's own keyframes end hidden, so
+       forcing a single 1ms iteration would leave the container showing
+       nothing. Freeze on the first word instead. */
+    .tm-text-flip[data-tm-count] > .tm-text-flip-word,
+    .tm-text-rotate[data-tm-count] > .tm-text-rotate-word,
+    .tm-text-morph[data-tm-count] > .tm-text-morph-word {
+      animation: none !important;
+      opacity: 0;
+      transform: none;
+      filter: none;
+    }
+
+    .tm-text-flip[data-tm-count] > .tm-text-flip-word:first-child,
+    .tm-text-rotate[data-tm-count] > .tm-text-rotate-word:first-child,
+    .tm-text-morph[data-tm-count] > .tm-text-morph-word:first-child {
+      opacity: 1 !important;
     }
   }
 }

@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Text cycle verification</title>
+    <link rel="stylesheet" href="/tailmotion.css" />
+    <style>
+      body { font: 20px/1.5 system-ui, sans-serif; margin: 24px; }
+      .row { display: flex; align-items: center; gap: 8px; margin: 24px 0; }
+      .row b { width: 110px; font: 12px/1.4 monospace; color: #666; }
+      pre { font: 12px/1.4 monospace; background: #f6f6f6; padding: 8px; border-radius: 6px; max-width: 640px; }
+    </style>
+  </head>
+  <body>
+    <h1>Text cycle -- CSS only, no JS</h1>
+    <p>Every word below is hand-written markup. No script on this page touches
+      any of the three rows -- only <code>[data-tm-count]</code> plus the
+      generated CSS in <code>src/animations/text-flip.css</code> drive it.</p>
+
+    <div class="row">
+      <b>tm-text-flip</b>
+      <span class="tm-text-flip" data-tm-count="3" style="--tm-interval: 1400ms">
+        <span class="tm-text-flip-word">beautiful</span>
+        <span class="tm-text-flip-word">amazing</span>
+        <span class="tm-text-flip-word">powerful</span>
+      </span>
+    </div>
+
+    <div class="row">
+      <b>tm-text-rotate</b>
+      <span class="tm-text-rotate" data-tm-count="4" style="--tm-interval: 1400ms">
+        <span class="tm-text-rotate-word">designers</span>
+        <span class="tm-text-rotate-word">developers</span>
+        <span class="tm-text-rotate-word">founders</span>
+        <span class="tm-text-rotate-word">teams</span>
+      </span>
+    </div>
+
+    <div class="row">
+      <b>tm-text-morph</b>
+      <span class="tm-text-morph" data-tm-count="2" style="--tm-interval: 1400ms">
+        <span class="tm-text-morph-word">fast</span>
+        <span class="tm-text-morph-word">reliable</span>
+      </span>
+    </div>
+
+    <h2>Vanilla JS one-shot splat (from data-tm-words)</h2>
+    <div class="row">
+      <b>tm-text-flip</b>
+      <span class="tm-text-flip" id="js-flip" data-tm-words='["one word", "two words", "three whole words"]'></span>
+    </div>
+
+    <p>Sanity checks (should read <code>ok</code> for every line):</p>
+    <pre id="out"></pre>
+
+    <script type="module">
+      import { initTextFlipElement } from '/src/utils.js';
+      initTextFlipElement(document.getElementById('js-flip'), { interval: 1400 });
+
+      const out = document.getElementById('out');
+      const lines = [];
+
+      const flip = document.querySelector('.tm-text-flip[data-tm-count]');
+      const flipWords = flip.querySelectorAll('.tm-text-flip-word');
+      lines.push(`data-tm-count wired: ${flip.getAttribute('data-tm-count') === '3' ? 'ok' : 'FAIL'}`);
+      lines.push(`words kept their own spacing (no run-together text): ` +
+        (flip.textContent.match(/[a-z]{2,}[A-Z]/) ? 'FAIL' : 'ok'));
+
+      // Every word should render in the same box (grid stacking), not stack
+      // left-to-right inline.
+      const rects = [...flipWords].map((w) => w.getBoundingClientRect());
+      const overlap = rects.every((r) => Math.abs(r.left - rects[0].left) < 1);
+      lines.push(`words are stacked, not laid out side by side: ${overlap ? 'ok' : 'FAIL'}`);
+
+      const jsFlip = document.getElementById('js-flip');
+      lines.push(`data-tm-words parsed into 3 spans: ` +
+        (jsFlip.querySelectorAll('.tm-text-flip-word').length === 3 ? 'ok' : 'FAIL'));
+      lines.push(`multi-word entries kept internal spaces: ` +
+        (jsFlip.querySelector('.tm-text-flip-word').textContent === 'one word' ? 'ok' : 'FAIL'));
+
+      out.textContent = lines.join('\n');
+    </script>
+  </body>
+</html>

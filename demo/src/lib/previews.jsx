@@ -333,12 +333,13 @@ function TextFlipPreview({ name }) {
     const node = ref.current;
     if (!node) return undefined;
     const variant = name === 'text-flip' ? 'flip' : name === 'text-morph' ? 'morph' : 'rotate';
+    // Renders the words once and hands the cycle to CSS -- no interval to
+    // start, nothing ticking after this call returns.
     const rotator = initTextFlipElement(node, {
       words: ['beautiful', 'amazing', 'polished'],
       variant,
       interval: 2200,
     });
-    rotator?.start();
     return () => rotator?.destroy();
   }, [name]);
 

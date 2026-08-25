@@ -1,6 +1,6 @@
 {
   "name": "tailmotion",
-  "version": "0.10.0",
+  "version": "0.10.1",
   "description": "A motion language for product interfaces: scoped motion personalities, state-driven presence, native HTML motion, product recipes and scroll-driven reveals. Zero runtime, pure CSS, framework-agnostic.",
   "main": "src/index.js",
   "module": "src/index.js",

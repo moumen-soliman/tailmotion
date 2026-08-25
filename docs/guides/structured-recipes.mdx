@@ -168,26 +168,52 @@ between words and `--tm-stream-text-blur` the resolve-in blur.
 
 ## Text flip
 
-Rotating words with a blur transition. **This one genuinely needs JavaScript**,
-because CSS cannot hold a list of strings.
+Rotating words with a blur transition.
+
+**CSS only — no JS required**, as long as every word already exists in the
+markup. Render each word as a sibling `*-word` span and set `[data-tm-count]`
+to the word count; the container cycles through them forever on its own.
+Every word shares one grid cell (`grid-area: 1 / 1`), so they stack instead
+of running together with no space between them, and an infinite animation —
+phased per word by `:nth-child` — reveals one at a time. Nothing mounts,
+ticks, or gets torn down:
 
 ```html
-<span id="headline" class="tm-text-flip"></span>
+<span class="tm-text-flip" data-tm-count="3" style="--tm-interval: 2500ms">
+  <span class="tm-text-flip-word">beautiful</span>
+  <span class="tm-text-flip-word">amazing</span>
+  <span class="tm-text-flip-word">powerful</span>
+</span>
+```
+
+In React, Vue or Svelte this is just `words.map()` — no helper needed at all.
+2–6 words are supported out of the box.
+
+For a vanilla project that would rather hand over a words array (or a
+`data-tm-words` attribute) than write the spans itself, `initTextFlipElement`
+renders that same markup **once** and gets out of the way — there is no
+interval running afterward, CSS owns every cycle from there:
+
+```html
+<span id="headline" class="tm-text-flip" data-tm-words='["beautiful", "amazing", "powerful"]'></span>
 ```
 
 ```js
 import { initTextFlipElement } from "tailmotion/utils";
 
-initTextFlipElement(document.getElementById("headline"), {
-  words: ["beautiful", "amazing", "powerful"],
-  variant: "flip",   // "flip" | "morph" | "rotate" | "chars"
-  interval: 2500,
-});
+initTextFlipElement(document.getElementById("headline"));
+// or: initTextFlipElement(el, { words: [...], variant: "flip", interval: 2500 });
 ```
 
-For React, Vue or Svelte, use `createTextRotator` instead — it is a headless
-state machine with no DOM access, so your framework keeps ownership of
-rendering:
+`variant: "chars"` is the one case that still genuinely needs JavaScript:
+each word change re-splits fresh characters rather than swapping between two
+fixed states, which CSS keyframes cannot express. It keeps its own
+`setInterval`-driven controller (`start`/`stop`/`next`/`prev`/`goTo`).
+
+For React, Vue or Svelte consumers who want runtime control over a "chars"
+rotation — or any case with a word list that changes after mount — use
+`createTextRotator` instead. It's a headless state machine with no DOM
+access, so your framework keeps ownership of rendering:
 
 ```js
 import { createTextRotator } from "tailmotion/utils";
@@ -201,12 +227,12 @@ const rotator = createTextRotator({
 rotator.start();
 ```
 
-| Class | Variant |
-|---|---|
-| `tm-text-flip` | Vertical flip |
-| `tm-text-morph` | Blur morph |
-| `tm-text-rotate` | 3D rotate |
-| `tm-text-flip-chars` | Per-character flip |
+| Class | Variant | Needs JS? |
+|---|---|---|
+| `tm-text-flip` | Vertical flip | No — CSS-only with `[data-tm-count]` |
+| `tm-text-morph` | Blur morph | No — CSS-only with `[data-tm-count]` |
+| `tm-text-rotate` | 3D rotate | No — CSS-only with `[data-tm-count]` |
+| `tm-text-flip-chars` | Per-character flip | Yes — re-splits characters per word |
 
 ## Liquid button
 

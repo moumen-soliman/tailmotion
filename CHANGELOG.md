@@ -1,5 +1,55 @@
 # Changelog
 
+## 0.10.1 · 2026-08-25
+
+Word rotation (`tm-text-flip`, `tm-text-rotate`, `tm-text-morph`) no longer
+needs JavaScript to cycle.
+
+### Added
+
+- **CSS-only word cycling.** Render every word as a sibling `*-word` span and
+  set `[data-tm-count]` on the container (2-6 words supported); an infinite
+  animation, phased per word via `:nth-child`, cycles through them forever.
+  No JS, no `setInterval`, nothing mounted or torn down. Every word shares
+  one grid cell (`grid-area: 1 / 1`) so they stack instead of running
+  together with no space between words. In React, Vue or Svelte this is just
+  `words.map()`.
+- `initTextFlipElement` now also reads a `data-tm-words='["a","b","c"]'` JSON
+  attribute off the element when no `words` option is passed.
+- A reduced-motion fallback freezes the cycle on its first word, since each
+  word's own keyframes intentionally end hidden (for seamless looping) and
+  the existing collapse-to-1ms rule would otherwise leave the container
+  showing nothing.
+
+### Changed
+
+- **`initTextFlipElement` no longer runs an interval for `"flip"`, `"morph"`
+  or `"rotate"`.** It renders every word once, sets `[data-tm-count]`, and
+  gets out of the way -- CSS owns every cycle after that. `"chars"` is
+  unchanged and keeps its `setInterval`-driven `TextRotator` controller,
+  since each word change there re-splits fresh characters rather than
+  swapping between two fixed states. **Migration note:** code calling
+  `.start()`, `.stop()`, `.next()`, `.prev()` or `.goTo()` on the return
+  value for the `flip`/`morph`/`rotate` variants should remove those calls --
+  the new controller only exposes `.destroy()`.
+
+### Fixed
+
+- Demo: clicking "Copy install" no longer pushes "View on GitHub" onto a new
+  line. The button previously resized when its label changed to "Copied
+  install"; it now reserves width for the longer of its two label states.
+
+### Documentation and demo
+
+- Corrected `docs/guides/structured-recipes.mdx`, which previously said text
+  flip/rotate/morph "genuinely need JavaScript" -- CSS-only markup is now the
+  documented default, with the JS helper positioned as an optional
+  convenience for vanilla projects.
+- Demo entries for `tm-text-flip`, `tm-text-rotate` and `tm-text-morph` now
+  show the CSS-only markup and are labelled "Markup" instead of "JS",
+  matching how `tm-view-morph` is already labelled.
+- Added `verify/text-cycle.html` for manual QA of the new cycling behavior.
+
 ## 0.10.0 · 2026-08-25
 
 Tailwind v3 and v4 can now generate only the animation and interaction

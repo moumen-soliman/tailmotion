@@ -265,34 +265,39 @@ export const catalog = [
       '});',
   }),
   entry('text-flip', 'recipes', 'text', {
-    requires: 'js',
-    description: 'Rotating words with a flip. Needs initTextFlipElement to swap the text.',
+    requires: 'markup',
+    description: 'Rotating words with a flip. CSS only -- render the words as spans and set data-tm-count.',
     preview: 'text-flip',
     markup:
-      '<span id="headline" class="tm-text-flip"></span>\n\n' +
-      "import { initTextFlipElement } from 'tailmotion/utils';\n" +
-      "initTextFlipElement(document.getElementById('headline'), {\n" +
-      "  words: ['beautiful', 'amazing', 'powerful'],\n" +
-      "  variant: 'flip',\n" +
-      '});',
+      '<span class="tm-text-flip" data-tm-count="3" style="--tm-interval: 2200ms">\n' +
+      '  <span class="tm-text-flip-word">beautiful</span>\n' +
+      '  <span class="tm-text-flip-word">amazing</span>\n' +
+      '  <span class="tm-text-flip-word">powerful</span>\n' +
+      '</span>\n\n' +
+      "// Vanilla helper, if you'd rather hand over an array: initTextFlipElement()\n" +
+      "// from 'tailmotion/utils' renders this markup once, then CSS owns the cycle.",
   }),
   entry('text-morph', 'recipes', 'text', {
-    requires: 'js',
-    description: 'Rotating words with a blur morph. Needs the same JS helper.',
+    requires: 'markup',
+    description: 'Rotating words with a blur morph. CSS only -- same data-tm-count contract as tm-text-flip.',
     preview: 'text-flip',
     markup:
-      '<span id="headline" class="tm-text-morph"></span>\n\n' +
-      "import { initTextFlipElement } from 'tailmotion/utils';\n" +
-      "initTextFlipElement(document.getElementById('headline'), {\n" +
-      "  words: ['developers', 'designers', 'creators'],\n" +
-      "  variant: 'morph',\n" +
-      '});',
+      '<span class="tm-text-morph" data-tm-count="3" style="--tm-interval: 2200ms">\n' +
+      '  <span class="tm-text-morph-word">developers</span>\n' +
+      '  <span class="tm-text-morph-word">designers</span>\n' +
+      '  <span class="tm-text-morph-word">creators</span>\n' +
+      '</span>',
   }),
   entry('text-rotate', 'recipes', 'text', {
-    requires: 'js',
-    description: 'Rotating words on the horizontal axis. Needs the same JS helper.',
+    requires: 'markup',
+    description: 'Rotating words on the horizontal axis. CSS only -- same data-tm-count contract as tm-text-flip.',
     preview: 'text-flip',
-    markup: "<span id=\"headline\" class=\"tm-text-rotate\"></span>\n\n// See tm-text-flip for the JS.",
+    markup:
+      '<span class="tm-text-rotate" data-tm-count="3" style="--tm-interval: 2200ms">\n' +
+      '  <span class="tm-text-rotate-word">beautiful</span>\n' +
+      '  <span class="tm-text-rotate-word">amazing</span>\n' +
+      '  <span class="tm-text-rotate-word">powerful</span>\n' +
+      '</span>',
   }),
   entry('flip-hover', 'keyframes', 'interaction', {
     replay: false,
