@@ -113,13 +113,14 @@ export function Button({ as = 'button', variant = 'secondary', size = 'md', clas
 }
 
 /** A selectable option. Selection is white-on-dark, never colour alone. */
-export function Chip({ selected, className, children, ...rest }) {
+export function Chip({ selected, shape = 'pill', className, children, ...rest }) {
   return (
     <button
       type="button"
       aria-pressed={selected}
       className={cx(
-        'tm-press shrink-0 select-none rounded-full border px-3 py-1.5 text-micro font-medium',
+        'tm-press shrink-0 select-none border px-3 py-1.5 text-micro font-medium',
+        shape === 'segment' ? 'rounded' : 'rounded-full',
         FOCUS_RING,
         CONTROL_TRANSITION,
         selected

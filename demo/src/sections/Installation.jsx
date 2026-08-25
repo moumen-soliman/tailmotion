@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Bot, Braces, FileCode2, PackagePlus } from 'lucide-react';
 import { Card, Chip, Code, CopyButton, Section, SectionHeading } from '../lib/ui';
 import { AI_INSTALL_PROMPT } from '../lib/prompts';
 
@@ -56,6 +57,8 @@ const SETUPS = [
   },
 ];
 
+const STEP_ICONS = [PackagePlus, FileCode2, Braces];
+
 export function Installation({ variants }) {
   const [setup, setSetup] = useState('v4');
   const active = SETUPS.find((item) => item.id === setup);
@@ -81,8 +84,11 @@ export function Installation({ variants }) {
         theme configuration and arbitrary values. The animations themselves come from the stylesheet.
       </SectionHeading>
 
-      <Card className="mt-8 flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between">
-        <div className="min-w-0">
+      <Card className="mt-8 flex flex-col gap-5 overflow-hidden p-5 shadow-[0_1px_2px_rgb(0_0_0/0.06),0_10px_30px_-22px_rgb(0_0_0/0.35)] sm:flex-row sm:items-center sm:p-6">
+        <span className="grid h-10 w-10 shrink-0 place-items-center rounded-lg border border-line bg-page text-accent">
+          <Bot className="h-5 w-5" strokeWidth={1.75} aria-hidden />
+        </span>
+        <div className="min-w-0 flex-1">
           <p className="font-mono text-overline uppercase text-accent">Install with AI</p>
           <h3 className="mt-2 text-heading font-medium text-ink-strong">
             Let your coding agent configure TailMotion
@@ -96,41 +102,67 @@ export function Installation({ variants }) {
           value={AI_INSTALL_PROMPT}
           label="Copy AI install prompt"
           copiedLabel="Prompt copied"
-          size="md"
+          size="lg"
           variant="primary"
           ariaLabel="Copy the TailMotion AI installation prompt"
+          className="w-full shadow-[0_1px_2px_rgb(0_0_0/0.14),0_6px_18px_-10px_rgb(0_0_0/0.45)] sm:w-auto"
         />
       </Card>
 
-      <div className="mt-6 lg:mt-8">
-        <div className="rail -mx-1 flex gap-2 overflow-x-auto px-1 pb-1" role="tablist" aria-label="Setup">
-          {SETUPS.map((item) => (
-            <Chip
-              key={item.id}
-              role="tab"
-              aria-selected={setup === item.id}
-              selected={setup === item.id}
-              onClick={() => setSetup(item.id)}
-            >
-              {item.label}
-            </Chip>
-          ))}
+      <div className="mt-8">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p className="font-mono text-overline uppercase text-ink-faint">Choose your setup</p>
+            <p className="mt-1 text-label text-ink-muted">
+              The three-step path updates without changing the workflow.
+            </p>
+          </div>
+          <div
+            className="rail -mx-1 flex gap-1.5 overflow-x-auto rounded-lg border border-line bg-card p-1 shadow-[0_1px_2px_rgb(0_0_0/0.05)] sm:mx-0"
+            role="tablist"
+            aria-label="Setup"
+          >
+            {SETUPS.map((item) => (
+              <Chip
+                key={item.id}
+                role="tab"
+                aria-selected={setup === item.id}
+                selected={setup === item.id}
+                shape="segment"
+                onClick={() => setSetup(item.id)}
+                className="border-transparent px-3.5"
+              >
+                {item.label}
+              </Chip>
+            ))}
+          </div>
         </div>
 
-        <ol className="mt-5 grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-5">
-          {active.steps.map((step, index) => (
-            <li key={step.label} className="min-w-0">
-              <div className="mb-2 flex items-baseline gap-2">
-                <span className="grid h-5 w-5 shrink-0 place-items-center rounded-full border border-line-strong bg-card-hover font-mono text-overline text-ink">
-                  {index + 1}
-                </span>
-                <span className="text-label text-ink-muted">{step.label}</span>
-              </div>
-              <Code copyValue={step.code}>
-                {step.code}
-              </Code>
-            </li>
-          ))}
+        <ol className="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-5">
+          {active.steps.map((step, index) => {
+            const Icon = STEP_ICONS[index];
+            return (
+              <li
+                key={step.label}
+                className="flex min-w-0 flex-col rounded-lg border border-line bg-card p-3 shadow-[0_1px_2px_rgb(0_0_0/0.05),0_8px_24px_-20px_rgb(0_0_0/0.28)]"
+              >
+                <div className="flex min-w-0 items-center gap-3 px-1 pb-3">
+                  <span className="grid h-8 w-8 shrink-0 place-items-center rounded-md border border-line bg-page text-ink-muted">
+                    <Icon className="h-4 w-4" strokeWidth={1.75} aria-hidden />
+                  </span>
+                  <div className="min-w-0">
+                    <p className="font-mono text-overline uppercase text-ink-faint">
+                      Step {String(index + 1).padStart(2, '0')}
+                    </p>
+                    <p className="mt-0.5 text-label font-medium text-ink">{step.label}</p>
+                  </div>
+                </div>
+                <Code className="flex-1 bg-page" copyValue={step.code}>
+                  {step.code}
+                </Code>
+              </li>
+            );
+          })}
         </ol>
 
         {/* Verified facts, read from the stylesheet that is loaded right now. */}
