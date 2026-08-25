@@ -99,6 +99,7 @@ const BUTTON_VARIANTS = {
 const BUTTON_SIZES = {
   sm: 'h-8 px-2.5',
   md: 'h-9 px-4',
+  lg: 'h-10 px-4',
 };
 
 export function Button({ as = 'button', variant = 'secondary', size = 'md', className, ...rest }) {
@@ -152,6 +153,7 @@ export function CopyButton({
   size = 'sm',
   variant = 'ghost',
   ariaLabel,
+  className,
 }) {
   const { copied, copy } = useCopy();
   return (
@@ -160,12 +162,24 @@ export function CopyButton({
       size={size}
       onClick={() => copy(value)}
       aria-label={ariaLabel ?? `${label}: ${value}`}
+      className={className}
     >
-      {copied ? (
-        <Check className="h-3.5 w-3.5 shrink-0 text-accent" aria-hidden />
-      ) : (
-        <Copy className="h-3.5 w-3.5 shrink-0" aria-hidden />
-      )}
+      <span className="grid shrink-0" aria-hidden>
+        <Copy
+          className={cx(
+            'col-start-1 row-start-1 h-3.5 w-3.5 transition-[opacity,scale,filter] duration-300 [transition-timing-function:cubic-bezier(0.2,0,0,1)]',
+            copied ? 'scale-[0.25] opacity-0 blur-[4px]' : 'scale-100 opacity-100 blur-0'
+          )}
+          strokeWidth={1.75}
+        />
+        <Check
+          className={cx(
+            'col-start-1 row-start-1 h-3.5 w-3.5 text-accent transition-[opacity,scale,filter] duration-300 [transition-timing-function:cubic-bezier(0.2,0,0,1)]',
+            copied ? 'scale-100 opacity-100 blur-0' : 'scale-[0.25] opacity-0 blur-[4px]'
+          )}
+          strokeWidth={1.75}
+        />
+      </span>
       {/* Both labels are always in the DOM, stacked in the same grid cell, so
           the cell -- and the button -- is always sized to the wider of the
           two. Swapping to "Copied" never changes the button's width, so

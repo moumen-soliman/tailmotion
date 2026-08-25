@@ -45,21 +45,40 @@ export function Hero({ variants }) {
             {'<button class="tm-press">Save changes</button>'}
           </Code>
 
-          <div className="flex flex-wrap items-center gap-2.5">
-            <Button as="a" href="/#explorer" variant="primary">
+          <div className="grid grid-cols-2 items-center gap-2.5 sm:flex sm:flex-wrap">
+            <Button
+              as="a"
+              href="/#explorer"
+              variant="primary"
+              size="lg"
+              className="group col-span-2 w-full px-5 shadow-[0_1px_2px_rgb(0_0_0/0.14),0_6px_18px_-10px_rgb(0_0_0/0.45)] transition-[background-color,color,box-shadow] hover:shadow-[0_1px_2px_rgb(0_0_0/0.18),0_9px_24px_-11px_rgb(0_0_0/0.5)] sm:w-auto"
+            >
               Explore the motion language
-              <ArrowRight className="h-4 w-4" aria-hidden />
+              <ArrowRight
+                className="h-4 w-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5 group-focus-visible:translate-x-0.5"
+                strokeWidth={1.75}
+                aria-hidden
+              />
             </Button>
             <CopyButton
               value="npm install tailmotion"
               label="Copy install"
               copiedLabel="Copied install"
-              size="md"
+              size="lg"
               variant="secondary"
+              className="w-full bg-card/60 shadow-[0_1px_2px_rgb(0_0_0/0.06)] hover:bg-card sm:w-auto"
             />
-            <Button as="a" href={GITHUB} target="_blank" rel="noreferrer" variant="ghost">
-              <Github className="h-4 w-4" aria-hidden />
-              View on GitHub
+            <Button
+              as="a"
+              href={GITHUB}
+              target="_blank"
+              rel="noreferrer"
+              variant="ghost"
+              size="lg"
+              className="group w-full sm:w-auto"
+            >
+              <Github className="h-4 w-4" strokeWidth={1.75} aria-hidden />
+              View GitHub
             </Button>
           </div>
         </div>
