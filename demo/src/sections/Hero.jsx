@@ -1,6 +1,6 @@
 import { Accessibility, ArrowRight, Braces, Github, RefreshCw } from 'lucide-react';
 import { Explorer } from './Explorer';
-import { Button, Code, CopyButton, Shell } from '../lib/ui';
+import { Button, Code, CopyButton, Shell, streamWords } from '../lib/ui';
 
 const GITHUB = 'https://github.com/moumen-soliman/tailmotion';
 
@@ -32,12 +32,26 @@ export function Hero({ variants }) {
             <p className="font-mono text-overline uppercase text-accent">
               A motion language for product interfaces
             </p>
-            <h1 className="mt-4 text-balance text-display font-semibold text-ink-strong sm:text-display-lg">
-              Purposeful motion that speaks Tailwind
+            <h1 className="tm-stream-text mt-4 text-balance text-display font-semibold text-ink-strong sm:text-display-lg">
+              <span style={{ '--tm-stagger': 0 }}>Purposeful</span>{' '}
+              <span style={{ '--tm-stagger': 1 }}>
+                <span
+                  className="text-accent tm-shimmer-text tm-duration-1600 leading-none"
+                >
+                  motion
+                </span>
+              </span>{' '}
+              <span style={{ '--tm-stagger': 2 }}>that</span>{' '}
+              <span style={{ '--tm-stagger': 3 }}>speaks</span>{' '}
+              <span style={{ '--tm-stagger': 4 }}>Tailwind</span>
             </h1>
-            <p className="mt-5 text-pretty text-body-lg text-ink-muted">
-              Add tuned entrances, interruptible state transitions and product-ready recipes with
-              composable classes. Tailwind owns the look. TailMotion owns how it moves.
+            <p
+              className="tm-stream-text mt-5 text-pretty text-body-lg text-ink-muted"
+              style={{ '--tm-stream-text-stagger-step': '18ms' }}
+            >
+              {streamWords(
+                'Add tuned entrances, interruptible state transitions and product-ready recipes with composable classes. Tailwind owns the look. TailMotion owns how it moves.'
+              )}
             </p>
           </div>
 

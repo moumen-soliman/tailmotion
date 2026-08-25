@@ -25,6 +25,28 @@ export function cx(...parts) {
   return parts.filter(Boolean).join(' ');
 }
 
+/**
+ * Splits text into tm-stream-text-ready word spans, keeping whitespace as
+ * plain text nodes so the paragraph still wraps normally -- only the words
+ * themselves are spans. Mirrors initStreamTextElement() from
+ * tailmotion/utils for React, where the framework owns rendering instead of
+ * a DOM helper. Pair with the `tm-stream-text` class on the parent.
+ */
+export function streamWords(text) {
+  let index = 0;
+  return text.split(/(\s+)/).map((token, i) => {
+    if (token === '') return null;
+    if (/^\s+$/.test(token)) return token;
+    const node = (
+      <span key={i} style={{ '--tm-stagger': index }}>
+        {token}
+      </span>
+    );
+    index += 1;
+    return node;
+  });
+}
+
 /** Copy-to-clipboard with a 1.6s confirmation, safe on insecure origins. */
 export function useCopy() {
   const [copied, setCopied] = useState(false);
