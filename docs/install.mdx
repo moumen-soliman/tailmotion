@@ -17,7 +17,7 @@ document.
 No Tailwind, no build step, no plugin. Every class in the library works.
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailmotion@0.9.0/tailmotion.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailmotion@0.10.0/tailmotion.css">
 ```
 
 <Warning>
@@ -107,6 +107,63 @@ utility wins in v3 and TailMotion wins in v4. Let TailMotion own `opacity`,
 `translate`, `scale` and `visibility` on an element it is animating and the
 question never comes up.
 </Warning>
+
+## Usage-generated CSS (experimental)
+
+For the "simple" catalogue — one class, one matching keyframe: fade, pop,
+bounce, pulse, spin, float, drift, shake, wiggle, glow, morph, sway, ripple,
+elastic, blur, rotate-in, the slide/drop/scale/zoom entrances and exits, and
+the plain-transition interactions (`tm-press`, `tm-hover-lift`,
+`tm-hover-scale`, `tm-rotate-hover`, `tm-rotate-press`) — both Tailwind majors
+can generate only the utilities and recipes your markup actually uses,
+instead of shipping the whole catalogue. Keyframes and the token/reduced-motion
+base layer still ship unconditionally either way: neither Tailwind major
+prunes a `@keyframes` block for a custom-named utility, and the base layer
+(color/easing tokens, the `prefers-reduced-motion` collapse) is a real
+dependency regardless of which classes are used. The fixed cost of both is
+small — well under 5KB gzip for the full Phase 1 catalogue.
+
+Both paths also include the fixed-value token modifiers (`tm-duration-*`,
+`tm-delay-*`, `tm-ease-*`, `tm-repeat-*`, `tm-stagger-*`, `tm-speed-*`,
+`tm-emphasis-*`, `tm-overshoot-*`, `tm-hold-*`, `tm-distance-*`) at their
+shipped values, so `tailmotion/tailwind.css` works standalone in Tailwind v4
+with no JS plugin required. Arbitrary values (`tm-duration-[420ms]`) still
+need the plugin's `matchUtilities`, which resolves them dynamically — pair
+`@plugin "tailmotion/plugin";` alongside `tailmotion/tailwind.css` for those;
+it prunes correctly too, since `matchUtilities`-registered utilities (unlike
+`addUtilities`/`addBase`) are tree-shaken by Tailwind v4's JS-plugin
+compatibility layer.
+
+**Use this instead of `tailmotion/css`, not alongside it.** Both paths define
+the same classes; importing both ships everything twice.
+
+<CodeGroup>
+```css Tailwind v4
+@import "tailwindcss";
+@import "tailmotion/tailwind.css";
+```
+
+```js Tailwind v3 — tailwind.config.js
+module.exports = {
+  content: ["./src/**/*.{js,jsx,ts,tsx,html}"],
+  plugins: [require("tailmotion/plugin")({ usageGenerated: true })],
+};
+```
+</CodeGroup>
+
+For Tailwind v3, add the usual `@tailwind` directives (no `tailmotion/css`
+import needed). For Tailwind v4, `tailmotion/tailwind.css` is a real,
+natively tree-shaken `@utility` entry — it is not the same as loading
+`tailmotion/plugin` through `@plugin`. Tailwind v4's compatibility layer for
+legacy JS plugins does not tree-shake `addBase`/`addUtilities` content by
+usage at all, so `usageGenerated: true` only prunes correctly under Tailwind
+v3's JIT; under v4 it would ship the whole Phase 1 catalogue unconditionally
+with no pruning benefit. Use `tailmotion/tailwind.css` for v4 instead.
+
+This currently covers the catalogue described above. Recipes with child or
+state selectors (`tm-icon-swap`, presence, native, scroll, choreography,
+profiles, and the larger animation files) are not part of it yet and still
+need the complete or modular stylesheets.
 
 ## The Tailwind plugin is optional
 

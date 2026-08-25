@@ -1,6 +1,6 @@
 {
   "name": "tailmotion",
-  "version": "0.9.0",
+  "version": "0.10.0",
   "description": "A motion language for product interfaces: scoped motion personalities, state-driven presence, native HTML motion, product recipes and scroll-driven reveals. Zero runtime, pure CSS, framework-agnostic.",
   "main": "src/index.js",
   "module": "src/index.js",
@@ -23,7 +23,7 @@
   ],
   "scripts": {
     "build": "node ./scripts/build.mjs",
-    "check": "node ./scripts/build.mjs && node ./scripts/check.mjs",
+    "check": "node ./scripts/build.mjs && node ./scripts/check.mjs && node ./scripts/check-phase1-source-parity.mjs && node ./scripts/check-tailwind.mjs",
     "verify": "node ./scripts/serve-verify.mjs",
     "dev": "npm run build && cd demo && npm install && npm run dev",
     "demo": "cd demo && npm run dev",
@@ -49,6 +49,7 @@
     },
     "./css": "./tailmotion.css",
     "./tailmotion.css": "./tailmotion.css",
+    "./tailwind.css": "./dist/compiler/tailwind.css",
     "./profiles.css": "./modules/profiles.css",
     "./presence.css": "./modules/presence.css",
     "./native.css": "./modules/native.css",
@@ -108,8 +109,19 @@
       "optional": true
     }
   },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.0.0",
+    "tailwindcss": "^3.4.0"
+  },
   "engines": {
     "node": ">=16.0.0"
+  },
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": ">=20.0.0",
+      "onFail": "warn"
+    }
   },
   "documentation": "https://docs.tailmotion.moumen.dev/"
 }

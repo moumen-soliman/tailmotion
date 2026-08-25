@@ -117,11 +117,40 @@ export default {
 
 Plugin options are typed as `TailMotionPluginOptions`.
 
+## Usage-generated CSS (`usageGenerated`, experimental)
+
+```js
+module.exports = {
+  content: ["./src/**/*.{js,jsx,ts,tsx,html}"],
+  plugins: [require("tailmotion/plugin")({ usageGenerated: true })],
+};
+```
+
+Off by default. When `true`, the plugin also registers the "simple" animation
+and interaction catalogue (one class, one matching keyframe — fade, pop,
+bounce, and friends; see [Installation](/docs/install#usage-generated-css-experimental)
+for the full list) as real Tailwind utilities, so the v3 JIT emits only the
+ones your content uses instead of the whole catalogue. Their keyframes and the
+token/reduced-motion base layer still ship unconditionally regardless of usage
+— see the installation guide for why.
+
+**Tailwind v3 only.** Loaded through `@plugin` in Tailwind v4, this option
+ships the whole catalogue unconditionally with no pruning — v4's
+compatibility layer for legacy JS plugins does not tree-shake
+`addBase`/`addUtilities` content by usage. Use the
+[`tailmotion/tailwind.css`](/docs/install#usage-generated-css-experimental)
+entry for Tailwind v4 instead.
+
+**Use this instead of `tailmotion/css`, not alongside it** — both define the
+same classes, so importing both ships everything twice.
+
 ## What the plugin does not do
 
-- It does **not** generate the animation classes. Those live in
-  `tailmotion.css`, which you import separately.
+- By default, it does **not** generate the animation classes. Those live in
+  `tailmotion.css`, which you import separately — unless `usageGenerated` is
+  on, above.
 - It does **not** generate variants. The prebuilt `hover:` / `focus:` /
-  responsive selectors ship in `variants.css`, inside the stylesheet.
+  responsive selectors ship in `variants.css`, inside the stylesheet — Tailwind
+  generates those itself for any utility `usageGenerated` registers.
 - It does **not** require Tailwind at runtime. `tailwindcss` is an optional peer
   dependency, and TailMotion works with no Tailwind at all.

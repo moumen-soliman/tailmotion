@@ -1,0 +1,1269 @@
+/* TailMotion v0.10.0 — dist/compiler/tailwind.css | Generated 2026-08-25T10:59:30.756Z */
+
+/* Mandatory dependency: color/easing tokens and the required
+   prefers-reduced-motion collapse. Always present, regardless of which
+   utilities below are used -- see docs/COMPILER_PLAN.md. */
+
+/* --------------------------------------------------------------------------
+   TailMotion token layer.
+
+   Everything TailMotion animates reads from these four groups:
+
+     1. Explicit overrides  --tm-duration, --tm-delay, --tm-easing,
+                            --tm-iteration-count. Deliberately unset, so each
+                            motion class keeps its own tuned default. Set them
+                            per element with tm-duration-*, tm-delay-*,
+                            tm-ease-*, tm-repeat-*, the Tailwind plugin, or an
+                            inline style. An explicit value always wins.
+
+     2. Profile factors     --tm-duration-scale, --tm-emphasis, --tm-overshoot.
+                            Inherited multipliers. A motion personality
+                            (tm-motion-calm / -productive / -expressive)
+                            retunes a whole subtree by changing these, and each
+                            animation keeps its relative character because it
+                            multiplies its own default rather than being
+                            replaced by a global one.
+
+     3. Shared scalars      --tm-distance, --tm-stagger-step. One value each,
+                            already shared by every class that uses them, so a
+                            profile sets them outright.
+
+     4. Role easings        --tm-ease-entrance, --tm-ease-exit,
+                            --tm-ease-interaction, --tm-ease-emphasis. Classes
+                            opt into a role; a profile retunes the role.
+                            Animations with a character of their own (linear
+                            spins, ambient drifts) stay out of this and keep
+                            their literal curve.
+
+   This file carries no selectors of its own beyond :root, so a module can
+   import it and stand alone.
+   -------------------------------------------------------------------------- */
+
+@layer base {
+  :root,
+  :host {
+    /* --- Profile factors ------------------------------------------------ */
+
+    /* Multiplies every animation's own default duration. */
+    --tm-duration-scale: 1;
+
+    /* Multiplies how far a keyframe departs from its resting value: the 0.85
+       start scale of tm-pop, the blur of tm-blur-in. 0 removes the departure
+       entirely, so keep it above 0 unless the motion should become a pure
+       fade. */
+    --tm-emphasis: 1;
+
+    /* Multiplies only the frames that travel *past* the resting value: the
+       1.05 peak of tm-pop, the settle of tm-drop. 0 removes overshoot without
+       touching the entrance itself. */
+    --tm-overshoot: 1;
+
+    /* --- Shared scalars ------------------------------------------------- */
+
+    /* Choreography */
+    --tm-stagger-step: 100ms;
+
+    /* Travel distance. Exits travel 70% of an entrance, resolved at the point
+       of use so tm-distance-* retunes entrances and exits together. */
+    --tm-distance: 12px;
+
+    /* Sign of inline-axis motion: 1 in LTR, -1 in RTL. */
+    --tm-inline-flip: 1;
+
+    /* --- Role easings --------------------------------------------------- */
+
+    /* Arriving: decelerate into place. Anything that enters or leaves the
+       screen wants an ease-out, entrances and exits alike -- an ease-in exit
+       delays the visual feedback and reads as sluggish. */
+    --tm-ease-entrance: cubic-bezier(0.22, 1, 0.36, 1);
+
+    /* Leaving: the same family, weaker, because the exit should not perform. */
+    --tm-ease-exit: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+    /* Responding to a pointer or key, where the target can change mid-flight. */
+    --tm-ease-interaction: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+    /* Moving or reshaping something that is already on screen: accelerate out
+       of the old position, brake into the new one. */
+    --tm-ease-morph: cubic-bezier(0.2, 0, 0, 1);
+
+    /* Celebrating: the only curve that is allowed to overshoot. */
+    --tm-ease-emphasis: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+    /* --- Effect colors --------------------------------------------------
+       TailMotion ships no palette: every effect inherits the consumer's color
+       and every token can be replaced with an exact value, alpha included. */
+    --tm-color: currentColor;
+    --tm-shadow-color: color-mix(in oklab, var(--tm-color) 25%, transparent);
+    --tm-glow-color: color-mix(in oklab, var(--tm-color) 45%, transparent);
+    --tm-outline-color: color-mix(in oklab, var(--tm-color) 40%, transparent);
+
+    /* The shimmer highlight keeps its color and its strength apart: browsers
+       drop gradient interpolation hints from any gradient holding a
+       color-mix() stop, so strength lives in --tm-shimmer-opacity instead. */
+    --tm-shimmer-color: var(--tm-color);
+    --tm-shimmer-opacity: 0.35;
+
+    /* tm-shimmer-text paints its own gradient rather than overlaying one, so
+       it needs a resting (dim) and a peak (full-strength) stop instead of a
+       single opacity. Both derive from the same color by default. */
+    --tm-shimmer-text-color: var(--tm-color);
+    --tm-shimmer-text-resting: color-mix(in oklab, var(--tm-shimmer-text-color) 45%, transparent);
+  }
+
+  /* Safe fallback where color-mix() is unavailable. */
+  @supports not (color: color-mix(in oklab, currentColor, transparent)) {
+    :root,
+    :host {
+      --tm-shadow-color: var(--tm-color);
+      --tm-glow-color: var(--tm-color);
+      --tm-outline-color: var(--tm-color);
+      --tm-shimmer-text-resting: var(--tm-shimmer-text-color);
+    }
+  }
+
+  /* Mirror inline-axis motion in right-to-left contexts. */
+  [dir="ltr"] {
+    --tm-inline-flip: 1;
+  }
+
+  [dir="rtl"] {
+    --tm-inline-flip: -1;
+  }
+
+  @supports selector(:dir(rtl)) {
+    [dir="auto"]:dir(ltr) {
+      --tm-inline-flip: 1;
+    }
+
+    [dir="auto"]:dir(rtl) {
+      --tm-inline-flip: -1;
+    }
+  }
+
+  /* Motion is supplementary feedback. When it is not wanted, every animation
+     lands on its final state immediately instead of being skipped, so the
+     state a class communicates stays visible. Container classes that animate
+     unclassed children are listed explicitly.
+
+     Scroll-driven classes are progress-linked rather than time-linked, so a
+     1ms duration would not stop them. They are switched off in
+     src/scroll/scroll.css instead, which leaves their subject at its natural,
+     visible state. */
+  @media (prefers-reduced-motion: reduce) {
+    [class*="tm-"],
+    [class*="tm-"]::before,
+    [class*="tm-"]::after,
+    .tm-stagger > *,
+    .tm-count-reveal > *,
+    .tm-number-swap > *,
+    .tm-stream-text > *,
+    .tm-icon-swap > *,
+    .tm-view-morph > [data-tm-panel],
+    .tm-text-flip-chars > span {
+      animation-duration: 1ms !important;
+      animation-delay: 0ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 1ms !important;
+      transition-delay: 0ms !important;
+    }
+
+    /* Kept apart: a selector list is discarded whole if a browser cannot parse
+       one of its parts, and ::backdrop is younger than the rule above. */
+    [class*="tm-"]::backdrop {
+      animation-duration: 1ms !important;
+      animation-delay: 0ms !important;
+      transition-duration: 1ms !important;
+      transition-delay: 0ms !important;
+    }
+  }
+}
+
+/* Keyframes ship unconditionally: Tailwind v4 does not prune a @keyframes
+   block tied to a custom-named utility. Small, fixed cost -- see
+   docs/COMPILER_PLAN.md’s measurements. */
+
+@keyframes tm-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes tm-fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes tm-pop {
+  0% {
+    scale: calc(1 - 0.15 * var(--tm-emphasis, 1));
+    opacity: 0;
+  }
+  70% {
+    scale: calc(1 + 0.05 * var(--tm-overshoot, 1));
+    opacity: 1;
+  }
+  100% {
+    scale: 1;
+    opacity: 1;
+  }
+}
+
+@keyframes tm-bounce {
+  0%, 100% {
+    translate: 0 0;
+  }
+  30% {
+    translate: 0 calc(-18% * var(--tm-emphasis, 1));
+  }
+  50% {
+    translate: 0 0;
+  }
+  70% {
+    translate: 0 calc(-8% * var(--tm-emphasis, 1));
+  }
+}
+
+@keyframes tm-pulse {
+  0%, 100% {
+    scale: 1;
+    opacity: 1;
+  }
+  50% {
+    scale: calc(1 + 0.05 * var(--tm-emphasis, 1));
+    opacity: 0.85;
+  }
+}
+
+@keyframes tm-spin {
+  0% {
+    rotate: 0deg;
+  }
+  100% {
+    rotate: 360deg;
+  }
+}
+
+@keyframes tm-float {
+  0% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 calc(-6px * var(--tm-emphasis, 1));
+  }
+  100% {
+    translate: 0 0;
+  }
+}
+
+@keyframes tm-drift {
+  0% {
+    translate: 0 0;
+  }
+  25% {
+    translate: 6px -2px;
+  }
+  50% {
+    translate: 0 0;
+  }
+  75% {
+    translate: -6px 2px;
+  }
+  100% {
+    translate: 0 0;
+  }
+}
+
+@keyframes tm-shake {
+  0%, 100% {
+    translate: 0 0;
+  }
+  10%, 30%, 50%, 70%, 90% {
+    translate: calc(-10px * var(--tm-emphasis, 1)) 0;
+  }
+  20%, 40%, 60%, 80% {
+    translate: calc(10px * var(--tm-emphasis, 1)) 0;
+  }
+}
+
+@keyframes tm-wiggle {
+  0% {
+    translate: 0 0;
+  }
+  20% {
+    translate: -6px 0;
+  }
+  40% {
+    translate: 6px 0;
+  }
+  60% {
+    translate: -4px 0;
+  }
+  80% {
+    translate: 4px 0;
+  }
+  100% {
+    translate: 0 0;
+  }
+}
+
+@keyframes tm-glow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 var(--tm-glow-color);
+  }
+  50% {
+    box-shadow: 0 0 var(--tm-glow-size, 18px) var(--tm-glow-spread, 0) var(--tm-glow-color);
+  }
+}
+
+@keyframes tm-morph {
+  0%, 100% {
+    transform: scale(1) rotate(0deg);
+    border-radius: inherit;
+  }
+  25% {
+    transform: scale(1.02, 0.98) rotate(0.5deg);
+  }
+  50% {
+    transform: scale(0.98, 1.02) rotate(-0.5deg);
+  }
+  75% {
+    transform: scale(1.01, 0.99) rotate(0.3deg);
+  }
+}
+
+@keyframes tm-sway {
+  0%, 100% {
+    transform: rotate(0deg) translateX(0);
+  }
+  25% {
+    transform: rotate(2deg) translateX(3px);
+  }
+  50% {
+    transform: rotate(0deg) translateX(0);
+  }
+  75% {
+    transform: rotate(-2deg) translateX(-3px);
+  }
+}
+
+@keyframes tm-ripple {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 var(--tm-outline-color);
+  }
+  40% {
+    transform: scale(1.03);
+    box-shadow: 0 0 0 var(--tm-ripple-size, 10px) transparent;
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 transparent;
+  }
+}
+
+@keyframes tm-elastic {
+  0% {
+    scale: 0 0.5;
+    opacity: 0;
+  }
+  40% {
+    scale: calc(1 + 0.12 * var(--tm-overshoot, 1)) calc(1 - 0.12 * var(--tm-overshoot, 1));
+    opacity: 1;
+  }
+  60% {
+    scale: calc(1 - 0.08 * var(--tm-overshoot, 1)) calc(1 + 0.08 * var(--tm-overshoot, 1));
+  }
+  80% {
+    scale: calc(1 + 0.04 * var(--tm-overshoot, 1)) calc(1 - 0.04 * var(--tm-overshoot, 1));
+  }
+  100% {
+    scale: 1 1;
+    opacity: 1;
+  }
+}
+
+@keyframes tm-blur-in {
+  from {
+    opacity: 0;
+    filter: blur(calc(var(--tm-blur, 8px) * var(--tm-emphasis, 1)));
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+@keyframes tm-blur-out {
+  from {
+    opacity: 1;
+    filter: blur(0);
+  }
+  to {
+    opacity: 0;
+    filter: blur(calc(var(--tm-exit-blur, 4px) * var(--tm-emphasis, 1)));
+  }
+}
+
+@keyframes tm-rotate-in {
+  from {
+    opacity: 0;
+    rotate: calc(var(--tm-rotate-from, -6deg) * var(--tm-emphasis, 1));
+    scale: var(--tm-scale-from, calc(1 - 0.04 * var(--tm-emphasis, 1)));
+  }
+  to {
+    opacity: 1;
+    rotate: 0deg;
+    scale: 1;
+  }
+}
+
+@keyframes tm-slide-block-start {
+  from {
+    opacity: 0;
+    translate: 0 var(--tm-distance, 12px);
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@keyframes tm-slide-block-end {
+  from {
+    opacity: 0;
+    translate: 0 calc(var(--tm-distance, 12px) * -1);
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@keyframes tm-slide-inline-start {
+  from {
+    opacity: 0;
+    translate: calc(var(--tm-distance, 12px) * var(--tm-inline-flip, 1)) 0;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@keyframes tm-slide-inline-end {
+  from {
+    opacity: 0;
+    translate: calc(var(--tm-distance, 12px) * var(--tm-inline-flip, 1) * -1) 0;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@keyframes tm-slide-block-out {
+  from {
+    opacity: 1;
+    translate: 0 0;
+  }
+  to {
+    opacity: 0;
+    translate: 0 calc(var(--tm-exit-distance, calc(var(--tm-distance, 12px) * 0.7)) * -1);
+  }
+}
+
+@keyframes tm-slide-inline-out {
+  from {
+    opacity: 1;
+    translate: 0 0;
+  }
+  to {
+    opacity: 0;
+    translate: calc(var(--tm-exit-distance, calc(var(--tm-distance, 12px) * 0.7)) * var(--tm-inline-flip, 1)) 0;
+  }
+}
+
+@keyframes tm-drop-in {
+  0% {
+    opacity: 0;
+    translate: 0 calc(var(--tm-drop-distance, calc(var(--tm-distance, 12px) * 3.3)) * -1);
+    scale: 1 calc(1 + 0.08 * var(--tm-emphasis, 1));
+  }
+  60% {
+    opacity: 1;
+    translate: 0 calc(var(--tm-distance, 12px) * 0.33 * var(--tm-overshoot, 1));
+    scale: 1 calc(1 - 0.02 * var(--tm-overshoot, 1));
+  }
+  80% {
+    translate: 0 calc(var(--tm-distance, 12px) * -0.17 * var(--tm-overshoot, 1));
+    scale: 1 calc(1 + 0.01 * var(--tm-overshoot, 1));
+  }
+  100% {
+    opacity: 1;
+    translate: 0 0;
+    scale: 1 1;
+  }
+}
+
+@keyframes tm-scale-in {
+  from {
+    opacity: 0;
+    scale: var(--tm-scale-from, calc(1 - 0.06 * var(--tm-emphasis, 1)));
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+@keyframes tm-scale-out {
+  from {
+    opacity: 1;
+    scale: 1;
+  }
+  to {
+    opacity: 0;
+    scale: var(--tm-exit-scale, calc(1 - 0.04 * var(--tm-emphasis, 1)));
+  }
+}
+
+@keyframes tm-zoom-in {
+  0% {
+    scale: calc(1 - 0.08 * var(--tm-emphasis, 1));
+    translate: 0 calc(var(--tm-distance, 12px) * 0.66);
+    opacity: 0;
+  }
+  60% {
+    scale: calc(1 + 0.02 * var(--tm-overshoot, 1));
+    translate: 0 calc(var(--tm-distance, 12px) * -0.17 * var(--tm-overshoot, 1));
+    opacity: 1;
+  }
+  100% {
+    scale: 1;
+    translate: 0 0;
+    opacity: 1;
+  }
+}
+
+@keyframes tm-zoom-out {
+  0% {
+    scale: calc(1 + 0.1 * var(--tm-emphasis, 1));
+    opacity: 0;
+  }
+  60% {
+    scale: calc(1 - 0.02 * var(--tm-overshoot, 1));
+    opacity: 1;
+  }
+  100% {
+    scale: 1;
+    opacity: 1;
+  }
+}
+
+@utility tm-fade-in {
+  animation-name: tm-fade-in;
+  animation-duration: var(--tm-duration, calc(250ms * var(--tm-duration-scale, 1)));
+  animation-delay: var(--tm-delay, 0ms);
+  animation-timing-function: var(--tm-easing, var(--tm-ease-entrance, ease-out));
+  animation-iteration-count: var(--tm-iteration-count, 1);
+  animation-fill-mode: both;
+}
+
+@utility tm-fade-out {
+  animation-name: tm-fade-out;
+  animation-duration: var(--tm-duration, calc(200ms * var(--tm-duration-scale, 1)));
+  animation-delay: var(--tm-delay, 0ms);
+  animation-timing-function: var(--tm-easing, var(--tm-ease-exit, ease-out));
+  animation-iteration-count: var(--tm-iteration-count, 1);
+  animation-fill-mode: both;
+}
+
+@utility tm-pop {
+  animation-name: tm-pop;
+  animation-duration: var(--tm-duration, calc(380ms * var(--tm-duration-scale, 1)));
+  animation-delay: var(--tm-delay, 0ms);
+  animation-timing-function: var(--tm-easing, var(--tm-ease-emphasis, cubic-bezier(0.18, 0.89, 0.32, 1.28)));
+  animation-iteration-count: var(--tm-iteration-count, 1);
+  animation-fill-mode: both;
+}
+
+@utility tm-bounce {
+  animation-name: tm-bounce;
+  animation-duration: var(--tm-duration, calc(900ms * var(--tm-duration-scale, 1)));
+  animation-delay: var(--tm-delay, 0ms);
+  animation-timing-function: var(--tm-easing, cubic-bezier(0.68, -0.55, 0.27, 1.55));
+  animation-iteration-count: var(--tm-iteration-count, infinite);
+  animation-fill-mode: both;
+  transform-origin: center bottom;
+  will-change: translate;
+}
+
+@utility tm-pulse {
+  animation-name: tm-pulse;
+  animation-duration: var(--tm-duration, calc(1400ms * var(--tm-duration-scale, 1)));
+  animation-delay: var(--tm-delay, 0ms);
+  animation-timing-function: var(--tm-easing, ease-in-out);
+  animation-iteration-count: var(--tm-iteration-count, infinite);
+  animation-fill-mode: both;
+  will-change: transform, opacity;
+}
+
+@utility tm-spin {
+  animation-name: tm-spin;
+  animation-duration: var(--tm-duration, calc(1200ms * var(--tm-duration-scale, 1)));
+  animation-delay: var(--tm-delay, 0ms);
+  animation-timing-function: var(--tm-easing, linear);
+  animation-iteration-count: var(--tm-iteration-count, infinite);
+  animation-fill-mode: both;
+  will-change: transform;
+}
+
+@utility tm-float {
+  animation-name: tm-float;
+  animation-duration: var(--tm-duration, calc(3000ms * var(--tm-duration-scale, 1)));
+  animation-delay: var(--tm-delay, 0ms);
+  animation-timing-function: var(--tm-easing, ease-in-out);
+  animation-iteration-count: var(--tm-iteration-count, infinite);
+  animation-fill-mode: both;
+  will-change: transform;
+}
+
+@utility tm-drift {
+  animation-name: tm-drift;
+  animation-duration: var(--tm-duration, calc(2800ms * var(--tm-duration-scale, 1)));
+  animation-delay: var(--tm-delay, 0ms);
+  animation-timing-function: var(--tm-easing, ease-in-out);
+  animation-iteration-count: var(--tm-iteration-count, infinite);
+  animation-fill-mode: both;
+  will-change: transform;
+}
+
+@utility tm-shake {
+  animation-name: tm-shake;
+  animation-duration: var(--tm-duration, calc(600ms * var(--tm-duration-scale, 1)));
+  animation-delay: var(--tm-delay, 0ms);
+  animation-timing-function: var(--tm-easing, cubic-bezier(0.36, 0.07, 0.19, 0.97));
+  animation-iteration-count: var(--tm-iteration-count, 1);
+  animation-fill-mode: both;
+  transform-origin: center;
+}
+
+@utility tm-wiggle {
+  animation-name: tm-wiggle;
+  animation-duration: var(--tm-duration, calc(500ms * var(--tm-duration-scale, 1)));
+  animation-delay: var(--tm-delay, 0ms);
+  animation-timing-function: var(--tm-easing, ease-in-out);
+  animation-iteration-count: var(--tm-iteration-count, 1);
+  animation-fill-mode: both;
+}
+
+@utility tm-glow {
+  animation-name: tm-glow;
+  animation-duration: var(--tm-duration, calc(1600ms * var(--tm-duration-scale, 1)));
+  animation-delay: var(--tm-delay, 0ms);
+  animation-timing-function: var(--tm-easing, ease-in-out);
+  animation-iteration-count: var(--tm-iteration-count, infinite);
+  animation-fill-mode: both;
+}
+
+@utility tm-morph {
+  animation-name: tm-morph;
+  animation-duration: var(--tm-duration, calc(4000ms * var(--tm-duration-scale, 1)));
+  animation-delay: var(--tm-delay, 0ms);
+  animation-timing-function: var(--tm-easing, cubic-bezier(0.45, 0.05, 0.55, 0.95));
+  animation-iteration-count: var(--tm-iteration-count, infinite);
+  animation-fill-mode: both;
+  will-change: transform;
+}
+
+@utility tm-sway {
+  animation-name: tm-sway;
+  animation-duration: var(--tm-duration, calc(3500ms * var(--tm-duration-scale, 1)));
+  animation-delay: var(--tm-delay, 0ms);
+  animation-timing-function: var(--tm-easing, cubic-bezier(0.37, 0, 0.63, 1));
+  animation-iteration-count: var(--tm-iteration-count, infinite);
+  animation-fill-mode: both;
+  transform-origin: top center;
+  will-change: transform;
+}
+
+@utility tm-ripple {
+  animation-name: tm-ripple;
+  animation-duration: var(--tm-duration, calc(1800ms * var(--tm-duration-scale, 1)));
+  animation-delay: var(--tm-delay, 0ms);
+  animation-timing-function: var(--tm-easing, cubic-bezier(0.25, 0.46, 0.45, 0.94));
+  animation-iteration-count: var(--tm-iteration-count, infinite);
+  animation-fill-mode: both;
+  will-change: transform;
+}
+
+@utility tm-elastic {
+  animation-name: tm-elastic;
+  animation-duration: var(--tm-duration, calc(900ms * var(--tm-duration-scale, 1)));
+  animation-delay: var(--tm-delay, 0ms);
+  animation-timing-function: var(--tm-easing, var(--tm-ease-emphasis, cubic-bezier(0.68, -0.6, 0.32, 1.6)));
+  animation-iteration-count: var(--tm-iteration-count, 1);
+  animation-fill-mode: both;
+}
+
+@utility tm-blur-in {
+  animation-name: tm-blur-in;
+  animation-duration: var(--tm-duration, calc(280ms * var(--tm-duration-scale, 1)));
+  animation-delay: var(--tm-delay, 0ms);
+  animation-timing-function: var(--tm-easing, var(--tm-ease-entrance, ease-out));
+  animation-iteration-count: var(--tm-iteration-count, 1);
+  animation-fill-mode: both;
+}
+
+@utility tm-blur-out {
+  animation-name: tm-blur-out;
+  animation-duration: var(--tm-duration, calc(220ms * var(--tm-duration-scale, 1)));
+  animation-delay: var(--tm-delay, 0ms);
+  animation-timing-function: var(--tm-easing, var(--tm-ease-exit, ease-out));
+  animation-iteration-count: var(--tm-iteration-count, 1);
+  animation-fill-mode: both;
+}
+
+@utility tm-rotate-in {
+  animation-name: tm-rotate-in;
+  animation-duration: var(--tm-duration, calc(280ms * var(--tm-duration-scale, 1)));
+  animation-delay: var(--tm-delay, 0ms);
+  animation-timing-function: var(--tm-easing, var(--tm-ease-entrance, cubic-bezier(0.22, 1, 0.36, 1)));
+  animation-iteration-count: var(--tm-iteration-count, 1);
+  animation-fill-mode: both;
+}
+
+@utility tm-slide-block-start {
+  animation-name: tm-slide-block-start;
+  animation-duration: var(--tm-duration, calc(260ms * var(--tm-duration-scale, 1)));
+  animation-delay: var(--tm-delay, 0ms);
+  animation-timing-function: var(--tm-easing, var(--tm-ease-entrance, cubic-bezier(0.22, 1, 0.36, 1)));
+  animation-iteration-count: var(--tm-iteration-count, 1);
+  animation-fill-mode: both;
+}
+
+@utility tm-slide-up {
+  animation-name: tm-slide-block-start;
+  animation-duration: var(--tm-duration, calc(260ms * var(--tm-duration-scale, 1)));
+  animation-delay: var(--tm-delay, 0ms);
+  animation-timing-function: var(--tm-easing, var(--tm-ease-entrance, cubic-bezier(0.22, 1, 0.36, 1)));
+  animation-iteration-count: var(--tm-iteration-count, 1);
+  animation-fill-mode: both;
+}
+
+@utility tm-slide-block-end {
+  animation-name: tm-slide-block-end;
+  animation-duration: var(--tm-duration, calc(260ms * var(--tm-duration-scale, 1)));
+  animation-delay: var(--tm-delay, 0ms);
+  animation-timing-function: var(--tm-easing, var(--tm-ease-entrance, cubic-bezier(0.22, 1, 0.36, 1)));
+  animation-iteration-count: var(--tm-iteration-count, 1);
+  animation-fill-mode: both;
+}
+
+@utility tm-slide-down {
+  animation-name: tm-slide-block-end;
+  animation-duration: var(--tm-duration, calc(260ms * var(--tm-duration-scale, 1)));
+  animation-delay: var(--tm-delay, 0ms);
+  animation-timing-function: var(--tm-easing, var(--tm-ease-entrance, cubic-bezier(0.22, 1, 0.36, 1)));
+  animation-iteration-count: var(--tm-iteration-count, 1);
+  animation-fill-mode: both;
+}
+
+@utility tm-slide-inline-start {
+  animation-name: tm-slide-inline-start;
+  animation-duration: var(--tm-duration, calc(260ms * var(--tm-duration-scale, 1)));
+  animation-delay: var(--tm-delay, 0ms);
+  animation-timing-function: var(--tm-easing, var(--tm-ease-entrance, cubic-bezier(0.22, 1, 0.36, 1)));
+  animation-iteration-count: var(--tm-iteration-count, 1);
+  animation-fill-mode: both;
+}
+
+@utility tm-slide-left {
+  animation-name: tm-slide-inline-start;
+  animation-duration: var(--tm-duration, calc(260ms * var(--tm-duration-scale, 1)));
+  animation-delay: var(--tm-delay, 0ms);
+  animation-timing-function: var(--tm-easing, var(--tm-ease-entrance, cubic-bezier(0.22, 1, 0.36, 1)));
+  animation-iteration-count: var(--tm-iteration-count, 1);
+  animation-fill-mode: both;
+}
+
+@utility tm-slide-inline-end {
+  animation-name: tm-slide-inline-end;
+  animation-duration: var(--tm-duration, calc(260ms * var(--tm-duration-scale, 1)));
+  animation-delay: var(--tm-delay, 0ms);
+  animation-timing-function: var(--tm-easing, var(--tm-ease-entrance, cubic-bezier(0.22, 1, 0.36, 1)));
+  animation-iteration-count: var(--tm-iteration-count, 1);
+  animation-fill-mode: both;
+}
+
+@utility tm-slide-right {
+  animation-name: tm-slide-inline-end;
+  animation-duration: var(--tm-duration, calc(260ms * var(--tm-duration-scale, 1)));
+  animation-delay: var(--tm-delay, 0ms);
+  animation-timing-function: var(--tm-easing, var(--tm-ease-entrance, cubic-bezier(0.22, 1, 0.36, 1)));
+  animation-iteration-count: var(--tm-iteration-count, 1);
+  animation-fill-mode: both;
+}
+
+@utility tm-slide-block-out {
+  animation-name: tm-slide-block-out;
+  animation-duration: var(--tm-duration, calc(210ms * var(--tm-duration-scale, 1)));
+  animation-delay: var(--tm-delay, 0ms);
+  animation-timing-function: var(--tm-easing, var(--tm-ease-exit, ease-out));
+  animation-iteration-count: var(--tm-iteration-count, 1);
+  animation-fill-mode: both;
+}
+
+@utility tm-slide-inline-out {
+  animation-name: tm-slide-inline-out;
+  animation-duration: var(--tm-duration, calc(210ms * var(--tm-duration-scale, 1)));
+  animation-delay: var(--tm-delay, 0ms);
+  animation-timing-function: var(--tm-easing, var(--tm-ease-exit, ease-out));
+  animation-iteration-count: var(--tm-iteration-count, 1);
+  animation-fill-mode: both;
+}
+
+@utility tm-drop {
+  animation-name: tm-drop-in;
+  animation-duration: var(--tm-duration, calc(600ms * var(--tm-duration-scale, 1)));
+  animation-delay: var(--tm-delay, 0ms);
+  animation-timing-function: var(--tm-easing, var(--tm-ease-emphasis, cubic-bezier(0.34, 1.56, 0.64, 1)));
+  animation-iteration-count: var(--tm-iteration-count, 1);
+  animation-fill-mode: both;
+  transform-origin: top center;
+}
+
+@utility tm-drop-in {
+  animation-name: tm-drop-in;
+  animation-duration: var(--tm-duration, calc(600ms * var(--tm-duration-scale, 1)));
+  animation-delay: var(--tm-delay, 0ms);
+  animation-timing-function: var(--tm-easing, var(--tm-ease-emphasis, cubic-bezier(0.34, 1.56, 0.64, 1)));
+  animation-iteration-count: var(--tm-iteration-count, 1);
+  animation-fill-mode: both;
+  transform-origin: top center;
+}
+
+@utility tm-scale-in {
+  animation-name: tm-scale-in;
+  animation-duration: var(--tm-duration, calc(220ms * var(--tm-duration-scale, 1)));
+  animation-delay: var(--tm-delay, 0ms);
+  animation-timing-function: var(--tm-easing, var(--tm-ease-entrance, cubic-bezier(0.22, 1, 0.36, 1)));
+  animation-iteration-count: var(--tm-iteration-count, 1);
+  animation-fill-mode: both;
+}
+
+@utility tm-scale-out {
+  animation-name: tm-scale-out;
+  animation-duration: var(--tm-duration, calc(180ms * var(--tm-duration-scale, 1)));
+  animation-delay: var(--tm-delay, 0ms);
+  animation-timing-function: var(--tm-easing, var(--tm-ease-exit, ease-out));
+  animation-iteration-count: var(--tm-iteration-count, 1);
+  animation-fill-mode: both;
+}
+
+@utility tm-zoom-in {
+  animation-name: tm-zoom-in;
+  animation-duration: var(--tm-duration, calc(520ms * var(--tm-duration-scale, 1)));
+  animation-delay: var(--tm-delay, 0ms);
+  animation-timing-function: var(--tm-easing, var(--tm-ease-entrance, cubic-bezier(0.19, 1, 0.22, 1)));
+  animation-iteration-count: var(--tm-iteration-count, 1);
+  animation-fill-mode: both;
+}
+
+@utility tm-zoom-in-slow {
+  animation-name: tm-zoom-in;
+  animation-duration: var(--tm-duration, calc(900ms * var(--tm-duration-scale, 1)));
+  animation-delay: var(--tm-delay, 0ms);
+  animation-timing-function: var(--tm-easing, var(--tm-ease-entrance, cubic-bezier(0.25, 0.8, 0.25, 1)));
+  animation-iteration-count: var(--tm-iteration-count, 1);
+  animation-fill-mode: both;
+}
+
+@utility tm-zoom-out {
+  animation-name: tm-zoom-out;
+  animation-duration: var(--tm-duration, calc(520ms * var(--tm-duration-scale, 1)));
+  animation-delay: var(--tm-delay, 0ms);
+  animation-timing-function: var(--tm-easing, var(--tm-ease-entrance, cubic-bezier(0.19, 1, 0.22, 1)));
+  animation-iteration-count: var(--tm-iteration-count, 1);
+  animation-fill-mode: both;
+}
+
+@utility tm-press {
+  transition-property: scale;
+  transition-duration: var(--tm-duration, calc(150ms * var(--tm-duration-scale, 1)));
+  transition-timing-function: var(--tm-easing, var(--tm-ease-interaction, ease-out));
+  &:active:not(:disabled):not([aria-disabled="true"]) {
+    scale: var(--tm-press-scale, 0.96);
+  }
+}
+
+@utility tm-hover-lift {
+  transition-property: translate, box-shadow;
+  transition-duration: var(--tm-duration, calc(150ms * var(--tm-duration-scale, 1)));
+  transition-timing-function: var(--tm-easing, var(--tm-ease-interaction, ease-out));
+  &:hover, &:focus-visible {
+    translate: 0 calc(var(--tm-lift-distance, 4px) * -1);
+    box-shadow: var(--tm-lift-shadow, 0 8px 24px -8px var(--tm-shadow-color));
+  }
+}
+
+@utility tm-lift-hover {
+  transition-property: translate, box-shadow;
+  transition-duration: var(--tm-duration, calc(150ms * var(--tm-duration-scale, 1)));
+  transition-timing-function: var(--tm-easing, var(--tm-ease-interaction, ease-out));
+  &:hover, &:focus-visible {
+    translate: 0 calc(var(--tm-lift-distance, 4px) * -1);
+    box-shadow: var(--tm-lift-shadow, 0 8px 24px -8px var(--tm-shadow-color));
+  }
+}
+
+@utility tm-hover-scale {
+  transition-property: scale;
+  transition-duration: var(--tm-duration, calc(150ms * var(--tm-duration-scale, 1)));
+  transition-timing-function: var(--tm-easing, var(--tm-ease-interaction, ease-out));
+  &:hover, &:focus-visible {
+    scale: var(--tm-hover-scale, 1.04);
+  }
+}
+
+@utility tm-rotate-hover {
+  transition-property: rotate;
+  transition-duration: var(--tm-duration, calc(150ms * var(--tm-duration-scale, 1)));
+  transition-timing-function: var(--tm-easing, var(--tm-ease-interaction, ease-out));
+  &:hover, &:focus-visible {
+    rotate: var(--tm-rotate, 6deg);
+  }
+}
+
+@utility tm-rotate-press {
+  transition-property: scale, rotate;
+  transition-duration: var(--tm-duration, calc(150ms * var(--tm-duration-scale, 1)));
+  transition-timing-function: var(--tm-easing, var(--tm-ease-interaction, ease-out));
+  &:active:not(:disabled):not([aria-disabled="true"]) {
+    scale: var(--tm-press-scale, 0.96);
+    rotate: var(--tm-rotate, -4deg);
+  }
+}
+
+@utility tm-perspective {
+  perspective: 1200px;
+}
+
+@utility tm-3d {
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+}
+
+@utility tm-gpu {
+  will-change: transform, opacity, filter;
+}
+
+@utility tm-motion-paused {
+  animation-play-state: paused !important;
+}
+
+@utility tm-motion-running {
+  animation-play-state: running !important;
+}
+
+@utility tm-motion-reset {
+  --tm-delay: 0ms;
+  --tm-iteration-count: 1;
+}
+
+/* Fixed-value token modifiers (tm-duration-*, tm-ease-*, etc.), shipped
+   values only -- see the plugin for theme overrides and arbitrary values. */
+
+@utility tm-duration-150 {
+  --tm-duration: 150ms !important;
+}
+
+@utility tm-duration-200 {
+  --tm-duration: 200ms !important;
+}
+
+@utility tm-duration-300 {
+  --tm-duration: 300ms !important;
+}
+
+@utility tm-duration-400 {
+  --tm-duration: 400ms !important;
+}
+
+@utility tm-duration-500 {
+  --tm-duration: 500ms !important;
+}
+
+@utility tm-duration-700 {
+  --tm-duration: 700ms !important;
+}
+
+@utility tm-duration-900 {
+  --tm-duration: 900ms !important;
+}
+
+@utility tm-duration-1000 {
+  --tm-duration: 1000ms !important;
+}
+
+@utility tm-duration-1200 {
+  --tm-duration: 1200ms !important;
+}
+
+@utility tm-duration-1400 {
+  --tm-duration: 1400ms !important;
+}
+
+@utility tm-duration-1600 {
+  --tm-duration: 1600ms !important;
+}
+
+@utility tm-duration-2000 {
+  --tm-duration: 2000ms !important;
+}
+
+@utility tm-duration-3000 {
+  --tm-duration: 3000ms !important;
+}
+
+@utility tm-delay-0 {
+  --tm-delay: 0ms !important;
+}
+
+@utility tm-delay-75 {
+  --tm-delay: 75ms !important;
+}
+
+@utility tm-delay-150 {
+  --tm-delay: 150ms !important;
+}
+
+@utility tm-delay-200 {
+  --tm-delay: 200ms !important;
+}
+
+@utility tm-delay-300 {
+  --tm-delay: 300ms !important;
+}
+
+@utility tm-delay-400 {
+  --tm-delay: 400ms !important;
+}
+
+@utility tm-delay-500 {
+  --tm-delay: 500ms !important;
+}
+
+@utility tm-delay-700 {
+  --tm-delay: 700ms !important;
+}
+
+@utility tm-delay-1000 {
+  --tm-delay: 1000ms !important;
+}
+
+@utility tm-ease-linear {
+  --tm-easing: linear !important;
+}
+
+@utility tm-ease-in {
+  --tm-easing: cubic-bezier(0.55, 0.085, 0.68, 0.53) !important;
+}
+
+@utility tm-ease-out {
+  --tm-easing: cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+}
+
+@utility tm-ease-in-out {
+  --tm-easing: cubic-bezier(0.645, 0.045, 0.355, 1) !important;
+}
+
+@utility tm-ease-soft {
+  --tm-easing: cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+@utility tm-ease-snappy {
+  --tm-easing: cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}
+
+@utility tm-ease-bouncy {
+  --tm-easing: cubic-bezier(0.68, -0.55, 0.265, 1.55) !important;
+}
+
+@utility tm-repeat-1 {
+  --tm-iteration-count: 1 !important;
+}
+
+@utility tm-repeat-2 {
+  --tm-iteration-count: 2 !important;
+}
+
+@utility tm-repeat-3 {
+  --tm-iteration-count: 3 !important;
+}
+
+@utility tm-repeat-infinite {
+  --tm-iteration-count: infinite !important;
+}
+
+@utility tm-stagger-step-50 {
+  --tm-stagger-step: 50ms !important;
+}
+
+@utility tm-stagger-50 {
+  --tm-stagger-step: 50ms !important;
+}
+
+@utility tm-stagger-step-75 {
+  --tm-stagger-step: 75ms !important;
+}
+
+@utility tm-stagger-75 {
+  --tm-stagger-step: 75ms !important;
+}
+
+@utility tm-stagger-step-100 {
+  --tm-stagger-step: 100ms !important;
+}
+
+@utility tm-stagger-100 {
+  --tm-stagger-step: 100ms !important;
+}
+
+@utility tm-stagger-step-150 {
+  --tm-stagger-step: 150ms !important;
+}
+
+@utility tm-stagger-150 {
+  --tm-stagger-step: 150ms !important;
+}
+
+@utility tm-stagger-step-200 {
+  --tm-stagger-step: 200ms !important;
+}
+
+@utility tm-stagger-200 {
+  --tm-stagger-step: 200ms !important;
+}
+
+@utility tm-speed-75 {
+  --tm-duration-scale: 0.75 !important;
+}
+
+@utility tm-speed-85 {
+  --tm-duration-scale: 0.85 !important;
+}
+
+@utility tm-speed-100 {
+  --tm-duration-scale: 1 !important;
+}
+
+@utility tm-speed-110 {
+  --tm-duration-scale: 1.1 !important;
+}
+
+@utility tm-speed-125 {
+  --tm-duration-scale: 1.25 !important;
+}
+
+@utility tm-speed-150 {
+  --tm-duration-scale: 1.5 !important;
+}
+
+@utility tm-emphasis-0 {
+  --tm-emphasis: 0 !important;
+  --tm-overshoot: 0 !important;
+}
+
+@utility tm-emphasis-50 {
+  --tm-emphasis: 0.5 !important;
+  --tm-overshoot: 0.5 !important;
+}
+
+@utility tm-emphasis-75 {
+  --tm-emphasis: 0.75 !important;
+  --tm-overshoot: 0.75 !important;
+}
+
+@utility tm-emphasis-100 {
+  --tm-emphasis: 1 !important;
+  --tm-overshoot: 1 !important;
+}
+
+@utility tm-emphasis-125 {
+  --tm-emphasis: 1.25 !important;
+  --tm-overshoot: 1.25 !important;
+}
+
+@utility tm-emphasis-150 {
+  --tm-emphasis: 1.5 !important;
+  --tm-overshoot: 1.5 !important;
+}
+
+@utility tm-overshoot-0 {
+  --tm-overshoot: 0 !important;
+}
+
+@utility tm-overshoot-50 {
+  --tm-overshoot: 0.5 !important;
+}
+
+@utility tm-overshoot-75 {
+  --tm-overshoot: 0.75 !important;
+}
+
+@utility tm-overshoot-100 {
+  --tm-overshoot: 1 !important;
+}
+
+@utility tm-overshoot-125 {
+  --tm-overshoot: 1.25 !important;
+}
+
+@utility tm-overshoot-150 {
+  --tm-overshoot: 1.5 !important;
+}
+
+@utility tm-hold-800 {
+  --tm-hold-duration: 800ms !important;
+}
+
+@utility tm-hold-1200 {
+  --tm-hold-duration: 1200ms !important;
+}
+
+@utility tm-hold-1600 {
+  --tm-hold-duration: 1600ms !important;
+}
+
+@utility tm-hold-2000 {
+  --tm-hold-duration: 2000ms !important;
+}
+
+@utility tm-distance-4 {
+  --tm-distance: 4px !important;
+}
+
+@utility tm-distance-8 {
+  --tm-distance: 8px !important;
+}
+
+@utility tm-distance-12 {
+  --tm-distance: 12px !important;
+}
+
+@utility tm-distance-20 {
+  --tm-distance: 20px !important;
+}
+
+@utility tm-distance-30 {
+  --tm-distance: 30px !important;
+}

@@ -4,7 +4,6 @@ import { Hero } from './sections/Hero';
 import { Composability } from './sections/Composability';
 import { ViewMorph } from './sections/ViewMorph';
 import { UseCases } from './sections/UseCases';
-import { Explorer } from './sections/Explorer';
 import { Installation } from './sections/Installation';
 import { Accessibility, FinalCta } from './sections/Accessibility';
 import { SiteFooter } from './sections/SiteFooter';
@@ -38,7 +37,6 @@ export default function App() {
         <Composability />
         <ViewMorph />
         <UseCases />
-        <Explorer variants={variants} />
         <Installation variants={variants} />
         <Accessibility />
         <FinalCta />

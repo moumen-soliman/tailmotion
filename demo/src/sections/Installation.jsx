@@ -163,8 +163,16 @@ export function Installation({ variants }) {
             <h3 className="text-label font-medium text-ink">Full stylesheet, or one file at a time</h3>
             <p className="mt-1.5 text-label text-ink-muted">
               <code className="font-mono text-ink-muted">tailmotion/css</code> is the whole library in
-              one file: 127.5 KB as shipped, 94.5 KB minified, 9.8 KB gzipped. It is not tree-shaken
-              — importing it gives you every class, whether or not you use it.
+              one file: 215.2 KB as shipped, 135.7 KB minified, 13.9 KB minified and gzipped. It is not
+              tree-shaken by default — importing it gives you every class, whether or not you use it.
+              An experimental{' '}
+              <a
+                href="https://docs.tailmotion.moumen.dev/docs/install#usage-generated-css-experimental"
+                className="text-accent underline decoration-line-strong hover:decoration-accent"
+              >
+                usage-generated path
+              </a>{' '}
+              can prune the simple animation catalogue by usage in both Tailwind majors instead.
             </p>
             <p className="mt-3 text-label text-ink-muted">
               For a handful of animations, import the individual files instead and let your bundler

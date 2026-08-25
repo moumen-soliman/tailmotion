@@ -3,18 +3,7 @@ import { RotateCcw, Search, X } from 'lucide-react';
 import { CATEGORIES, GROUPS, REPLAYABLE, catalog } from '../animations';
 import { AnimationPreview } from '../lib/previews';
 import { classForTrigger, markupForTrigger, triggersFor } from '../lib/variants';
-import {
-  Badge,
-  Button,
-  Card,
-  Chip,
-  ChipGroup,
-  CONTROL_TRANSITION,
-  CopyButton,
-  Section,
-  SectionHeading,
-  cx,
-} from '../lib/ui';
+import { Badge, Button, Card, Chip, ChipGroup, CONTROL_TRANSITION, CopyButton, cx } from '../lib/ui';
 
 /* --------------------------------------------------------------------------
    The explorer: filter, preview, copy.
@@ -34,6 +23,13 @@ const REQUIRES_TONE = {
   markup: 'warn',
   js: 'warn',
 };
+
+const DURATIONS = [150, 300, 500];
+const EASINGS = [
+  { id: 'out', label: 'Out' },
+  { id: 'soft', label: 'Soft' },
+  { id: 'snappy', label: 'Snappy' },
+];
 
 function matches(entry, query, category) {
   if (category === 'popular' && !entry.popular) return false;
@@ -85,6 +81,8 @@ export function Explorer({ variants }) {
   const [selected, setSelected] = useState('pop');
   const [trigger, setTrigger] = useState('load');
   const [replayKey, setReplayKey] = useState(0);
+  const [duration, setDuration] = useState(300);
+  const [easing, setEasing] = useState('out');
 
   const deferredQuery = useDeferredValue(query);
 
@@ -120,20 +118,16 @@ export function Explorer({ variants }) {
 
   if (!entry) return null;
 
-  const className = REPLAYABLE.has(entry.name)
+  const baseClassName = REPLAYABLE.has(entry.name)
     ? classForTrigger(entry.name, activeTrigger, { stableHover: true })
     : `tm-${entry.name}`;
+  const className = `${baseClassName} tm-duration-${duration} tm-ease-${easing}`;
   const markup = entry.markup || markupForTrigger(className, activeTrigger);
   const canReplay = REPLAYABLE.has(entry.name) && activeTrigger === 'load';
 
   return (
-    <Section id="explorer" className="border-t border-line">
-      <SectionHeading eyebrow="Explorer" title="Every class, one at a time">
-        {catalog.length} classes, grouped by how they work. Keyframes play and replay; transitions
-        respond to a state; recipes need a little markup.
-      </SectionHeading>
-
-      <div className="mt-8 grid grid-cols-1 items-start gap-4 lg:mt-10 lg:grid-cols-[minmax(0,17rem)_minmax(0,1fr)] lg:gap-5">
+    <div id="explorer">
+      <div className="grid grid-cols-1 items-start gap-4 lg:grid-cols-[minmax(0,17rem)_minmax(0,1fr)] lg:gap-5">
         {/* -------------------------------------------------- panel 1: browse */}
         <Card className="flex min-h-0 min-w-0 flex-col">
           <div className="border-b border-line p-3">
@@ -219,8 +213,8 @@ export function Explorer({ variants }) {
           </div>
         </Card>
 
-        {/* ------------------------------------- panels 2+3: preview and code */}
-        <div className="grid min-w-0 grid-cols-1 items-start gap-4 xl:grid-cols-2 xl:gap-5">
+        {/* ------------------------------ panels 2+3: preview+controls, then code */}
+        <div className="grid min-w-0 grid-cols-1 items-start gap-4 lg:gap-5">
           <Card className="flex min-w-0 flex-col">
             <div className="flex flex-wrap items-center gap-2 border-b border-line px-4 py-3">
               <div className="min-w-0">
@@ -252,8 +246,26 @@ export function Explorer({ variants }) {
               />
             </div>
 
-            {triggers.length > 1 ? (
-              <div className="border-t border-line p-3">
+            <div className="space-y-3.5 border-t border-line p-3">
+              <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2 sm:gap-x-6">
+                <ChipGroup label="Duration">
+                  {DURATIONS.map((value) => (
+                    <Chip key={value} selected={duration === value} onClick={() => setDuration(value)}>
+                      {value}ms
+                    </Chip>
+                  ))}
+                </ChipGroup>
+
+                <ChipGroup label="Easing">
+                  {EASINGS.map((option) => (
+                    <Chip key={option.id} selected={easing === option.id} onClick={() => setEasing(option.id)}>
+                      {option.label}
+                    </Chip>
+                  ))}
+                </ChipGroup>
+              </div>
+
+              {triggers.length > 1 ? (
                 <ChipGroup label="Trigger">
                   {triggers.map((option) => (
                     <Chip
@@ -268,8 +280,8 @@ export function Explorer({ variants }) {
                     </Chip>
                   ))}
                 </ChipGroup>
-              </div>
-            ) : null}
+              ) : null}
+            </div>
           </Card>
 
           <Card className="flex min-w-0 flex-col">
@@ -305,6 +317,6 @@ export function Explorer({ variants }) {
           </Card>
         </div>
       </div>
-    </Section>
+    </div>
   );
 }

@@ -1,5 +1,63 @@
 # Changelog
 
+## 0.10.0 · 2026-08-25
+
+Tailwind v3 and v4 can now generate only the animation and interaction
+utilities your markup actually uses, instead of the whole catalogue.
+
+### Added
+
+- **Usage-generated CSS for the simple animation/interaction catalogue
+  (experimental).** Tailwind v3:
+  `require("tailmotion/plugin")({ usageGenerated: true })` registers the
+  fade/pop/bounce-style utilities and interactions (about 47 classes) as real
+  Tailwind utilities, so the v3 JIT emits only what your content uses.
+  Tailwind v4: `tailmotion/tailwind.css` is a new, natively tree-shaken
+  `@utility` entry covering the same catalogue. In both cases, keyframes and
+  the token/reduced-motion base layer still ship unconditionally — neither
+  Tailwind major prunes a `@keyframes` block for a custom-named utility, and
+  the base layer is a real dependency regardless of which classes are used.
+  Use either path instead of `tailmotion/css`, not alongside it.
+- **`tailmotion/tailwind.css` also includes the fixed-value token modifiers**
+  (`tm-duration-*`, `tm-delay-*`, `tm-ease-*`, `tm-repeat-*`, `tm-stagger-*`,
+  `tm-speed-*`, `tm-emphasis-*`, `tm-overshoot-*`, `tm-hold-*`,
+  `tm-distance-*`) at their shipped values, so it works standalone in
+  Tailwind v4 with no JS plugin required. Arbitrary values
+  (`tm-duration-[420ms]`) still need `@plugin "tailmotion/plugin";` alongside
+  it — its `matchUtilities` registrations tree-shake correctly under v4's
+  JS-plugin compatibility layer, unlike `addUtilities`/`addBase`.
+- `npm run check` now also builds real Tailwind v3 and v4 fixtures
+  (`scripts/check-tailwind.mjs`) and asserts that pruning behavior holds; a
+  self-consistency guard (`checkCatalogueConsistency`) fails if a utility and
+  its keyframe ever drift out of sync with each other.
+- **`scripts/check-phase1-source-parity.mjs`** (also wired into `npm run
+  check`) checks the transcribed catalogue against the actual
+  `src/animations/*.css` it was copied from, so a future retune of a
+  duration or keyframe that isn't also updated in `tailmotion.config.cjs`
+  fails the build instead of silently shipping a stale value.
+- `npm run check` also verifies, via a real `npm pack --dry-run`, that every
+  file consumers need (including `dist/compiler/tailwind.css`) actually lands
+  in the published tarball.
+
+### Changed
+
+- The repository has its first npm dependencies: `tailwindcss` and
+  `@tailwindcss/cli` (dev-only, for the fixture check above). Contributors
+  now need `npm install` before `npm run check`.
+- Declared a `devEngines` requirement of Node 20+ (the fixture check's
+  `@tailwindcss/cli` dependency needs it). The package's own published
+  `engines.node` stays `>=16.0.0` — unaffected, since this only applies to
+  installing devDependencies in this repository. `check-tailwind.mjs` also
+  fails with an actionable message on an older Node instead of a native
+  binding error.
+
+### Documentation
+
+- Documented `usageGenerated` and `tailmotion/tailwind.css` in Installation
+  and the plugin reference, including why Tailwind v4's `@plugin` directive
+  cannot use the option the same way (it does not tree-shake legacy JS plugin
+  output by usage).
+
 ## 0.9.0 · 2026-08-25
 
 Text can now shimmer, swap values and stream in word by word; stagger can opt

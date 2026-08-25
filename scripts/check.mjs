@@ -251,6 +251,49 @@ const checkDocs = async () => {
   notes.push(`\ndocs                         ${String(pages.length).padStart(4)} pages, all linked`);
 };
 
+/* Confirms the files consumers actually need are inside the published
+   tarball, without needing to publish or inspect it by hand. Catches a
+   files/exports mismatch in package.json (e.g. a new build target that
+   nothing in "files" covers) before it ships silently missing. */
+const checkPackageContents = async () => {
+  const { execFileSync } = await import('node:child_process');
+
+  const REQUIRED_FILES = [
+    'tailmotion.css',
+    'modules/profiles.css',
+    'modules/presence.css',
+    'modules/native.css',
+    'modules/recipes.css',
+    'modules/scroll.css',
+    'modules/choreography.css',
+    'tailmotion.config.cjs',
+    'dist/tailmotion.js',
+    'dist/compiler/tailwind.css',
+    'types/index.d.ts',
+    'src/index.js',
+  ];
+
+  let packed;
+  try {
+    const output = execFileSync('npm', ['pack', '--dry-run', '--json'], {
+      cwd: rootDir,
+      encoding: 'utf8',
+    });
+    packed = new Set(JSON.parse(output)[0].files.map((f) => f.path));
+  } catch (error) {
+    fail(`npm pack --dry-run failed: ${error.message}`);
+    return;
+  }
+
+  for (const file of REQUIRED_FILES) {
+    if (!packed.has(file)) {
+      fail(`${file}: not present in \`npm pack\` output. Check "files" in package.json.`);
+    }
+  }
+
+  notes.push(`package                       ${String(packed.size).padStart(4)} files in the published tarball`);
+};
+
 const run = async () => {
   const files = [
     'tailmotion.css',
@@ -274,6 +317,7 @@ const run = async () => {
 
   await checkHoverVariantParity();
   await checkDocs();
+  await checkPackageContents();
 
   console.log(notes.join('\n'));
 

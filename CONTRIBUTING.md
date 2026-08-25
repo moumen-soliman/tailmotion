@@ -21,7 +21,12 @@ Participation in this project is governed by the
 
 Requirements:
 
-- Node.js 16 or newer
+- Node.js 16 or newer (the package's own published requirement)
+- **Node.js 20 or newer to run `npm run check`.** It builds a real Tailwind
+  v4 fixture, and `@tailwindcss/cli`'s native engine
+  (`@tailwindcss/oxide`) requires Node 20+. This is a devDependency-only
+  requirement — declared as `devEngines` in `package.json`, not the
+  package's own `engines.node` — so it does not affect consumers.
 - npm
 
 Install and build the package:
