@@ -28,7 +28,9 @@
 
 <p align="center">
   <a href="https://www.npmjs.com/package/tailmotion"><img src="https://img.shields.io/npm/v/tailmotion.svg" alt="npm version"></a>
-  <a href="https://www.npmjs.com/package/tailmotion"><img src="https://img.shields.io/npm/dm/tailmotion.svg" alt="npm downloads"></a>
+<a href="https://www.npmjs.com/package/tailmotion">
+  <img src="https://img.shields.io/npm/dt/tailmotion.svg" alt="npm total downloads">
+</a>
   <a href="LICENSE.md"><img src="https://img.shields.io/github/license/moumen-soliman/tailmotion?label=license" alt="MIT license"></a>
 </p>
 
