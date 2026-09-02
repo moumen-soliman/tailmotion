@@ -14,7 +14,6 @@
   0%,
   100% {
     transform: scale(1) rotate(0deg);
-    border-radius: inherit;
   }
 
   25% {

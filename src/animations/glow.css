@@ -1,25 +1,50 @@
 @layer utilities {
-  /* Soft pulsing halo. The color comes from --tm-glow-color, which derives from
-     the element's own currentColor by default; set it to any value (alpha
-     included) to theme the effect. Never rely on the glow alone to signal a
-     state -- pair it with a label, icon or focus ring. */
+  /* Soft pulsing halo.
+
+     The halo is painted once on a pseudo-element and only its opacity moves,
+     so the loop stays on the compositor. Before 0.11 this animated box-shadow
+     on the element itself, which re-rasterizes it on the main thread every
+     frame for as long as the page is open -- the single most expensive thing
+     a looping utility can do. See docs/reference/render-cost.
+
+     The color comes from --tm-glow-color, which derives from the element's own
+     currentColor by default; set it to any value (alpha included) to theme the
+     effect. Never rely on the glow alone to signal a state -- pair it with a
+     label, icon or focus ring.
+
+     Required markup: none, but tm-glow owns the element's ::after. */
   .tm-glow {
+    position: relative;
+  }
+
+  .tm-glow::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: 0 0 var(--tm-glow-size, 18px) var(--tm-glow-spread, 0) var(--tm-glow-color);
+    opacity: 0;
+    pointer-events: none;
     animation-name: tm-glow;
     animation-duration: var(--tm-duration, calc(1600ms * var(--tm-duration-scale, 1)));
     animation-delay: var(--tm-delay, 0ms);
     animation-timing-function: var(--tm-easing, ease-in-out);
     animation-iteration-count: var(--tm-iteration-count, infinite);
     animation-fill-mode: both;
+    will-change: opacity;
   }
 }
 
+/* Ends at 0: the resting state is no halo, matching the box-shadow version it
+   replaces, so the reduced-motion collapse to a single 1ms iteration lands on
+   an element with nothing drawn around it. */
 @keyframes tm-glow {
   0%,
   100% {
-    box-shadow: 0 0 0 0 var(--tm-glow-color);
+    opacity: 0;
   }
 
   50% {
-    box-shadow: 0 0 var(--tm-glow-size, 18px) var(--tm-glow-spread, 0) var(--tm-glow-color);
+    opacity: 1;
   }
 }

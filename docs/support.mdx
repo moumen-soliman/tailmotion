@@ -55,6 +55,18 @@ saying no in advance is cheaper than saying no later.
 - **No `useMotion()` hook.** If the answer is a hook, the answer is not this
   package.
 
+## Scheduled for removal in 1.0
+
+Nothing here is removed without an alias and a migration path, and nothing here
+stops working before 1.0. It is listed now so the deprecation is not a surprise
+later.
+
+| What | Why | Use instead |
+|---|---|---|
+| `tm-shimmer-text` without a sweep child | The zero-markup path repaints on every frame; it is the last looping effect in the library that does | The [sweep recipe](/docs/reference/render-cost#tm-shimmer-text) — same class name, one child element |
+| `tm-hold-delete` | Owns color, background and radius, which a motion class should not | `tm-hold-confirm` |
+| `tm-liquid-btn`, `tm-liquid-wave`, `tm-liquid-underline` | The same: appearance inside a motion class, and they animate `height`, `width` and `left` | `tm-press` with your own Tailwind styling, or `tm-shimmer-hover` |
+
 ## Compatibility promise
 
 - **Existing public classes keep working.** Nothing is removed without an alias
@@ -63,6 +75,10 @@ saying no in advance is cheaper than saying no later.
   keep visible, usable content — checked, not promised, by `npm run check`.
 - **Reduced motion preserves the communicated state.** Animations collapse to
   1ms rather than being removed.
+- **Continuous motion never repaints.** Every looping effect in the core runs
+  on the compositor. The exceptions are the two decorative background families
+  and one deprecated path, each named in
+  [Render cost](/docs/reference/render-cost).
 - **The full bundle is not described as tree-shaken**, because it is not. See
   [Imports and bundle size](/docs/reference/imports#two-things-to-be-honest-about).
 - **The optional plugin is never required** for the prebuilt classes.
@@ -81,6 +97,9 @@ Builds the stylesheets and runs the static checks:
 3. `:root` carries no timing token that would shadow per-class defaults.
 4. `--tm-exit-distance` is not declared on `:root`, where `calc()` would freeze.
 5. Every module ships a reduced-motion reset.
+6. Every animation that loops forever stays on the compositor, every blur stays
+   within 8px, and no transition names `all` — see
+   [Render cost](/docs/reference/render-cost).
 
 It also prints raw and gzipped sizes for every entry point.
 

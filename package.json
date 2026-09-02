@@ -1,6 +1,6 @@
 {
   "name": "tailmotion",
-  "version": "0.10.1",
+  "version": "0.11.0",
   "description": "A motion language for product interfaces: scoped motion personalities, state-driven presence, native HTML motion, product recipes and scroll-driven reveals. Zero runtime, pure CSS, framework-agnostic.",
   "main": "src/index.js",
   "module": "src/index.js",
@@ -19,18 +19,21 @@
     "CODE_OF_CONDUCT.md",
     "CONTRIBUTING.md",
     "LICENSE.md",
-    "README.md"
+    "README.md",
+    "!dist/render-cost.json"
   ],
   "scripts": {
     "build": "node ./scripts/build.mjs",
-    "check": "node ./scripts/build.mjs && node ./scripts/check.mjs && node ./scripts/check-phase1-source-parity.mjs && node ./scripts/check-tailwind.mjs",
+    "check": "node ./scripts/build.mjs && node ./scripts/check.mjs && node ./scripts/check-render-cost.mjs && node ./scripts/check-phase1-source-parity.mjs && node ./scripts/check-tailwind.mjs && npm test",
     "verify": "node ./scripts/serve-verify.mjs",
     "dev": "npm run build && cd demo && npm install && npm run dev",
     "demo": "cd demo && npm run dev",
     "prepublishOnly": "npm run check",
     "release:patch": "npm version patch && npm publish --access public",
     "release:minor": "npm version minor && npm publish --access public",
-    "release:major": "npm version major && npm publish --access public"
+    "release:major": "npm version major && npm publish --access public",
+    "test": "node --test \"test/*.test.mjs\"",
+    "perf": "node ./scripts/perf.mjs"
   },
   "exports": {
     ".": {
@@ -111,6 +114,7 @@
   },
   "devDependencies": {
     "@tailwindcss/cli": "^4.0.0",
+    "playwright": "^1.62.1",
     "tailwindcss": "^3.4.0"
   },
   "engines": {

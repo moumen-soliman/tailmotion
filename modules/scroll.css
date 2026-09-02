@@ -1,4 +1,4 @@
-/* TailMotion v0.10.1 — modules/scroll.css | Generated 2026-08-25T12:42:53.410Z */
+/* TailMotion v0.11.0 — modules/scroll.css | Generated 2026-09-02T05:23:17.909Z */
 /* tailmotion/scroll.css
    Scroll-driven motion on its own, with the token layer it reads.
    Already included in "tailmotion/css". */
@@ -194,6 +194,7 @@
     .tm-count-reveal > *,
     .tm-number-swap > *,
     .tm-stream-text > *,
+    .tm-shimmer-text-sweep > *,
     .tm-icon-swap > *,
     .tm-view-morph > [data-tm-panel],
     .tm-text-flip-chars > span {
@@ -230,6 +231,13 @@
     .tm-text-rotate[data-tm-count] > .tm-text-rotate-word:first-child,
     .tm-text-morph[data-tm-count] > .tm-text-morph-word:first-child {
       opacity: 1 !important;
+    }
+
+    /* The shimmer recipe dims its resting text so the sweep reads as brighter.
+       With no sweep running there is nothing for the dimming to buy, and a
+       reader who asked for less motion should not also get less contrast. */
+    .tm-shimmer-text:has(> .tm-shimmer-text-sweep) {
+      -webkit-text-fill-color: currentColor;
     }
   }
 }

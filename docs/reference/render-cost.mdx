@@ -1,0 +1,238 @@
+---
+title: "Render cost"
+description: "Where each class does its work, which loops are guaranteed free of paint, and the named exceptions."
+---
+
+Motion is cheap or it is not motion you can ship. This page says exactly where
+every TailMotion class does its work, and which of those answers are guaranteed
+by the build rather than by intention.
+
+## The four tiers
+
+A browser can run an animation in one of four places. Only the first is free of
+per-frame work on the main thread.
+
+| Tier | Properties | Cost per frame |
+|---|---|---|
+| **Compositor** | `transform`, `translate`, `scale`, `rotate`, `opacity` | GPU only. No style, layout or paint |
+| **Filter** | `filter`, `backdrop-filter` | Composited in Chromium and Firefox. Safari rasterizes blur, so cost scales with the element's area |
+| **Paint** | `background-position`, `background-size`, `box-shadow`, `color`, `border-radius`, `clip-path`, `mask-position` | Re-rasterizes the element every frame, on the main thread |
+| **Layout** | `width`, `height`, `inset`, `grid-template-rows`, `font-size`, `letter-spacing` | Layout plus paint, and layout can cascade to siblings |
+
+A one-shot animation in the paint tier costs a few frames of work once. A
+**loop** in the paint tier costs that work for as long as the page is open, on
+every element carrying the class, whether or not anyone is looking at it. That
+is the difference this page exists to make visible.
+
+## The guarantee
+
+<Note>
+**Every continuous effect in the core runs on the compositor.** Not "should",
+not "usually" — `npm run check` fails the build if a class whose default
+iteration count is `infinite` animates anything outside the compositor tier
+without a named exception.
+</Note>
+
+Of the 30 looping rules in the full stylesheet, 23 are compositor-only. The
+seven that are not are listed below by name, each with the reason it is
+allowed to be.
+
+## The named exceptions
+
+<AccordionGroup>
+  <Accordion title="Decorative backgrounds: tm-dark-veil and tm-wavy">
+    Six looping rules across these two families animate `background-position`,
+    `border-radius` or `filter`. Animating gradient stops **is** the effect;
+    there is no compositor equivalent for a flowing gradient field.
+
+    These are decorative surfaces, not product motion. Use them on one hero
+    surface, not on a list. `tm-dark-veil` additionally drops its live blur on
+    coarse-pointer devices, because Safari rasterizes it even on panels that
+    are not visible.
+  </Accordion>
+
+  <Accordion title="tm-shimmer-text, zero-markup path (deprecated)">
+    One rule. The original `tm-shimmer-text` painted a gradient through
+    `background-clip: text` and animated `background-position`, which
+    re-rasterizes the glyph clip and repaints the gradient on every frame. It
+    is the most expensive continuous effect the library has ever shipped, and
+    the pattern most text-shimmer implementations still use.
+
+    It is kept, unchanged, so markup written against 0.9 and 0.10 keeps
+    working, and is scheduled for removal in 1.0. The
+    [sweep recipe](#tm-shimmer-text) below replaces it and runs on the
+    compositor.
+  </Accordion>
+</AccordionGroup>
+
+## One-shot work outside the compositor
+
+A one-shot animation may leave the compositor, but only with an entry in the
+check's allowlist that names the reason. There are 16, and they fall into three
+groups.
+
+| Class | Leaves the compositor for | Why it is allowed |
+|---|---|---|
+| `tm-accordion-panel` | `grid-template-rows` | The height tween is the behaviour being sold |
+| `tm-native-disclosure` | `block-size` | The same, on native `<details>` |
+| `tm-tab-indicator` | `inline-size` | A scale would distort the indicator's radius and end caps |
+| `tm-view-morph` | `clip-path`, `inline-size`, `block-size` | A shared-element morph is a size change by definition |
+| `tm-reveal`, `tm-unfold`, `tm-count-reveal`, `tm-fill-up` | `clip-path` | The clip is the effect. Composited in Chromium, paint elsewhere |
+| `tm-hover-lift`, `tm-lift`, avatar rings | `box-shadow` | 200ms, pointer-driven, one element at a time |
+| `tm-hold-delete`, `tm-liquid-*` | `color`, `height`, `background-color` | Legacy: appearance inside a motion class. [Scheduled for removal in 1.0](/docs/support#scheduled-for-removal-in-1-0) |
+
+## Blur
+
+No blur radius in the library exceeds **8px**, with two named exceptions. A
+rasterized blur is the most expensive part of any animation, and Safari pays
+for it even on elements that are not visible yet.
+
+| Exception | Radius | Why |
+|---|---|---|
+| `tm-text-rotate` | 10px | The blur is the transition between two words, not decoration. 400ms, one inline element, never loops |
+| `tm-text-morph` | 12px | The same, and the heavier radius is what separates morph from rotate |
+
+<Warning>
+The cap is on the authored value. `tm-motion-expressive` multiplies
+`--tm-emphasis` to 1.3, so a blur written as 8px resolves to 10.4px inside that
+scope. Set `--tm-blur` explicitly if you need the cap to hold there too.
+</Warning>
+
+## tm-shimmer-text
+
+A highlight that follows the shape of the glyphs needs a bright copy of the
+text and a window that travels across it. Two boxes are the only way to move a
+window independently of its content using transforms alone: the window sweeps
+one way and the copy inside counter-translates by the same amount, so the
+glyphs stay still while the masked window crosses them. A pseudo-element cannot
+do it, because a pseudo-element cannot hold another one.
+
+```html
+<p class="tm-shimmer-text">
+  Generating response
+  <span class="tm-shimmer-text-sweep" aria-hidden="true">
+    <span>Generating response</span>
+  </span>
+</p>
+```
+
+Requirements, all of them checked in `verify/render-cost.html`:
+
+- **The copy is `aria-hidden`.** The text is announced once.
+- **The element establishes a box.** Block, inline-block or grid — that is
+  Tailwind's job, not this class's.
+- **The element carries no padding of its own.** The sweep is positioned
+  against the padding box, and the two translations only cancel exactly when
+  the window and the copy are the same width. Put padding on a parent.
+
+The resting text is dimmed to 45% through `-webkit-text-fill-color` so the
+sweep reads as brighter; the sweep resets that on itself. Under
+`prefers-reduced-motion: reduce` the dimming is lifted and the text returns to
+full contrast, because with no sweep running there is nothing for it to buy.
+
+Without `:has()` support (Firefox before 121) an element with no sweep child
+renders as ordinary, fully visible text rather than shimmering. Nothing is ever
+hidden.
+
+## tm-glow and tm-ripple
+
+Both used to animate `box-shadow`, which no engine can composite. Both now
+paint their halo and their ring **once** on a pseudo-element and animate only
+its opacity and scale.
+
+<Warning>
+**Both classes own the element's `::after`.** If your own CSS puts a
+pseudo-element on the same element, one of the two will win. Both classes also
+set `position: relative` on the element, which makes it the containing block
+for any absolutely positioned descendant.
+</Warning>
+
+`--tm-glow-size`, `--tm-glow-spread`, `--tm-ripple-size` and the color tokens
+all keep their previous meanings.
+
+## Every class that leaves the compositor
+
+29 of them. Everything else in the library — every entrance, exit,
+interaction, presence class, stagger and scroll behaviour — animates only
+`transform`, `translate`, `scale`, `rotate` or `opacity`, and the build
+fails if that changes.
+
+| Tier | Classes |
+|---|---|
+| **Paint** | `tm-avatar` · `tm-dark-veil-layer-2` **(loops)** · `tm-fill-up` · `tm-hold-delete` · `tm-hover-lift` · `tm-lift-hover` · `tm-liquid-btn` · `tm-reveal` · `tm-shimmer-text` **(loops)** · `tm-wavy-bg` **(loops)** · `tm-wavy-bg-subtle` **(loops)** |
+| **Layout** | `tm-accordion-panel` · `tm-liquid-underline` · `tm-liquid-wave` · `tm-native-disclosure` · `tm-tab-indicator` · `tm-view-morph` |
+| **Filter** | `tm-blur-in` · `tm-blur-out` · `tm-dark-veil` **(loops)** · `tm-icon-swap` · `tm-number-swap` · `tm-stagger` · `tm-stagger-exit` · `tm-stream-text` · `tm-text-flip-chars` · `tm-text-flip-word` · `tm-text-morph-word` · `tm-text-rotate-word` |
+
+The 5 marked **(loops)** are the ones that matter: they do that work for as
+long as the page is open. Each is accounted for above — two decorative
+background families and the deprecated zero-markup shimmer. Everything else on
+this list is one-shot, and pays its cost once.
+
+<Note>
+The explorer on the [live demo](https://tailmotion.moumen.dev/#explorer) shows
+the same information as a badge on each class, generated from the same
+analysis. A class with no badge runs on the compositor.
+</Note>
+
+## What it measures
+
+`npm run perf` traces a real Chromium and counts paint events for 20 copies of
+one class over three seconds. Paint counts, not timings, are the signal: an
+animation either takes the browser down the paint path or it does not, and that
+answer is the same on every machine even though the rate is not.
+
+| Class | Paints/s | Rasters/s |
+|---|---:|---:|
+| `tm-shimmer-text`, zero-markup path | 2,527 | 1,203 |
+| `tm-shimmer-text-sweep`, the recipe | **0** | **0** |
+| `tm-glow` | 0 | 0 |
+| `tm-ripple` | 0 | 0 |
+| `tm-shimmer` | 0 | 0 |
+| `tm-wavy-bg-subtle` | 4,906 | 3,590 |
+| `tm-dark-veil-layer-2` | 2,520 | 2,404 |
+
+Same text, same page, same twenty copies: the old text shimmer repainted about
+126 times a second per element, roughly two paint events per element per frame,
+and the recipe that replaced it does none. Every other looping class in the core
+measures zero. The four non-zero rows are the documented exceptions above.
+
+<Note>
+The paint-tier classes double as the run's control group. They are known to
+repaint, so if one of them ever reports zero the fixture is not exercising the
+class and every other zero on that run is meaningless. The script reports that
+as inconclusive rather than as a pass — which is how the first run of it was
+caught, when an unlayered fixture style had quietly removed the gradient
+`tm-shimmer-text` animates.
+</Note>
+
+## Measuring it yourself
+
+The repository ships a harness at `verify/render-cost.html`. Run the local
+server and open it:
+
+```bash
+npm run verify
+```
+
+Then, in Chrome:
+
+1. **Performance panel** — record three seconds with a loop running. A
+   compositor-only loop shows no `Paint` or `Rasterize` work after the first
+   frame.
+2. **Rendering panel** — turn on Paint flashing. A compositor-only loop never
+   flashes green.
+3. **Task Manager** — compare the tab's CPU column with the loop running and
+   with "Pause all motion" pressed.
+
+In Safari, use Web Inspector's Timelines and look for Paint entries in
+Rendering Frames.
+
+## The data
+
+Every run of `npm run check` writes `dist/render-cost.json`: one record per
+animated rule with its selector, its keyframes, the properties it animates, its
+tier, and whether it loops. That file is the source for this page.
+
+```bash
+npm run check
+```

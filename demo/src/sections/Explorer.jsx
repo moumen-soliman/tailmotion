@@ -2,8 +2,19 @@ import { useDeferredValue, useEffect, useMemo, useState } from 'react';
 import { RotateCcw, Search, X } from 'lucide-react';
 import { CATEGORIES, GROUPS, REPLAYABLE, catalog } from '../animations';
 import { AnimationPreview } from '../lib/previews';
+import { renderCost } from '../render-cost';
 import { classForTrigger, markupForTrigger, triggersFor } from '../lib/variants';
-import { Badge, Button, Card, Chip, ChipGroup, CONTROL_TRANSITION, CopyButton, cx } from '../lib/ui';
+import {
+  Badge,
+  Button,
+  Card,
+  Chip,
+  ChipGroup,
+  CONTROL_TRANSITION,
+  CopyButton,
+  SectionHeading,
+  cx,
+} from '../lib/ui';
 
 /* --------------------------------------------------------------------------
    The explorer: filter, preview, copy.
@@ -11,6 +22,35 @@ import { Badge, Button, Card, Chip, ChipGroup, CONTROL_TRANSITION, CopyButton, c
    Panel heights are fluid rather than a fixed 500px, so the three panels stack
    cleanly on a phone and grow with the viewport on a desktop.
    -------------------------------------------------------------------------- */
+
+/* Where a class does its per-frame work, generated from the built CSS by
+   scripts/check-render-cost.mjs. Only the classes that leave the compositor
+   are labelled: a badge on nine out of ten entries would say nothing, and the
+   ones worth knowing about are the exceptions. */
+const COST_LABEL = {
+  filter: 'filter',
+  paint: 'paint',
+  layout: 'layout',
+};
+
+function costBadge(name) {
+  const cost = renderCost[`tm-${name}`];
+  if (!cost || cost.tier === 'compositor' || cost.tier === 'discrete') return null;
+  const label = COST_LABEL[cost.tier];
+  if (!label) return null;
+  return {
+    label,
+    /* A loop that leaves the compositor is the expensive case, so it is the
+       one that gets the warning tone. */
+    tone: cost.tier === 'filter' ? 'neutral' : 'warn',
+    title:
+      cost.tier === 'filter'
+        ? 'Composited in Chromium and Firefox; Safari rasterizes blur, so cost scales with the element size.'
+        : cost.loops
+          ? 'Repaints on the main thread on every frame, for as long as it runs. Documented and deliberate — see the render cost reference.'
+          : 'Leaves the compositor for a moment. One-shot, and documented in the render cost reference.',
+  };
+}
 
 const REQUIRES_LABEL = {
   css: 'CSS only',
@@ -47,7 +87,7 @@ function EntryRow({ entry, selected, onSelect }) {
         onClick={() => onSelect(entry.name)}
         aria-current={selected ? 'true' : undefined}
         className={cx(
-          'flex w-full items-center gap-2 rounded-md border px-2.5 py-2 text-start',
+          'flex w-full flex-wrap items-center gap-x-1.5 gap-y-1.5 rounded-md border px-2.5 py-2 text-start',
           'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2',
           'focus-visible:outline-accent',
           CONTROL_TRANSITION,
@@ -63,13 +103,29 @@ function EntryRow({ entry, selected, onSelect }) {
           )}
           aria-hidden
         />
-        <span dir="ltr" className={cx('min-w-0 flex-1 truncate font-mono text-micro', selected ? 'text-ink-strong' : 'text-ink-muted')}>
+        <span
+          dir="ltr"
+          className={cx(
+            'min-w-0 flex-auto truncate font-mono text-micro',
+            selected ? 'text-ink-strong' : 'text-ink-muted'
+          )}
+        >
           tm-{entry.name}
         </span>
-        {entry.alias ? <Badge>alias</Badge> : null}
+        {entry.alias ? <Badge compact>alias</Badge> : null}
         {entry.requires !== 'css' ? (
-          <Badge tone={REQUIRES_TONE[entry.requires]}>{REQUIRES_LABEL[entry.requires]}</Badge>
+          <Badge compact tone={REQUIRES_TONE[entry.requires]}>
+            {REQUIRES_LABEL[entry.requires]}
+          </Badge>
         ) : null}
+        {(() => {
+          const cost = costBadge(entry.name);
+          return cost ? (
+            <Badge compact tone={cost.tone} title={cost.title}>
+              {cost.label}
+            </Badge>
+          ) : null;
+        })()}
       </button>
     </li>
   );
@@ -126,8 +182,12 @@ export function Explorer({ variants }) {
   const canReplay = REPLAYABLE.has(entry.name) && activeTrigger === 'load';
 
   return (
-    <div id="explorer">
-      <div className="grid grid-cols-1 items-start gap-4 lg:grid-cols-[minmax(0,17rem)_minmax(0,1fr)] lg:gap-5">
+    <div id="explorer" className="scroll-mt-20">
+      <SectionHeading title="Every class, searchable">
+        Filter the full set of entrances, exits, interactions and choreography, then copy the
+        exact markup for what you land on.
+      </SectionHeading>
+      <div className="mt-8 grid grid-cols-1 items-start gap-4 lg:mt-10 lg:grid-cols-[minmax(0,17rem)_minmax(0,1fr)] lg:gap-5">
         {/* -------------------------------------------------- panel 1: browse */}
         <Card className="flex min-h-0 min-w-0 flex-col">
           <div className="border-b border-line p-3">

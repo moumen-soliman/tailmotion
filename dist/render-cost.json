@@ -1,0 +1,7618 @@
+{
+  "source": "tailmotion.css",
+  "blurCapPx": 8,
+  "summary": {
+    "animatedRules": 398,
+    "loops": 30,
+    "compositorOnlyLoops": 23,
+    "allowlistedLoops": 7,
+    "transformSafeKeyframes": 25,
+    "transformSafeKeyframesTotal": 39,
+    "keyframes": 90,
+    "byTier": {
+      "compositor": 329,
+      "filter": 41,
+      "paint": 22,
+      "layout": 6
+    }
+  },
+  "classes": [
+    {
+      "id": ".\\32xl\\:hover\\:tm-blur-in:hover",
+      "selector": ".\\32xl\\:hover\\:tm-blur-in:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-blur-in",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "filter",
+        "opacity"
+      ],
+      "tier": "filter",
+      "allowlisted": false
+    },
+    {
+      "id": ".\\32xl\\:hover\\:tm-bounce:hover",
+      "selector": ".\\32xl\\:hover\\:tm-bounce:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-bounce",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".\\32xl\\:hover\\:tm-pop:hover",
+      "selector": ".\\32xl\\:hover\\:tm-pop:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-pop",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-emphasis",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".\\32xl\\:hover\\:tm-pulse:hover",
+      "selector": ".\\32xl\\:hover\\:tm-pulse:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-pulse",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".\\32xl\\:tm-blur-in",
+      "selector": ".\\32xl\\:tm-blur-in",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-blur-in",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "filter",
+        "opacity"
+      ],
+      "tier": "filter",
+      "allowlisted": false
+    },
+    {
+      "id": ".\\32xl\\:tm-bounce",
+      "selector": ".\\32xl\\:tm-bounce",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-bounce",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".\\32xl\\:tm-fade-in",
+      "selector": ".\\32xl\\:tm-fade-in",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-fade-in",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".\\32xl\\:tm-float",
+      "selector": ".\\32xl\\:tm-float",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-float",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".\\32xl\\:tm-pop",
+      "selector": ".\\32xl\\:tm-pop",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-pop",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-emphasis",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".\\32xl\\:tm-pulse",
+      "selector": ".\\32xl\\:tm-pulse",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-pulse",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".\\32xl\\:tm-reveal",
+      "selector": ".\\32xl\\:tm-reveal",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-reveal",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "clip-path",
+        "translate"
+      ],
+      "tier": "paint",
+      "allowlisted": true
+    },
+    {
+      "id": ".\\32xl\\:tm-shake",
+      "selector": ".\\32xl\\:tm-shake",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-shake",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".\\32xl\\:tm-slide-up",
+      "selector": ".\\32xl\\:tm-slide-up",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-slide-block-start",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".\\32xl\\:tm-spin",
+      "selector": ".\\32xl\\:tm-spin",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-spin",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "rotate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".\\32xl\\:tm-zoom-in",
+      "selector": ".\\32xl\\:tm-zoom-in",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-zoom-in",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".active\\:tm-blur-in:active",
+      "selector": ".active\\:tm-blur-in:active",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-blur-in",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "filter",
+        "opacity"
+      ],
+      "tier": "filter",
+      "allowlisted": false
+    },
+    {
+      "id": ".active\\:tm-bounce:active",
+      "selector": ".active\\:tm-bounce:active",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-bounce",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".active\\:tm-burst:active",
+      "selector": ".active\\:tm-burst:active",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-burst",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-emphasis",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "transform"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".active\\:tm-elastic:active",
+      "selector": ".active\\:tm-elastic:active",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-elastic",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-emphasis",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".active\\:tm-fade-in:active",
+      "selector": ".active\\:tm-fade-in:active",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-fade-in",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".active\\:tm-pop:active",
+      "selector": ".active\\:tm-pop:active",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-pop",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-emphasis",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".active\\:tm-scale-in:active",
+      "selector": ".active\\:tm-scale-in:active",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-scale-in",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".active\\:tm-shake:active",
+      "selector": ".active\\:tm-shake:active",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-shake",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".active\\:tm-slide-block-end:active",
+      "selector": ".active\\:tm-slide-block-end:active",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-slide-block-end",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".active\\:tm-slide-block-start:active",
+      "selector": ".active\\:tm-slide-block-start:active",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-slide-block-start",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".active\\:tm-slide-inline-end:active",
+      "selector": ".active\\:tm-slide-inline-end:active",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-slide-inline-end",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".active\\:tm-slide-inline-start:active",
+      "selector": ".active\\:tm-slide-inline-start:active",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-slide-inline-start",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".active\\:tm-sparkle:active",
+      "selector": ".active\\:tm-sparkle:active",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-sparkle",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "transform"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".active\\:tm-wiggle:active",
+      "selector": ".active\\:tm-wiggle:active",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-wiggle",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".focus-visible\\:tm-blur-out:focus-visible",
+      "selector": ".focus-visible\\:tm-blur-out:focus-visible",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-blur-out",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-exit",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "filter",
+        "opacity"
+      ],
+      "tier": "filter",
+      "allowlisted": false
+    },
+    {
+      "id": ".focus-visible\\:tm-fade-out:focus-visible",
+      "selector": ".focus-visible\\:tm-fade-out:focus-visible",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-fade-out",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-exit",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".focus-visible\\:tm-glow:focus-visible::after",
+      "selector": ".focus-visible\\:tm-glow:focus-visible::after",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-glow",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": true,
+      "properties": [
+        "opacity"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".focus-visible\\:tm-pop:focus-visible",
+      "selector": ".focus-visible\\:tm-pop:focus-visible",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-pop",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-emphasis",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".focus-visible\\:tm-pulse:focus-visible",
+      "selector": ".focus-visible\\:tm-pulse:focus-visible",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-pulse",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": true,
+      "properties": [
+        "opacity",
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".focus-visible\\:tm-ripple:focus-visible",
+      "selector": ".focus-visible\\:tm-ripple:focus-visible",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-ripple",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": true,
+      "properties": [
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".focus-visible\\:tm-ripple:focus-visible::after",
+      "selector": ".focus-visible\\:tm-ripple:focus-visible::after",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-ripple-ring",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": true,
+      "properties": [
+        "opacity",
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".focus-visible\\:tm-scale-in:focus-visible",
+      "selector": ".focus-visible\\:tm-scale-in:focus-visible",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-scale-in",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".focus-visible\\:tm-scale-in:focus-visible",
+      "selector": ".focus-visible\\:tm-scale-in:focus-visible",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-scale-in",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".focus-visible\\:tm-scale-out:focus-visible",
+      "selector": ".focus-visible\\:tm-scale-out:focus-visible",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-scale-out",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-exit",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".focus-visible\\:tm-shake:focus-visible",
+      "selector": ".focus-visible\\:tm-shake:focus-visible",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-shake",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".focus-visible\\:tm-slide-block-end:focus-visible",
+      "selector": ".focus-visible\\:tm-slide-block-end:focus-visible",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-slide-block-end",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".focus-visible\\:tm-slide-block-out:focus-visible",
+      "selector": ".focus-visible\\:tm-slide-block-out:focus-visible",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-slide-block-out",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-exit",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".focus-visible\\:tm-slide-block-start:focus-visible",
+      "selector": ".focus-visible\\:tm-slide-block-start:focus-visible",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-slide-block-start",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".focus-visible\\:tm-slide-inline-end:focus-visible",
+      "selector": ".focus-visible\\:tm-slide-inline-end:focus-visible",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-slide-inline-end",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".focus-visible\\:tm-slide-inline-out:focus-visible",
+      "selector": ".focus-visible\\:tm-slide-inline-out:focus-visible",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-slide-inline-out",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-exit",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".focus-visible\\:tm-slide-inline-start:focus-visible",
+      "selector": ".focus-visible\\:tm-slide-inline-start:focus-visible",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-slide-inline-start",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".focus-within\\:tm-blur-out:focus-within",
+      "selector": ".focus-within\\:tm-blur-out:focus-within",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-blur-out",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-exit",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "filter",
+        "opacity"
+      ],
+      "tier": "filter",
+      "allowlisted": false
+    },
+    {
+      "id": ".focus-within\\:tm-fade-out:focus-within",
+      "selector": ".focus-within\\:tm-fade-out:focus-within",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-fade-out",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-exit",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".focus-within\\:tm-glow:focus-within::after",
+      "selector": ".focus-within\\:tm-glow:focus-within::after",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-glow",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".focus-within\\:tm-pulse:focus-within",
+      "selector": ".focus-within\\:tm-pulse:focus-within",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-pulse",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".focus-within\\:tm-scale-in:focus-within",
+      "selector": ".focus-within\\:tm-scale-in:focus-within",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-scale-in",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".focus-within\\:tm-scale-out:focus-within",
+      "selector": ".focus-within\\:tm-scale-out:focus-within",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-scale-out",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-exit",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".focus-within\\:tm-slide-block-end:focus-within",
+      "selector": ".focus-within\\:tm-slide-block-end:focus-within",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-slide-block-end",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".focus-within\\:tm-slide-block-out:focus-within",
+      "selector": ".focus-within\\:tm-slide-block-out:focus-within",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-slide-block-out",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-exit",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".focus-within\\:tm-slide-block-start:focus-within",
+      "selector": ".focus-within\\:tm-slide-block-start:focus-within",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-slide-block-start",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".focus-within\\:tm-slide-inline-end:focus-within",
+      "selector": ".focus-within\\:tm-slide-inline-end:focus-within",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-slide-inline-end",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".focus-within\\:tm-slide-inline-out:focus-within",
+      "selector": ".focus-within\\:tm-slide-inline-out:focus-within",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-slide-inline-out",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-exit",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".focus-within\\:tm-slide-inline-start:focus-within",
+      "selector": ".focus-within\\:tm-slide-inline-start:focus-within",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-slide-inline-start",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".focus\\:tm-blur-in:focus",
+      "selector": ".focus\\:tm-blur-in:focus",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-blur-in",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "filter",
+        "opacity"
+      ],
+      "tier": "filter",
+      "allowlisted": false
+    },
+    {
+      "id": ".focus\\:tm-bounce:focus",
+      "selector": ".focus\\:tm-bounce:focus",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-bounce",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".focus\\:tm-fade-in:focus",
+      "selector": ".focus\\:tm-fade-in:focus",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-fade-in",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".focus\\:tm-glow:focus::after",
+      "selector": ".focus\\:tm-glow:focus::after",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-glow",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".focus\\:tm-pop:focus",
+      "selector": ".focus\\:tm-pop:focus",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-pop",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-emphasis",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".focus\\:tm-pulse:focus",
+      "selector": ".focus\\:tm-pulse:focus",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-pulse",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".focus\\:tm-shake:focus",
+      "selector": ".focus\\:tm-shake:focus",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-shake",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".focus\\:tm-slide-up:focus",
+      "selector": ".focus\\:tm-slide-up:focus",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-slide-block-start",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".group:hover .group-hover\\:tm-blur-in",
+      "selector": ".group:hover .group-hover\\:tm-blur-in",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-blur-in",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "filter",
+        "opacity"
+      ],
+      "tier": "filter",
+      "allowlisted": false
+    },
+    {
+      "id": ".group:hover .group-hover\\:tm-blur-out",
+      "selector": ".group:hover .group-hover\\:tm-blur-out",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-blur-out",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-exit",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "filter",
+        "opacity"
+      ],
+      "tier": "filter",
+      "allowlisted": false
+    },
+    {
+      "id": ".group:hover .group-hover\\:tm-bounce",
+      "selector": ".group:hover .group-hover\\:tm-bounce",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-bounce",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".group:hover .group-hover\\:tm-burst",
+      "selector": ".group:hover .group-hover\\:tm-burst",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-burst",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-emphasis",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "transform"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".group:hover .group-hover\\:tm-drift",
+      "selector": ".group:hover .group-hover\\:tm-drift",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-drift",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".group:hover .group-hover\\:tm-drop",
+      "selector": ".group:hover .group-hover\\:tm-drop",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-drop-in",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-emphasis",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".group:hover .group-hover\\:tm-elastic",
+      "selector": ".group:hover .group-hover\\:tm-elastic",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-elastic",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-emphasis",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".group:hover .group-hover\\:tm-fade-in",
+      "selector": ".group:hover .group-hover\\:tm-fade-in",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-fade-in",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".group:hover .group-hover\\:tm-fade-out",
+      "selector": ".group:hover .group-hover\\:tm-fade-out",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-fade-out",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-exit",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".group:hover .group-hover\\:tm-flip-x",
+      "selector": ".group:hover .group-hover\\:tm-flip-x",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-flip-x",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "transform"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".group:hover .group-hover\\:tm-flip-y",
+      "selector": ".group:hover .group-hover\\:tm-flip-y",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-flip-y",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "transform"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".group:hover .group-hover\\:tm-float",
+      "selector": ".group:hover .group-hover\\:tm-float",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-float",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".group:hover .group-hover\\:tm-glide",
+      "selector": ".group:hover .group-hover\\:tm-glide",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-glide",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".group:hover .group-hover\\:tm-glide-right",
+      "selector": ".group:hover .group-hover\\:tm-glide-right",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-glide-right",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".group:hover .group-hover\\:tm-glow::after",
+      "selector": ".group:hover .group-hover\\:tm-glow::after",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-glow",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".group:hover .group-hover\\:tm-morph",
+      "selector": ".group:hover .group-hover\\:tm-morph",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-morph",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "transform"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".group:hover .group-hover\\:tm-pop",
+      "selector": ".group:hover .group-hover\\:tm-pop",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-pop",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-emphasis",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".group:hover .group-hover\\:tm-pulse",
+      "selector": ".group:hover .group-hover\\:tm-pulse",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-pulse",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".group:hover .group-hover\\:tm-reveal",
+      "selector": ".group:hover .group-hover\\:tm-reveal",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-reveal",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "clip-path",
+        "translate"
+      ],
+      "tier": "paint",
+      "allowlisted": true
+    },
+    {
+      "id": ".group:hover .group-hover\\:tm-ripple",
+      "selector": ".group:hover .group-hover\\:tm-ripple",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-ripple",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".group:hover .group-hover\\:tm-ripple::after",
+      "selector": ".group:hover .group-hover\\:tm-ripple::after",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-ripple-ring",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".group:hover .group-hover\\:tm-rise",
+      "selector": ".group:hover .group-hover\\:tm-rise",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-rise",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "rotate",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".group:hover .group-hover\\:tm-rotate-in",
+      "selector": ".group:hover .group-hover\\:tm-rotate-in",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-rotate-in",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "rotate",
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".group:hover .group-hover\\:tm-scale-fade",
+      "selector": ".group:hover .group-hover\\:tm-scale-fade",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-scale-fade",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".group:hover .group-hover\\:tm-scale-in",
+      "selector": ".group:hover .group-hover\\:tm-scale-in",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-scale-in",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".group:hover .group-hover\\:tm-scale-out",
+      "selector": ".group:hover .group-hover\\:tm-scale-out",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-scale-out",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-exit",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".group:hover .group-hover\\:tm-shake",
+      "selector": ".group:hover .group-hover\\:tm-shake",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-shake",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".group:hover .group-hover\\:tm-slide-block-end",
+      "selector": ".group:hover .group-hover\\:tm-slide-block-end",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-slide-block-end",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".group:hover .group-hover\\:tm-slide-block-out",
+      "selector": ".group:hover .group-hover\\:tm-slide-block-out",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-slide-block-out",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-exit",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".group:hover .group-hover\\:tm-slide-block-start",
+      "selector": ".group:hover .group-hover\\:tm-slide-block-start",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-slide-block-start",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".group:hover .group-hover\\:tm-slide-down",
+      "selector": ".group:hover .group-hover\\:tm-slide-down",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-slide-block-end",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".group:hover .group-hover\\:tm-slide-inline-end",
+      "selector": ".group:hover .group-hover\\:tm-slide-inline-end",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-slide-inline-end",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".group:hover .group-hover\\:tm-slide-inline-out",
+      "selector": ".group:hover .group-hover\\:tm-slide-inline-out",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-slide-inline-out",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-exit",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".group:hover .group-hover\\:tm-slide-inline-start",
+      "selector": ".group:hover .group-hover\\:tm-slide-inline-start",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-slide-inline-start",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".group:hover .group-hover\\:tm-slide-left",
+      "selector": ".group:hover .group-hover\\:tm-slide-left",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-slide-inline-start",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".group:hover .group-hover\\:tm-slide-right",
+      "selector": ".group:hover .group-hover\\:tm-slide-right",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-slide-inline-end",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".group:hover .group-hover\\:tm-slide-up",
+      "selector": ".group:hover .group-hover\\:tm-slide-up",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-slide-block-start",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".group:hover .group-hover\\:tm-sparkle",
+      "selector": ".group:hover .group-hover\\:tm-sparkle",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-sparkle",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "transform"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".group:hover .group-hover\\:tm-spin",
+      "selector": ".group:hover .group-hover\\:tm-spin",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-spin",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "rotate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".group:hover .group-hover\\:tm-sway",
+      "selector": ".group:hover .group-hover\\:tm-sway",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-sway",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "transform"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".group:hover .group-hover\\:tm-unfold",
+      "selector": ".group:hover .group-hover\\:tm-unfold",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-unfold",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "transform"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".group:hover .group-hover\\:tm-wiggle",
+      "selector": ".group:hover .group-hover\\:tm-wiggle",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-wiggle",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".group:hover .group-hover\\:tm-zoom-in",
+      "selector": ".group:hover .group-hover\\:tm-zoom-in",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-zoom-in",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".group:hover .group-hover\\:tm-zoom-out",
+      "selector": ".group:hover .group-hover\\:tm-zoom-out",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-zoom-out",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".hover\\:tm-blur-in:hover",
+      "selector": ".hover\\:tm-blur-in:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-blur-in",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "filter",
+        "opacity"
+      ],
+      "tier": "filter",
+      "allowlisted": false
+    },
+    {
+      "id": ".hover\\:tm-blur-out:hover",
+      "selector": ".hover\\:tm-blur-out:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-blur-out",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-exit",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "filter",
+        "opacity"
+      ],
+      "tier": "filter",
+      "allowlisted": false
+    },
+    {
+      "id": ".hover\\:tm-bounce:hover",
+      "selector": ".hover\\:tm-bounce:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-bounce",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".hover\\:tm-burst:hover",
+      "selector": ".hover\\:tm-burst:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-burst",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-emphasis",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "transform"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".hover\\:tm-drift:hover",
+      "selector": ".hover\\:tm-drift:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-drift",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".hover\\:tm-drop:hover",
+      "selector": ".hover\\:tm-drop:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-drop-in",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-emphasis",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".hover\\:tm-elastic:hover",
+      "selector": ".hover\\:tm-elastic:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-elastic",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-emphasis",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".hover\\:tm-fade-in:hover",
+      "selector": ".hover\\:tm-fade-in:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-fade-in",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".hover\\:tm-fade-out:hover",
+      "selector": ".hover\\:tm-fade-out:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-fade-out",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-exit",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".hover\\:tm-flip-x:hover",
+      "selector": ".hover\\:tm-flip-x:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-flip-x",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "transform"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".hover\\:tm-flip-y:hover",
+      "selector": ".hover\\:tm-flip-y:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-flip-y",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "transform"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".hover\\:tm-float:hover",
+      "selector": ".hover\\:tm-float:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-float",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".hover\\:tm-glide-right:hover",
+      "selector": ".hover\\:tm-glide-right:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-glide-right",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".hover\\:tm-glide:hover",
+      "selector": ".hover\\:tm-glide:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-glide",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".hover\\:tm-glow:hover::after",
+      "selector": ".hover\\:tm-glow:hover::after",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-glow",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".hover\\:tm-morph:hover",
+      "selector": ".hover\\:tm-morph:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-morph",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "transform"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".hover\\:tm-pop:hover",
+      "selector": ".hover\\:tm-pop:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-pop",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-emphasis",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".hover\\:tm-pulse:hover",
+      "selector": ".hover\\:tm-pulse:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-pulse",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".hover\\:tm-reveal:hover",
+      "selector": ".hover\\:tm-reveal:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-reveal",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "clip-path",
+        "translate"
+      ],
+      "tier": "paint",
+      "allowlisted": true
+    },
+    {
+      "id": ".hover\\:tm-ripple:hover",
+      "selector": ".hover\\:tm-ripple:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-ripple",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".hover\\:tm-ripple:hover::after",
+      "selector": ".hover\\:tm-ripple:hover::after",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-ripple-ring",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".hover\\:tm-rise:hover",
+      "selector": ".hover\\:tm-rise:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-rise",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "rotate",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".hover\\:tm-rotate-in:hover",
+      "selector": ".hover\\:tm-rotate-in:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-rotate-in",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "rotate",
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".hover\\:tm-scale-fade:hover",
+      "selector": ".hover\\:tm-scale-fade:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-scale-fade",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".hover\\:tm-scale-in:hover",
+      "selector": ".hover\\:tm-scale-in:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-scale-in",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".hover\\:tm-scale-out:hover",
+      "selector": ".hover\\:tm-scale-out:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-scale-out",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-exit",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".hover\\:tm-shake:hover",
+      "selector": ".hover\\:tm-shake:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-shake",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".hover\\:tm-slide-block-end:hover",
+      "selector": ".hover\\:tm-slide-block-end:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-slide-block-end",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".hover\\:tm-slide-block-out:hover",
+      "selector": ".hover\\:tm-slide-block-out:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-slide-block-out",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-exit",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".hover\\:tm-slide-block-start:hover",
+      "selector": ".hover\\:tm-slide-block-start:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-slide-block-start",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".hover\\:tm-slide-down:hover",
+      "selector": ".hover\\:tm-slide-down:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-slide-block-end",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".hover\\:tm-slide-inline-end:hover",
+      "selector": ".hover\\:tm-slide-inline-end:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-slide-inline-end",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".hover\\:tm-slide-inline-out:hover",
+      "selector": ".hover\\:tm-slide-inline-out:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-slide-inline-out",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-exit",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".hover\\:tm-slide-inline-start:hover",
+      "selector": ".hover\\:tm-slide-inline-start:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-slide-inline-start",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".hover\\:tm-slide-left:hover",
+      "selector": ".hover\\:tm-slide-left:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-slide-inline-start",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".hover\\:tm-slide-right:hover",
+      "selector": ".hover\\:tm-slide-right:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-slide-inline-end",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".hover\\:tm-slide-up:hover",
+      "selector": ".hover\\:tm-slide-up:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-slide-block-start",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".hover\\:tm-sparkle:hover",
+      "selector": ".hover\\:tm-sparkle:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-sparkle",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "transform"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".hover\\:tm-spin:hover",
+      "selector": ".hover\\:tm-spin:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-spin",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "rotate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".hover\\:tm-sway:hover",
+      "selector": ".hover\\:tm-sway:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-sway",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "transform"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".hover\\:tm-unfold:hover",
+      "selector": ".hover\\:tm-unfold:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-unfold",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "transform"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".hover\\:tm-wiggle:hover",
+      "selector": ".hover\\:tm-wiggle:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-wiggle",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".hover\\:tm-zoom-in:hover",
+      "selector": ".hover\\:tm-zoom-in:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-zoom-in",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".hover\\:tm-zoom-out:hover",
+      "selector": ".hover\\:tm-zoom-out:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-zoom-out",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".lg\\:hover\\:tm-blur-in:hover",
+      "selector": ".lg\\:hover\\:tm-blur-in:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-blur-in",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "filter",
+        "opacity"
+      ],
+      "tier": "filter",
+      "allowlisted": false
+    },
+    {
+      "id": ".lg\\:hover\\:tm-bounce:hover",
+      "selector": ".lg\\:hover\\:tm-bounce:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-bounce",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".lg\\:hover\\:tm-fade-in:hover",
+      "selector": ".lg\\:hover\\:tm-fade-in:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-fade-in",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".lg\\:hover\\:tm-pop:hover",
+      "selector": ".lg\\:hover\\:tm-pop:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-pop",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-emphasis",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".lg\\:hover\\:tm-pulse:hover",
+      "selector": ".lg\\:hover\\:tm-pulse:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-pulse",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".lg\\:hover\\:tm-shake:hover",
+      "selector": ".lg\\:hover\\:tm-shake:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-shake",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".lg\\:hover\\:tm-slide-up:hover",
+      "selector": ".lg\\:hover\\:tm-slide-up:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-slide-block-start",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".lg\\:hover\\:tm-wiggle:hover",
+      "selector": ".lg\\:hover\\:tm-wiggle:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-wiggle",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".lg\\:hover\\:tm-zoom-in:hover",
+      "selector": ".lg\\:hover\\:tm-zoom-in:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-zoom-in",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".lg\\:tm-blur-in",
+      "selector": ".lg\\:tm-blur-in",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-blur-in",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "filter",
+        "opacity"
+      ],
+      "tier": "filter",
+      "allowlisted": false
+    },
+    {
+      "id": ".lg\\:tm-bounce",
+      "selector": ".lg\\:tm-bounce",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-bounce",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".lg\\:tm-fade-in",
+      "selector": ".lg\\:tm-fade-in",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-fade-in",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".lg\\:tm-float",
+      "selector": ".lg\\:tm-float",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-float",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".lg\\:tm-glide",
+      "selector": ".lg\\:tm-glide",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-glide",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".lg\\:tm-glow::after",
+      "selector": ".lg\\:tm-glow::after",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-glow",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".lg\\:tm-pop",
+      "selector": ".lg\\:tm-pop",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-pop",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-emphasis",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".lg\\:tm-pulse",
+      "selector": ".lg\\:tm-pulse",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-pulse",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".lg\\:tm-reveal",
+      "selector": ".lg\\:tm-reveal",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-reveal",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "clip-path",
+        "translate"
+      ],
+      "tier": "paint",
+      "allowlisted": true
+    },
+    {
+      "id": ".lg\\:tm-rise",
+      "selector": ".lg\\:tm-rise",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-rise",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "rotate",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".lg\\:tm-shake",
+      "selector": ".lg\\:tm-shake",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-shake",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".lg\\:tm-slide-down",
+      "selector": ".lg\\:tm-slide-down",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-slide-block-end",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".lg\\:tm-slide-left",
+      "selector": ".lg\\:tm-slide-left",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-slide-inline-start",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".lg\\:tm-slide-right",
+      "selector": ".lg\\:tm-slide-right",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-slide-inline-end",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".lg\\:tm-slide-up",
+      "selector": ".lg\\:tm-slide-up",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-slide-block-start",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".lg\\:tm-spin",
+      "selector": ".lg\\:tm-spin",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-spin",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "rotate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".lg\\:tm-wiggle",
+      "selector": ".lg\\:tm-wiggle",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-wiggle",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".lg\\:tm-zoom-in",
+      "selector": ".lg\\:tm-zoom-in",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-zoom-in",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".md\\:hover\\:tm-blur-in:hover",
+      "selector": ".md\\:hover\\:tm-blur-in:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-blur-in",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "filter",
+        "opacity"
+      ],
+      "tier": "filter",
+      "allowlisted": false
+    },
+    {
+      "id": ".md\\:hover\\:tm-bounce:hover",
+      "selector": ".md\\:hover\\:tm-bounce:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-bounce",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".md\\:hover\\:tm-fade-in:hover",
+      "selector": ".md\\:hover\\:tm-fade-in:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-fade-in",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".md\\:hover\\:tm-pop:hover",
+      "selector": ".md\\:hover\\:tm-pop:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-pop",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-emphasis",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".md\\:hover\\:tm-pulse:hover",
+      "selector": ".md\\:hover\\:tm-pulse:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-pulse",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".md\\:hover\\:tm-shake:hover",
+      "selector": ".md\\:hover\\:tm-shake:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-shake",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".md\\:hover\\:tm-slide-up:hover",
+      "selector": ".md\\:hover\\:tm-slide-up:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-slide-block-start",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".md\\:hover\\:tm-wiggle:hover",
+      "selector": ".md\\:hover\\:tm-wiggle:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-wiggle",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".md\\:hover\\:tm-zoom-in:hover",
+      "selector": ".md\\:hover\\:tm-zoom-in:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-zoom-in",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".md\\:tm-blur-in",
+      "selector": ".md\\:tm-blur-in",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-blur-in",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "filter",
+        "opacity"
+      ],
+      "tier": "filter",
+      "allowlisted": false
+    },
+    {
+      "id": ".md\\:tm-bounce",
+      "selector": ".md\\:tm-bounce",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-bounce",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".md\\:tm-fade-in",
+      "selector": ".md\\:tm-fade-in",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-fade-in",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".md\\:tm-float",
+      "selector": ".md\\:tm-float",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-float",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".md\\:tm-glide",
+      "selector": ".md\\:tm-glide",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-glide",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".md\\:tm-glow::after",
+      "selector": ".md\\:tm-glow::after",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-glow",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".md\\:tm-pop",
+      "selector": ".md\\:tm-pop",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-pop",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-emphasis",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".md\\:tm-pulse",
+      "selector": ".md\\:tm-pulse",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-pulse",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".md\\:tm-reveal",
+      "selector": ".md\\:tm-reveal",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-reveal",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "clip-path",
+        "translate"
+      ],
+      "tier": "paint",
+      "allowlisted": true
+    },
+    {
+      "id": ".md\\:tm-rise",
+      "selector": ".md\\:tm-rise",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-rise",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "rotate",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".md\\:tm-shake",
+      "selector": ".md\\:tm-shake",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-shake",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".md\\:tm-slide-down",
+      "selector": ".md\\:tm-slide-down",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-slide-block-end",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".md\\:tm-slide-left",
+      "selector": ".md\\:tm-slide-left",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-slide-inline-start",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".md\\:tm-slide-right",
+      "selector": ".md\\:tm-slide-right",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-slide-inline-end",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".md\\:tm-slide-up",
+      "selector": ".md\\:tm-slide-up",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-slide-block-start",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".md\\:tm-spin",
+      "selector": ".md\\:tm-spin",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-spin",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "rotate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".md\\:tm-wiggle",
+      "selector": ".md\\:tm-wiggle",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-wiggle",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".md\\:tm-zoom-in",
+      "selector": ".md\\:tm-zoom-in",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-zoom-in",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".motion-safe\\:tm-blur-in",
+      "selector": ".motion-safe\\:tm-blur-in",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-blur-in",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "filter",
+        "opacity"
+      ],
+      "tier": "filter",
+      "allowlisted": false
+    },
+    {
+      "id": ".motion-safe\\:tm-blur-out",
+      "selector": ".motion-safe\\:tm-blur-out",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-blur-out",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-exit",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "filter",
+        "opacity"
+      ],
+      "tier": "filter",
+      "allowlisted": false
+    },
+    {
+      "id": ".motion-safe\\:tm-bounce",
+      "selector": ".motion-safe\\:tm-bounce",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-bounce",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".motion-safe\\:tm-fade-in",
+      "selector": ".motion-safe\\:tm-fade-in",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-fade-in",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".motion-safe\\:tm-fade-out",
+      "selector": ".motion-safe\\:tm-fade-out",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-fade-out",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-exit",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".motion-safe\\:tm-pulse",
+      "selector": ".motion-safe\\:tm-pulse",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-pulse",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".motion-safe\\:tm-scale-in",
+      "selector": ".motion-safe\\:tm-scale-in",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-scale-in",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".motion-safe\\:tm-scale-out",
+      "selector": ".motion-safe\\:tm-scale-out",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-scale-out",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-exit",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".motion-safe\\:tm-shake",
+      "selector": ".motion-safe\\:tm-shake",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-shake",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".motion-safe\\:tm-slide-block-end",
+      "selector": ".motion-safe\\:tm-slide-block-end",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-slide-block-end",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".motion-safe\\:tm-slide-block-out",
+      "selector": ".motion-safe\\:tm-slide-block-out",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-slide-block-out",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-exit",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".motion-safe\\:tm-slide-block-start",
+      "selector": ".motion-safe\\:tm-slide-block-start",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-slide-block-start",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".motion-safe\\:tm-slide-inline-end",
+      "selector": ".motion-safe\\:tm-slide-inline-end",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-slide-inline-end",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".motion-safe\\:tm-slide-inline-out",
+      "selector": ".motion-safe\\:tm-slide-inline-out",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-slide-inline-out",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-exit",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".motion-safe\\:tm-slide-inline-start",
+      "selector": ".motion-safe\\:tm-slide-inline-start",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-slide-inline-start",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".motion-safe\\:tm-slide-up",
+      "selector": ".motion-safe\\:tm-slide-up",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-slide-block-start",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".sm\\:hover\\:tm-blur-in:hover",
+      "selector": ".sm\\:hover\\:tm-blur-in:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-blur-in",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "filter",
+        "opacity"
+      ],
+      "tier": "filter",
+      "allowlisted": false
+    },
+    {
+      "id": ".sm\\:hover\\:tm-bounce:hover",
+      "selector": ".sm\\:hover\\:tm-bounce:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-bounce",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".sm\\:hover\\:tm-fade-in:hover",
+      "selector": ".sm\\:hover\\:tm-fade-in:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-fade-in",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".sm\\:hover\\:tm-pop:hover",
+      "selector": ".sm\\:hover\\:tm-pop:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-pop",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-emphasis",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".sm\\:hover\\:tm-pulse:hover",
+      "selector": ".sm\\:hover\\:tm-pulse:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-pulse",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".sm\\:hover\\:tm-shake:hover",
+      "selector": ".sm\\:hover\\:tm-shake:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-shake",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".sm\\:hover\\:tm-slide-up:hover",
+      "selector": ".sm\\:hover\\:tm-slide-up:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-slide-block-start",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".sm\\:hover\\:tm-wiggle:hover",
+      "selector": ".sm\\:hover\\:tm-wiggle:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-wiggle",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".sm\\:hover\\:tm-zoom-in:hover",
+      "selector": ".sm\\:hover\\:tm-zoom-in:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-zoom-in",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".sm\\:tm-blur-in",
+      "selector": ".sm\\:tm-blur-in",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-blur-in",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "filter",
+        "opacity"
+      ],
+      "tier": "filter",
+      "allowlisted": false
+    },
+    {
+      "id": ".sm\\:tm-bounce",
+      "selector": ".sm\\:tm-bounce",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-bounce",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".sm\\:tm-fade-in",
+      "selector": ".sm\\:tm-fade-in",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-fade-in",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".sm\\:tm-float",
+      "selector": ".sm\\:tm-float",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-float",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".sm\\:tm-glide",
+      "selector": ".sm\\:tm-glide",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-glide",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".sm\\:tm-glow::after",
+      "selector": ".sm\\:tm-glow::after",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-glow",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".sm\\:tm-pop",
+      "selector": ".sm\\:tm-pop",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-pop",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-emphasis",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".sm\\:tm-pulse",
+      "selector": ".sm\\:tm-pulse",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-pulse",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".sm\\:tm-reveal",
+      "selector": ".sm\\:tm-reveal",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-reveal",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "clip-path",
+        "translate"
+      ],
+      "tier": "paint",
+      "allowlisted": true
+    },
+    {
+      "id": ".sm\\:tm-rise",
+      "selector": ".sm\\:tm-rise",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-rise",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "rotate",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".sm\\:tm-shake",
+      "selector": ".sm\\:tm-shake",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-shake",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".sm\\:tm-slide-down",
+      "selector": ".sm\\:tm-slide-down",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-slide-block-end",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".sm\\:tm-slide-left",
+      "selector": ".sm\\:tm-slide-left",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-slide-inline-start",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".sm\\:tm-slide-right",
+      "selector": ".sm\\:tm-slide-right",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-slide-inline-end",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".sm\\:tm-slide-up",
+      "selector": ".sm\\:tm-slide-up",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-slide-block-start",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".sm\\:tm-spin",
+      "selector": ".sm\\:tm-spin",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-spin",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "rotate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".sm\\:tm-wiggle",
+      "selector": ".sm\\:tm-wiggle",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-wiggle",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".sm\\:tm-zoom-in",
+      "selector": ".sm\\:tm-zoom-in",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-zoom-in",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".xl\\:hover\\:tm-blur-in:hover",
+      "selector": ".xl\\:hover\\:tm-blur-in:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-blur-in",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "filter",
+        "opacity"
+      ],
+      "tier": "filter",
+      "allowlisted": false
+    },
+    {
+      "id": ".xl\\:hover\\:tm-bounce:hover",
+      "selector": ".xl\\:hover\\:tm-bounce:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-bounce",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".xl\\:hover\\:tm-pop:hover",
+      "selector": ".xl\\:hover\\:tm-pop:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-pop",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-emphasis",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".xl\\:hover\\:tm-pulse:hover",
+      "selector": ".xl\\:hover\\:tm-pulse:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-pulse",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".xl\\:hover\\:tm-shake:hover",
+      "selector": ".xl\\:hover\\:tm-shake:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-shake",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".xl\\:hover\\:tm-zoom-in:hover",
+      "selector": ".xl\\:hover\\:tm-zoom-in:hover",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-zoom-in",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".xl\\:tm-blur-in",
+      "selector": ".xl\\:tm-blur-in",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-blur-in",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "filter",
+        "opacity"
+      ],
+      "tier": "filter",
+      "allowlisted": false
+    },
+    {
+      "id": ".xl\\:tm-bounce",
+      "selector": ".xl\\:tm-bounce",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-bounce",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".xl\\:tm-fade-in",
+      "selector": ".xl\\:tm-fade-in",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-fade-in",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".xl\\:tm-float",
+      "selector": ".xl\\:tm-float",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-float",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".xl\\:tm-glide",
+      "selector": ".xl\\:tm-glide",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-glide",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".xl\\:tm-glow::after",
+      "selector": ".xl\\:tm-glow::after",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-glow",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".xl\\:tm-pop",
+      "selector": ".xl\\:tm-pop",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-pop",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-emphasis",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".xl\\:tm-pulse",
+      "selector": ".xl\\:tm-pulse",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-pulse",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".xl\\:tm-reveal",
+      "selector": ".xl\\:tm-reveal",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-reveal",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "clip-path",
+        "translate"
+      ],
+      "tier": "paint",
+      "allowlisted": true
+    },
+    {
+      "id": ".xl\\:tm-rise",
+      "selector": ".xl\\:tm-rise",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-rise",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "rotate",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".xl\\:tm-shake",
+      "selector": ".xl\\:tm-shake",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-shake",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".xl\\:tm-slide-up",
+      "selector": ".xl\\:tm-slide-up",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-slide-block-start",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".xl\\:tm-spin",
+      "selector": ".xl\\:tm-spin",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-spin",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "rotate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".xl\\:tm-wiggle",
+      "selector": ".xl\\:tm-wiggle",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-wiggle",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": ".xl\\:tm-zoom-in",
+      "selector": ".xl\\:tm-zoom-in",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-zoom-in",
+        "tm-duration",
+        "tm-duration-scale",
+        "tm-easing",
+        "tm-ease-entrance",
+        "tm-delay",
+        "tm-iteration-count"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-accordion-panel",
+      "selector": ".tm-accordion-panel",
+      "kind": "transition",
+      "keyframes": [],
+      "loops": false,
+      "properties": [
+        "grid-template-rows",
+        "opacity",
+        "visibility"
+      ],
+      "tier": "layout",
+      "allowlisted": true
+    },
+    {
+      "id": "tm-avatar",
+      "selector": ".tm-avatar",
+      "kind": "transition",
+      "keyframes": [],
+      "loops": false,
+      "properties": [
+        "box-shadow",
+        "translate"
+      ],
+      "tier": "paint",
+      "allowlisted": true
+    },
+    {
+      "id": "tm-avatar-tooltip",
+      "selector": ".tm-avatar-tooltip",
+      "kind": "transition",
+      "keyframes": [],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "transform",
+        "visibility"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-blur-in",
+      "selector": ".tm-blur-in",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-blur-in"
+      ],
+      "loops": false,
+      "properties": [
+        "filter",
+        "opacity"
+      ],
+      "tier": "filter",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-blur-out",
+      "selector": ".tm-blur-out",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-blur-out"
+      ],
+      "loops": false,
+      "properties": [
+        "filter",
+        "opacity"
+      ],
+      "tier": "filter",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-bounce",
+      "selector": ".tm-bounce",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-bounce"
+      ],
+      "loops": true,
+      "properties": [
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-burst",
+      "selector": ".tm-burst",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-burst"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "transform"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-confetti",
+      "selector": ".tm-confetti",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-confetti"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "transform"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-count-reveal",
+      "selector": ".tm-count-reveal > *",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-count-slide"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "transform"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-dark-veil",
+      "selector": ".tm-dark-veil::after",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-dark-veil-scan",
+        "tm-dark-veil-speed"
+      ],
+      "loops": true,
+      "properties": [
+        "transform"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-dark-veil",
+      "selector": ".tm-dark-veil::before",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-dark-veil-flow",
+        "tm-dark-veil-speed"
+      ],
+      "loops": true,
+      "properties": [
+        "filter",
+        "transform"
+      ],
+      "tier": "filter",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-dark-veil-layer-1",
+      "selector": ".tm-dark-veil-layer-1::before",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-dark-veil-rotate",
+        "tm-dark-veil-speed"
+      ],
+      "loops": true,
+      "properties": [
+        "transform"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-dark-veil-layer-2",
+      "selector": ".tm-dark-veil-layer-2::before",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-dark-veil-morph",
+        "tm-dark-veil-speed"
+      ],
+      "loops": true,
+      "properties": [
+        "border-radius",
+        "transform"
+      ],
+      "tier": "paint",
+      "allowlisted": true
+    },
+    {
+      "id": "tm-dark-veil-layer-3",
+      "selector": ".tm-dark-veil-layer-3::before",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-dark-veil-pulse",
+        "tm-dark-veil-speed"
+      ],
+      "loops": true,
+      "properties": [
+        "opacity",
+        "transform"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-dark-veil-noise",
+      "selector": ".tm-dark-veil-noise::after",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-dark-veil-noise-move",
+        "tm-dark-veil-speed"
+      ],
+      "loops": true,
+      "properties": [
+        "transform"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-drift",
+      "selector": ".tm-drift",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-drift"
+      ],
+      "loops": true,
+      "properties": [
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-drop",
+      "selector": ".tm-drop, .tm-drop-in",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-drop-in"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-elastic",
+      "selector": ".tm-elastic",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-elastic"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-fade-in",
+      "selector": ".tm-fade-in",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-fade-in"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-fade-out",
+      "selector": ".tm-fade-out",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-fade-out"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-feedback-button",
+      "selector": ".tm-feedback-button > .tm-feedback-idle, .tm-feedback-button > .tm-feedback-loading, .tm-feedback-button > .tm-feedback-success, .tm-feedback-button > .tm-feedback-error",
+      "kind": "transition",
+      "keyframes": [],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate",
+        "visibility"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-fill-up",
+      "selector": ".tm-fill-up",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-fill-up"
+      ],
+      "loops": false,
+      "properties": [
+        "clip-path",
+        "opacity"
+      ],
+      "tier": "paint",
+      "allowlisted": true
+    },
+    {
+      "id": "tm-flip-front",
+      "selector": ".tm-flip-front, .tm-flip-back",
+      "kind": "transition",
+      "keyframes": [],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "transform"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-flip-hover",
+      "selector": ".tm-flip-hover:hover, .tm-flip-hover:focus-visible",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-flip"
+      ],
+      "loops": false,
+      "properties": [
+        "transform"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-flip-x",
+      "selector": ".tm-flip-x",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-flip-x"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "transform"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-flip-y",
+      "selector": ".tm-flip-y",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-flip-y"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "transform"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-float",
+      "selector": ".tm-float",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-float"
+      ],
+      "loops": true,
+      "properties": [
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-glide",
+      "selector": ".tm-glide",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-glide"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-glide-right",
+      "selector": ".tm-glide-right",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-glide-right"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-glow",
+      "selector": ".tm-glow::after",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-glow"
+      ],
+      "loops": true,
+      "properties": [
+        "opacity"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-hold-confirm",
+      "selector": ".tm-hold-confirm",
+      "kind": "transition",
+      "keyframes": [],
+      "loops": false,
+      "properties": [
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-hold-confirm",
+      "selector": ".tm-hold-confirm::after",
+      "kind": "transition",
+      "keyframes": [],
+      "loops": false,
+      "properties": [
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-hold-delete",
+      "selector": ".tm-hold-delete",
+      "kind": "transition",
+      "keyframes": [],
+      "loops": false,
+      "properties": [
+        "background-color",
+        "border-radius",
+        "color",
+        "transform"
+      ],
+      "tier": "paint",
+      "allowlisted": true
+    },
+    {
+      "id": "tm-hold-delete",
+      "selector": ".tm-hold-delete::after",
+      "kind": "transition",
+      "keyframes": [],
+      "loops": false,
+      "properties": [
+        "transform"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-hold-delete",
+      "selector": ".tm-hold-delete::before",
+      "kind": "transition",
+      "keyframes": [],
+      "loops": false,
+      "properties": [
+        "transform"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-hover-lift",
+      "selector": ".tm-hover-lift",
+      "kind": "transition",
+      "keyframes": [],
+      "loops": false,
+      "properties": [
+        "box-shadow",
+        "translate"
+      ],
+      "tier": "paint",
+      "allowlisted": true
+    },
+    {
+      "id": "tm-hover-scale",
+      "selector": ".tm-hover-scale",
+      "kind": "transition",
+      "keyframes": [],
+      "loops": false,
+      "properties": [
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-icon-swap",
+      "selector": ".tm-icon-swap > *",
+      "kind": "transition",
+      "keyframes": [],
+      "loops": false,
+      "properties": [
+        "filter",
+        "opacity",
+        "scale"
+      ],
+      "tier": "filter",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-lift-hover",
+      "selector": ".tm-lift-hover",
+      "kind": "transition",
+      "keyframes": [],
+      "loops": false,
+      "properties": [
+        "box-shadow",
+        "translate"
+      ],
+      "tier": "paint",
+      "allowlisted": true
+    },
+    {
+      "id": "tm-liquid-btn",
+      "selector": ".tm-liquid-btn",
+      "kind": "transition",
+      "keyframes": [],
+      "loops": false,
+      "properties": [
+        "color",
+        "transform"
+      ],
+      "tier": "paint",
+      "allowlisted": true
+    },
+    {
+      "id": "tm-liquid-btn",
+      "selector": ".tm-liquid-btn::before",
+      "kind": "transition",
+      "keyframes": [],
+      "loops": false,
+      "properties": [
+        "transform"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-liquid-underline",
+      "selector": ".tm-liquid-underline",
+      "kind": "transition",
+      "keyframes": [],
+      "loops": false,
+      "properties": [
+        "color",
+        "transform"
+      ],
+      "tier": "paint",
+      "allowlisted": true
+    },
+    {
+      "id": "tm-liquid-underline",
+      "selector": ".tm-liquid-underline::before",
+      "kind": "transition",
+      "keyframes": [],
+      "loops": false,
+      "properties": [
+        "height",
+        "left",
+        "width"
+      ],
+      "tier": "layout",
+      "allowlisted": true
+    },
+    {
+      "id": "tm-liquid-wave",
+      "selector": ".tm-liquid-wave",
+      "kind": "transition",
+      "keyframes": [],
+      "loops": false,
+      "properties": [
+        "color",
+        "transform"
+      ],
+      "tier": "paint",
+      "allowlisted": true
+    },
+    {
+      "id": "tm-liquid-wave",
+      "selector": ".tm-liquid-wave::before",
+      "kind": "transition",
+      "keyframes": [],
+      "loops": false,
+      "properties": [
+        "height"
+      ],
+      "tier": "layout",
+      "allowlisted": true
+    },
+    {
+      "id": "tm-menu",
+      "selector": ".tm-menu, .tm-tooltip, .tm-dialog, .tm-dialog-backdrop, .tm-toast, .tm-tab-panel",
+      "kind": "transition",
+      "keyframes": [],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale",
+        "translate",
+        "visibility"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-morph",
+      "selector": ".tm-morph",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-morph"
+      ],
+      "loops": true,
+      "properties": [
+        "transform"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-native-dialog",
+      "selector": ".tm-native-dialog",
+      "kind": "transition",
+      "keyframes": [],
+      "loops": false,
+      "properties": [
+        "display",
+        "opacity",
+        "overlay",
+        "scale",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-native-dialog",
+      "selector": ".tm-native-dialog::backdrop",
+      "kind": "transition",
+      "keyframes": [],
+      "loops": false,
+      "properties": [
+        "display",
+        "opacity",
+        "overlay"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-native-disclosure",
+      "selector": ".tm-native-disclosure summary [data-tm-marker]",
+      "kind": "transition",
+      "keyframes": [],
+      "loops": false,
+      "properties": [
+        "rotate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-native-disclosure",
+      "selector": ".tm-native-disclosure::details-content",
+      "kind": "transition",
+      "keyframes": [],
+      "loops": false,
+      "properties": [
+        "block-size",
+        "content-visibility",
+        "opacity"
+      ],
+      "tier": "layout",
+      "allowlisted": true
+    },
+    {
+      "id": "tm-native-disclosure",
+      "selector": ".tm-native-disclosure[open] > :not(summary)",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-disclosure-content"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-native-popover",
+      "selector": ".tm-native-popover[popover]",
+      "kind": "transition",
+      "keyframes": [],
+      "loops": false,
+      "properties": [
+        "display",
+        "opacity",
+        "overlay",
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-number-swap",
+      "selector": ".tm-number-swap > *",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-number-pop"
+      ],
+      "loops": false,
+      "properties": [
+        "filter",
+        "opacity",
+        "transform"
+      ],
+      "tier": "filter",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-pop",
+      "selector": ".tm-pop",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-pop"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-presence-fade",
+      "selector": ".tm-presence-fade, .tm-presence-scale, .tm-presence-pop, .tm-presence-slide-block, .tm-presence-slide-inline",
+      "kind": "transition",
+      "keyframes": [],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale",
+        "translate",
+        "visibility"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-press",
+      "selector": ".tm-press",
+      "kind": "transition",
+      "keyframes": [],
+      "loops": false,
+      "properties": [
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-pulse",
+      "selector": ".tm-pulse",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-pulse"
+      ],
+      "loops": true,
+      "properties": [
+        "opacity",
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-reveal",
+      "selector": ".tm-reveal",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-reveal"
+      ],
+      "loops": false,
+      "properties": [
+        "clip-path",
+        "translate"
+      ],
+      "tier": "paint",
+      "allowlisted": true
+    },
+    {
+      "id": "tm-ripple",
+      "selector": ".tm-ripple",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-ripple"
+      ],
+      "loops": true,
+      "properties": [
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-ripple",
+      "selector": ".tm-ripple::after",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-ripple-ring"
+      ],
+      "loops": true,
+      "properties": [
+        "opacity",
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-rise",
+      "selector": ".tm-rise",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-rise"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "rotate",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-rotate-hover",
+      "selector": ".tm-rotate-hover",
+      "kind": "transition",
+      "keyframes": [],
+      "loops": false,
+      "properties": [
+        "rotate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-rotate-in",
+      "selector": ".tm-rotate-in",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-rotate-in"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "rotate",
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-rotate-press",
+      "selector": ".tm-rotate-press",
+      "kind": "transition",
+      "keyframes": [],
+      "loops": false,
+      "properties": [
+        "rotate",
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-scale-fade",
+      "selector": ".tm-scale-fade",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-scale-fade"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-scale-in",
+      "selector": ".tm-scale-in",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-scale-in"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-scale-out",
+      "selector": ".tm-scale-out",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-scale-out"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-scroll-fade",
+      "selector": ".tm-scroll-fade",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-scroll-fade"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-scroll-progress",
+      "selector": ".tm-scroll-progress",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-scroll-progress"
+      ],
+      "loops": false,
+      "properties": [
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-scroll-reveal",
+      "selector": ".tm-scroll-reveal",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-scroll-reveal"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-scroll-scale",
+      "selector": ".tm-scroll-scale",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-scroll-scale"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-scroll-slide-block",
+      "selector": ".tm-scroll-slide-block",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-scroll-slide-block"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-shake",
+      "selector": ".tm-shake",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-shake"
+      ],
+      "loops": false,
+      "properties": [
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-shimmer",
+      "selector": ".tm-shimmer::after",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-shimmer"
+      ],
+      "loops": true,
+      "properties": [
+        "transform"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-shimmer-hover",
+      "selector": ".tm-shimmer-hover:hover::after, .tm-shimmer-hover:focus-visible::after",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-shimmer-hover"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "transform"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-shimmer-text",
+      "selector": ".tm-shimmer-text:not(:has(> .tm-shimmer-text-sweep))",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-shimmer-text"
+      ],
+      "loops": true,
+      "properties": [
+        "background-position"
+      ],
+      "tier": "paint",
+      "allowlisted": true
+    },
+    {
+      "id": "tm-shimmer-text-sweep",
+      "selector": ".tm-shimmer-text-sweep",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-shimmer-text-window"
+      ],
+      "loops": true,
+      "properties": [
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-shimmer-text-sweep",
+      "selector": ".tm-shimmer-text-sweep > *",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-shimmer-text-copy"
+      ],
+      "loops": true,
+      "properties": [
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-shimmer-text-sweep",
+      "selector": "[dir='rtl'] .tm-shimmer-text-sweep",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-shimmer-text-window-rtl"
+      ],
+      "loops": false,
+      "properties": [
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-shimmer-text-sweep",
+      "selector": "[dir='rtl'] .tm-shimmer-text-sweep > *",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-shimmer-text-copy-rtl"
+      ],
+      "loops": false,
+      "properties": [
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-slide-block-end",
+      "selector": ".tm-slide-block-end, .tm-slide-down",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-slide-block-end"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-slide-block-out",
+      "selector": ".tm-slide-block-out",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-slide-block-out"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-slide-block-start",
+      "selector": ".tm-slide-block-start, .tm-slide-up",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-slide-block-start"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-slide-digit",
+      "selector": ".tm-slide-digit",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-count-slide"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "transform"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-slide-inline-end",
+      "selector": ".tm-slide-inline-end, .tm-slide-right",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-slide-inline-end"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-slide-inline-out",
+      "selector": ".tm-slide-inline-out",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-slide-inline-out"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-slide-inline-start",
+      "selector": ".tm-slide-inline-start, .tm-slide-left",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-slide-inline-start"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-sparkle",
+      "selector": ".tm-sparkle",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-sparkle"
+      ],
+      "loops": true,
+      "properties": [
+        "opacity",
+        "transform"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-spin",
+      "selector": ".tm-spin",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-spin"
+      ],
+      "loops": true,
+      "properties": [
+        "rotate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-stagger",
+      "selector": ".tm-stagger > *",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-stagger-item"
+      ],
+      "loops": false,
+      "properties": [
+        "filter",
+        "opacity",
+        "translate"
+      ],
+      "tier": "filter",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-stagger-exit",
+      "selector": ".tm-stagger-exit > *, .tm-stagger:is( [data-state=\"closed\"], [data-state=\"inactive\"], [data-state=\"off\"], [aria-expanded=\"false\"], .tm-closed ) > *",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-stagger-item-exit"
+      ],
+      "loops": false,
+      "properties": [
+        "filter",
+        "opacity",
+        "translate"
+      ],
+      "tier": "filter",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-stream-text",
+      "selector": ".tm-stream-text > *",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-stream-text-word-in"
+      ],
+      "loops": false,
+      "properties": [
+        "filter",
+        "opacity"
+      ],
+      "tier": "filter",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-sway",
+      "selector": ".tm-sway",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-sway"
+      ],
+      "loops": true,
+      "properties": [
+        "transform"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-swing-in",
+      "selector": ".tm-swing-in",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-swing-in"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "transform"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-swing-in-left",
+      "selector": ".tm-swing-in-left",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-swing-in-left"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "transform"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-swing-in-right",
+      "selector": ".tm-swing-in-right",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-swing-in-right"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "transform"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-swing-out",
+      "selector": ".tm-swing-out",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-swing-out"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "transform"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-swing-out-left",
+      "selector": ".tm-swing-out-left",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-swing-out-left"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "transform"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-swing-out-right",
+      "selector": ".tm-swing-out-right",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-swing-out-right"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "transform"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-tab-indicator",
+      "selector": ".tm-tab-indicator",
+      "kind": "transition",
+      "keyframes": [],
+      "loops": false,
+      "properties": [
+        "inline-size",
+        "translate"
+      ],
+      "tier": "layout",
+      "allowlisted": true
+    },
+    {
+      "id": "tm-text-flip-chars",
+      "selector": ".tm-text-flip-chars > span",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-char-flip-in"
+      ],
+      "loops": false,
+      "properties": [
+        "filter",
+        "opacity",
+        "transform"
+      ],
+      "tier": "filter",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-text-flip-word",
+      "selector": ".tm-text-flip-word",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-text-flip-in"
+      ],
+      "loops": false,
+      "properties": [
+        "filter",
+        "opacity",
+        "transform"
+      ],
+      "tier": "filter",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-text-flip-word",
+      "selector": ".tm-text-flip-word.tm-flip-out",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-text-flip-out"
+      ],
+      "loops": false,
+      "properties": [
+        "filter",
+        "opacity",
+        "transform"
+      ],
+      "tier": "filter",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-text-flip-word",
+      "selector": "[data-tm-count=\"2\"] > .tm-text-flip-word, [data-tm-count=\"2\"] > .tm-text-rotate-word, [data-tm-count=\"2\"] > .tm-text-morph-word",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-text-cycle-2"
+      ],
+      "loops": false,
+      "properties": [
+        "filter",
+        "opacity",
+        "transform"
+      ],
+      "tier": "filter",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-text-flip-word",
+      "selector": "[data-tm-count=\"3\"] > .tm-text-flip-word, [data-tm-count=\"3\"] > .tm-text-rotate-word, [data-tm-count=\"3\"] > .tm-text-morph-word",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-text-cycle-3"
+      ],
+      "loops": false,
+      "properties": [
+        "filter",
+        "opacity",
+        "transform"
+      ],
+      "tier": "filter",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-text-flip-word",
+      "selector": "[data-tm-count=\"4\"] > .tm-text-flip-word, [data-tm-count=\"4\"] > .tm-text-rotate-word, [data-tm-count=\"4\"] > .tm-text-morph-word",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-text-cycle-4"
+      ],
+      "loops": false,
+      "properties": [
+        "filter",
+        "opacity",
+        "transform"
+      ],
+      "tier": "filter",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-text-flip-word",
+      "selector": "[data-tm-count=\"5\"] > .tm-text-flip-word, [data-tm-count=\"5\"] > .tm-text-rotate-word, [data-tm-count=\"5\"] > .tm-text-morph-word",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-text-cycle-5"
+      ],
+      "loops": false,
+      "properties": [
+        "filter",
+        "opacity",
+        "transform"
+      ],
+      "tier": "filter",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-text-flip-word",
+      "selector": "[data-tm-count=\"6\"] > .tm-text-flip-word, [data-tm-count=\"6\"] > .tm-text-rotate-word, [data-tm-count=\"6\"] > .tm-text-morph-word",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-text-cycle-6"
+      ],
+      "loops": false,
+      "properties": [
+        "filter",
+        "opacity",
+        "transform"
+      ],
+      "tier": "filter",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-text-morph-word",
+      "selector": ".tm-text-morph-word",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-text-morph-in"
+      ],
+      "loops": false,
+      "properties": [
+        "filter",
+        "opacity"
+      ],
+      "tier": "filter",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-text-morph-word",
+      "selector": ".tm-text-morph-word.tm-morph-out",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-text-morph-out"
+      ],
+      "loops": false,
+      "properties": [
+        "filter",
+        "opacity"
+      ],
+      "tier": "filter",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-text-rotate-word",
+      "selector": ".tm-text-rotate-word",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-text-rotate-in"
+      ],
+      "loops": false,
+      "properties": [
+        "filter",
+        "opacity",
+        "transform"
+      ],
+      "tier": "filter",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-text-rotate-word",
+      "selector": ".tm-text-rotate-word.tm-rotate-out",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-text-rotate-out"
+      ],
+      "loops": false,
+      "properties": [
+        "filter",
+        "opacity",
+        "transform"
+      ],
+      "tier": "filter",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-unfold",
+      "selector": ".tm-unfold",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-unfold"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "transform"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-view-morph",
+      "selector": ".tm-view-morph",
+      "kind": "transition",
+      "keyframes": [],
+      "loops": false,
+      "properties": [
+        "block-size",
+        "clip-path",
+        "inline-size"
+      ],
+      "tier": "layout",
+      "allowlisted": true
+    },
+    {
+      "id": "tm-view-morph",
+      "selector": ".tm-view-morph > [data-tm-panel]",
+      "kind": "transition",
+      "keyframes": [],
+      "loops": false,
+      "properties": [
+        "filter",
+        "opacity",
+        "scale",
+        "translate"
+      ],
+      "tier": "filter",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-view-morph",
+      "selector": ".tm-view-morph > [data-tm-panel]",
+      "kind": "transition",
+      "keyframes": [],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-wavy-bg",
+      "selector": ".tm-wavy-bg",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-wavy-bg",
+        "tm-wavy-speed"
+      ],
+      "loops": true,
+      "properties": [
+        "background-position"
+      ],
+      "tier": "paint",
+      "allowlisted": true
+    },
+    {
+      "id": "tm-wavy-bg",
+      "selector": ".tm-wavy-bg::after",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-wavy-blur",
+        "tm-wavy-speed"
+      ],
+      "loops": true,
+      "properties": [
+        "opacity",
+        "transform"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-wavy-bg",
+      "selector": ".tm-wavy-bg::before",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-wavy-overlay",
+        "tm-wavy-speed"
+      ],
+      "loops": true,
+      "properties": [
+        "background-position"
+      ],
+      "tier": "paint",
+      "allowlisted": true
+    },
+    {
+      "id": "tm-wavy-bg-subtle",
+      "selector": ".tm-wavy-bg-subtle",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-wavy-bg-subtle",
+        "tm-wavy-speed"
+      ],
+      "loops": true,
+      "properties": [
+        "background-position"
+      ],
+      "tier": "paint",
+      "allowlisted": true
+    },
+    {
+      "id": "tm-wavy-bg-subtle",
+      "selector": ".tm-wavy-bg-subtle::before",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-wavy-overlay-subtle",
+        "tm-wavy-speed"
+      ],
+      "loops": true,
+      "properties": [
+        "background-position",
+        "opacity"
+      ],
+      "tier": "paint",
+      "allowlisted": true
+    },
+    {
+      "id": "tm-wiggle",
+      "selector": ".tm-wiggle",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-wiggle"
+      ],
+      "loops": false,
+      "properties": [
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-zoom-in",
+      "selector": ".tm-zoom-in",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-zoom-in"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-zoom-in-slow",
+      "selector": ".tm-zoom-in-slow",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-zoom-in"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale",
+        "translate"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    },
+    {
+      "id": "tm-zoom-out",
+      "selector": ".tm-zoom-out",
+      "kind": "keyframes",
+      "keyframes": [
+        "tm-zoom-out"
+      ],
+      "loops": false,
+      "properties": [
+        "opacity",
+        "scale"
+      ],
+      "tier": "compositor",
+      "allowlisted": false
+    }
+  ],
+  "dynamicBlurs": [
+    {
+      "owner": ".tm-wavy-bg::after",
+      "value": "var(--tm-wavy-blur)"
+    },
+    {
+      "owner": ".tm-dark-veil",
+      "value": "var(--tm-dark-veil-blur)"
+    },
+    {
+      "owner": "tm-text-cycle-2",
+      "value": "var(--tm-cycle-blur)"
+    },
+    {
+      "owner": "tm-text-cycle-2",
+      "value": "var(--tm-cycle-blur)"
+    },
+    {
+      "owner": "tm-text-cycle-2",
+      "value": "var(--tm-cycle-blur)"
+    },
+    {
+      "owner": "tm-text-cycle-3",
+      "value": "var(--tm-cycle-blur)"
+    },
+    {
+      "owner": "tm-text-cycle-3",
+      "value": "var(--tm-cycle-blur)"
+    },
+    {
+      "owner": "tm-text-cycle-3",
+      "value": "var(--tm-cycle-blur)"
+    },
+    {
+      "owner": "tm-text-cycle-4",
+      "value": "var(--tm-cycle-blur)"
+    },
+    {
+      "owner": "tm-text-cycle-4",
+      "value": "var(--tm-cycle-blur)"
+    },
+    {
+      "owner": "tm-text-cycle-4",
+      "value": "var(--tm-cycle-blur)"
+    },
+    {
+      "owner": "tm-text-cycle-5",
+      "value": "var(--tm-cycle-blur)"
+    },
+    {
+      "owner": "tm-text-cycle-5",
+      "value": "var(--tm-cycle-blur)"
+    },
+    {
+      "owner": "tm-text-cycle-5",
+      "value": "var(--tm-cycle-blur)"
+    },
+    {
+      "owner": "tm-text-cycle-6",
+      "value": "var(--tm-cycle-blur)"
+    },
+    {
+      "owner": "tm-text-cycle-6",
+      "value": "var(--tm-cycle-blur)"
+    },
+    {
+      "owner": "tm-text-cycle-6",
+      "value": "var(--tm-cycle-blur)"
+    }
+  ],
+  "allowlist": [
+    {
+      "id": "tm-accordion-panel",
+      "properties": [
+        "grid-template-rows"
+      ],
+      "reason": "The height tween is the behaviour being sold. One-shot, user-triggered, on one panel at a time."
+    },
+    {
+      "id": "tm-native-disclosure",
+      "properties": [
+        "block-size",
+        "content-visibility"
+      ],
+      "reason": "Same as tm-accordion-panel, on the native <details> element. One-shot and user-triggered."
+    },
+    {
+      "id": "tm-tab-indicator",
+      "properties": [
+        "inline-size"
+      ],
+      "reason": "The indicator has to match the width of the active tab. A scale would distort its border radius and its end caps."
+    },
+    {
+      "id": "tm-view-morph",
+      "properties": [
+        "clip-path",
+        "inline-size",
+        "block-size"
+      ],
+      "reason": "A shared-element morph is a size change by definition. One-shot, one element, and the live blur is already dropped on coarse-pointer devices."
+    },
+    {
+      "id": "tm-reveal",
+      "properties": [
+        "clip-path"
+      ],
+      "reason": "A wipe reveal is a clip by definition. One-shot; clip-path is composited in Chromium and paints elsewhere for roughly 500ms."
+    },
+    {
+      "id": "tm-unfold",
+      "properties": [
+        "clip-path"
+      ],
+      "reason": "As tm-reveal: the clip is the effect. One-shot."
+    },
+    {
+      "id": "tm-count-reveal",
+      "properties": [
+        "clip-path"
+      ],
+      "reason": "As tm-reveal: the clip is the effect. One-shot, on a digit-sized box."
+    },
+    {
+      "id": "tm-hold-delete",
+      "properties": [
+        "color",
+        "background-color",
+        "border-radius",
+        "background",
+        "width",
+        "height"
+      ],
+      "reason": "Legacy. Pre-dates the rule that a motion class owns no appearance; kept for compatibility and scheduled for removal in 1.0. Use tm-hold-confirm."
+    },
+    {
+      "id": "tm-liquid",
+      "properties": [
+        "height",
+        "width",
+        "left",
+        "color",
+        "background-color",
+        "border-radius",
+        "background"
+      ],
+      "reason": "Legacy. Same as tm-hold-delete: appearance inside a motion class, kept for compatibility, scheduled for removal in 1.0."
+    },
+    {
+      "id": "tm-shimmer-text",
+      "properties": [
+        "background-position"
+      ],
+      "reason": "The zero-markup path, superseded by the tm-shimmer-text-sweep recipe which runs on the compositor. Kept so 0.9 markup keeps working; scheduled for removal in 1.0. See docs/reference/render-cost.",
+      "loopExempt": true
+    },
+    {
+      "id": "tm-dark-veil",
+      "properties": [
+        "filter",
+        "background-position",
+        "border-radius"
+      ],
+      "reason": "Decorative background, not product motion. A full-surface animated gradient cannot be composited; it is documented as expensive and excluded from the core tier.",
+      "loopExempt": true
+    },
+    {
+      "id": "tm-wavy",
+      "properties": [
+        "background-position",
+        "filter"
+      ],
+      "reason": "Decorative background, as tm-dark-veil. Animating gradient stops is the effect; there is no compositor equivalent.",
+      "loopExempt": true
+    },
+    {
+      "id": "tm-fill-up",
+      "properties": [
+        "clip-path"
+      ],
+      "reason": "A bottom-to-top fill is a clip by definition, the same case as tm-reveal. One-shot, on an icon-sized box."
+    },
+    {
+      "id": "tm-avatar",
+      "properties": [
+        "box-shadow"
+      ],
+      "reason": "One-shot hover ring on a single avatar. Short, pointer-driven, and never more than one at a time."
+    },
+    {
+      "id": "tm-hover-lift",
+      "properties": [
+        "box-shadow"
+      ],
+      "reason": "One-shot hover elevation. 200ms, pointer-driven, one element at a time. Measured before shipping: a card-sized repaint stays inside one frame."
+    },
+    {
+      "id": "tm-lift",
+      "properties": [
+        "box-shadow"
+      ],
+      "reason": "As tm-hover-lift."
+    }
+  ],
+  "blurExceptions": [
+    {
+      "id": "tm-text-rotate",
+      "px": 10,
+      "reason": "The blur is the transition between two words, not decoration. It runs for 400ms on one inline element and never loops."
+    },
+    {
+      "id": "tm-text-morph",
+      "px": 12,
+      "reason": "As tm-text-rotate, and the heavier radius is what separates morph from rotate. 400ms, one inline element, never loops."
+    }
+  ]
+}

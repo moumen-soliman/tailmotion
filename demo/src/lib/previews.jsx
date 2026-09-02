@@ -48,9 +48,17 @@ function ShimmerPreview({ className }) {
 }
 
 function ShimmerTextPreview({ className }) {
+  /* The sweep child is the recipe: a masked window that travels while the copy
+     inside it counter-translates, so the highlight moves and the glyphs do
+     not. Duplicating the text is the whole cost of keeping the loop on the
+     compositor. */
+  const text = 'Shimmering text';
   return (
     <p className={cx('text-center text-title font-semibold text-ink-strong', className)}>
-      Shimmering text
+      {text}
+      <span className="tm-shimmer-text-sweep" aria-hidden="true">
+        <span>{text}</span>
+      </span>
     </p>
   );
 }

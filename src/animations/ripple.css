@@ -1,7 +1,18 @@
 @layer utilities {
   /* Expanding ring, for drawing attention to a live control. The ring color
-     comes from --tm-outline-color, derived from currentColor by default. */
+     comes from --tm-outline-color, derived from currentColor by default.
+
+     The ring is a pseudo-element drawn once at its full thickness; the
+     animation scales and fades it, so the loop stays on the compositor.
+     Before 0.11 this grew a box-shadow's spread radius, which repaints the
+     element every frame. See docs/reference/render-cost.
+
+     --tm-ripple-size keeps its meaning: how far the ring extends beyond the
+     element's edge.
+
+     Required markup: none, but tm-ripple owns the element's ::after. */
   .tm-ripple {
+    position: relative;
     animation-name: tm-ripple;
     animation-duration: var(--tm-duration, calc(1800ms * var(--tm-duration-scale, 1)));
     animation-delay: var(--tm-delay, 0ms);
@@ -10,21 +21,54 @@
     animation-fill-mode: both;
     will-change: transform;
   }
+
+  .tm-ripple::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: 0 0 0 var(--tm-ripple-size, 10px) var(--tm-outline-color);
+    opacity: 0;
+    pointer-events: none;
+    animation-name: tm-ripple-ring;
+    animation-duration: var(--tm-duration, calc(1800ms * var(--tm-duration-scale, 1)));
+    animation-delay: var(--tm-delay, 0ms);
+    animation-timing-function: var(--tm-easing, cubic-bezier(0.25, 0.46, 0.45, 0.94));
+    animation-iteration-count: var(--tm-iteration-count, infinite);
+    animation-fill-mode: both;
+    will-change: transform, opacity;
+  }
 }
 
+/* The element's own pulse. Individual scale rather than the transform
+   shorthand, so a Tailwind rotate-3 on the same element survives. */
 @keyframes tm-ripple {
-  0% {
-    transform: scale(1);
-    box-shadow: 0 0 0 0 var(--tm-outline-color);
+  0%,
+  100% {
+    scale: 1;
   }
 
   40% {
-    transform: scale(1.03);
-    box-shadow: 0 0 0 var(--tm-ripple-size, 10px) transparent;
+    scale: 1.03;
+  }
+}
+
+/* The ring: out and gone by 40%, then held invisible so the cycle has a rest
+   between pulses. Ends invisible, so the reduced-motion collapse lands on a
+   control with no ring around it. */
+@keyframes tm-ripple-ring {
+  0% {
+    opacity: 1;
+    scale: 0.96;
+  }
+
+  40% {
+    opacity: 0;
+    scale: 1.04;
   }
 
   100% {
-    transform: scale(1);
-    box-shadow: 0 0 0 0 transparent;
+    opacity: 0;
+    scale: 0.96;
   }
 }

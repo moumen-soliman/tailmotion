@@ -1,6 +1,6 @@
 ---
 title: "Transform safety"
-description: "Why 32 keyframes moved off `transform`, which ones did not, and what still cannot stack."
+description: "Why 39 keyframes moved off `transform`, which ones did not, and what still cannot stack."
 ---
 
 ## The problem
@@ -24,9 +24,9 @@ CSS has individual `translate`, `scale` and `rotate` properties. They compose
 with `transform` rather than replacing it: the browser applies translate, then
 rotate, then scale, then whatever `transform` says.
 
-TailMotion ships 77 keyframes. 13 of them touch only opacity, filter, colour or
-clip-path and never had a transform to conflict with. Of the 64 that move an
-element, **32 now animate the individual properties**:
+TailMotion ships 90 keyframes. 15 of them touch only opacity, filter, colour or
+clip-path and never had a transform to conflict with. Of the 75 that move an
+element, **39 now animate the individual properties**:
 
 <Note>
 That covers every entrance, every exit, every presence class, every scroll class
@@ -52,7 +52,7 @@ every `tm-presence-*` · every `tm-scroll-*` · `tm-stagger`
 Browser support for individual transform properties is Chrome 104, Safari 14.1,
 Firefox 72 — older than most of the library's other requirements.
 
-## The 32 that did not move
+## The 36 that did not move
 
 These still write `transform`, and are documented rather than converted, because
 converting them would change the motion.
@@ -131,9 +131,11 @@ TailMotion does not claim arbitrary keyframe composition, because CSS does not
 provide it. What it claims, and what is verified:
 
 - A motion class can be added to a Tailwind-transformed element without silently
-  removing the intended transform — for the 32 keyframes listed above and every
+  removing the intended transform — for the 39 keyframes listed above and every
   transition-based class.
-- The 32 that still overwrite `transform` are named, grouped by reason, and have
+- The 36 that still overwrite `transform` are named, grouped by reason, and have
   a documented wrapper workaround.
+- `npm run check` recounts all three numbers on every build and fails if this
+  page drifts from the stylesheet.
 - Two keyframe classes on one element is documented as unsupported rather than
   quietly producing one of them.

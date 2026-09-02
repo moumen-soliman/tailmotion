@@ -38,6 +38,25 @@ export function Composability() {
         shipping an animation runtime.
       </SectionHeading>
 
+      <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:mt-8">
+        <Code
+          label="Compose from parameters"
+          copyValue={'<div class="animate-in fade-in slide-in-from-top-8 duration-500">\n  Content\n</div>'}
+        >
+          {'<div class="animate-in fade-in slide-in-from-top-8 duration-500">\n  Content\n</div>'}
+        </Code>
+        <Code
+          label="Choose the behavior"
+          copyValue={'<div class="tm-slide-block-start tm-duration-500">\n  Content\n</div>'}
+        >
+          {'<div class="tm-slide-block-start tm-duration-500">\n  Content\n</div>'}
+        </Code>
+      </div>
+      <p className="mt-3 max-w-measure text-pretty text-micro text-ink-muted">
+        Low-level utilities expose animation parameters. TailMotion provides a tuned behavior with
+        fewer decisions.
+      </p>
+
       <div className="mt-8 grid grid-cols-1 gap-6 lg:mt-10 lg:grid-cols-2 lg:gap-8">
         <Card className="min-w-0 p-5">
           <div className="mb-4">

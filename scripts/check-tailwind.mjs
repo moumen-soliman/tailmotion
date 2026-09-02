@@ -139,15 +139,30 @@ const checkCatalogueConsistency = (keyframes, utilities) => {
   const keyframeNames = new Set(Object.keys(keyframes));
   const referenced = new Set();
 
+  /* A utility may drive its animation from a nested pseudo-element rather
+     than from the element itself -- tm-glow and tm-ripple both paint on
+     ::after so the loop stays on the compositor -- so collect animation-name
+     from the whole declaration tree, not just its top level. */
+  const animationNamesIn = (decls) => {
+    const names = [];
+    for (const [key, value] of Object.entries(decls)) {
+      if (typeof value === 'object') names.push(...animationNamesIn(value));
+      else if (key === 'animation-name') names.push(value);
+    }
+    return names;
+  };
+
   for (const [selector, decls] of Object.entries(utilities)) {
-    const name = decls['animation-name'];
-    if (!name) {
+    const names = animationNamesIn(decls);
+    if (!names.length) {
       fail(`Catalogue: ${selector} has no animation-name.`);
       continue;
     }
-    referenced.add(name);
-    if (!keyframeNames.has(name)) {
-      fail(`Catalogue: ${selector} references @keyframes ${name}, which does not exist.`);
+    for (const name of names) {
+      referenced.add(name);
+      if (!keyframeNames.has(name)) {
+        fail(`Catalogue: ${selector} references @keyframes ${name}, which does not exist.`);
+      }
     }
   }
 

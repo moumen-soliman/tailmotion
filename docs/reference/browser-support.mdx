@@ -17,7 +17,7 @@ ever declared inside the block that also says how it comes back.
 |---|---|---|---|---|---|
 | `color-mix()` | glow, shadow, outline, shimmer-text tokens | 111 | 16.2 | 113 | Falls back to a flat `--tm-color` |
 | `in oklab` gradients | shimmer, shimmer-text, liquid | 111 | 16.2 | 113 | Falls back to sRGB interpolation |
-| Individual `translate` / `scale` / `rotate` | 32 keyframes, every presence class | 104 | 14.1 | 72 | — |
+| Individual `translate` / `scale` / `rotate` | 39 keyframes, every presence class | 104 | 14.1 | 72 | — |
 | `transition-behavior: allow-discrete` | native exits from `display: none` and the top layer | 117 | 17.4 | 129 | Exits are instant; entrances are unaffected |
 | `@starting-style` | presence and native entrances on first paint | 117 | 17.5 | 129 | An element mounted already-open appears rather than animating in |
 | `:popover-open` | `tm-native-popover` | 114 | 17 | 125 | The popover opens and closes, untransitioned |
@@ -26,6 +26,8 @@ ever declared inside the block that also says how it comes back.
 | `grid-template-rows` animation | `tm-accordion-panel` | 107 | 16 | 66 | The panel shows and hides without the height tween |
 | `animation-timeline: view()` | every `tm-scroll-*` class | 115 | not yet | flagged | Content renders normally and visibly. Nothing else applies |
 | `:dir()` | RTL for the two progress fills | 120 | 16.4 | 49 | `[dir="rtl"]` still covers explicit markup |
+| `mask-image` | the `tm-shimmer-text` sweep window | 120 | 15.4 | 53 | Prefixed `-webkit-mask-image` is shipped alongside and covers older Chrome and Safari |
+| `:has()` | telling the `tm-shimmer-text` sweep recipe from the zero-markup path | 105 | 15.4 | 121 | The zero-markup path does not animate. Text renders ordinary and fully visible; the sweep recipe is unaffected |
 
 <Note>
 "not yet" is true at the time of writing and is the entry most likely to change.
@@ -74,8 +76,12 @@ Two Safari-specific performance decisions are already baked in:
 - `tm-view-morph` skips its live blur on touch-first devices
   (`@media (hover: none) and (pointer: coarse)`), because Safari rasterizes it
   even on hidden panels.
-- No blur in the library exceeds 8px. Large blur radii are expensive everywhere
-  and worst in Safari.
+- No blur in the library exceeds 8px, except `tm-text-rotate` at 10px and
+  `tm-text-morph` at 12px, where the blur is the word-to-word transition
+  itself rather than decoration. Both are one-shot, on one inline element, and
+  never loop. Large blur radii are expensive everywhere and worst in Safari.
+  `npm run check` fails the build on any other blur above 8px — see
+  [Render cost](/docs/reference/render-cost#blur).
 
 ## How the guards are verified
 
@@ -88,7 +94,8 @@ fails the build if any rule sets `opacity: 0` or `visibility: hidden` outside an
 allowlist of two-face recipes where the counterpart is always visible.
 
 That is what makes "no guard can leave an element invisible" a checked property
-rather than a promise.
+rather than a promise. The same command checks where each class does its work —
+see [Render cost](/docs/reference/render-cost).
 
 ## Cascade layers
 

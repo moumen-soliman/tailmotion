@@ -183,12 +183,20 @@ carries no information.
 | `tm-float` | 3000ms | slow vertical drift |
 | `tm-drift` | 2800ms | slow two-axis drift |
 | `tm-sway` | 3500ms | rotate + translate |
-| `tm-glow` | 1600ms | glow via `--tm-glow-color` |
+| `tm-glow` | 1600ms | halo via `--tm-glow-color`, on the element's `::after` |
 | `tm-morph` | 4000ms | subtle scale + rotate |
-| `tm-ripple` | 1800ms | expanding ring |
+| `tm-ripple` | 1800ms | expanding ring, on the element's `::after` |
 | `tm-shimmer` | 1600ms | gradient sweep on a pseudo-element |
-| `tm-shimmer-text` | 2000ms | gradient sweep clipped to the text's own glyphs |
+| `tm-shimmer-text` | 2000ms | highlight sweeping across the text. Needs the sweep child — see [Render cost](/docs/reference/render-cost#tm-shimmer-text) |
 | `tm-sparkle` | 1400ms | sparkle |
+
+<Note>
+`tm-glow` and `tm-ripple` own the element's `::after` and set
+`position: relative` on it, so the loop can run on the compositor rather than
+repainting a `box-shadow` every frame. `tm-shimmer-text` takes a sweep child
+for the same reason. All three keep their existing tokens. See
+[Render cost](/docs/reference/render-cost).
+</Note>
 
 ## Attention
 

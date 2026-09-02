@@ -1,4 +1,4 @@
-/* TailMotion v0.10.1 — dist/compiler/tailwind.css | Generated 2026-08-25T12:42:53.410Z */
+/* TailMotion v0.11.0 — dist/compiler/tailwind.css | Generated 2026-09-02T05:23:17.909Z */
 
 /* Mandatory dependency: color/easing tokens and the required
    prefers-reduced-motion collapse. Always present, regardless of which
@@ -158,6 +158,7 @@
     .tm-count-reveal > *,
     .tm-number-swap > *,
     .tm-stream-text > *,
+    .tm-shimmer-text-sweep > *,
     .tm-icon-swap > *,
     .tm-view-morph > [data-tm-panel],
     .tm-text-flip-chars > span {
@@ -194,6 +195,13 @@
     .tm-text-rotate[data-tm-count] > .tm-text-rotate-word:first-child,
     .tm-text-morph[data-tm-count] > .tm-text-morph-word:first-child {
       opacity: 1 !important;
+    }
+
+    /* The shimmer recipe dims its resting text so the sweep reads as brighter.
+       With no sweep running there is nothing for the dimming to buy, and a
+       reader who asked for less motion should not also get less contrast. */
+    .tm-shimmer-text:has(> .tm-shimmer-text-sweep) {
+      -webkit-text-fill-color: currentColor;
     }
   }
 }
@@ -335,17 +343,16 @@
 
 @keyframes tm-glow {
   0%, 100% {
-    box-shadow: 0 0 0 0 var(--tm-glow-color);
+    opacity: 0;
   }
   50% {
-    box-shadow: 0 0 var(--tm-glow-size, 18px) var(--tm-glow-spread, 0) var(--tm-glow-color);
+    opacity: 1;
   }
 }
 
 @keyframes tm-morph {
   0%, 100% {
     transform: scale(1) rotate(0deg);
-    border-radius: inherit;
   }
   25% {
     transform: scale(1.02, 0.98) rotate(0.5deg);
@@ -374,17 +381,26 @@
 }
 
 @keyframes tm-ripple {
-  0% {
-    transform: scale(1);
-    box-shadow: 0 0 0 0 var(--tm-outline-color);
+  0%, 100% {
+    scale: 1;
   }
   40% {
-    transform: scale(1.03);
-    box-shadow: 0 0 0 var(--tm-ripple-size, 10px) transparent;
+    scale: 1.03;
+  }
+}
+
+@keyframes tm-ripple-ring {
+  0% {
+    opacity: 1;
+    scale: 0.96;
+  }
+  40% {
+    opacity: 0;
+    scale: 1.04;
   }
   100% {
-    transform: scale(1);
-    box-shadow: 0 0 0 0 transparent;
+    opacity: 0;
+    scale: 0.96;
   }
 }
 
@@ -685,12 +701,23 @@
 }
 
 @utility tm-glow {
-  animation-name: tm-glow;
-  animation-duration: var(--tm-duration, calc(1600ms * var(--tm-duration-scale, 1)));
-  animation-delay: var(--tm-delay, 0ms);
-  animation-timing-function: var(--tm-easing, ease-in-out);
-  animation-iteration-count: var(--tm-iteration-count, infinite);
-  animation-fill-mode: both;
+  position: relative;
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: 0 0 var(--tm-glow-size, 18px) var(--tm-glow-spread, 0) var(--tm-glow-color);
+    opacity: 0;
+    pointer-events: none;
+    animation-name: tm-glow;
+    animation-duration: var(--tm-duration, calc(1600ms * var(--tm-duration-scale, 1)));
+    animation-delay: var(--tm-delay, 0ms);
+    animation-timing-function: var(--tm-easing, ease-in-out);
+    animation-iteration-count: var(--tm-iteration-count, infinite);
+    animation-fill-mode: both;
+    will-change: opacity;
+  }
 }
 
 @utility tm-morph {
@@ -715,6 +742,7 @@
 }
 
 @utility tm-ripple {
+  position: relative;
   animation-name: tm-ripple;
   animation-duration: var(--tm-duration, calc(1800ms * var(--tm-duration-scale, 1)));
   animation-delay: var(--tm-delay, 0ms);
@@ -722,6 +750,22 @@
   animation-iteration-count: var(--tm-iteration-count, infinite);
   animation-fill-mode: both;
   will-change: transform;
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: 0 0 0 var(--tm-ripple-size, 10px) var(--tm-outline-color);
+    opacity: 0;
+    pointer-events: none;
+    animation-name: tm-ripple-ring;
+    animation-duration: var(--tm-duration, calc(1800ms * var(--tm-duration-scale, 1)));
+    animation-delay: var(--tm-delay, 0ms);
+    animation-timing-function: var(--tm-easing, cubic-bezier(0.25, 0.46, 0.45, 0.94));
+    animation-iteration-count: var(--tm-iteration-count, infinite);
+    animation-fill-mode: both;
+    will-change: transform, opacity;
+  }
 }
 
 @utility tm-elastic {

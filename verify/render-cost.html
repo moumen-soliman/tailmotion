@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>TailMotion render cost harness</title>
+    <link rel="stylesheet" href="/tailmotion.css" />
+    <style>
+      html { color-scheme: light; }
+      body { font: 14px/1.5 system-ui, sans-serif; margin: 24px; max-width: 1100px; color: #111; background: #fff; }
+      h1 { font-size: 18px; }
+      h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .06em; color: #666; margin: 0 0 12px; }
+      section { margin-block: 24px; padding: 16px; border: 1px solid #ddd; border-radius: 10px; }
+      .row { display: flex; gap: 28px; align-items: center; flex-wrap: wrap; }
+      .dark { background: #0b0b0c; padding: 28px; border-radius: 10px; color: #fff; }
+      .dark .box { background: #2563eb; }
+      .box { width: 96px; height: 48px; background: #1a1a1a; color: #fff; display: grid; place-items: center; border-radius: 10px; }
+      .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 20px; }
+      .note { color: #666; font-size: 12px; margin-top: 10px; }
+      .headline { font-size: 26px; font-weight: 650; display: inline-block; }
+      code { background: #f3f3f3; padding: 1px 5px; border-radius: 4px; font-size: 12px; }
+      button { font: inherit; padding: 6px 12px; border-radius: 8px; border: 1px solid #ccc; background: #fff; cursor: pointer; }
+      .toolbar { position: sticky; top: 0; background: #fff; padding: 10px 0; z-index: 5; display: flex; gap: 10px; flex-wrap: wrap; }
+    </style>
+  </head>
+  <body>
+    <h1>Render cost harness</h1>
+    <p class="note">
+      Every effect on this page must run without a paint after the first frame.
+      Record three seconds in the DevTools Performance panel, or turn on Paint
+      flashing in the Rendering panel: a compositor-only loop never flashes.
+      <code>?n=40</code> multiplies the load section.
+    </p>
+
+    <div class="toolbar">
+      <button id="pause">Pause all motion</button>
+      <button id="rtl">Toggle RTL</button>
+      <span class="note" id="state">running · ltr</span>
+    </div>
+
+    <section>
+      <h2>tm-shimmer-text — sweep recipe (compositor)</h2>
+      <p class="headline tm-shimmer-text">
+        Generating response
+        <span class="tm-shimmer-text-sweep" aria-hidden="true"><span>Generating response</span></span>
+      </p>
+      <p class="note">
+        The highlight sweeps; the glyphs must not move by a single pixel. The
+        text is announced once — the copy is aria-hidden.
+      </p>
+    </section>
+
+    <section>
+      <h2>tm-shimmer-text — zero-markup legacy path (paint, deprecated)</h2>
+      <p class="headline tm-shimmer-text">Generating response</p>
+      <p class="note">
+        Kept for markup written against 0.9 and 0.10. This is the one looping
+        effect in the library that still repaints; it is allowlisted by name in
+        scripts/check-render-cost.mjs and scheduled for removal in 1.0.
+      </p>
+    </section>
+
+    <section>
+      <h2>tm-glow and tm-ripple</h2>
+      <div class="row dark">
+        <div class="box tm-glow">glow</div>
+        <button class="box tm-ripple">ripple</button>
+        <div class="box tm-shimmer">shimmer</div>
+        <button class="box tm-shimmer-hover">hover me</button>
+        <div class="box tm-morph">morph</div>
+      </div>
+      <p class="note">
+        The glow halo must follow the element's border radius and must not
+        cover its label. The ripple ring must expand outward and fade.
+      </p>
+    </section>
+
+    <section>
+      <h2>Variants, used without the base class</h2>
+      <div class="row dark">
+        <div class="box hover:tm-glow">hover glow</div>
+        <button class="box focus-visible:tm-glow">focus glow</button>
+        <button class="box hover:tm-ripple">hover ripple</button>
+        <div class="group box" style="background:#333">
+          group
+          <span class="group-hover:tm-glow" style="position:absolute"></span>
+        </div>
+      </div>
+      <p class="note">Each variant carries its own pseudo-element setup.</p>
+    </section>
+
+    <section>
+      <h2>Transform safety</h2>
+      <div class="row">
+        <div class="box tm-pop" style="transform: rotate(6deg)">pop</div>
+        <div class="box tm-reveal" style="transform: rotate(6deg)">reveal</div>
+        <div class="box tm-slide-block-start" style="transform: rotate(6deg)">slide</div>
+        <div class="box tm-unfold" style="transform: rotate(6deg)">unfold</div>
+      </div>
+      <p class="note">
+        Each box carries an inline <code>transform: rotate(6deg)</code>, which is what Tailwind v3 emits for <code>rotate-3</code>. The first three
+        keep it: that is what the individual translate / scale / rotate
+        properties buy. <code>tm-unfold</code> is the counter-example and
+        loses it — it scales before it translates, which the individual
+        properties cannot express, so it keeps the shorthand and is documented
+        as an exception.
+      </p>
+    </section>
+
+    <section>
+      <h2>Load: many copies at once</h2>
+      <div class="grid" id="load"></div>
+      <p class="note" id="loadNote"></p>
+    </section>
+
+    <script>
+      const params = new URLSearchParams(location.search);
+      const n = Number(params.get('n') || 12);
+      const load = document.getElementById('load');
+      for (let i = 0; i < n; i += 1) {
+        const p = document.createElement('p');
+        p.className = 'tm-shimmer-text';
+        p.style.margin = '0';
+        p.append('Loading item ' + (i + 1));
+        const sweep = document.createElement('span');
+        sweep.className = 'tm-shimmer-text-sweep';
+        sweep.setAttribute('aria-hidden', 'true');
+        const inner = document.createElement('span');
+        inner.textContent = 'Loading item ' + (i + 1);
+        sweep.append(inner);
+        p.append(sweep);
+        load.append(p);
+      }
+      document.getElementById('loadNote').textContent =
+        n + ' looping shimmers. Add ?n=40 to the URL for more.';
+
+      let paused = false;
+      let rtl = false;
+      const state = document.getElementById('state');
+      const sync = () => {
+        document.documentElement.dir = rtl ? 'rtl' : 'ltr';
+        document.querySelectorAll('*').forEach((el) => {
+          el.style.animationPlayState = paused ? 'paused' : '';
+        });
+        state.textContent = (paused ? 'paused' : 'running') + ' · ' + (rtl ? 'rtl' : 'ltr');
+      };
+      document.getElementById('pause').addEventListener('click', () => { paused = !paused; sync(); });
+      document.getElementById('rtl').addEventListener('click', () => { rtl = !rtl; sync(); });
+    </script>
+  </body>
+</html>
