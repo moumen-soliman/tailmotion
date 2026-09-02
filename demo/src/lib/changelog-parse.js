@@ -1,11 +1,18 @@
 /* --------------------------------------------------------------------------
    A small parser for the subset of Markdown CHANGELOG.md actually uses:
    `## version`, `### group`, paragraphs, `- ` bullets with continuation
-   lines, `**bold**` and `` `code` ``.
+   lines, ``` fenced blocks, `**bold**` and `` `code` ``.
 
    The page reads the real file, so the site can never drift from the
    changelog that ships in the repository. A general Markdown library would
-   be a dependency for four constructs.
+   be a dependency for five constructs.
+
+   Blocks come back tagged -- `{ type: 'text' }` for prose, `{ type: 'code' }`
+   for a fence. A fence has to survive as its own block: folded into a
+   paragraph, its lines join with spaces and the surrounding backticks read as
+   one inline code span, which the page renders `whitespace-nowrap`. That is a
+   single unbreakable line as wide as the snippet, and it pushes the page out
+   past the viewport.
    -------------------------------------------------------------------------- */
 
 /** Splits a line into text / bold / code spans. */
@@ -31,11 +38,20 @@ export function parseInline(text) {
   return spans;
 }
 
+/** Drops up to `indent` columns of leading whitespace, never any content. */
+function stripIndent(line, indent) {
+  let column = 0;
+  while (column < indent && (line[column] === ' ' || line[column] === '\t')) column += 1;
+  return line.slice(column);
+}
+
 /**
- * @returns {{ intro: string[], releases: Array<{
- *   version: string, status: string|null, summary: string[],
- *   groups: Array<{ title: string, items: string[] }>
+ * @returns {{ intro: Block[], releases: Array<{
+ *   version: string, status: string|null, summary: Block[],
+ *   groups: Array<{ title: string, items: Block[] }>
  * }>}}
+ * where Block is
+ *   { type: 'text', value: string } | { type: 'code', lang: string|null, value: string }
  */
 export function parseChangelog(source) {
   const releases = [];
@@ -43,18 +59,54 @@ export function parseChangelog(source) {
   let release = null;
   let group = null;
   let paragraph = [];
+  let fence = null;
+
+  const pushBlock = (block) => {
+    if (group) group.items.push(block);
+    else if (release) release.summary.push(block);
+    else intro.push(block);
+  };
 
   const flushParagraph = () => {
     if (!paragraph.length) return;
-    const text = paragraph.join(' ');
-    if (group) group.items.push(text);
-    else if (release) release.summary.push(text);
-    else intro.push(text);
+    pushBlock({ type: 'text', value: paragraph.join(' ') });
     paragraph = [];
+  };
+
+  const flushFence = () => {
+    if (!fence) return;
+    // The indentation belongs to the bullet the fence sits under, not to the
+    // snippet, so the opening fence's own indent comes off every line.
+    const value = fence.lines
+      .map((line) => stripIndent(line, fence.indent))
+      .join('\n')
+      .replace(/\s+$/, '');
+    if (value) pushBlock({ type: 'code', lang: fence.lang, value });
+    fence = null;
   };
 
   for (const raw of source.split('\n')) {
     const line = raw.trimEnd();
+
+    if (line.trimStart().startsWith('```')) {
+      if (fence) {
+        flushFence();
+      } else {
+        flushParagraph();
+        const info = line.trimStart();
+        fence = {
+          lang: info.slice(3).trim() || null,
+          indent: line.length - info.length,
+          lines: [],
+        };
+      }
+      continue;
+    }
+
+    if (fence) {
+      fence.lines.push(line);
+      continue;
+    }
 
     if (line.startsWith('## ')) {
       flushParagraph();
@@ -92,6 +144,8 @@ export function parseChangelog(source) {
     paragraph.push(line.trim());
   }
 
+  // An unclosed fence still ends at the end of the file.
+  flushFence();
   flushParagraph();
   return { intro, releases };
 }

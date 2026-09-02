@@ -1,7 +1,7 @@
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import changelogSource from '../../../CHANGELOG.md?raw';
 import { parseChangelog, parseInline } from '../lib/changelog-parse';
-import { Badge, Button, CONTROL_TRANSITION, Card, Shell, cx } from '../lib/ui';
+import { Badge, Button, CONTROL_TRANSITION, Card, Code, Shell, cx } from '../lib/ui';
 
 /* --------------------------------------------------------------------------
    The changelog page.
@@ -23,6 +23,10 @@ const groupRank = (title) => {
   const index = GROUP_ORDER.indexOf(title);
   return index === -1 ? GROUP_ORDER.length : index;
 };
+
+/* Snippets illustrate the entry above them; they are not entries themselves,
+   so the counts skip them. */
+const entryCount = (items) => items.filter((item) => item.type !== 'code').length;
 
 function Inline({ text }) {
   return (
@@ -58,9 +62,19 @@ function Inline({ text }) {
   );
 }
 
+/* A fenced block from the changelog. It keeps its own box and scrolls inside
+   it, so a wide snippet never widens the page. */
+function Snippet({ block, className }) {
+  return (
+    <Code label={block.lang} copyValue={block.value} className={className}>
+      {block.value}
+    </Code>
+  );
+}
+
 function Release({ release, isLatest }) {
   const groups = [...release.groups].sort((a, b) => groupRank(a.title) - groupRank(b.title));
-  const total = groups.reduce((sum, group) => sum + group.items.length, 0);
+  const total = groups.reduce((sum, group) => sum + entryCount(group.items), 0);
 
   return (
     <article className="grid grid-cols-1 gap-6 border-t border-line pt-10 lg:grid-cols-[minmax(0,13rem)_minmax(0,1fr)] lg:gap-12">
@@ -81,11 +95,17 @@ function Release({ release, isLatest }) {
       <div className="min-w-0 space-y-9">
         {release.summary.length ? (
           <div className="space-y-3">
-            {release.summary.map((paragraph) => (
-              <p key={paragraph} className="max-w-measure text-pretty text-body-lg text-ink-muted">
-                <Inline text={paragraph} />
-              </p>
-            ))}
+            {release.summary.map((block, i) =>
+              block.type === 'code' ? (
+                // eslint-disable-next-line react/no-array-index-key
+                <Snippet key={i} block={block} className="max-w-measure" />
+              ) : (
+                // eslint-disable-next-line react/no-array-index-key
+                <p key={i} className="max-w-measure text-pretty text-body-lg text-ink-muted">
+                  <Inline text={block.value} />
+                </p>
+              )
+            )}
           </div>
         ) : null}
 
@@ -93,21 +113,33 @@ function Release({ release, isLatest }) {
           <section key={group.title}>
             <div className="flex items-center gap-3">
               <h3 className="font-mono text-overline uppercase text-accent">{group.title}</h3>
-              <span className="font-mono text-overline text-ink-faint">{group.items.length}</span>
+              <span className="font-mono text-overline text-ink-faint">
+                {entryCount(group.items)}
+              </span>
               <span className="h-px flex-1 bg-line" aria-hidden />
             </div>
             <ul className="mt-4 space-y-3.5">
-              {group.items.map((item) => (
-                <li key={item} className="flex gap-3">
-                  <span
-                    className="mt-[0.6em] h-1 w-1 shrink-0 rounded-full bg-line-strong"
-                    aria-hidden
-                  />
-                  <p className="max-w-measure text-pretty text-body text-ink-muted">
-                    <Inline text={item} />
-                  </p>
-                </li>
-              ))}
+              {group.items.map((item, i) =>
+                item.type === 'code' ? (
+                  // The snippet lines up with the prose above it: the dot's
+                  // width plus the gap that follows it.
+                  // eslint-disable-next-line react/no-array-index-key
+                  <li key={i} className="min-w-0 ps-4">
+                    <Snippet block={item} className="max-w-measure" />
+                  </li>
+                ) : (
+                  // eslint-disable-next-line react/no-array-index-key
+                  <li key={i} className="flex gap-3">
+                    <span
+                      className="mt-[0.6em] h-1 w-1 shrink-0 rounded-full bg-line-strong"
+                      aria-hidden
+                    />
+                    <p className="max-w-measure text-pretty text-body text-ink-muted">
+                      <Inline text={item.value} />
+                    </p>
+                  </li>
+                )
+              )}
             </ul>
           </section>
         ))}
