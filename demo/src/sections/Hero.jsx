@@ -1,6 +1,6 @@
 import { Accessibility, ArrowRight, Braces, Github, RefreshCw } from 'lucide-react';
-import { Explorer } from './Explorer';
 import { Button, Code, CopyButton, Shell, streamWords } from '../lib/ui';
+import { Explorer } from './Explorer';
 
 const GITHUB = 'https://github.com/moumen-soliman/tailmotion';
 
@@ -33,17 +33,16 @@ export function Hero({ variants }) {
               A motion language for product interfaces
             </p>
             <h1 className="tm-stream-text mt-4 text-balance text-display font-semibold text-ink-strong sm:text-display-lg">
-              <span style={{ '--tm-stagger': 0 }}>Purposeful</span>{' '}
+              <span style={{ '--tm-stagger': 0 }}>Motion</span>{' '}
               <span style={{ '--tm-stagger': 1 }}>
                 <span
                   className="text-accent tm-shimmer-text tm-duration-1600 leading-none"
                 >
-                  motion
+                  decisions,
                 </span>
               </span>{' '}
-              <span style={{ '--tm-stagger': 2 }}>that</span>{' '}
-              <span style={{ '--tm-stagger': 3 }}>speaks</span>{' '}
-              <span style={{ '--tm-stagger': 4 }}>Tailwind</span>
+              <span style={{ '--tm-stagger': 2 }}>already</span>{' '}
+              <span style={{ '--tm-stagger': 3 }}>made.</span>
             </h1>
             <p
               className="tm-stream-text mt-5 text-pretty text-body-lg text-ink-muted"
@@ -97,13 +96,8 @@ export function Hero({ variants }) {
           </div>
         </div>
 
-        {/* The real explorer, right where visitors land. */}
-        <div className="mt-12 lg:mt-16">
-          <Explorer variants={variants} />
-        </div>
-
         {/* Proof closes the hero as one responsive panel. */}
-        <ul className="mt-12 grid grid-cols-1 divide-y divide-line overflow-hidden rounded-lg border border-line bg-card sm:grid-cols-3 sm:divide-x sm:divide-y-0 lg:mt-16">
+        <ul className="mt-10 grid grid-cols-1 divide-y divide-line overflow-hidden rounded-lg border border-line bg-card sm:grid-cols-3 sm:divide-x sm:divide-y-0 lg:mt-12">
           {PROOF.map(({ icon: Icon, label, detail }) => (
             <li key={label} className="flex min-w-0 gap-3 p-4 sm:block sm:p-5 lg:flex">
               <span className="grid h-8 w-8 shrink-0 place-items-center rounded-md border border-line-strong bg-page text-accent">
@@ -117,6 +111,15 @@ export function Hero({ variants }) {
           ))}
         </ul>
       </Shell>
+
+      {/* The class list sits in the hero rather than in a section of its own:
+          the catalogue is the thing most visitors came to search. The rule is
+          full-bleed, so it reads as page structure rather than as a box. */}
+      <div className="mt-14 border-t border-line pt-12 sm:mt-16 sm:pt-14 lg:mt-20 lg:pt-16">
+        <Shell>
+          <Explorer variants={variants} />
+        </Shell>
+      </div>
     </section>
   );
 }

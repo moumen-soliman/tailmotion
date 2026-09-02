@@ -45,7 +45,7 @@ tailwind.config = {
           faint: 'oklch(0.56 0.0091 286 / <alpha-value>)',
         },
         accent: {
-          DEFAULT: 'oklch(0.53 0.1597 258 / <alpha-value>)',
+          DEFAULT: 'oklch(0.52 0.25 259.25/ <alpha-value>)',
           soft: 'oklch(0.68 0.1135 259 / <alpha-value>)',
         },
       },

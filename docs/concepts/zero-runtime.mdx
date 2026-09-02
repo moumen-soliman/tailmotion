@@ -25,8 +25,10 @@ watching for `data-state`, and nothing that runs on hydration.
 That has consequences worth naming:
 
 - Motion works before your JavaScript loads, and keeps working if it fails.
-- Motion runs on the compositor where the browser can, not on a frame loop that
-  competes with React rendering.
+- Motion runs on the compositor, not on a frame loop that competes with React
+  rendering. Every continuous effect in the core is compositor-only, and
+  `npm run check` fails the build if that stops being true — see
+  [Render cost](/docs/reference/render-cost).
 - Server-rendered HTML animates correctly on first paint via `@starting-style`,
   with no hydration flash.
 - There is no bundle-size cost in JavaScript, and no version to keep in step

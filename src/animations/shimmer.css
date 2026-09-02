@@ -10,6 +10,9 @@
    stop loses its interpolation hint; keeping them apart lets the gradient
    interpolate in oklab, so the fade to transparent stays even instead of
    dipping toward gray.
+
+   Both animate a transform on a pseudo-element, so the sweep runs on the
+   compositor.
    -------------------------------------------------------------------------- */
 
 @layer utilities {
@@ -103,23 +106,115 @@
 /* --------------------------------------------------------------------------
    Shimmer, clipped to the text itself.
 
-   tm-shimmer-text paints the gradient directly onto the glyphs it sits on,
-   so it needs no duplicated markup and no [data-text] attribute -- the
-   element's own content is the mask.
+   A highlight that follows the shape of the glyphs needs a bright copy of the
+   text and a window that travels across it. Two boxes are the only way to
+   move a window independently of its content with transforms alone: the
+   window element sweeps one way and the copy inside counter-translates by the
+   same amount, so the glyphs stay put on screen while the masked window
+   crosses them. A pseudo-element cannot do it, because a pseudo-element
+   cannot hold another one.
 
-   -webkit-text-fill-color hides the glyph fill instead of the `color`
-   property, so `color` is left alone: --tm-shimmer-text-color's default
-   still resolves against the element's real, inherited color rather than
-   the transparent the clip trick would otherwise leave behind for anything
-   reading currentColor.
+   The alternative -- one element, background-clip: text, animated
+   background-position -- re-rasterizes the glyph clip and repaints the
+   gradient through it on every frame. That is the shimmer implementation
+   nearly every library ships, and it is the most expensive continuous effect
+   in a typical page. It is kept below, unchanged, for markup written against
+   0.9 and 0.10, and is scheduled for removal in 1.0.
 
-   Without background-clip: text support the class is a no-op and the
-   element keeps its normal, fully visible color.
+   Required markup:
+
+     <p class="tm-shimmer-text">
+       Generating
+       <span class="tm-shimmer-text-sweep" aria-hidden="true">
+         <span>Generating</span>
+       </span>
+     </p>
+
+   The copy is aria-hidden so the text is announced once. The element needs to
+   establish a box (block, inline-block or grid -- Tailwind's job, not this
+   class's), and it must carry no padding of its own: the sweep is positioned
+   against the padding box, and the two translations only cancel exactly when
+   the window and the copy are the same width. Put padding on a parent.
    -------------------------------------------------------------------------- */
 
 @layer utilities {
+  .tm-shimmer-text {
+    position: relative;
+  }
+
+  /* The highlight can only add light, so the resting text has to sit below
+     full strength for the sweep to read as brighter -- the same 45% the
+     zero-markup path uses for its resting gradient stops.
+
+     -webkit-text-fill-color rather than color: currentColor inside it still
+     resolves against the element's real color, and the sweep resets it to
+     full strength on itself. Setting color instead would dim the sweep too,
+     because a child inherits it and currentColor would then resolve to the
+     already-dimmed value. Without support for the property, both layers paint
+     at full strength: no visible sweep, and ordinary readable text. */
+  .tm-shimmer-text:has(> .tm-shimmer-text-sweep) {
+    -webkit-text-fill-color: var(--tm-shimmer-text-resting);
+  }
+
+  .tm-shimmer-text-sweep {
+    position: absolute;
+    inset: 0;
+    padding: 0;
+    border: 0;
+    color: var(--tm-shimmer-text-color);
+    -webkit-text-fill-color: var(--tm-shimmer-text-color);
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-mask-image: linear-gradient(
+      var(--tm-shimmer-text-angle, 100deg),
+      transparent 35%,
+      #000 50%,
+      transparent 65%
+    );
+    mask-image: linear-gradient(
+      var(--tm-shimmer-text-angle, 100deg),
+      transparent 35%,
+      #000 50%,
+      transparent 65%
+    );
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    animation-name: tm-shimmer-text-window;
+    animation-duration: var(--tm-duration, calc(2000ms * var(--tm-duration-scale, 1)));
+    animation-delay: var(--tm-delay, 0ms);
+    animation-timing-function: var(--tm-easing, linear);
+    animation-iteration-count: var(--tm-iteration-count, infinite);
+    animation-fill-mode: both;
+    will-change: transform;
+  }
+
+  .tm-shimmer-text-sweep > * {
+    display: block;
+    animation-name: tm-shimmer-text-copy;
+    animation-duration: var(--tm-duration, calc(2000ms * var(--tm-duration-scale, 1)));
+    animation-delay: var(--tm-delay, 0ms);
+    animation-timing-function: var(--tm-easing, linear);
+    animation-iteration-count: var(--tm-iteration-count, infinite);
+    animation-fill-mode: both;
+    will-change: transform;
+  }
+
+  /* Inline-axis motion mirrors in RTL, like every other inline-axis class. */
+  [dir='rtl'] .tm-shimmer-text-sweep {
+    animation-name: tm-shimmer-text-window-rtl;
+  }
+
+  [dir='rtl'] .tm-shimmer-text-sweep > * {
+    animation-name: tm-shimmer-text-copy-rtl;
+  }
+
+  /* The zero-markup path, kept for compatibility. :has() scopes it off when
+     the sweep recipe is present. A browser without :has() drops this rule
+     entirely and renders ordinary, fully visible text -- never a doubled or
+     invisible one, which is the only outcome that matters. */
   @supports ((background-clip: text) or (-webkit-background-clip: text)) {
-    .tm-shimmer-text {
+    .tm-shimmer-text:not(:has(> .tm-shimmer-text-sweep)) {
       background-image: linear-gradient(
         var(--tm-shimmer-text-angle, 100deg),
         var(--tm-shimmer-text-resting) 0%,
@@ -141,7 +236,7 @@
     }
 
     @supports (background-image: linear-gradient(in oklab, red, red)) {
-      .tm-shimmer-text {
+      .tm-shimmer-text:not(:has(> .tm-shimmer-text-sweep)) {
         background-image: linear-gradient(
           in oklab var(--tm-shimmer-text-angle, 100deg),
           var(--tm-shimmer-text-resting) 0%,
@@ -152,6 +247,50 @@
         );
       }
     }
+  }
+}
+
+/* The window and the copy travel the same distance in opposite directions and
+   share every timing token, so the glyphs stay still and only the highlight
+   moves. Both end with the window off the element, so the reduced-motion
+   collapse lands on plain, unhighlighted text. */
+@keyframes tm-shimmer-text-window {
+  from {
+    translate: -100% 0;
+  }
+
+  to {
+    translate: 100% 0;
+  }
+}
+
+@keyframes tm-shimmer-text-copy {
+  from {
+    translate: 100% 0;
+  }
+
+  to {
+    translate: -100% 0;
+  }
+}
+
+@keyframes tm-shimmer-text-window-rtl {
+  from {
+    translate: 100% 0;
+  }
+
+  to {
+    translate: -100% 0;
+  }
+}
+
+@keyframes tm-shimmer-text-copy-rtl {
+  from {
+    translate: -100% 0;
+  }
+
+  to {
+    translate: 100% 0;
   }
 }
 

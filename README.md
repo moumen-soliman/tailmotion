@@ -65,6 +65,32 @@ should this whole product move, and what happens when the state changes?"**
 📖 **[Full documentation →](https://docs.tailmotion.moumen.dev/docs)** ·
 🎛️ **[Live capability demo →](https://tailmotion.moumen.dev/capabilities/)**
 
+## Why TailMotion?
+
+Low-level animation utilities, like `tw-animate-css`, let you construct an
+entrance or exit from parameters:
+
+```html
+<!-- Compose the animation from parameters -->
+<div class="animate-in fade-in slide-in-from-top-8 duration-500">
+  Content
+</div>
+```
+
+TailMotion gives you the tuned behavior instead of the parameters:
+
+```html
+<!-- Choose the behavior -->
+<div class="tm-slide-block-start tm-duration-500">
+  Content
+</div>
+```
+
+Reach for parameter-based utilities when you want to build a custom animation
+by hand. Reach for TailMotion when you want a named, product-tested motion
+behavior with a sensible default. The two solve different levels of the same
+problem, and nothing stops you from using both in one project.
+
 ## What it does that a keyframe collection cannot
 
 ### One class changes the motion personality of a whole interface
@@ -167,9 +193,17 @@ stops being true.
   being removed, with two deliberate, documented exceptions.
 - **Direction is logical.** Inline-axis motion mirrors in RTL; block-axis motion
   does not.
-- **Transform-safe.** 32 keyframes — every entrance, exit, presence and scroll
-  class — animate `translate` / `scale` / `rotate`, so a Tailwind `rotate-3` on
-  the same element survives.
+- **Transform-safe.** 39 keyframes — every slide, scale, zoom, fade, presence,
+  scroll and stagger behaviour — animate `translate` / `scale` / `rotate`
+  rather than the `transform` shorthand, so a Tailwind `rotate-3` on the same
+  element survives. The 36 that keep the shorthand need it (3D flips need
+  `perspective()`; a few scale before they translate) and are each named with
+  a wrapper workaround. The build fails if either set changes without the
+  documentation.
+- **Continuous motion never repaints.** Every looping effect in the core runs
+  on the compositor, checked by the build. The exceptions are two decorative
+  background families and one deprecated path, each named in
+  [Render cost](https://docs.tailmotion.moumen.dev/docs/reference/render-cost).
 - **Tailwind v3, Tailwind v4, or no Tailwind at all.**
 - **Usage-generated CSS for the simple catalogue (experimental).** Tailwind v3
   (via the plugin) and Tailwind v4 (via `tailmotion/tailwind.css`) can emit
@@ -250,14 +284,14 @@ Full details, including every duration and easing role, in the
 <summary><strong>Modular imports</strong></summary>
 
 ```css
-@import "tailmotion/css";            /* everything — 31.6 KB gzipped */
+@import "tailmotion/css";            /* everything — 35.3 KB gzipped */
 
-@import "tailmotion/profiles.css";   /* 3.7 KB */
-@import "tailmotion/presence.css";   /* 4.7 KB */
-@import "tailmotion/native.css";     /* 5.0 KB */
-@import "tailmotion/recipes.css";    /* 6.4 KB */
-@import "tailmotion/scroll.css";     /* 4.1 KB */
-@import "tailmotion/choreography.css"; /* 4.8 KB */
+@import "tailmotion/profiles.css";   /* 4.0 KB */
+@import "tailmotion/presence.css";   /* 5.1 KB */
+@import "tailmotion/native.css";     /* 5.3 KB */
+@import "tailmotion/recipes.css";    /* 6.7 KB */
+@import "tailmotion/scroll.css";     /* 4.4 KB */
+@import "tailmotion/choreography.css"; /* 5.1 KB */
 
 @import "tailmotion/animations/base.css";  /* or one family at a time */
 @import "tailmotion/animations/fade.css";

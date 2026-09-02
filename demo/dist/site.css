@@ -1,5 +1,12 @@
 :root {
   color-scheme: light;
+  /* "Libre Baskerville" (the actual family name Google Fonts registers,
+     loaded in each page's <head>) rather than the "libreBaskerville" /
+     "libreBaskerville Fallback" names next/font generates -- there is no
+     Next.js font pipeline here to produce those, and CSS font matching does
+     not ignore the missing space, so they would never resolve. Georgia/serif
+     is a plain fallback if the request is ever blocked. */
+  --font-libre-baskerville: 'Libre Baskerville', Georgia, serif;
 }
 
 html {

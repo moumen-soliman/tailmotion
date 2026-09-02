@@ -97,6 +97,7 @@ const KEYFRAME_SOURCES = {
   'tm-morph': 'src/animations/morph.css',
   'tm-sway': 'src/animations/sway.css',
   'tm-ripple': 'src/animations/ripple.css',
+  'tm-ripple-ring': 'src/animations/ripple.css',
   'tm-elastic': 'src/animations/elastic.css',
   'tm-blur-in': 'src/animations/blur-in.css',
   'tm-blur-out': 'src/animations/exit.css',

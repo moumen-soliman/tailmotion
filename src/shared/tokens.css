@@ -152,6 +152,7 @@
     .tm-count-reveal > *,
     .tm-number-swap > *,
     .tm-stream-text > *,
+    .tm-shimmer-text-sweep > *,
     .tm-icon-swap > *,
     .tm-view-morph > [data-tm-panel],
     .tm-text-flip-chars > span {
@@ -188,6 +189,13 @@
     .tm-text-rotate[data-tm-count] > .tm-text-rotate-word:first-child,
     .tm-text-morph[data-tm-count] > .tm-text-morph-word:first-child {
       opacity: 1 !important;
+    }
+
+    /* The shimmer recipe dims its resting text so the sweep reads as brighter.
+       With no sweep running there is nothing for the dimming to buy, and a
+       reader who asked for less motion should not also get less contrast. */
+    .tm-shimmer-text:has(> .tm-shimmer-text-sweep) {
+      -webkit-text-fill-color: currentColor;
     }
   }
 }

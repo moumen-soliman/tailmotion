@@ -78,6 +78,7 @@
           "docs/reference/variables",
           "docs/reference/plugin",
           "docs/reference/imports",
+          "docs/reference/render-cost",
           "docs/reference/browser-support"
         ]
       },

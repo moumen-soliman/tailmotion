@@ -1,5 +1,165 @@
 # Changelog
 
+## 0.11.0 · 2026-09-02
+
+Every continuous effect now runs on the compositor, and the build fails if that
+stops being true.
+
+A looping animation that touches a paint-tier property re-rasterizes its
+element on the main thread on every frame, for as long as the page is open,
+whether or not anyone is looking at it. Three classes were doing exactly that.
+Nothing in the project would have caught a fourth.
+
+### Changed
+
+- **`tm-shimmer-text` gained a sweep recipe and runs on the compositor.**
+  The old implementation painted a gradient through `background-clip: text`
+  and animated `background-position`, which re-rasterizes the glyph clip and
+  repaints the gradient every frame. The new form moves a masked window across
+  a copy of the text while the copy counter-translates by the same amount, so
+  the glyphs stay still and the whole loop is one transform:
+
+  ```html
+  <p class="tm-shimmer-text">
+    Generating response
+    <span class="tm-shimmer-text-sweep" aria-hidden="true">
+      <span>Generating response</span>
+    </span>
+  </p>
+  ```
+
+  **Migration:** none is required. Markup with no sweep child keeps the old
+  behaviour unchanged, scoped off by `:has()`. That path is now the only
+  looping effect in the library that still repaints, and it is scheduled for
+  removal in 1.0. The element must carry no padding of its own for the recipe
+  — put padding on a parent — and it needs to establish a box (block,
+  inline-block or grid). Two new guarded features, `mask-image` and
+  `:has()`, are in the browser-support table; without `:has()` (Firefox
+  before 121) an element with no sweep child renders as ordinary, fully
+  visible text rather than shimmering.
+
+- **`tm-glow` and `tm-ripple` paint on a pseudo-element.** Both animated
+  `box-shadow`, which no engine can composite. The halo and the ring are now
+  drawn once on `::after` and only their opacity and scale move.
+
+  **Migration:** both classes now own the element's `::after` and set
+  `position: relative` on it. If your own CSS puts a pseudo-element on the
+  same element, one of the two will win; and the element is now the containing
+  block for any absolutely positioned descendant. Every token
+  (`--tm-glow-size`, `--tm-glow-spread`, `--tm-ripple-size` and the
+  colors) keeps its meaning, and the prebuilt `hover:`, `focus:`,
+  `group-hover:`, `focus-within:`, `focus-visible:` and responsive
+  variants carry the same setup, so `hover:tm-glow` still works with no base
+  class alongside it.
+
+- **`tm-ripple` uses the individual `scale` property** rather than the
+  `transform` shorthand, so a Tailwind `rotate-3` on the same element now
+  survives it.
+
+- Under `prefers-reduced-motion: reduce`, the shimmer sweep recipe returns
+  its text to full contrast instead of leaving it at the 45% resting value.
+  With no sweep running there is nothing for the dimming to buy, and a reader
+  who asked for less motion should not also get less contrast.
+
+### Fixed
+
+- **`tm-unfold` was not transform-safe.** It animated
+  `transform: scaleY() translateY()`, so a Tailwind `rotate-3` on the same
+  element was silently discarded for the length of the animation — the one
+  entrance in the library where the documented guarantee did not hold. It now
+  uses the individual `scale` and `translate` properties like the other 25.
+- **`tm-morph` declared `border-radius: inherit` in a keyframe.** The value
+  was identical at both ends, so it animated nothing while still forcing the
+  browser to treat `border-radius` as an animated property on every frame of
+  a 4000ms infinite loop. Removed.
+- **Every documented size was stale.** The full bundle was described as
+  31.6 KB gzipped and measured 35.3 KB, a 10% drift accumulated over two minor
+  releases, with the same drift on all six module entries and in the prose.
+  All 25 claims are corrected and now checked.
+- **The 8px blur cap was not true.** `tm-text-rotate` used 10px and
+  `tm-text-morph` 12px. Both are one-shot, on one inline element, and the
+  blur is the word-to-word transition rather than decoration, so both are kept
+  and documented as named exceptions; the cap is now enforced on everything
+  else. Browser support also now notes that `tm-motion-expressive` multiplies
+  `--tm-emphasis` to 1.3, so an 8px blur resolves to 10.4px inside that scope.
+
+### Added
+
+- **`scripts/check-render-cost.mjs`, wired into `npm run check`.** It reads
+  the built stylesheet with a real structural parser and sorts every animated
+  property into compositor, filter, paint or layout. It fails the build when a
+  loop leaves the compositor, when one-shot paint or layout work has no
+  allowlist entry naming the reason, when a blur exceeds 8px, when a transition
+  names `all`, when `will-change` names a property the compositor cannot act
+  on, or when an entrance, exit, presence or scroll keyframe uses the
+  `transform` shorthand. A property it does not recognise is a failure, not a
+  default, so a new one has to be classified deliberately.
+- **`dist/render-cost.json`**, written on every check: one record per animated
+  rule with its selector, keyframes, animated properties, tier, and whether it
+  loops. It is excluded from the published tarball — 170 KB of analysis is not
+  something anyone installing a stylesheet should download — and `npm run
+  check` fails if that exclusion is ever lost.
+- **A [Render cost](https://docs.tailmotion.moumen.dev/docs/reference/render-cost)
+  reference page**, naming the four tiers, the guarantee, and every exception.
+- **A size-drift check.** `npm run check` now fails when a size quoted in
+  README.md or the imports reference is more than 2% off the file it describes,
+  and `node scripts/sync-doc-sizes.mjs` rewrites them all from the build.
+- **`npm test`.** Twelve tests over the pure helpers in `src/utils.js`,
+  which had none, using `node:test` and no dependencies. One of them checks
+  that every class `tm()` can build actually exists in the stylesheet.
+- **`verify/assert.html`**, 26 assertions that run in whatever browser opens
+  the page: feature support with the fallback for anything missing, every class
+  in the manifest still leaving content on screen at rest, the same under a
+  reduced-motion collapse, RTL mirroring, transform safety against an inline
+  `transform: rotate(6deg)`, presence driven by `data-state`, and the sweep
+  recipe's geometry. A page rather than a Playwright script on purpose:
+  Playwright's WebKit is not Safari, and Safari is the browser whose fallbacks
+  most need checking. Green in Chromium at the time of writing.
+- **Render cost badges in the demo explorer**, generated into
+  `demo/src/render-cost.js` by the same check rather than typed by hand. Only
+  classes that leave the compositor carry one, so a badge means something.
+- **A complete listing of every class that leaves the compositor** on the render
+  cost page — 29 of them, 5 of which loop — with the count, the loop count and
+  every name in the table checked against the stylesheet.
+- **A consolidated [removal notice](https://docs.tailmotion.moumen.dev/docs/support)
+  for 1.0**, naming the zero-markup shimmer path, `tm-hold-delete` and the
+  `tm-liquid-*` family, each with what to use instead.
+- **`verify/render-cost.html`**, a harness covering the sweep recipe, the
+  legacy path, the glow and ripple pseudo-elements, the variants used without a
+  base class, transform safety under an inline `rotate`, and a load section.
+- **`npm run perf` (optional).** Traces a real Chromium and counts paint
+  events per second for every looping class, failing when one the manifest
+  calls compositor-only paints anyway. Playwright is not a dependency; the
+  script says how to install it and exits cleanly when it is absent.
+
+  Measured on first use: the zero-markup `tm-shimmer-text` produces about
+  2,527 paint events a second across twenty copies, roughly two per element per
+  frame, while the sweep recipe that replaces it produces none. `tm-glow`,
+  `tm-ripple` and every other looping class in the core also measure zero.
+
+  It uses the paint-tier loops as a control group: those are known to repaint,
+  so if one of them registers no paints the fixture is not exercising the
+  class and the run is reported as inconclusive rather than green. That guard
+  earned itself immediately — the first run returned all zeroes and a pass,
+  because the fixture's own `.cell { background: … }` was unlayered and
+  unlayered rules beat every rule in a cascade layer regardless of
+  specificity. It was overwriting the gradient `tm-shimmer-text` animates, so
+  the most expensive loop in the library measured as free. The fixture's
+  styles now sit in a layer declared below the library's, the dark veil layer
+  modifiers are composed with `tm-dark-veil` instead of being measured alone,
+  and the shimmer sweep is measured in its real markup.
+- **`docs/QUALITY_PLAN.md`**, the plan this release is the first milestone of.
+
+### Documentation
+
+- Zero-runtime, support and browser-support now state the compositor guarantee
+  and point at the render-cost page.
+- The class reference notes that `tm-glow` and `tm-ripple` own `::after`,
+  and that `tm-shimmer-text` takes a sweep child.
+- Structured recipes gained the shimmer sweep, with the React form.
+- The demo catalogue shows the recipe markup and labels `tm-shimmer-text` as
+  markup-shaped rather than class-only.
+
 ## 0.10.1 · 2026-08-25
 
 Word rotation (`tm-text-flip`, `tm-text-rotate`, `tm-text-morph`) no longer

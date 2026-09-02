@@ -101,14 +101,17 @@ export const catalog = [
   }),
   entry('shimmer-text', 'keyframes', 'loop', {
     popular: true,
-    description: 'The same sweep, clipped to the text itself. No data-text duplication needed.',
+    requires: 'markup',
+    description:
+      'A highlight sweeping across the text. The window moves, the copy inside moves back, so the whole loop is one transform.',
     preview: 'shimmer-text',
-    markup: '<p class="tm-shimmer-text">Shimmering text</p>',
+    markup:
+      '<p class="tm-shimmer-text">\n  Shimmering text\n  <span class="tm-shimmer-text-sweep" aria-hidden="true">\n    <span>Shimmering text</span>\n  </span>\n</p>',
   }),
   entry('sparkle', 'keyframes', 'loop', { popular: true, description: 'Twinkling scale and rotation.' }),
   entry('glow', 'keyframes', 'loop', {
     popular: true,
-    description: 'Pulsing halo, tinted by --tm-glow-color.',
+    description: 'Pulsing halo, tinted by --tm-glow-color. Owns the element\'s ::after.',
     preview: 'glow',
   }),
   entry('float', 'keyframes', 'loop', { description: 'Gentle vertical drift.' }),
@@ -117,7 +120,7 @@ export const catalog = [
   entry('bounce', 'keyframes', 'loop', { description: 'Repeating vertical bounce.' }),
   entry('morph', 'keyframes', 'loop', { description: 'Slow breathing distortion.' }),
   entry('ripple', 'keyframes', 'loop', {
-    description: 'Expanding ring, tinted by --tm-outline-color.',
+    description: 'Expanding ring, tinted by --tm-outline-color. Owns the element\'s ::after.',
     preview: 'glow',
   }),
 

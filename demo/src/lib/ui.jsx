@@ -251,12 +251,13 @@ const BADGE_TONES = {
   warn: 'border-ink-faint bg-card-hover text-ink',
 };
 
-export function Badge({ tone = 'neutral', className, children, ...rest }) {
+export function Badge({ tone = 'neutral', compact = false, className, children, ...rest }) {
   return (
     <span
       {...rest}
       className={cx(
-        'inline-flex shrink-0 items-center gap-1 whitespace-nowrap rounded border px-1.5 py-0.5',
+        'inline-flex shrink-0 items-center gap-1 whitespace-nowrap rounded border py-0.5',
+        compact ? 'px-1' : 'px-1.5',
         'font-mono text-overline uppercase',
         BADGE_TONES[tone],
         className

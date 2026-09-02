@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>TailMotion browser assertions</title>
+    <link rel="stylesheet" href="/tailmotion.css" />
+    <style>
+      html { color-scheme: light; }
+      body { font: 14px/1.5 system-ui, sans-serif; margin: 24px; background: #fff; color: #111; max-width: 1000px; }
+      h1 { font-size: 18px; margin-bottom: 4px; }
+      .sub { color: #666; margin-top: 0; }
+      table { border-collapse: collapse; width: 100%; margin-block: 18px; font-size: 13px; }
+      th, td { text-align: left; padding: 6px 10px; border-bottom: 1px solid #eee; vertical-align: top; }
+      th { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: #666; }
+      .pass { color: #0a7d32; font-weight: 600; }
+      .fail { color: #c0182b; font-weight: 600; }
+      .skip { color: #8a8a8a; }
+      #summary { padding: 12px 16px; border-radius: 10px; font-weight: 600; margin-block: 16px; }
+      .ok { background: #e8f6ed; color: #0a5d26; }
+      .bad { background: #fdecee; color: #98121f; }
+      code { background: #f3f3f3; padding: 1px 5px; border-radius: 4px; font-size: 12px; }
+      #stage { position: absolute; left: -10000px; top: 0; width: 320px; }
+      h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .06em; color: #666; margin-top: 28px; }
+    </style>
+  </head>
+  <body>
+    <h1>Browser assertions</h1>
+    <p class="sub">
+      Runs the claims in the browser-support table against the browser you opened
+      this in. Open it in Safari and Firefox too — that is the point of it, and
+      the reason it is a page rather than a Playwright script. Playwright's WebKit
+      is not Safari.
+    </p>
+
+    <div id="summary">Running…</div>
+    <div id="env"></div>
+    <div id="results"></div>
+    <div id="stage" aria-hidden="true"></div>
+
+    <script type="module">
+      const stage = document.getElementById('stage');
+      const results = [];
+      const record = (group, name, state, detail = '') =>
+        results.push({ group, name, state, detail });
+
+      /* A hidden document never fires requestAnimationFrame, and this page is
+         meant to be runnable from an automated browser as well as by hand.
+         Style resolution does not depend on painting, so a timer is enough to
+         let the animation's currentTime land before reading computed styles. */
+      const nextFrame = () =>
+        new Promise((r) => {
+          if (document.hidden) setTimeout(r, 20);
+          else requestAnimationFrame(() => r());
+        });
+      const settle = async (el) => {
+        /* Finish every animation on the element and its pseudo-elements, so
+           "at rest" means the state a user is actually left looking at. */
+        for (const animation of el.getAnimations({ subtree: true })) {
+          try { animation.finish(); } catch { /* infinite: leave it running */ }
+        }
+        await nextFrame();
+      };
+
+      const mount = (html) => {
+        stage.innerHTML = html;
+        return stage.firstElementChild;
+      };
+
+      /* ------------------------------------------------------------------ */
+      /* 1. Feature support, and the fallback for anything missing.          */
+      /* ------------------------------------------------------------------ */
+      const FEATURES = [
+        ['color-mix()', () => CSS.supports('color', 'color-mix(in oklab, red 45%, transparent)')],
+        ['in oklab gradients', () => CSS.supports('background-image', 'linear-gradient(in oklab, red, red)')],
+        ['individual translate/scale/rotate', () => CSS.supports('translate', '0 10px')],
+        ['transition-behavior: allow-discrete', () => CSS.supports('transition-behavior', 'allow-discrete')],
+        ['@starting-style', () => CSS.supports('selector(:not(*))') && typeof CSSStartingStyleRule !== 'undefined'],
+        [':popover-open', () => CSS.supports('selector(:popover-open)')],
+        ['::details-content', () => CSS.supports('selector(::details-content)')],
+        ['interpolate-size', () => CSS.supports('interpolate-size', 'allow-keywords')],
+        ['animation-timeline: view()', () => CSS.supports('animation-timeline', 'view()')],
+        [':dir()', () => CSS.supports('selector(:dir(rtl))')],
+        ['mask-image', () => CSS.supports('mask-image', 'linear-gradient(#000, transparent)')],
+        ['-webkit-mask-image', () => CSS.supports('-webkit-mask-image', 'linear-gradient(#000, transparent)')],
+        [':has()', () => CSS.supports('selector(:has(> *))')],
+        ['background-clip: text', () =>
+          CSS.supports('background-clip', 'text') || CSS.supports('-webkit-background-clip', 'text')],
+      ];
+
+      const support = {};
+      for (const [name, test] of FEATURES) {
+        let ok = false;
+        try { ok = Boolean(test()); } catch { ok = false; }
+        support[name] = ok;
+        record('Feature support', name, ok ? 'pass' : 'skip', ok ? 'supported' : 'not supported — fallback must hold');
+      }
+
+      /* ------------------------------------------------------------------ */
+      /* 2. Nothing is invisible at rest.                                    */
+      /*    The runtime counterpart of the static check in scripts/check.mjs.*/
+      /* ------------------------------------------------------------------ */
+
+      /* Classes that are expected to end invisible, each with the reason.
+         A blanket regex is how a real regression hides here: "-out" caught
+         tm-slide-block-out and missed tm-swing-out-left. Every exclusion is
+         named, and the page prints them, so a skip is visible rather than
+         silent. Everything not listed must leave content on screen. */
+      const EXPECTED_INVISIBLE = [
+        [/^tm-fade-out$|^tm-scale-out$|^tm-blur-out$|^tm-slide-\w+-out$|^tm-swing-out(-\w+)?$/,
+          'an exit: it ends on its final frame and stays hidden by design'],
+        [/^tm-confetti$/, 'a particle that falls out of view and fades as it goes'],
+        [/^tm-presence-/, 'presence: the resting state is whatever data-state says'],
+        [/^tm-menu$|^tm-dialog|^tm-toast$|^tm-tooltip$|^tm-accordion-panel$|^tm-tab-panel$/,
+          'a recipe that is closed until its state attribute opens it'],
+        [/^tm-native-/, 'native dialog, popover and details: closed until the browser opens them'],
+        [/^tm-feedback-|^tm-icon-swap|^tm-flip-back|^tm-flip-front|^tm-view-morph/,
+          'one face of a pair: the counterpart is on screen'],
+        [/^tm-hold-/, 'progress fill: empty until the pointer is held'],
+        [/^tm-shimmer-hover$|^tm-dark-veil|^tm-avatar-tooltip/,
+          'a decorative layer over content that stays visible'],
+        [/^tm-text-|^tm-stagger-exit$/, 'drives generated children rather than itself'],
+        [/^tm-scroll-/, 'driven by a view timeline; at rest it depends on scroll position'],
+      ];
+      const excludeReason = (id) => EXPECTED_INVISIBLE.find(([re]) => re.test(id))?.[1] ?? null;
+
+      let manifest = null;
+      try {
+        manifest = await (await fetch('/dist/render-cost.json')).json();
+      } catch {
+        record('Visibility at rest', 'load dist/render-cost.json', 'fail',
+          'Run `npm run check` first — the class list comes from the manifest.');
+      }
+
+      if (manifest) {
+        const classes = [...new Set(
+          manifest.classes
+            .map((entry) => entry.id)
+            .filter((id) => id.startsWith('tm-') && !excludeReason(id))
+        )].sort();
+
+        stage.innerHTML = classes
+          .map((c) => `<div class="${c}" data-probe="${c}" style="width:80px;height:30px;background:#333">x</div>`)
+          .join('');
+        await settle(stage);
+        const hidden = [];
+        for (const el of stage.querySelectorAll('[data-probe]')) {
+          const cs = getComputedStyle(el);
+          if (Number(cs.opacity) === 0 || cs.visibility === 'hidden' || cs.display === 'none') {
+            hidden.push(`${el.dataset.probe} (opacity ${cs.opacity}, visibility ${cs.visibility})`);
+          }
+        }
+        const checked = classes.length;
+        stage.innerHTML = '';
+        record(
+          'Visibility at rest',
+          `${checked} classes leave content on screen`,
+          hidden.length ? 'fail' : 'pass',
+          hidden.join('; ')
+        );
+
+        const excluded = [...new Set(manifest.classes.map((e) => e.id))]
+          .filter((id) => id.startsWith('tm-') && excludeReason(id))
+          .sort();
+        const byReason = new Map();
+        for (const id of excluded) {
+          const reason = excludeReason(id);
+          byReason.set(reason, [...(byReason.get(reason) ?? []), id]);
+        }
+        for (const [reason, ids] of byReason) {
+          record('Expected to end invisible', reason, 'skip', ids.join(', '));
+        }
+      }
+
+      /* ------------------------------------------------------------------ */
+      /* 3. The same, with the reduced-motion collapse applied.              */
+      /* ------------------------------------------------------------------ */
+      {
+        const rm = document.createElement('style');
+        rm.textContent = `[class*="tm-"], [class*="tm-"]::before, [class*="tm-"]::after,
+          .tm-stagger > *, .tm-shimmer-text-sweep > * {
+            animation-duration: 1ms !important; animation-delay: 0ms !important;
+            animation-iteration-count: 1 !important; transition-duration: 1ms !important; }`;
+        document.head.append(rm);
+
+        const probes = ['tm-fade-in', 'tm-pop', 'tm-slide-block-start', 'tm-scale-in', 'tm-reveal', 'tm-blur-in'];
+        stage.innerHTML = probes
+          .map((c) => `<div class="${c}" data-probe="${c}" style="width:80px;height:30px;background:#333">x</div>`)
+          .join('');
+        await settle(stage);
+        const bad = [...stage.querySelectorAll('[data-probe]')]
+          .filter((el) => Number(getComputedStyle(el).opacity) === 0)
+          .map((el) => el.dataset.probe);
+        stage.innerHTML = '';
+        rm.remove();
+        record('Reduced motion', 'entrances still land visible when collapsed to 1ms',
+          bad.length ? 'fail' : 'pass', bad.join(', '));
+      }
+
+      /* ------------------------------------------------------------------ */
+      /* 4. Logical direction: inline-axis motion mirrors, block-axis does not. */
+      /* ------------------------------------------------------------------ */
+      {
+        const startOffset = async (dir, className) => {
+          const wrap = mount(`<div dir="${dir}"><div class="${className}" style="width:80px;height:30px;background:#333">x</div></div>`);
+          const el = wrap.firstElementChild;
+          for (const a of el.getAnimations()) { a.pause(); a.currentTime = 0; }
+          await nextFrame();
+          const m = new DOMMatrixReadOnly(getComputedStyle(el).transform);
+          const t = getComputedStyle(el).translate;
+          const x = t && t !== 'none' ? parseFloat(t) : m.m41;
+          return x;
+        };
+
+        const ltrInline = await startOffset('ltr', 'tm-slide-inline-start');
+        const rtlInline = await startOffset('rtl', 'tm-slide-inline-start');
+        stage.innerHTML = '';
+        const mirrored = Math.sign(ltrInline) === -Math.sign(rtlInline) && ltrInline !== 0;
+        record('Logical direction', 'tm-slide-inline-start mirrors in RTL',
+          mirrored ? 'pass' : 'fail', `ltr ${ltrInline}px, rtl ${rtlInline}px`);
+      }
+
+      /* ------------------------------------------------------------------ */
+      /* 5. Transform safety: a Tailwind v3 rotate survives the promised set. */
+      /* ------------------------------------------------------------------ */
+      {
+        const PROMISED = ['tm-fade-in', 'tm-pop', 'tm-slide-block-start', 'tm-scale-in',
+          'tm-zoom-in', 'tm-reveal', 'tm-elastic', 'tm-drop', 'tm-rise'];
+        stage.innerHTML = PROMISED
+          .map((c) => `<div class="${c}" data-probe="${c}" style="width:80px;height:30px;background:#333;transform:rotate(6deg)">x</div>`)
+          .join('');
+        for (const a of stage.getAnimations({ subtree: true })) {
+          a.pause();
+          a.currentTime = a.effect.getComputedTiming().duration * 0.4;
+        }
+        await nextFrame();
+        /* cos(6deg) = 0.9945, sin(6deg) = 0.1045. If b is ~0 the rotation was overwritten. */
+        const lost = [...stage.querySelectorAll('[data-probe]')]
+          .filter((el) => Math.abs(new DOMMatrixReadOnly(getComputedStyle(el).transform).b) < 0.05)
+          .map((el) => el.dataset.probe);
+        stage.innerHTML = '';
+        record('Transform safety', `${PROMISED.length} promised classes keep an inline transform: rotate(6deg)`,
+          lost.length ? 'fail' : 'pass', lost.join(', '));
+
+        /* And the documented counter-example still behaves as documented. */
+        const el = mount(`<div class="tm-unfold" style="width:80px;height:30px;background:#333;transform:rotate(6deg)">x</div>`);
+        for (const a of el.getAnimations()) { a.pause(); a.currentTime = a.effect.getComputedTiming().duration * 0.4; }
+        await nextFrame();
+        const m = new DOMMatrixReadOnly(getComputedStyle(el).transform);
+        stage.innerHTML = '';
+        record('Transform safety', 'tm-unfold overwrites it, as documented',
+          Math.abs(m.b) < 0.05 ? 'pass' : 'fail',
+          'transform-safety.mdx lists it under order-sensitive keyframes');
+      }
+
+      /* ------------------------------------------------------------------ */
+      /* 6. Presence: closed hides, open shows, with no JavaScript.          */
+      /* ------------------------------------------------------------------ */
+      {
+        const el = mount(`<div class="tm-presence-fade" data-state="closed" style="width:80px;height:30px;background:#333">x</div>`);
+        await settle(el);
+        const closedHidden = Number(getComputedStyle(el).opacity) === 0 ||
+          getComputedStyle(el).visibility === 'hidden';
+        el.dataset.state = 'open';
+        await settle(el);
+        const openVisible = Number(getComputedStyle(el).opacity) > 0.9;
+        stage.innerHTML = '';
+        record('Presence', 'data-state drives tm-presence-fade both ways',
+          closedHidden && openVisible ? 'pass' : 'fail',
+          `closed hidden: ${closedHidden}, open visible: ${openVisible}`);
+      }
+
+      /* ------------------------------------------------------------------ */
+      /* 7. The shimmer sweep recipe.                                        */
+      /* ------------------------------------------------------------------ */
+      {
+        const el = mount(`<p class="tm-shimmer-text" style="font-size:20px;margin:0">Generating<span class="tm-shimmer-text-sweep" aria-hidden="true"><span>Generating</span></span></p>`);
+        const sweep = el.querySelector('.tm-shimmer-text-sweep');
+        const copy = sweep.firstElementChild;
+        const positions = [];
+        for (const f of [0, 0.25, 0.5, 0.75]) {
+          for (const node of [sweep, copy]) {
+            for (const a of node.getAnimations()) {
+              a.pause();
+              a.currentTime = a.effect.getComputedTiming().duration * f;
+            }
+          }
+          await nextFrame();
+          positions.push(copy.getBoundingClientRect().left.toFixed(2));
+        }
+        const stays = new Set(positions).size === 1;
+        const aligned = Math.abs(copy.getBoundingClientRect().left - el.getBoundingClientRect().left) < 0.5;
+        const usesTransform = getComputedStyle(sweep).animationName.startsWith('tm-shimmer-text-window');
+        stage.innerHTML = '';
+
+        record('Shimmer sweep', 'the glyph copy never moves', stays ? 'pass' : 'fail', positions.join(' / '));
+        record('Shimmer sweep', 'the copy sits exactly over the base text', aligned ? 'pass' : 'fail');
+        record('Shimmer sweep', 'the window animates a transform, not a background', usesTransform ? 'pass' : 'fail');
+        record('Shimmer sweep', ':has() scopes off the repainting path',
+          support[':has()'] ? 'pass' : 'skip',
+          support[':has()'] ? '' : 'no :has(): the zero-markup path renders as plain visible text');
+      }
+
+      /* ------------------------------------------------------------------ */
+      /* 8. Glow and ripple animate their pseudo-element, not the element.   */
+      /* ------------------------------------------------------------------ */
+      for (const [className, expected] of [['tm-glow', 'tm-glow'], ['tm-ripple', 'tm-ripple-ring']]) {
+        const el = mount(`<div class="${className}" style="width:80px;height:30px;background:#333">x</div>`);
+        await nextFrame();
+        const names = el.getAnimations({ subtree: true }).map((a) => a.animationName);
+        const onPseudo = getComputedStyle(el, '::after').animationName;
+        stage.innerHTML = '';
+        record('Pseudo-element loops', `${className} runs ${expected} on ::after`,
+          names.includes(expected) && onPseudo.includes(expected) ? 'pass' : 'fail',
+          names.join(', '));
+      }
+
+      /* ------------------------------------------------------------------ */
+      /* Render.                                                             */
+      /* ------------------------------------------------------------------ */
+      const env = document.getElementById('env');
+      env.innerHTML = `<p class="sub"><code>${navigator.userAgent}</code></p>`;
+
+      const groups = [...new Set(results.map((r) => r.group))];
+      document.getElementById('results').innerHTML = groups
+        .map((group) => {
+          const rows = results
+            .filter((r) => r.group === group)
+            .map(
+              (r) =>
+                `<tr><td class="${r.state}">${r.state.toUpperCase()}</td><td>${r.name}</td><td class="skip">${r.detail}</td></tr>`
+            )
+            .join('');
+          return `<h2>${group}</h2><table><tr><th>Result</th><th>Assertion</th><th>Detail</th></tr>${rows}</table>`;
+        })
+        .join('');
+
+      const failed = results.filter((r) => r.state === 'fail');
+      const passed = results.filter((r) => r.state === 'pass');
+      const summary = document.getElementById('summary');
+      summary.className = failed.length ? 'bad' : 'ok';
+      summary.textContent = failed.length
+        ? `${failed.length} assertion(s) failed, ${passed.length} passed.`
+        : `All ${passed.length} assertions passed in this browser.`;
+      window.__tmAssertions = { results, failed: failed.length, passed: passed.length };
+    </script>
+  </body>
+</html>

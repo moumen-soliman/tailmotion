@@ -52,6 +52,8 @@ const TWO_FACE_RECIPES = [
   ['.tm-flip-back', 'tm-flip: the front face is visible'],
   ['.tm-flip-front', 'tm-flip: the back face is visible'],
   ['.tm-shimmer-hover::after', 'decorative sweep over visible content'],
+  ['tm-glow::after', 'tm-glow: a decorative halo over content that stays visible'],
+  ['tm-ripple::after', 'tm-ripple: a decorative ring over content that stays visible'],
   ['.tm-dark-veil::after', 'decorative layer over visible content'],
   ['.tm-avatar-tooltip', 'a tooltip is hidden until hover by definition'],
   [
@@ -255,6 +257,95 @@ const checkDocs = async () => {
   notes.push(`\ndocs                         ${String(pages.length).padStart(4)} pages, all linked`);
 };
 
+/* --------------------------------------------------------------------------
+   Documented sizes.
+
+   README.md and docs/reference/imports.mdx both quote raw and gzipped sizes.
+   Between 0.8 and 0.10 the full bundle grew by 6% while the documented number
+   stayed put, which is exactly the kind of claim support.mdx says is measured
+   rather than estimated. This compares every quoted number against the file it
+   describes and fails on a drift of more than 2%.
+   -------------------------------------------------------------------------- */
+const SIZE_TOLERANCE = 0.02;
+
+const ENTRY_FILES = {
+  'tailmotion/css': 'tailmotion.css',
+  'tailmotion/profiles.css': 'modules/profiles.css',
+  'tailmotion/presence.css': 'modules/presence.css',
+  'tailmotion/native.css': 'modules/native.css',
+  'tailmotion/recipes.css': 'modules/recipes.css',
+  'tailmotion/scroll.css': 'modules/scroll.css',
+  'tailmotion/choreography.css': 'modules/choreography.css',
+};
+
+const measure = async (relativePath) => {
+  const raw = await readFile(path.join(rootDir, relativePath), 'utf8');
+  const bytes = Buffer.byteLength(raw, 'utf8');
+  return {
+    raw: bytes / 1024,
+    gzip: gzipSync(Buffer.from(raw, 'utf8')).length / 1024,
+  };
+};
+
+const compareSize = (label, documented, actual, where) => {
+  const drift = Math.abs(documented - actual) / actual;
+  if (drift <= SIZE_TOLERANCE) return true;
+  fail(
+    `${where}: ${label} is documented as ${documented.toFixed(1)} KB but measures ` +
+      `${actual.toFixed(1)} KB (${(drift * 100).toFixed(0)}% off). Update the number, or ` +
+      'the claim stops being measured.'
+  );
+  return false;
+};
+
+const checkDocumentedSizes = async () => {
+  const sizes = {};
+  for (const [entry, relativePath] of Object.entries(ENTRY_FILES)) {
+    sizes[entry] = await measure(relativePath);
+  }
+  let compared = 0;
+
+  const importsPath = 'docs/reference/imports.mdx';
+  const imports = await readFile(path.join(rootDir, importsPath), 'utf8');
+  for (const match of imports.matchAll(
+    /\|\s*`(tailmotion\/[\w.]+)`\s*\|\s*([\d.]+) KB\s*\|\s*([\d.]+) KB\s*\|/g
+  )) {
+    const [, entry, raw, gzip] = match;
+    if (!sizes[entry]) {
+      fail(`${importsPath}: size row for unknown entry ${entry}`);
+      continue;
+    }
+    compareSize(`${entry} raw`, Number(raw), sizes[entry].raw, importsPath);
+    compareSize(`${entry} gzipped`, Number(gzip), sizes[entry].gzip, importsPath);
+    compared += 2;
+  }
+
+  const readmePath = 'README.md';
+  const readme = await readFile(path.join(rootDir, readmePath), 'utf8');
+  for (const match of readme.matchAll(
+    /@import "(tailmotion\/[\w.]+)";\s*\/\*[^*]*?([\d.]+) KB/g
+  )) {
+    const [, entry, gzip] = match;
+    if (!sizes[entry]) continue;
+    compareSize(`${entry} gzipped`, Number(gzip), sizes[entry].gzip, readmePath);
+    compared += 1;
+  }
+
+  /* Prose repeats the full-bundle number in both files; a table fix that
+     leaves the sentences behind is the drift this catches. */
+  for (const [label, source] of [[importsPath, imports], [readmePath, readme]]) {
+    for (const match of source.matchAll(/([\d.]+) KB gzipped/g)) {
+      compareSize('the full bundle, in prose', Number(match[1]), sizes['tailmotion/css'].gzip, label);
+      compared += 1;
+    }
+  }
+
+  if (!compared) fail('Documented sizes: no size claims found to check. Did the format change?');
+  notes.push(
+    `documented sizes             ${String(compared).padStart(4)} claims within ${SIZE_TOLERANCE * 100}% of measured`
+  );
+};
+
 /* Confirms the files consumers actually need are inside the published
    tarball, without needing to publish or inspect it by hand. Catches a
    files/exports mismatch in package.json (e.g. a new build target that
@@ -295,6 +386,20 @@ const checkPackageContents = async () => {
     }
   }
 
+  /* Build artefacts that exist for this repository, not for consumers. The
+     render cost manifest is 170 KB of analysis nobody installing a stylesheet
+     needs, and "files" includes dist wholesale, so the exclusion is easy to
+     lose. */
+  const FORBIDDEN_FILES = ['dist/render-cost.json'];
+  for (const file of FORBIDDEN_FILES) {
+    if (packed.has(file)) {
+      fail(
+        `${file}: present in \`npm pack\` output. It is a build artefact for this ` +
+          'repository, not something consumers install. Keep the "!" entry in "files".'
+      );
+    }
+  }
+
   notes.push(`package                       ${String(packed.size).padStart(4)} files in the published tarball`);
 };
 
@@ -320,6 +425,7 @@ const run = async () => {
   }
 
   await checkHoverVariantParity();
+  await checkDocumentedSizes();
   await checkDocs();
   await checkPackageContents();
 

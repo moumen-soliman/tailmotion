@@ -1,0 +1,127 @@
+{
+  "sampleMs": 3000,
+  "copies": 20,
+  "note": "Machine-dependent. Paint counts, not timings, are the signal.",
+  "classes": {
+    "tm-bounce": {
+      "tier": "compositor",
+      "allowlisted": false,
+      "paintsPerSecond": 0,
+      "rastersPerSecond": 0
+    },
+    "tm-dark-veil": {
+      "tier": "compositor",
+      "allowlisted": false,
+      "paintsPerSecond": 0,
+      "rastersPerSecond": 0
+    },
+    "tm-dark-veil-layer-1": {
+      "tier": "compositor",
+      "allowlisted": false,
+      "paintsPerSecond": 0,
+      "rastersPerSecond": 0
+    },
+    "tm-dark-veil-layer-2": {
+      "tier": "paint",
+      "allowlisted": true,
+      "paintsPerSecond": 2527,
+      "rastersPerSecond": 2400
+    },
+    "tm-dark-veil-layer-3": {
+      "tier": "compositor",
+      "allowlisted": false,
+      "paintsPerSecond": 0,
+      "rastersPerSecond": 0
+    },
+    "tm-dark-veil-noise": {
+      "tier": "compositor",
+      "allowlisted": false,
+      "paintsPerSecond": 0,
+      "rastersPerSecond": 0
+    },
+    "tm-drift": {
+      "tier": "compositor",
+      "allowlisted": false,
+      "paintsPerSecond": 0,
+      "rastersPerSecond": 0
+    },
+    "tm-float": {
+      "tier": "compositor",
+      "allowlisted": false,
+      "paintsPerSecond": 0,
+      "rastersPerSecond": 0
+    },
+    "tm-glow": {
+      "tier": "compositor",
+      "allowlisted": false,
+      "paintsPerSecond": 0,
+      "rastersPerSecond": 0
+    },
+    "tm-morph": {
+      "tier": "compositor",
+      "allowlisted": false,
+      "paintsPerSecond": 0,
+      "rastersPerSecond": 0
+    },
+    "tm-pulse": {
+      "tier": "compositor",
+      "allowlisted": false,
+      "paintsPerSecond": 0,
+      "rastersPerSecond": 0
+    },
+    "tm-ripple": {
+      "tier": "compositor",
+      "allowlisted": false,
+      "paintsPerSecond": 0,
+      "rastersPerSecond": 0
+    },
+    "tm-shimmer": {
+      "tier": "compositor",
+      "allowlisted": false,
+      "paintsPerSecond": 0,
+      "rastersPerSecond": 0
+    },
+    "tm-shimmer-text": {
+      "tier": "paint",
+      "allowlisted": true,
+      "paintsPerSecond": 2520.3,
+      "rastersPerSecond": 1200
+    },
+    "tm-shimmer-text-sweep": {
+      "tier": "compositor",
+      "allowlisted": false,
+      "paintsPerSecond": 0,
+      "rastersPerSecond": 0
+    },
+    "tm-sparkle": {
+      "tier": "compositor",
+      "allowlisted": false,
+      "paintsPerSecond": 0,
+      "rastersPerSecond": 0
+    },
+    "tm-spin": {
+      "tier": "compositor",
+      "allowlisted": false,
+      "paintsPerSecond": 0,
+      "rastersPerSecond": 0
+    },
+    "tm-sway": {
+      "tier": "compositor",
+      "allowlisted": false,
+      "paintsPerSecond": 0,
+      "rastersPerSecond": 0
+    },
+    "tm-wavy-bg": {
+      "tier": "paint",
+      "allowlisted": true,
+      "paintsPerSecond": 2856.3,
+      "rastersPerSecond": 1393.3
+    },
+    "tm-wavy-bg-subtle": {
+      "tier": "paint",
+      "allowlisted": true,
+      "paintsPerSecond": 4920,
+      "rastersPerSecond": 3600
+    }
+  }
+}

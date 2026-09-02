@@ -234,6 +234,48 @@ rotator.start();
 | `tm-text-rotate` | 3D rotate | No — CSS-only with `[data-tm-count]` |
 | `tm-text-flip-chars` | Per-character flip | Yes — re-splits characters per word |
 
+## Shimmer text
+
+A highlight that follows the shape of the glyphs. The window element sweeps one
+way and the copy inside counter-translates by the same amount, so the glyphs
+stay still on screen and the whole loop is one transform.
+
+```html
+<p class="tm-shimmer-text">
+  Generating response
+  <span class="tm-shimmer-text-sweep" aria-hidden="true">
+    <span>Generating response</span>
+  </span>
+</p>
+```
+
+In React the duplication is one variable:
+
+```jsx
+function Shimmer({ children }) {
+  return (
+    <p className="tm-shimmer-text">
+      {children}
+      <span className="tm-shimmer-text-sweep" aria-hidden="true">
+        <span>{children}</span>
+      </span>
+    </p>
+  );
+}
+```
+
+<Warning>
+The element must carry no padding of its own — put it on a parent. The sweep is
+positioned against the padding box, and the window and the copy only stay in
+step while they are the same width.
+</Warning>
+
+The copy is `aria-hidden`, so the text is announced once. Writing
+`<p class="tm-shimmer-text">` with no sweep child still works and still
+animates: that is the original zero-markup implementation, which repaints every
+frame and is scheduled for removal in 1.0. See
+[Render cost](/docs/reference/render-cost#tm-shimmer-text).
+
 ## Liquid button
 
 <Warning>
