@@ -63,11 +63,15 @@ Nothing in the project would have caught a fourth.
 
 ### Fixed
 
-- **`tm-unfold` was not transform-safe.** It animated
-  `transform: scaleY() translateY()`, so a Tailwind `rotate-3` on the same
-  element was silently discarded for the length of the animation — the one
-  entrance in the library where the documented guarantee did not hold. It now
-  uses the individual `scale` and `translate` properties like the other 25.
+- **The README and `transform-safety.mdx` contradicted each other.** The
+  README claimed every entrance animates the individual `translate` /
+  `scale` / `rotate` properties. The concept page correctly excluded
+  `tm-unfold`, `tm-flip-*` and `tm-swing-*`, which scale or rotate *before*
+  they translate — an order the individual properties cannot express, since
+  they always apply translate → rotate → scale. The README was wrong and is
+  corrected; the keyframes are unchanged, because converting them would move
+  the element somewhere else. The keyframe counts on both pages were also a
+  release cycle out of date and are now recounted on every build.
 - **`tm-morph` declared `border-radius: inherit` in a keyframe.** The value
   was identical at both ends, so it animated nothing while still forcing the
   browser to treat `border-radius` as an animated property on every frame of
